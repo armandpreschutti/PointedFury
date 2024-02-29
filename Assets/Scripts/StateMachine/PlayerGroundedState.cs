@@ -21,7 +21,7 @@ public class PlayerGroundedState : PlayerBaseState
         Debug.Log("GROUNDED state is currently active");
 
         CheckSwitchStates();
-        Ctx.Move();
+        Ctx.FreeMovement();
         if (Ctx.VerticalVelocity < 0.0f)
         {
             Ctx.VerticalVelocity = -2f;
@@ -44,6 +44,10 @@ public class PlayerGroundedState : PlayerBaseState
         if (!Ctx.IsGrounded)
         {
             SwitchState(Factory.Fall());
+        }
+        if(Ctx.IsFightPressed)
+        {
+            SwitchState(Factory.Fight());
         }
     }
 

@@ -34,6 +34,10 @@ public class PlayerStateFactory
         return new PlayerGroundedState(_context, this);
     }
 
+    public PlayerBaseState Fight()
+    {
+        return new PlayerFightState(_context, this);
+    }
     
 
 

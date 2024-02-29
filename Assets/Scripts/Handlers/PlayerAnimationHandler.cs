@@ -11,6 +11,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     [SerializeField] private int _animIDGrounded;
     [SerializeField] private int _animIDJump;
     [SerializeField] private int _animIDFall;
+    [SerializeField] private int _animIDFight;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class PlayerAnimationHandler : MonoBehaviour
         _playerStateMachine.OnGrounded += SetGroundedAnimation;
         _playerStateMachine.OnJump += SetJumpAnimation;
         _playerStateMachine.OnFall += SetFallAnimation;
+        _playerStateMachine.OnFight += SetFightAnimation;
     }
 
     private void OnDisable()
@@ -30,6 +32,7 @@ public class PlayerAnimationHandler : MonoBehaviour
         _playerStateMachine.OnGrounded -= SetGroundedAnimation;
         _playerStateMachine.OnJump -= SetJumpAnimation;
         _playerStateMachine.OnFall -= SetFallAnimation;
+        _playerStateMachine.OnFight -= SetFightAnimation;
     }
 
     private void Update()
@@ -52,6 +55,7 @@ public class PlayerAnimationHandler : MonoBehaviour
         _animIDGrounded = Animator.StringToHash("Grounded");
         _animIDJump = Animator.StringToHash("Jump");
         _animIDFall = Animator.StringToHash("InAir");
+        _animIDFight = Animator.StringToHash("Fight");
     }
 
     private void SetGroundedAnimation(bool value)
@@ -68,5 +72,8 @@ public class PlayerAnimationHandler : MonoBehaviour
     {
         _animator.SetBool(_animIDFall, value);
     }
-    
+    private void SetFightAnimation(bool value)
+    {
+        _animator.SetBool(_animIDFight, value);
+    }
 }

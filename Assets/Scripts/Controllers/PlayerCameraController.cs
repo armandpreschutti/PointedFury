@@ -1,8 +1,11 @@
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerCameraController : MonoBehaviour
 {
     private PlayerStateMachine _playerStateMachine;
+    [SerializeField] CinemachineVirtualCamera _freeCamera;
+    [SerializeField] CinemachineVirtualCamera _fightCamera;
 
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
@@ -29,6 +32,16 @@ public class PlayerCameraController : MonoBehaviour
     {
         _playerStateMachine = GetComponent<PlayerStateMachine>();
         _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
+    }
+
+    private void OnEnable()
+    {
+        _playerStateMachine.OnFight += SetFightCamera;
+    }
+
+    private void OnDisable()
+    {
+        
     }
 
     // Start is called before the first frame update
@@ -67,6 +80,12 @@ public class PlayerCameraController : MonoBehaviour
         if (lfAngle < -360f) lfAngle += 360f;
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
+
+    public void SetFightCamera(bool value) 
+    {
+        _fightCamera.gameObject.SetActive(value);
+        _freeCamera.gameObject.SetActive(!value);
     }
 
 }

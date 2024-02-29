@@ -21,7 +21,7 @@ public class PlayerFallState : PlayerBaseState
         Debug.Log("FALL state is currently active");
 
         Ctx.VerticalVelocity += Ctx.Gravity * Time.deltaTime;
-        Ctx.Move();
+        Ctx.FreeMovement();
         CheckSwitchStates();
     }
     public override void ExitState()

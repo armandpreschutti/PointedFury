@@ -15,7 +15,7 @@ public class PlayerSprintState : PlayerBaseState
     public override void UpdateState()
     {
         Debug.Log("SPRINT state is currently active");
-
+        //Ctx.FreeMovement();
         CheckSwitchStates();
     }
 

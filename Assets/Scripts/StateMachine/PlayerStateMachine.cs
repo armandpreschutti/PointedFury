@@ -9,6 +9,8 @@ public class PlayerStateMachine : MonoBehaviour
     public float MoveSpeed = 4.0f;
     [Tooltip("Sprint speed of the character in m/s")]
     public float SprintSpeed = 7.5f;
+    [Tooltip("Fight speed of the character in m/s")]
+    public float FightSpeed = 2f;
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)]
     public float RotationSmoothTime = 0.12f;
@@ -42,12 +44,16 @@ public class PlayerStateMachine : MonoBehaviour
     private float _verticalVelocity;
     private float _jumpDurationDelta;
 
+    // Player fighting variables
+    public Transform FightTarget;
+
     // Player input variables
     private PlayerControls _playerControls;
     private Vector2 _moveInput;
     private Vector2 _lookInput;
     private bool _isJumpPressed = false;
     private bool _isSprintPressed = false;
+    private bool _isFightPressed = false;
 
     // Player components
     private Animator _animator;
@@ -63,6 +69,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Action<bool> OnJump;
     public Action<bool> OnFall;
     public Action<bool> OnGrounded;
+    public Action<bool> OnFight;
 
     // Getters and setters
     public float Speed { get { return _speed; } }
@@ -73,6 +80,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Vector2 LookInput { get { return _lookInput; } set { _lookInput = value; } }
     public bool IsJumpPressed { get { return _isJumpPressed; } set { _isJumpPressed = value; } }
     public bool IsSprintPressed { get { return _isSprintPressed; } set { _isSprintPressed = value; } }
+    public bool IsFightPressed { get { return _isFightPressed; } set { _isFightPressed= value; } }
     public Animator Animator { get { return _animator; } set { _animator = value; } }
     public bool IsGrounded { get { return _isGrounded; } }
 
@@ -135,8 +143,13 @@ public class PlayerStateMachine : MonoBehaviour
         _lookInput = value;
     }
 
+    public void SetFightInput(bool value)
+    {
+        _isFightPressed = value;
+    }
+
     // Move the player
-    public void Move()
+    public void FreeMovement()
     {
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
         float speedOffset = 0.1f;
@@ -164,6 +177,31 @@ public class PlayerStateMachine : MonoBehaviour
 
         Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
         _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+    }
+
+    public void FightMovement()
+    {
+        Vector3 targetPosition = FightTarget.position;
+        transform.LookAt(targetPosition); // Face the target
+
+        // Get the forward vector of the camera without vertical component
+        Vector3 cameraForward = Camera.main.transform.forward;
+        cameraForward.y = 0f;
+        cameraForward.Normalize();
+
+        // Calculate movement direction based on player input relative to camera
+        Vector3 moveInput = new Vector3(_moveInput.x, 0.0f, _moveInput.y);
+        Vector3 moveDirection = Quaternion.LookRotation(cameraForward) * moveInput;
+        moveDirection.Normalize();
+
+        // Calculate movement speed and apply movement
+        Vector3 movement = moveDirection * (_speed * Time.deltaTime);
+        _controller.Move(movement + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+        /*Vector3 target = FightTarget.position;
+        transform.LookAt(target);
+        Vector3 moveDirection = new Vector3(_moveInput.x, 0.0f, _moveInput.y).normalized;
+        _controller.Move(moveDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);*/
+
     }
 
     // Check if the player is grounded
@@ -201,5 +239,6 @@ public class PlayerStateMachine : MonoBehaviour
         _playerControls.Player.Jump.performed += ctx => SetJumpInput(ctx.ReadValueAsButton());
         _playerControls.Player.Move.performed += ctx => SetMoveInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
+        _playerControls.Player.Fight.performed += ctx => SetFightInput(ctx.ReadValueAsButton());
     }
 }
