@@ -37,10 +37,18 @@ public class PlayerAnimationHandler : MonoBehaviour
 
     private void Update()
     {
-        _animationBlend = Mathf.Lerp(_animationBlend, _playerStateMachine.TargetSpeed, Time.deltaTime * _playerStateMachine.SpeedChangeRate);
-        if (_animationBlend < 0.01f) _animationBlend = 0f;
-        //_animationBlend = _playerStateMachine.Speed;
-        _animator.SetFloat(_animIDSpeed, _animationBlend);
+        if (!_playerStateMachine.IsFighting)
+        {
+            _animationBlend = Mathf.Lerp(_animationBlend, _playerStateMachine.TargetSpeed, Time.deltaTime * _playerStateMachine.SpeedChangeRate);
+            if (_animationBlend < 0.01f) _animationBlend = 0f;
+            //_animationBlend = _playerStateMachine.Speed;
+            _animator.SetFloat(_animIDSpeed, _animationBlend);
+        }
+        else
+        {
+            _animator.SetFloat(_animIDSpeed, 0f);
+        }
+       
     }
 
     public void SetComponents()

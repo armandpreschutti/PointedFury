@@ -23,7 +23,6 @@ public class PlayerJumpState : PlayerBaseState
     public override void UpdateState() 
     {
         Debug.Log("JUMP state is currently active");
-
         Ctx.FreeMovement();
         HandleJump();
     }

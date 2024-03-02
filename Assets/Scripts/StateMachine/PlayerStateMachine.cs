@@ -37,6 +37,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     // Player state variables
     private bool _isGrounded = true;
+    private bool _isFighting = false;
     private float _speed;
     private float _targetSpeed;
     private float _targetRotation = 0.0f;
@@ -83,6 +84,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsFightPressed { get { return _isFightPressed; } set { _isFightPressed= value; } }
     public Animator Animator { get { return _animator; } set { _animator = value; } }
     public bool IsGrounded { get { return _isGrounded; } }
+    public bool IsFighting { get { return _isFighting; } set { _isFighting = value; } }
 
     // Awake is called when the script instance is being loaded
     private void Awake()
@@ -117,6 +119,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         // Check if the player is grounded
         GroundedCheck();
+        SetPlayerSpeed();
     }
 
     // Set jump input value
@@ -148,8 +151,7 @@ public class PlayerStateMachine : MonoBehaviour
         _isFightPressed = value;
     }
 
-    // Move the player
-    public void FreeMovement()
+    public void SetPlayerSpeed()
     {
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
         float speedOffset = 0.1f;
@@ -164,6 +166,12 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _speed = _targetSpeed;
         }
+    }
+
+    // Move the player
+    public void FreeMovement()
+    {
+
 
         Vector3 inputDirection = new Vector3(_moveInput.x, 0.0f, _moveInput.y).normalized;
 
@@ -197,11 +205,6 @@ public class PlayerStateMachine : MonoBehaviour
         // Calculate movement speed and apply movement
         Vector3 movement = moveDirection * (_speed * Time.deltaTime);
         _controller.Move(movement + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-        /*Vector3 target = FightTarget.position;
-        transform.LookAt(target);
-        Vector3 moveDirection = new Vector3(_moveInput.x, 0.0f, _moveInput.y).normalized;
-        _controller.Move(moveDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);*/
-
     }
 
     // Check if the player is grounded

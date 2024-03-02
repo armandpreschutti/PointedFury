@@ -39,6 +39,15 @@ public class PlayerStateFactory
         return new PlayerFightState(_context, this);
     }
     
+    public PlayerBaseState FightIdle()
+    {
+        return new PlayerFightIdleState(_context, this);
+    }
+
+    public PlayerBaseState FightStrafe()
+    {
+        return new PlayerFightStrafeState(_context, this);
+    }
 
 
 

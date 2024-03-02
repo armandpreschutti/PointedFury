@@ -7,7 +7,7 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void EnterState()
     {
-        //Debug.Log("Player has entered IDLE state");
+        Debug.Log("Player has entered IDLE state");
 
         Ctx.TargetSpeed = 0f;
     }
@@ -28,7 +28,7 @@ public class PlayerIdleState : PlayerBaseState
     {
         if(Ctx.MoveInput != Vector2.zero)
         {
-            if(Ctx.IsSprintPressed)
+            if(Ctx.IsSprintPressed && !Ctx.IsFighting)
             {
                 SwitchState(Factory.Sprint());
             }

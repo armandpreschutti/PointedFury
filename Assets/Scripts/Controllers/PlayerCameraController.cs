@@ -41,7 +41,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private void OnDisable()
     {
-        
+        _playerStateMachine.OnFight -= SetFightCamera;
     }
 
     // Start is called before the first frame update
@@ -53,7 +53,14 @@ public class PlayerCameraController : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        CameraRotation();
+        if (_playerStateMachine.IsFighting)
+        {
+            CameraRotation();
+        }
+        else
+        {
+            return;
+        }
     }
 
     private void CameraRotation()
@@ -85,7 +92,6 @@ public class PlayerCameraController : MonoBehaviour
     public void SetFightCamera(bool value) 
     {
         _fightCamera.gameObject.SetActive(value);
-        _freeCamera.gameObject.SetActive(!value);
     }
 
 }
