@@ -53,7 +53,7 @@ public class PlayerCameraController : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (_playerStateMachine.IsFighting)
+        if (!_playerStateMachine.IsFighting)
         {
             CameraRotation();
         }
