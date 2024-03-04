@@ -11,7 +11,7 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void EnterState() 
     {
-        //  Debug.Log("Player has entered GROUNDED state");
+        Debug.LogWarning("Player has entered GROUNDED state");
 
         Ctx.OnGrounded?.Invoke(true);
     }
@@ -30,7 +30,7 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void ExitState() 
     {
-        // Debug.Log("Player has exited GROUNDED state");
+         Debug.LogWarning("Player has exited GROUNDED state");
 
         Ctx.OnGrounded?.Invoke(false);
     }

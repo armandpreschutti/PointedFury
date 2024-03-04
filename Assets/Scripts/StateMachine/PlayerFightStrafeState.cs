@@ -9,35 +9,33 @@ public class PlayerFightStrafeState : PlayerBaseState
 
     public override void EnterState()
     {
-        //Debug.Log("Player has entered FIGHT IDLE state");
+        Debug.LogWarning("Player has entered FIGHT STRAFE state");
 
-        Ctx.TargetSpeed = Ctx.FightSpeed;
+
     }
 
     public override void UpdateState()
     {
-        Debug.Log("FIGHT IDLE state is currently active");
+        Debug.Log("FIGHT STRAFE state is currently active");
 
+        Ctx.TargetSpeed = Ctx.FightSpeed;
         CheckSwitchStates();
     }
 
     public override void ExitState()
     {
-        //Debug.Log("Player has exited FIGHT IDLE state");
+        Debug.LogWarning("Player has exited FIGHT STRAFE state");
     }
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.MoveInput != Vector2.zero)
+        if (Ctx.MoveInput == Vector2.zero)
         {
-            if (Ctx.IsSprintPressed && !Ctx.IsFighting)
-            {
-                SwitchState(Factory.Sprint());
-            }
-            else
-            {
-                SwitchState(Factory.Run());
-            }
+            SwitchState(Factory.FightIdle());
+        }
+        if (Ctx.IsLightAttackPressed && !Ctx.IsAttacking)
+        {
+            SwitchState(Factory.LightAttack());
         }
     }
 

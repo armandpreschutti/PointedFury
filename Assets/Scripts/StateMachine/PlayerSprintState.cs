@@ -7,20 +7,22 @@ public class PlayerSprintState : PlayerBaseState
 
     public override void EnterState()
     {
-       // Debug.Log("Player has entered SPRINT state");
+        Debug.LogWarning("Player has entered SPRINT state");
 
-        Ctx.TargetSpeed = Ctx.SprintSpeed;
+
     }
 
     public override void UpdateState()
     {
         Debug.Log("SPRINT state is currently active");
+
+        Ctx.TargetSpeed = Ctx.SprintSpeed;
         CheckSwitchStates();
     }
 
     public override void ExitState()
     {
-       // Debug.Log("Player has exited SPRINT state");
+        Debug.LogWarning("Player has exited SPRINT state");
     }
 
     public override void CheckSwitchStates()

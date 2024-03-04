@@ -7,21 +7,22 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void EnterState()
     {
-        Debug.Log("Player has entered IDLE state");
+        Debug.LogWarning("Player has entered IDLE state");
 
-        Ctx.TargetSpeed = 0f;
+
     }
 
     public override void UpdateState()
     {
         Debug.Log("IDLE state is currently active");
 
+        Ctx.TargetSpeed = 0f;
         CheckSwitchStates();
     }
 
     public override void ExitState()
     {
-        //Debug.Log("Player has exited IDLE state");
+        Debug.LogWarning("Player has exited IDLE state");
     }
 
     public override void CheckSwitchStates()

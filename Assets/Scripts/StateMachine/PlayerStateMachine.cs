@@ -1,4 +1,6 @@
+using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerStateMachine : MonoBehaviour
@@ -35,6 +37,13 @@ public class PlayerStateMachine : MonoBehaviour
     [Tooltip("What layers the character uses as ground")]
     public LayerMask GroundLayers;
 
+
+    [Header("Player Combat")]
+    [Tooltip("What layers the character detects enemies on")]
+    public LayerMask EnemyLayers;
+
+    private GameObject _currentTarget;
+
     // Player state variables
     private bool _isGrounded = true;
     private bool _isFighting = false;
@@ -44,6 +53,7 @@ public class PlayerStateMachine : MonoBehaviour
     private float _rotationVelocity;
     private float _verticalVelocity;
     private float _jumpDurationDelta;
+    private bool _isAttacking = false;
 
     // Player fighting variables
     public Transform FightTarget;
@@ -55,6 +65,12 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _isJumpPressed = false;
     private bool _isSprintPressed = false;
     private bool _isFightPressed = false;
+    private bool _isLightAttackPressed = false;
+
+    //DOTween
+    public Tween attackRotateTween;
+    public Tween attackMoveTween;
+    public Sequence attackSequence;
 
     // Player components
     private Animator _animator;
@@ -71,6 +87,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Action<bool> OnFall;
     public Action<bool> OnGrounded;
     public Action<bool> OnFight;
+    public Action<bool> OnLightAttack;
 
     // Getters and setters
     public float Speed { get { return _speed; } }
@@ -82,9 +99,11 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsJumpPressed { get { return _isJumpPressed; } set { _isJumpPressed = value; } }
     public bool IsSprintPressed { get { return _isSprintPressed; } set { _isSprintPressed = value; } }
     public bool IsFightPressed { get { return _isFightPressed; } set { _isFightPressed= value; } }
+    public bool IsLightAttackPressed { get { return _isLightAttackPressed; } set { _isLightAttackPressed = value; } }
     public Animator Animator { get { return _animator; } set { _animator = value; } }
     public bool IsGrounded { get { return _isGrounded; } }
     public bool IsFighting { get { return _isFighting; } set { _isFighting = value; } }
+    public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
 
     // Awake is called when the script instance is being loaded
     private void Awake()
@@ -151,6 +170,11 @@ public class PlayerStateMachine : MonoBehaviour
         _isFightPressed = value;
     }
 
+    public void SetLightAttackInput(bool value)
+    {
+        _isLightAttackPressed = value;
+    }
+
     public void SetPlayerSpeed()
     {
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -171,20 +195,26 @@ public class PlayerStateMachine : MonoBehaviour
     // Move the player
     public void FreeMovement()
     {
-
-
-        Vector3 inputDirection = new Vector3(_moveInput.x, 0.0f, _moveInput.y).normalized;
-
-        if (_moveInput != Vector2.zero)
+        if (!IsAttacking)
         {
-            // Calculate the target rotation based on input direction and camera orientation
-            _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
-            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f); // Rotate player to face input direction relative to camera position
-        }
+            Vector3 inputDirection = new Vector3(_moveInput.x, 0.0f, _moveInput.y).normalized;
 
-        Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-        _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            if (_moveInput != Vector2.zero)
+            {
+                // Calculate the target rotation based on input direction and camera orientation
+                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
+                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f); // Rotate player to face input direction relative to camera position
+            }
+
+            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+        }
+        else
+        {
+            return;
+        }
+        
     }
 
     public void FightMovement()
@@ -230,6 +260,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         // Initialize the player state machine with default state
         _states = new PlayerStateFactory(this);
+        //_currentState = _states.Fight();
         _currentState = _states.Grounded();
         _currentState.EnterState();
     }
@@ -243,5 +274,72 @@ public class PlayerStateMachine : MonoBehaviour
         _playerControls.Player.Move.performed += ctx => SetMoveInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Fight.performed += ctx => SetFightInput(ctx.ReadValueAsButton());
+        _playerControls.Player.LightAttack.performed += ctx => SetLightAttackInput(ctx.ReadValueAsButton());
     }
+
+    public void EnemyDetection()
+    {
+        var camera = Camera.main;
+        var forward = camera.transform.forward;
+        var right = camera.transform.right;
+
+        forward.y = 0f;
+        right.y = 0f;
+
+        forward.Normalize();
+        right.Normalize();
+
+        Vector3 inputDirection = forward * _moveInput.y + right * _moveInput.x;
+        inputDirection = inputDirection.normalized;
+
+        RaycastHit info;
+
+        if (Physics.SphereCast(transform.position, 1f, inputDirection, out info, 10, EnemyLayers))
+        {
+            _currentTarget = info.transform.gameObject;
+        }
+    }
+
+    public void MoveTowardTarget(float duration)
+    {
+         if(_currentTarget != null)
+         {
+            attackMoveTween = transform.DOMove(TargetOffset(_currentTarget.transform), 1f);
+            attackRotateTween = transform.DOLookAt(_currentTarget.transform.position, .2f);
+         }    
+    }
+
+    private void OnDrawGizmos()
+    {
+        var camera = Camera.main;
+        var forward = camera.transform.forward;
+        var right = camera.transform.right;
+
+        forward.y = 0f;
+        right.y = 0f;
+
+        forward.Normalize();
+        right.Normalize();
+
+        Vector3 inputDirection = forward * _moveInput.y + right * _moveInput.x;
+        inputDirection = inputDirection.normalized;
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawRay(transform.position, inputDirection);
+        Gizmos.DrawSphere(transform.position + inputDirection, .2f);
+        
+        if (_currentTarget != null)
+        {
+            Gizmos.DrawSphere(_currentTarget.transform.position, .5f);
+        }
+            
+    }
+
+    public Vector3 TargetOffset(Transform target)
+    {
+        Vector3 position;
+        position = target.position;
+        return Vector3.MoveTowards(position, transform.position, .95f);
+    }
+
 }

@@ -12,7 +12,7 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void EnterState()
     {
-        //Debug.Log("Player has entered JUMP state");
+        Debug.LogWarning("Player has entered JUMP state");
 
         Ctx.OnJump?.Invoke(true);
         Ctx.JumpDurationDelta = Ctx.JumpDuration;
@@ -29,7 +29,7 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void ExitState()
     {
-        //Debug.Log("Player has exited JUMP state");
+        Debug.LogWarning("Player has exited JUMP state");
 
         Ctx.OnJump?.Invoke(false);
     }

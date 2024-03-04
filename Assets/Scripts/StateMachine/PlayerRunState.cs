@@ -7,21 +7,21 @@ public class PlayerRunState : PlayerBaseState
 
     public override void EnterState()
     {
-        //Debug.Log("Player has entered RUN state");
+       Debug.LogWarning("Player has entered RUN state");
 
-        Ctx.TargetSpeed = Ctx.MoveSpeed;
+       
     }
 
     public override void UpdateState()
     {
         Debug.Log("RUN state is currently active");
-
+        Ctx.TargetSpeed = Ctx.MoveSpeed;
         CheckSwitchStates();
     }
 
     public override void ExitState()
     {
-        //Debug.Log("Player has exited RUN state");
+        Debug.LogWarning("Player has exited RUN state");
     }
 
     public override void CheckSwitchStates()

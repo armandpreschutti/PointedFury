@@ -49,6 +49,10 @@ public class PlayerStateFactory
         return new PlayerFightStrafeState(_context, this);
     }
 
+    public PlayerBaseState LightAttack()
+    {
+        return new PlayerLightAttackSate(_context, this);
+    }
 
 
 

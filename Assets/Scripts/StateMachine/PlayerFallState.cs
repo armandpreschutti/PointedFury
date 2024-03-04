@@ -11,7 +11,7 @@ public class PlayerFallState : PlayerBaseState
 
     public override void EnterState()
     {
-        // Debug.Log("Player has entered FALL state");
+        Debug.LogWarning("Player has entered FALL state");
 
         Ctx.OnFall?.Invoke(true);
         
@@ -26,7 +26,7 @@ public class PlayerFallState : PlayerBaseState
     }
     public override void ExitState()
     {
-        // Debug.Log("Player has exited FALL state");
+        Debug.LogWarning("Player has exited FALL state");
 
         Ctx.OnFall?.Invoke(false);
     }
