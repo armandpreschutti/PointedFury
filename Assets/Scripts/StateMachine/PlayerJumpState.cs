@@ -12,8 +12,9 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered JUMP state");
+        //Debug.LogWarning("Player has entered JUMP state");
 
+        Ctx.DebugCurrentSuperState = "Jump State";
         Ctx.OnJump?.Invoke(true);
         Ctx.JumpDurationDelta = Ctx.JumpDuration;
         Ctx.StartCoroutine(JumpTimeout());
@@ -22,14 +23,15 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void UpdateState() 
     {
-        Debug.Log("JUMP state is currently active");
-        Ctx.FreeMovement();
+        //Debug.Log("JUMP state is currently active");
+
+        Ctx.FreeRoamMovement();
         HandleJump();
     }
 
     public override void ExitState()
     {
-        Debug.LogWarning("Player has exited JUMP state");
+        //Debug.LogWarning("Player has exited JUMP state");
 
         Ctx.OnJump?.Invoke(false);
     }

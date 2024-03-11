@@ -18,7 +18,7 @@ public class PlayerFightStrafeState : PlayerBaseState
     {
         Debug.Log("FIGHT STRAFE state is currently active");
 
-        Ctx.TargetSpeed = Ctx.FightSpeed;
+        //Ctx.TargetSpeed = Ctx.FightSpeed;
         CheckSwitchStates();
     }
 
@@ -29,14 +29,14 @@ public class PlayerFightStrafeState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.MoveInput == Vector2.zero)
+       /* if (Ctx.MoveInput == Vector2.zero)
         {
             SwitchState(Factory.FightIdle());
         }
         if (Ctx.IsLightAttackPressed && !Ctx.IsAttacking)
         {
             SwitchState(Factory.LightAttack());
-        }
+        }*/
     }
 
     public override void InitializeSubStates()

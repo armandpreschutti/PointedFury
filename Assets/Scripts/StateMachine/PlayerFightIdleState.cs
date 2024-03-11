@@ -17,7 +17,7 @@ public class PlayerFightIdleState : PlayerBaseState
     {
         Debug.Log("FIGHT IDLE state is currently active");
 
-        Ctx.TargetSpeed = 0f;
+        //Ctx.TargetSpeed = 0f;
         CheckSwitchStates();
     }
 
@@ -28,14 +28,14 @@ public class PlayerFightIdleState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.MoveInput != Vector2.zero)
+       /* if (Ctx.MoveInput != Vector2.zero)
         {
             SwitchState(Factory.FightStrafe());
         }
         if (Ctx.IsLightAttackPressed && !Ctx.IsAttacking)
         {
             SwitchState(Factory.LightAttack());
-        }
+        }*/
     }
 
     public override void InitializeSubStates()

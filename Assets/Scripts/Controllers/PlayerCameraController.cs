@@ -36,12 +36,12 @@ public class PlayerCameraController : MonoBehaviour
 
     private void OnEnable()
     {
-       // _playerStateMachine.OnFight += SetFightCamera;
+        _playerStateMachine.OnFight += SetFightCamera;
     }
 
     private void OnDisable()
     {
-        //_playerStateMachine.OnFight -= SetFightCamera;
+        _playerStateMachine.OnFight -= SetFightCamera;
     }
 
     // Start is called before the first frame update

@@ -11,22 +11,22 @@ public class PlayerFallState : PlayerBaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered FALL state");
+        //Debug.LogWarning("Player has entered FALL state");
 
         Ctx.OnFall?.Invoke(true);
-        
+        Ctx.DebugCurrentSuperState = "Fall State";
     }
     public override void UpdateState()
     {
-        Debug.Log("FALL state is currently active");
+        //Debug.Log("FALL state is currently active");
 
         Ctx.VerticalVelocity += Ctx.Gravity * Time.deltaTime;
-        Ctx.FreeMovement();
+        Ctx.FreeRoamMovement();
         CheckSwitchStates();
     }
     public override void ExitState()
     {
-        Debug.LogWarning("Player has exited FALL state");
+        //Debug.LogWarning("Player has exited FALL state");
 
         Ctx.OnFall?.Invoke(false);
     }

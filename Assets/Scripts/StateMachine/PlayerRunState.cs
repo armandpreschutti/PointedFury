@@ -9,19 +9,30 @@ public class PlayerRunState : PlayerBaseState
     {
        Debug.LogWarning("Player has entered RUN state");
 
-       
+        Ctx.DebugCurrentSubState = "Run State";
+        Ctx.OnRun?.Invoke(true);
     }
 
     public override void UpdateState()
     {
-        Debug.Log("RUN state is currently active");
-        Ctx.TargetSpeed = Ctx.MoveSpeed;
+        //Debug.Log("RUN state is currently active");
+
+        if (!Ctx.IsFighting)
+        {
+            Ctx.TargetSpeed = Ctx.MoveSpeed;
+        }
+        else
+        {
+            Ctx.TargetSpeed = Ctx.FightSpeed;
+        }
         CheckSwitchStates();
     }
 
     public override void ExitState()
     {
-        Debug.LogWarning("Player has exited RUN state");
+        //Debug.LogWarning("Player has exited RUN state");
+
+        Ctx.OnRun?.Invoke(false);
     }
 
     public override void CheckSwitchStates()
@@ -34,7 +45,10 @@ public class PlayerRunState : PlayerBaseState
         {
             SwitchState(Factory.Sprint());
         }
-       
+        if (Ctx.IsLightAttackPressed && !Ctx.IsAttacking)
+        {
+            SwitchState(Factory.LightAttack());
+        }
     }
 
     public override void InitializeSubStates()

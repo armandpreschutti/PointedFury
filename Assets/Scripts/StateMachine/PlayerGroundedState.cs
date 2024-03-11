@@ -11,17 +11,19 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void EnterState() 
     {
-        Debug.LogWarning("Player has entered GROUNDED state");
+        //Debug.LogWarning("Player has entered GROUNDED state");
 
         Ctx.OnGrounded?.Invoke(true);
+        Ctx.DebugCurrentSuperState = "Grounded State";
     }
 
     public override void UpdateState() 
     {
-        Debug.Log("GROUNDED state is currently active");
+       // Debug.Log("GROUNDED state is currently active");
 
         CheckSwitchStates();
-        Ctx.FreeMovement();
+        Ctx.EnemyDetection();
+        Ctx.ThirdPersonMovement();
         if (Ctx.VerticalVelocity < 0.0f)
         {
             Ctx.VerticalVelocity = -2f;
@@ -30,25 +32,22 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void ExitState() 
     {
-         Debug.LogWarning("Player has exited GROUNDED state");
+         //Debug.LogWarning("Player has exited GROUNDED state");
 
         Ctx.OnGrounded?.Invoke(false);
     }
 
     public override void CheckSwitchStates() 
     {
-        if(Ctx.IsJumpPressed)
-        {
-            SwitchState(Factory.Jump());
-        }
         if (!Ctx.IsGrounded)
         {
             SwitchState(Factory.Fall());
         }
-        if(Ctx.IsFightPressed)
+        if(Ctx.IsAttacking)
         {
             SwitchState(Factory.Fight());
         }
+        
     }
 
     public override void InitializeSubStates() 
@@ -67,7 +66,6 @@ public class PlayerGroundedState : PlayerBaseState
         else
         {
             SetSubState(Factory.Idle());
-        }
-        
+        }   
     }
 }

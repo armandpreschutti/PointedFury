@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 public class PlayerStateMachine : MonoBehaviour
@@ -41,8 +42,16 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("Player Combat")]
     [Tooltip("What layers the character detects enemies on")]
     public LayerMask EnemyLayers;
+    [Tooltip("The amount of time after an attack to exit attack state")]
+    public float AttackTimeout;
+
+
 
     private GameObject _currentTarget;
+
+    // Debug State Variables
+    public string DebugCurrentSuperState;
+    public string DebugCurrentSubState;
 
     // Player state variables
     private bool _isGrounded = true;
@@ -56,7 +65,9 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _isAttacking = false;
 
     // Player fighting variables
-    public Transform FightTarget;
+    private bool _fightTimeout;
+    public float _fightTimeoutDelta;
+    private int _attackType = 0;
 
     // Player input variables
     private PlayerControls _playerControls;
@@ -82,12 +93,17 @@ public class PlayerStateMachine : MonoBehaviour
     private PlayerStateFactory _states;
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
 
-    // Player events
+    // Player state events
     public Action<bool> OnJump;
     public Action<bool> OnFall;
     public Action<bool> OnGrounded;
     public Action<bool> OnFight;
-    public Action<bool> OnLightAttack;
+    public Action<bool> OnAttack;
+    public Action<bool> OnRun;
+    public Action<bool> OnIdle;
+
+    // Player action events
+    public Action OnAttackContact;
 
     // Getters and setters
     public float Speed { get { return _speed; } }
@@ -104,6 +120,9 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsGrounded { get { return _isGrounded; } }
     public bool IsFighting { get { return _isFighting; } set { _isFighting = value; } }
     public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
+    public float FIghtTimeoutDelta { get { return _fightTimeoutDelta; } set { _fightTimeoutDelta = value; } }
+    public bool FightTimeoutActive { get { return _fightTimeout; } set { _fightTimeout = value; } }
+    public int AttackType { get { return _attackType; } set { _attackType = value; } }
 
     // Awake is called when the script instance is being loaded
     private void Awake()
@@ -168,6 +187,9 @@ public class PlayerStateMachine : MonoBehaviour
     public void SetFightInput(bool value)
     {
         _isFightPressed = value;
+        
+        // DEBUG ONLY, DELETE WHEN NO LONGER NEEDED
+        _currentTarget = null;
     }
 
     public void SetLightAttackInput(bool value)
@@ -193,7 +215,7 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     // Move the player
-    public void FreeMovement()
+    public void FreeRoamMovement()
     {
         if (!IsAttacking)
         {
@@ -206,35 +228,19 @@ public class PlayerStateMachine : MonoBehaviour
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f); // Rotate player to face input direction relative to camera position
             }
-
-            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
         }
         else
         {
             return;
         }
-        
+
     }
 
-    public void FightMovement()
+    public void ThirdPersonMovement()
     {
-        Vector3 targetPosition = FightTarget.position;
-        transform.LookAt(targetPosition); // Face the target
-
-        // Get the forward vector of the camera without vertical component
-        Vector3 cameraForward = Camera.main.transform.forward;
-        cameraForward.y = 0f;
-        cameraForward.Normalize();
-
-        // Calculate movement direction based on player input relative to camera
-        Vector3 moveInput = new Vector3(_moveInput.x, 0.0f, _moveInput.y);
-        Vector3 moveDirection = Quaternion.LookRotation(cameraForward) * moveInput;
-        moveDirection.Normalize();
-
-        // Calculate movement speed and apply movement
-        Vector3 movement = moveDirection * (_speed * Time.deltaTime);
-        _controller.Move(movement + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+        // Calculate the forward direction based on the camera's forward direction
+        Vector3 forwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
+        attackRotateTween = transform.DOLookAt(transform.position + forwardDirection, .2f);
     }
 
     // Check if the player is grounded
@@ -260,7 +266,6 @@ public class PlayerStateMachine : MonoBehaviour
     {
         // Initialize the player state machine with default state
         _states = new PlayerStateFactory(this);
-        //_currentState = _states.Fight();
         _currentState = _states.Grounded();
         _currentState.EnterState();
     }
@@ -279,38 +284,80 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void EnemyDetection()
     {
-        var camera = Camera.main;
-        var forward = camera.transform.forward;
-        var right = camera.transform.right;
 
-        forward.y = 0f;
-        right.y = 0f;
-
-        forward.Normalize();
-        right.Normalize();
-
-        Vector3 inputDirection = forward * _moveInput.y + right * _moveInput.x;
-        inputDirection = inputDirection.normalized;
-
-        RaycastHit info;
-
-        if (Physics.SphereCast(transform.position, 1f, inputDirection, out info, 10, EnemyLayers))
+        if(_moveInput != Vector2.zero)
         {
-            _currentTarget = info.transform.gameObject;
+            RaycastHit info;
+            if(Physics.SphereCast(transform.position, 1f, InputDirection(), out info, 10f,  EnemyLayers))
+            {
+                _currentTarget = info.transform.gameObject;
+            }
+        }
+        else
+        {
+            // Perform a spherecast to detect all colliders on the specified layer within the detection radius
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, 5f, transform.forward, Mathf.Infinity, EnemyLayers);
+
+            float closestDistance = Mathf.Infinity;
+            Transform closestTarget = null;
+
+            // Iterate through all hits to find the closest collider
+            foreach (RaycastHit hit in hits)
+            {
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestTarget = hit.transform;
+                }
+            }
+            // Set the closest target as the target for your player
+            if (closestTarget != null)
+            {
+                _currentTarget = closestTarget.gameObject;
+                // You can add any additional logic here, such as locking onto the target or performing an action
+            }
+
         }
     }
 
-    public void MoveTowardTarget(float duration)
+    
+    public void RotateTowardTarget(float duration)
     {
-         if(_currentTarget != null)
-         {
-            attackMoveTween = transform.DOMove(TargetOffset(_currentTarget.transform), 1f);
+        if (_currentTarget != null)
+        {
             attackRotateTween = transform.DOLookAt(_currentTarget.transform.position, .2f);
-         }    
+        }
+        else
+        {
+            if (_moveInput != Vector2.zero)
+            {
+
+                attackRotateTween = transform.DOLookAt(transform.position + InputDirection(), .2f);
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.black;
+        Gizmos.DrawSphere(transform.position + InputDirection(), .2f);
+
+        Gizmos.DrawRay(transform.position + Vector3.up, InputDirection() * 1f);
+
+        if (_currentTarget != null)
+        {
+            Gizmos.DrawSphere(_currentTarget.transform.position, 1f);
+        }            
+
+    }
+
+    public Vector3 InputDirection()
+    {
         var camera = Camera.main;
         var forward = camera.transform.forward;
         var right = camera.transform.right;
@@ -323,23 +370,46 @@ public class PlayerStateMachine : MonoBehaviour
 
         Vector3 inputDirection = forward * _moveInput.y + right * _moveInput.x;
         inputDirection = inputDirection.normalized;
-
-        Gizmos.color = Color.black;
-        Gizmos.DrawRay(transform.position, inputDirection);
-        Gizmos.DrawSphere(transform.position + inputDirection, .2f);
-        
-        if (_currentTarget != null)
-        {
-            Gizmos.DrawSphere(_currentTarget.transform.position, .5f);
-        }
-            
+        return inputDirection;
     }
+
 
     public Vector3 TargetOffset(Transform target)
     {
         Vector3 position;
         position = target.position;
-        return Vector3.MoveTowards(position, transform.position, .95f);
+        return Vector3.MoveTowards(position, transform.position, 1f);
     }
 
+    public void OnAttackAnimationContact()
+    {
+        OnAttackContact.Invoke();
+       
+    }
+    public void OnAttackAnimationComplete()
+    {
+        IsAttacking = false;
+    }
+    public void OnAttackAnimationRecover()
+    {
+        IsFighting = false;
+    }
+
+    public void SetAttackType()
+    {
+        switch (_attackType)
+        {
+            case 0:
+                _attackType = 1;
+                break;
+            case 1:
+                _attackType = 2;
+                break;
+            case 2:
+                _attackType = 0;
+                break;
+            default:
+                break;
+        }
+    }
 }

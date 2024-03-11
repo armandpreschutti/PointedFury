@@ -15,8 +15,9 @@ public class PlayerFightState : PlayerBaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered FIGHT state");
+        //Debug.LogWarning("Player has entered FIGHT state");
 
+        Ctx.DebugCurrentSuperState = "Fight State";
         Ctx.OnFight?.Invoke(true);
         Ctx.IsFighting = true;
 
@@ -24,24 +25,25 @@ public class PlayerFightState : PlayerBaseState
 
     public override void UpdateState()
     {
-        Debug.Log("FIGHT state is currently active");
+        //Debug.Log("FIGHT state is currently active");
 
-        Ctx.FreeMovement();
+        Ctx.FreeRoamMovement();
         Ctx.EnemyDetection();
+        SetFightTimeout();
         CheckSwitchStates();
     }
 
     public override void ExitState()
     {
-        Debug.LogError("Player has exited FIGHT state");
-        Ctx.attackSequence.Pause();
+       // Debug.LogError("Player has exited FIGHT state");
+
         Ctx.OnFight?.Invoke(false);
         Ctx.IsFighting = false;
     }
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsFightPressed && !Ctx.IsAttacking)
+        if ( !Ctx.IsFighting)
         {
             SwitchState(Factory.Grounded());
         }
@@ -54,16 +56,23 @@ public class PlayerFightState : PlayerBaseState
 
     public override void InitializeSubStates()
     {
-        
-        if (Ctx.MoveInput != Vector2.zero)
+        if (Ctx.IsAttacking)
         {
-            SetSubState(Factory.FightStrafe());
+            SetSubState(Factory.LightAttack());
+        }
+    }
+    public void SetFightTimeout()
+    {
+        if(Ctx.FightTimeoutActive && Ctx.FIghtTimeoutDelta > 0f)
+        {
+            Ctx.FIghtTimeoutDelta -= Time.deltaTime;
+            
         }
         else
         {
-            SetSubState(Factory.FightIdle());
+            Ctx.FIghtTimeoutDelta = 0f;
+            Ctx.IsFighting = false;
         }
     }
-
    
 }

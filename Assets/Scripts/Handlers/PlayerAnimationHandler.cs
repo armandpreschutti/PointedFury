@@ -1,12 +1,16 @@
 
 using Cinemachine.Utility;
+using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using DG.Tweening;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerAnimationHandler : MonoBehaviour
 {
     [SerializeField] PlayerStateMachine _playerStateMachine;
     [SerializeField] Animator _anim;
-    
+
 
     [SerializeField] private float _animationBlend;
     [SerializeField] private int _animIDSpeed;
@@ -17,6 +21,11 @@ public class PlayerAnimationHandler : MonoBehaviour
     [SerializeField] private int _animIDInputX;
     [SerializeField] private int _animIDInputY;
     [SerializeField] private int _animIDLightAttack;
+    [SerializeField] private int _animationIDAttackType;
+    [SerializeField] private int _attackType;
+    [SerializeField] private bool _isFighting;
+    [SerializeField] private float _layerTransitionDelta;
+    [SerializeField] private float _debugTime;
 
     private void Awake()
     {
@@ -29,9 +38,8 @@ public class PlayerAnimationHandler : MonoBehaviour
         _playerStateMachine.OnGrounded += SetGroundedAnimation;
         _playerStateMachine.OnJump += SetJumpAnimation;
         _playerStateMachine.OnFall += SetFallAnimation;
-        _playerStateMachine.OnFight += SetFightLayer;
-        _playerStateMachine.OnLightAttack += SetLightAttackAnimation;
-        //_playerStateMachine.OnFight += SetAvatarMaskWeight;
+        _playerStateMachine.OnFight += SetFightAnimation;
+        _playerStateMachine.OnAttack += SetAttackAnimation;
     }
 
     private void OnDisable()
@@ -39,14 +47,15 @@ public class PlayerAnimationHandler : MonoBehaviour
         _playerStateMachine.OnGrounded -= SetGroundedAnimation;
         _playerStateMachine.OnJump -= SetJumpAnimation;
         _playerStateMachine.OnFall -= SetFallAnimation;
-        _playerStateMachine.OnFight -= SetFightLayer;
-        //_playerStateMachine.OnFight -= SetAvatarMaskWeight;
+        _playerStateMachine.OnFight -= SetFightAnimation;
+        _playerStateMachine.OnAttack -= SetAttackAnimation;
     }
 
     private void Update()
     {
-        SetAnimationSpeed();
-        //SetFightStrafe(_playerStateMachine.MoveInput.normalized);
+        SetMovementAnimationValues();
+        SetMovementAnimationSpeed();
+        SetStateAnimationLayer();
     }
 
     public void SetComponents()
@@ -64,7 +73,8 @@ public class PlayerAnimationHandler : MonoBehaviour
         _animIDFight = Animator.StringToHash("Fight");
         _animIDInputX = Animator.StringToHash("InputX");
         _animIDInputY = Animator.StringToHash("InputY");
-        _animIDLightAttack = Animator.StringToHash("LightAttack");
+        _animIDLightAttack = Animator.StringToHash("Attack");
+        _animationIDAttackType = Animator.StringToHash("AttackType");
     }
 
     private void SetGroundedAnimation(bool value)
@@ -74,50 +84,36 @@ public class PlayerAnimationHandler : MonoBehaviour
 
     private void SetJumpAnimation(bool value)
     {
+        _anim.rootPosition = transform.position;
         _anim.SetBool(_animIDJump, value);
     }
 
     private void SetFallAnimation(bool value)
-    {
+    { 
         _anim.SetBool(_animIDFall, value);
     }
 
-    private void SetLightAttackAnimation(bool value)
+    private void SetAttackAnimation(bool value)
     {
+        _anim.SetInteger(_animationIDAttackType, _playerStateMachine.AttackType);
         _anim.SetBool(_animIDLightAttack, value);
     }
-    private void SetFightLayer(bool value)
+
+    private void SetFightAnimation(bool value)
     {
-        if (value)
-        {
-            _anim.SetLayerWeight(1, 1f);
-        }
-        else
-        {
-            _anim.SetLayerWeight(1, 0f);
-        }
+        _isFighting = value;
+        _attackType = 0;
+    }
+    private void SetMovementAnimationValues()
+    {
+        _anim.SetFloat(_animIDInputX, _playerStateMachine.MoveInput.x);
+        _anim.SetFloat(_animIDInputY, _playerStateMachine.MoveInput.y);
     }
 
-    private void SetFightStrafe(Vector2 moveInput)
-    {
-        _anim.SetFloat(_animIDInputX, moveInput.x);
-        _anim.SetFloat(_animIDInputY, moveInput.y);
-    }
-
-    private void SetAnimationSpeed()
+    private void SetMovementAnimationSpeed()
     {
         if(_playerStateMachine != null)
         {
-            /* if (!_playerStateMachine.IsFighting)
-             {
-                 _animationBlend = Mathf.Lerp(_animationBlend, _playerStateMachine.TargetSpeed, Time.deltaTime * _playerStateMachine.SpeedChangeRate);
-                 if (_animationBlend < 0.01f) _animationBlend = 0f;
-                 _anim.SetFloat(_animIDSpeed, _animationBlend);
-             }
-             else
-             {
-                 _anim.SetFloat(_animIDSpeed, 0f);
-             }*/
             _animationBlend = Mathf.Lerp(_animationBlend, _playerStateMachine.TargetSpeed, Time.deltaTime * _playerStateMachine.SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
             _anim.SetFloat(_animIDSpeed, _animationBlend);
@@ -127,19 +123,48 @@ public class PlayerAnimationHandler : MonoBehaviour
             return;
         }        
     }
-
-    private void SetAvatarMaskWeight(bool value)
+    public void SetStateAnimationLayer()
     {
-        if (value)
+        _debugTime = LerpBetweenValues(_isFighting, _debugTime);
+        _anim.SetLayerWeight(1, _debugTime);        
+    }
+    public void EnableRootMotion(bool value)
+    {
+        _anim.applyRootMotion = true;
+    }
+    public void DisableRootMotion(bool value)
+    {
+        _anim.applyRootMotion = false;
+    }
+
+    float LerpBetweenValues(bool condition, float value)
+    {
+        float debug = value;
+        
+        if (condition)
         {
-            _anim.SetLayerWeight(1, 1f);
-            _anim.SetLayerWeight(2, 1f);
+            if(value < 1f)
+            {
+                debug += Time.deltaTime * 2f;
+            }
+            else
+            {
+                debug = 1f;
+            }
+            
         }
         else
         {
-            _anim.SetLayerWeight(1, 0f);
-            _anim.SetLayerWeight(2, 0f);
+            if(value > 0f)
+            {
+                debug -= Time.deltaTime * 2f;
+            }
+            else
+            {
+                debug = 0f;
+            }
+            
         }
-        
+        return debug;
     }
 }

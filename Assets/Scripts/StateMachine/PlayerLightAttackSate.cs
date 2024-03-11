@@ -7,56 +7,58 @@ using UnityEngine;
 public class PlayerLightAttackSate : PlayerBaseState
 {
     public PlayerLightAttackSate(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
-     : base(currentContext, playerStateFactory) { }
+     : base(currentContext, playerStateFactory) {}
 
 
     public override void EnterState()
     {
         Debug.LogWarning("Player has entered LIGHT ATTACK state");
 
-        Ctx.OnLightAttack?.Invoke(true);
-        Ctx.MoveTowardTarget(1f);
-        Ctx.attackMoveTween.onComplete = () => { ExitState(); };
+        Ctx.DebugCurrentSubState = "Light Attack State";
+
+        Ctx.OnAttack?.Invoke(true);
+        Ctx.RotateTowardTarget(1f);
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
     }
 
     public override void UpdateState()
     {
+        //Debug.Log("LIGHT ATTACK state is currently active");
+
         Ctx.TargetSpeed = 0f;
-        Debug.Log("LIGHT ATTACK state is currently active");
-        //Ctx.attackSequence.onComplete = () => { ExitState(); };
         CheckSwitchStates();
     }
 
     public override void ExitState()
     {
-        Debug.LogError("Player has exited LIGHT ATTACK state");
-        Ctx.OnLightAttack?.Invoke(false);
+        //Debug.Log("Player has exited LIGHT ATTACK state");
+
+        Ctx.SetAttackType();
+        Ctx.OnAttack?.Invoke(false);
+        Ctx.FightTimeoutActive= true;
+        Ctx.FIghtTimeoutDelta = Ctx.AttackTimeout;
         Ctx.IsAttacking = false;
-        
     }
 
     public override void CheckSwitchStates()
     {
-        if(!Ctx.IsAttacking )
+        if(!Ctx.IsAttacking)
         {
             if (Ctx.MoveInput != Vector2.zero)
             {
-                SwitchState(Factory.FightStrafe());
+                SwitchState(Factory.Run());
+                
             }
             else
             {
-                SwitchState(Factory.FightIdle());
+                SwitchState(Factory.Idle());
             }
         }
-        
-       
     }
 
     public override void InitializeSubStates()
     {
 
-    }
-    
+    }    
 }
