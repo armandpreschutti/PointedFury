@@ -17,7 +17,7 @@ public class PlayerLightAttackSate : PlayerBaseState
         Ctx.DebugCurrentSubState = "Light Attack State";
 
         Ctx.OnAttack?.Invoke(true);
-        Ctx.RotateTowardTarget(1f);
+
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
     }
@@ -25,7 +25,7 @@ public class PlayerLightAttackSate : PlayerBaseState
     public override void UpdateState()
     {
         //Debug.Log("LIGHT ATTACK state is currently active");
-
+        Ctx.RotateTowardTarget(.01f);
         Ctx.TargetSpeed = 0f;
         CheckSwitchStates();
     }

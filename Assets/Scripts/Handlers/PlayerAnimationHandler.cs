@@ -106,8 +106,17 @@ public class PlayerAnimationHandler : MonoBehaviour
     }
     private void SetMovementAnimationValues()
     {
-        _anim.SetFloat(_animIDInputX, _playerStateMachine.MoveInput.x);
-        _anim.SetFloat(_animIDInputY, _playerStateMachine.MoveInput.y);
+        if(_playerStateMachine.IsFighting)
+        {
+          //  _anim.SetFloat(_animIDInputX, _playerStateMachine.EnemyRelativeInput().x);
+            //_anim.SetFloat(_animIDInputY, _playerStateMachine.EnemyRelativeInput().y);
+        }
+        else
+        {
+            _anim.SetFloat(_animIDInputX, _playerStateMachine.MoveInput.x);
+            _anim.SetFloat(_animIDInputY, _playerStateMachine.MoveInput.y);
+        }
+        
     }
 
     private void SetMovementAnimationSpeed()

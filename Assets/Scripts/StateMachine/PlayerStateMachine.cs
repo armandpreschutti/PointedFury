@@ -124,6 +124,8 @@ public class PlayerStateMachine : MonoBehaviour
     public bool FightTimeoutActive { get { return _fightTimeout; } set { _fightTimeout = value; } }
     public int AttackType { get { return _attackType; } set { _attackType = value; } }
 
+    public Vector3 debugFloat;
+
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
@@ -219,14 +221,13 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (!IsAttacking)
         {
-            Vector3 inputDirection = new Vector3(_moveInput.x, 0.0f, _moveInput.y).normalized;
-
             if (_moveInput != Vector2.zero)
             {
-                // Calculate the target rotation based on input direction and camera orientation
-                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
-                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f); // Rotate player to face input direction relative to camera position
+                transform.DOLookAt(transform.position + InputDirection(), .2f);
+            }
+            else
+            {
+                transform.DOLookAt(_currentTarget.transform.position, .2f);
             }
         }
         else
@@ -284,41 +285,42 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void EnemyDetection()
     {
-
-        if(_moveInput != Vector2.zero)
+        if (!IsAttacking)
         {
-            RaycastHit info;
-            if(Physics.SphereCast(transform.position, 1f, InputDirection(), out info, 10f,  EnemyLayers))
+            if (_moveInput != Vector2.zero)
             {
-                _currentTarget = info.transform.gameObject;
-            }
-        }
-        else
-        {
-            // Perform a spherecast to detect all colliders on the specified layer within the detection radius
-            RaycastHit[] hits = Physics.SphereCastAll(transform.position, 5f, transform.forward, Mathf.Infinity, EnemyLayers);
-
-            float closestDistance = Mathf.Infinity;
-            Transform closestTarget = null;
-
-            // Iterate through all hits to find the closest collider
-            foreach (RaycastHit hit in hits)
-            {
-                float distance = Vector3.Distance(transform.position, hit.transform.position);
-                if (distance < closestDistance)
+                RaycastHit info;
+                if (Physics.SphereCast(transform.position, 1f, InputDirection(), out info, 5f, EnemyLayers))
                 {
-                    closestDistance = distance;
-                    closestTarget = hit.transform;
+                    _currentTarget = info.transform.gameObject;
                 }
             }
-            // Set the closest target as the target for your player
-            if (closestTarget != null)
+            else
             {
-                _currentTarget = closestTarget.gameObject;
-                // You can add any additional logic here, such as locking onto the target or performing an action
-            }
+                // Perform a spherecast to detect all colliders on the specified layer within the detection radius
+                RaycastHit[] hits = Physics.SphereCastAll(transform.position, 5f, transform.forward, Mathf.Infinity, EnemyLayers);
 
-        }
+                float closestDistance = Mathf.Infinity;
+                Transform closestTarget = null;
+
+                // Iterate through all hits to find the closest collider
+                foreach (RaycastHit hit in hits)
+                {
+                    float distance = Vector3.Distance(transform.position, hit.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestTarget = hit.transform;
+                    }
+                }
+                // Set the closest target as the target for your player
+                if (closestTarget != null)
+                {
+                    _currentTarget = closestTarget.gameObject;
+                    // You can add any additional logic here, such as locking onto the target or performing an action
+                }
+            }
+        }        
     }
 
     
@@ -326,14 +328,14 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (_currentTarget != null)
         {
-            attackRotateTween = transform.DOLookAt(_currentTarget.transform.position, .2f);
+            attackRotateTween = transform.DOLookAt(_currentTarget.transform.position, duration);
         }
         else
         {
             if (_moveInput != Vector2.zero)
             {
 
-                attackRotateTween = transform.DOLookAt(transform.position + InputDirection(), .2f);
+                attackRotateTween = transform.DOLookAt(transform.position + InputDirection(), duration);
             }
             else
             {
@@ -352,8 +354,8 @@ public class PlayerStateMachine : MonoBehaviour
         if (_currentTarget != null)
         {
             Gizmos.DrawSphere(_currentTarget.transform.position, 1f);
-        }            
-
+        }
+        Gizmos.DrawWireSphere(transform.position, 5f);
     }
 
     public Vector3 InputDirection()
@@ -372,7 +374,6 @@ public class PlayerStateMachine : MonoBehaviour
         inputDirection = inputDirection.normalized;
         return inputDirection;
     }
-
 
     public Vector3 TargetOffset(Transform target)
     {
