@@ -3,7 +3,7 @@ using Cinemachine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    private PlayerStateMachine _playerStateMachine;
+    private StateMachine _stateMachine;
     [SerializeField] CinemachineVirtualCamera _freeCamera;
     [SerializeField] CinemachineVirtualCamera _fightCamera;
 
@@ -30,18 +30,18 @@ public class PlayerCameraController : MonoBehaviour
 
     private void Awake()
     {
-        _playerStateMachine = GetComponent<PlayerStateMachine>();
+        _stateMachine = GetComponent<StateMachine>();
         _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
     }
 
     private void OnEnable()
     {
-        _playerStateMachine.OnFight += SetFightCamera;
+        _stateMachine.OnFight += SetFightCamera;
     }
 
     private void OnDisable()
     {
-        _playerStateMachine.OnFight -= SetFightCamera;
+        _stateMachine.OnFight -= SetFightCamera;
     }
 
     // Start is called before the first frame update
@@ -67,12 +67,12 @@ public class PlayerCameraController : MonoBehaviour
     private void CameraRotation()
     {
         // if there is an input and camera position is not fixed
-        if (_playerStateMachine.LookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
+        if (_stateMachine.LookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
         {
             float deltaTimeMultiplier = Time.deltaTime;
 
-            _cinemachineTargetYaw += _playerStateMachine.LookInput.x * Time.deltaTime;
-            _cinemachineTargetPitch += _playerStateMachine.LookInput.y * Time.deltaTime;
+            _cinemachineTargetYaw += _stateMachine.LookInput.x * Time.deltaTime;
+            _cinemachineTargetPitch += _stateMachine.LookInput.y * Time.deltaTime;
         }
 
         // clamp our rotations so our values are limited 360 degrees

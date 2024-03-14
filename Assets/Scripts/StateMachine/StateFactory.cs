@@ -1,35 +1,50 @@
-public class PlayerStateFactory
+public class StateFactory
 {
-    PlayerStateMachine _context;
+    StateMachine _context;
 
-    public PlayerStateFactory(PlayerStateMachine currentContext)
+    public StateFactory(StateMachine currentContext)
     {
         _context = currentContext;
     }
 
-    public PlayerBaseState Fall()
+    public BaseState FreeRoam()
     {
-        return new PlayerFallState(_context, this);
+        return new FreeRoamState(_context, this);
     }
 
-    public PlayerBaseState Idle() 
+    public BaseState Idle()
     {
-        return new PlayerIdleState(_context, this);
+        return new IdleState(_context, this);
     }
-    public PlayerBaseState Run() 
+
+    public BaseState Move()
+    {
+        return new MoveState(_context, this);
+    }
+
+    public BaseState Fight()
+    {
+        return new FightState(_context, this);
+    }
+
+    public BaseState LightAttack()
+    {
+        return new LightAttackSate(_context, this);
+    }
+    /*public PlayerBaseState Run()
     {
         return new PlayerRunState(_context, this);
     }
-    public PlayerBaseState Sprint() 
+    public PlayerBaseState Sprint()
     {
         return new PlayerSprintState(_context, this);
     }
-    public PlayerBaseState Jump() 
+    public PlayerBaseState Jump()
     {
         return new PlayerJumpState(_context, this);
     }
 
-    public PlayerBaseState Grounded() 
+    public PlayerBaseState Grounded()
     {
         return new PlayerGroundedState(_context, this);
     }
@@ -38,7 +53,7 @@ public class PlayerStateFactory
     {
         return new PlayerFightState(_context, this);
     }
-    
+
     public PlayerBaseState FightIdle()
     {
         return new PlayerFightIdleState(_context, this);
@@ -52,9 +67,5 @@ public class PlayerStateFactory
     public PlayerBaseState LightAttack()
     {
         return new PlayerLightAttackSate(_context, this);
-    }
-
-
-
-
+    }*/
 }

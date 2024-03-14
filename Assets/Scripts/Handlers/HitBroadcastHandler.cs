@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class HitBroadcastHandler : MonoBehaviour
 {
-    [SerializeField] PlayerStateMachine _playerStateMachine;
+    [SerializeField] StateMachine _StateMachine;
     [SerializeField] List<GameObject> _hitTargets = new List<GameObject>();
     [SerializeField] LayerMask _enemyLayer;
 
+    private void Awake()
+    {
+        _StateMachine = GetComponentInParent<StateMachine>();
+    }
+
     private void OnEnable()
     {
-        _playerStateMachine.OnAttackContact += LandAttack;
+        _StateMachine.OnAttackContact += LandAttack;
     }
 
     private void OnDisable()
     {
-        _playerStateMachine.OnAttackContact -= LandAttack;
+        _StateMachine.OnAttackContact -= LandAttack;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,7 +44,7 @@ public class HitBroadcastHandler : MonoBehaviour
         foreach(GameObject hit in _hitTargets)
         {
             /*Debug.Log(hit.name);*/
-            hit.GetComponent<DebugTester>().PlayHurtAnimation(_playerStateMachine.AttackType);
+            hit.GetComponent<DebugTester>().TakeHit(_StateMachine.AttackType);
             //Debug.Log(_playerStateMachine.AttackType);
         }
     }

@@ -8,7 +8,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerAnimationHandler : MonoBehaviour
 {
-    [SerializeField] PlayerStateMachine _playerStateMachine;
+    [SerializeField] StateMachine _stateMachine;
     [SerializeField] Animator _anim;
 
 
@@ -24,7 +24,6 @@ public class PlayerAnimationHandler : MonoBehaviour
     [SerializeField] private int _animationIDAttackType;
     [SerializeField] private int _attackType;
     [SerializeField] private bool _isFighting;
-    [SerializeField] private float _layerTransitionDelta;
     [SerializeField] private float _debugTime;
 
     private void Awake()
@@ -35,20 +34,20 @@ public class PlayerAnimationHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerStateMachine.OnGrounded += SetGroundedAnimation;
-        _playerStateMachine.OnJump += SetJumpAnimation;
-        _playerStateMachine.OnFall += SetFallAnimation;
-        _playerStateMachine.OnFight += SetFightAnimation;
-        _playerStateMachine.OnAttack += SetAttackAnimation;
+        _stateMachine.OnGrounded += SetGroundedAnimation;
+        _stateMachine.OnJump += SetJumpAnimation;
+        _stateMachine.OnFall += SetFallAnimation;
+        _stateMachine.OnFight += SetFightAnimation;
+        _stateMachine.OnAttack += SetAttackAnimation;
     }
 
     private void OnDisable()
     {
-        _playerStateMachine.OnGrounded -= SetGroundedAnimation;
-        _playerStateMachine.OnJump -= SetJumpAnimation;
-        _playerStateMachine.OnFall -= SetFallAnimation;
-        _playerStateMachine.OnFight -= SetFightAnimation;
-        _playerStateMachine.OnAttack -= SetAttackAnimation;
+        _stateMachine.OnGrounded -= SetGroundedAnimation;
+        _stateMachine.OnJump -= SetJumpAnimation;
+        _stateMachine.OnFall -= SetFallAnimation;
+        _stateMachine.OnFight -= SetFightAnimation;
+        _stateMachine.OnAttack -= SetAttackAnimation;
     }
 
     private void Update()
@@ -60,7 +59,7 @@ public class PlayerAnimationHandler : MonoBehaviour
 
     public void SetComponents()
     {
-        _playerStateMachine = GetComponent<PlayerStateMachine>();
+        _stateMachine = GetComponent<StateMachine>();
         _anim = GetComponent<Animator>();
     }
 
@@ -95,7 +94,7 @@ public class PlayerAnimationHandler : MonoBehaviour
 
     private void SetAttackAnimation(bool value)
     {
-        _anim.SetInteger(_animationIDAttackType, _playerStateMachine.AttackType);
+        _anim.SetInteger(_animationIDAttackType, _stateMachine.AttackType);
         _anim.SetBool(_animIDLightAttack, value);
     }
 
@@ -106,24 +105,24 @@ public class PlayerAnimationHandler : MonoBehaviour
     }
     private void SetMovementAnimationValues()
     {
-        if(_playerStateMachine.IsFighting)
+        if(_stateMachine.IsFighting)
         {
           //  _anim.SetFloat(_animIDInputX, _playerStateMachine.EnemyRelativeInput().x);
             //_anim.SetFloat(_animIDInputY, _playerStateMachine.EnemyRelativeInput().y);
         }
         else
         {
-            _anim.SetFloat(_animIDInputX, _playerStateMachine.MoveInput.x);
-            _anim.SetFloat(_animIDInputY, _playerStateMachine.MoveInput.y);
+            _anim.SetFloat(_animIDInputX, _stateMachine.MoveInput.x);
+            _anim.SetFloat(_animIDInputY, _stateMachine.MoveInput.y);
         }
         
     }
 
     private void SetMovementAnimationSpeed()
     {
-        if(_playerStateMachine != null)
+        if(_stateMachine != null)
         {
-            _animationBlend = Mathf.Lerp(_animationBlend, _playerStateMachine.TargetSpeed, Time.deltaTime * _playerStateMachine.SpeedChangeRate);
+            _animationBlend = Mathf.Lerp(_animationBlend, _stateMachine.TargetSpeed, Time.deltaTime * _stateMachine.SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
             _anim.SetFloat(_animIDSpeed, _animationBlend);
         }
@@ -137,14 +136,7 @@ public class PlayerAnimationHandler : MonoBehaviour
         _debugTime = LerpBetweenValues(_isFighting, _debugTime);
         _anim.SetLayerWeight(1, _debugTime);        
     }
-    public void EnableRootMotion(bool value)
-    {
-        _anim.applyRootMotion = true;
-    }
-    public void DisableRootMotion(bool value)
-    {
-        _anim.applyRootMotion = false;
-    }
+   
 
     float LerpBetweenValues(bool condition, float value)
     {

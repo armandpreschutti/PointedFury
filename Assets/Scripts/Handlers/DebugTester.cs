@@ -1,30 +1,43 @@
 using DG.Tweening;
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
 public class DebugTester : MonoBehaviour
 {
     [SerializeField] Animator _anim;
     [SerializeField] GameObject _target;
-    [SerializeField] int hitType;
-    [SerializeField] int randomChance;
-    [SerializeField] Vector2 randomInput;
-    [SerializeField] CharacterController characterController;
+    [SerializeField] int _hitType;
+    [SerializeField] int _randomChance;
+    [SerializeField] Vector2 _randomInput;
+    [SerializeField] CharacterController _characterController;
+    [SerializeField] float _targetDistance;
+    [SerializeField] Vector3 _moveDirection;
+    [SerializeField] Vector3 _inputDirection;
+   // [SerializeField] HealthSystem _healthSystem;
 
-    [SerializeField] float targetDistance;
-    [SerializeField] Vector3 moveDirection;
-    [SerializeField] Vector3 inputDirection;
+    public Action<int> OnHit;
 
-
-
+    private void Awake()
+    {
+        _anim = GetComponent<Animator>();
+        //_healthSystem = GetComponent<HealthSystem>();
+        _characterController= GetComponent<CharacterController>();
+    }
+    private void OnEnable()
+    {
+        OnHit += PlayHurtAnimation;
+       // _healthSystem.OnDeath += PlayDeathAnimation;
+    }
+    private void OnDisable()
+    {
+        OnHit += PlayHurtAnimation;
+        //_healthSystem.OnDeath -= PlayDeathAnimation;
+    }
 
     private void Start()
     {
-        _anim = GetComponent<Animator>();
         _target = GameObject.Find("Player").gameObject;
         StartCoroutine(GetRandomDirection());
     }
@@ -41,45 +54,55 @@ public class DebugTester : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        inputDirection = forward * randomInput.y + right * randomInput.x;
-        inputDirection = inputDirection.normalized;
+        _inputDirection = forward * _randomInput.y + right * _randomInput.x;
+        _inputDirection = _inputDirection.normalized;
 
         transform.DOLookAt(_target.transform.position, .2f);
-        characterController.Move(inputDirection * Time.deltaTime);
+        _characterController.Move(_inputDirection * Time.deltaTime);
      
     }
     public IEnumerator GetRandomDirection()
     {
         yield return new WaitForSeconds(5);
         Debug.Log("New chance assigned");
-        randomChance = Random.Range(0, 2);
-        randomInput = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
+        _randomChance = UnityEngine.Random.Range(0, 2);
+        _randomInput = new Vector2(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
         StartCoroutine(GetRandomDirection());
     }
+
+    public void TakeHit(int attackType)
+    {
+        OnHit?.Invoke(attackType);
+    }
+
     public void PlayHurtAnimation(int attackType)
     {
         transform.DOLookAt(_target.transform.position, .01f);
 
-        switch (attackType)
-        {
+         switch (attackType)
+         {
             case 0:
-                hitType = 0;
+                _hitType = 0;
                 _anim.Play("Hurt1");
                 break;
             case 1:
-                hitType = 1;
+                _hitType = 1;
                 _anim.Play("Hurt2");
                 break;
             case 2:
-                hitType = 2;
+                _hitType = 2;
                 _anim.Play("Hurt3");
                 break;
             default:
                 break;
-        }
-
+         }
     }
 
+    public void PlayDeathAnimation()
+    {
+        _anim.Play("Death");
+        GetComponent<CharacterController>().enabled = false;
+    }
     
    
    
