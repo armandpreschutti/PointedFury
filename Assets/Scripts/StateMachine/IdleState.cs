@@ -10,15 +10,16 @@ public class IdleState : BaseState
         Debug.LogWarning("Player has entered IDLE state");
         Ctx.DebugCurrentSubState = "Idle State";
 
+        Ctx.AttackType = 0;
         Ctx.OnIdle?.Invoke(true);
     }
 
     public override void UpdateState()
     {
         //Debug.Log("IDLE state is currently active");
-
-        Ctx.TargetSpeed = 0f;
         CheckSwitchStates();
+        Ctx.TargetSpeed = 0f;
+
     }
 
     public override void ExitState()
@@ -34,9 +35,9 @@ public class IdleState : BaseState
         {
             SwitchState(Factory.Move());
         }
-        if (Ctx.IsLightAttackPressed && !Ctx.IsAttacking)
+        if (Ctx.IsLightAttackPressed)
         {
-            SwitchState(Factory.LightAttack());
+            SwitchState(Factory.LightAttack1());
         }
     }
 

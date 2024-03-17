@@ -15,16 +15,16 @@ public class PlayerAnimationHandler : MonoBehaviour
     [SerializeField] private float _animationBlend;
     [SerializeField] private int _animIDSpeed;
     [SerializeField] private int _animIDGrounded;
-    [SerializeField] private int _animIDJump;
-    [SerializeField] private int _animIDFall;
     [SerializeField] private int _animIDFight;
     [SerializeField] private int _animIDInputX;
     [SerializeField] private int _animIDInputY;
-    [SerializeField] private int _animIDLightAttack;
+    [SerializeField] private int _animIDLightAttack1;
+    [SerializeField] private int _animIDLightAttack2;
+    [SerializeField] private int _animIDLightAttack3;
+    [SerializeField] private int _animIDCombo;
     [SerializeField] private int _animationIDAttackType;
-    [SerializeField] private int _attackType;
     [SerializeField] private bool _isFighting;
-    [SerializeField] private float _debugTime;
+    [SerializeField] private float _transitionTime;
 
     private void Awake()
     {
@@ -35,26 +35,28 @@ public class PlayerAnimationHandler : MonoBehaviour
     private void OnEnable()
     {
         _stateMachine.OnGrounded += SetGroundedAnimation;
-        _stateMachine.OnJump += SetJumpAnimation;
-        _stateMachine.OnFall += SetFallAnimation;
         _stateMachine.OnFight += SetFightAnimation;
-        _stateMachine.OnAttack += SetAttackAnimation;
+        _stateMachine.OnLightAttack1 += SetLightAttack1Animation;
+        _stateMachine.OnLightAttack2 += SetLightAttack2Animation;
+        _stateMachine.OnLightAttack3 += SetLightAttack3Animation;
+        //_stateMachine.OnComboAttack += SetComboAnimation;
     }
 
     private void OnDisable()
     {
         _stateMachine.OnGrounded -= SetGroundedAnimation;
-        _stateMachine.OnJump -= SetJumpAnimation;
-        _stateMachine.OnFall -= SetFallAnimation;
         _stateMachine.OnFight -= SetFightAnimation;
-        _stateMachine.OnAttack -= SetAttackAnimation;
+        _stateMachine.OnLightAttack1 -= SetLightAttack1Animation;
+        _stateMachine.OnLightAttack2 -= SetLightAttack2Animation;
+        _stateMachine.OnLightAttack3 -= SetLightAttack3Animation;
+        //_stateMachine.OnComboAttack -= SetComboAnimation;
     }
 
     private void Update()
     {
         SetMovementAnimationValues();
         SetMovementAnimationSpeed();
-        SetStateAnimationLayer();
+       // SetStateAnimationLayer();
     }
 
     public void SetComponents()
@@ -67,13 +69,12 @@ public class PlayerAnimationHandler : MonoBehaviour
     {
         _animIDSpeed = Animator.StringToHash("Speed");
         _animIDGrounded = Animator.StringToHash("Grounded");
-        _animIDJump = Animator.StringToHash("Jump");
-        _animIDFall = Animator.StringToHash("Fall");
         _animIDFight = Animator.StringToHash("Fight");
         _animIDInputX = Animator.StringToHash("InputX");
         _animIDInputY = Animator.StringToHash("InputY");
-        _animIDLightAttack = Animator.StringToHash("Attack");
-        _animationIDAttackType = Animator.StringToHash("AttackType");
+        _animIDLightAttack1 = Animator.StringToHash("LightAttack1");
+        _animIDLightAttack2 = Animator.StringToHash("LightAttack2");
+        _animIDLightAttack3 = Animator.StringToHash("LightAttack3");
     }
 
     private void SetGroundedAnimation(bool value)
@@ -81,41 +82,32 @@ public class PlayerAnimationHandler : MonoBehaviour
         _anim.SetBool(_animIDGrounded, value);
     }
 
-    private void SetJumpAnimation(bool value)
+    private void SetLightAttack1Animation(bool value)
     {
-        _anim.rootPosition = transform.position;
-        _anim.SetBool(_animIDJump, value);
+        _anim.SetBool(_animIDLightAttack1, value);
     }
-
-    private void SetFallAnimation(bool value)
-    { 
-        _anim.SetBool(_animIDFall, value);
-    }
-
-    private void SetAttackAnimation(bool value)
+    private void SetLightAttack2Animation(bool value)
     {
-        _anim.SetInteger(_animationIDAttackType, _stateMachine.AttackType);
-        _anim.SetBool(_animIDLightAttack, value);
+        _anim.SetBool(_animIDLightAttack2, value);
+    }
+    private void SetLightAttack3Animation(bool value)
+    {
+        _anim.SetBool(_animIDLightAttack3, value);
     }
 
     private void SetFightAnimation(bool value)
     {
         _isFighting = value;
-        _attackType = 0;
+    }
+
+    private void SetComboAnimation(bool value)
+    {
+        _anim.SetBool(_animIDCombo, value);
     }
     private void SetMovementAnimationValues()
     {
-        if(_stateMachine.IsFighting)
-        {
-          //  _anim.SetFloat(_animIDInputX, _playerStateMachine.EnemyRelativeInput().x);
-            //_anim.SetFloat(_animIDInputY, _playerStateMachine.EnemyRelativeInput().y);
-        }
-        else
-        {
-            _anim.SetFloat(_animIDInputX, _stateMachine.MoveInput.x);
-            _anim.SetFloat(_animIDInputY, _stateMachine.MoveInput.y);
-        }
-        
+        _anim.SetFloat(_animIDInputX, _stateMachine.MoveInput.x);
+        _anim.SetFloat(_animIDInputY, _stateMachine.MoveInput.y);
     }
 
     private void SetMovementAnimationSpeed()
@@ -131,10 +123,11 @@ public class PlayerAnimationHandler : MonoBehaviour
             return;
         }        
     }
+
     public void SetStateAnimationLayer()
     {
-        _debugTime = LerpBetweenValues(_isFighting, _debugTime);
-        _anim.SetLayerWeight(1, _debugTime);        
+        _transitionTime = LerpBetweenValues(_isFighting, _transitionTime);
+        _anim.SetLayerWeight(1, _transitionTime);        
     }
    
 
@@ -146,7 +139,7 @@ public class PlayerAnimationHandler : MonoBehaviour
         {
             if(value < 1f)
             {
-                debug += Time.deltaTime * 2f;
+                debug += Time.deltaTime * 4f;
             }
             else
             {
@@ -158,7 +151,7 @@ public class PlayerAnimationHandler : MonoBehaviour
         {
             if(value > 0f)
             {
-                debug -= Time.deltaTime * 2f;
+                debug -= Time.deltaTime * 4f;
             }
             else
             {

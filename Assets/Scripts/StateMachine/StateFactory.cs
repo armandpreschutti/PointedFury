@@ -11,31 +11,47 @@ public class StateFactory
     {
         return new FreeRoamState(_context, this);
     }
-
     public BaseState Idle()
     {
         return new IdleState(_context, this);
     }
-
     public BaseState Move()
     {
         return new MoveState(_context, this);
     }
-
     public BaseState Fight()
     {
         return new FightState(_context, this);
     }
-
-    public BaseState LightAttack()
+    public BaseState LightAttack1()
     {
-        return new LightAttackSate(_context, this);
+        return new LightAttack1Sate(_context, this);
     }
-    /*public PlayerBaseState Run()
+    public BaseState LightAttack2() 
     {
-        return new PlayerRunState(_context, this);
+        return new LightAttack2State(_context, this);
     }
-    public PlayerBaseState Sprint()
+    public BaseState LightAttack3() 
+    {
+        return new LightAttack3State(_context, this);
+    }
+    public BaseState LightAttack4()
+    {
+        return new LightAttack4State(_context, this);
+    }
+    public BaseState LightAttack5()
+    {
+        return new LightAttack5State(_context, this);
+    }
+    public BaseState LightAttack6()
+    {
+        return new LightAttack6State(_context, this);
+    }
+    public BaseState LightAttack7()
+    {
+        return new LightAttack7State(_context, this);
+    }
+    /*public PlayerBaseState Sprint()
     {
         return new PlayerSprintState(_context, this);
     }

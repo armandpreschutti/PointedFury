@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 19cd0003ab544547832bd9b9f191352e
+guid: 71a13e4addc15df49b8fe2740385da7d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: 8703357924341735485
-    second: combo7_pause
+      74: -9124097185675158277
+    second: combo7
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,22 +36,22 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: combo7_pause
-      takeName: combo7_pause
+      name: combo7
+      takeName: combo7
       internalID: 0
-      firstFrame: 0
-      lastFrame: 165
+      firstFrame: 51
+      lastFrame: 65
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1

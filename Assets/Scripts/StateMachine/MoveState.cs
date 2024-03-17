@@ -10,12 +10,14 @@ public class MoveState : BaseState
         //Debug.LogWarning("Player has entered MOVE state");
         Ctx.DebugCurrentSubState = "Run State";
 
+        Ctx.AttackType = 0;
         Ctx.OnRun?.Invoke(true);
     }
 
     public override void UpdateState()
     {
         //Debug.Log("MOVE state is currently active");
+        CheckSwitchStates();
 
         if (!Ctx.IsFighting)
         {
@@ -25,7 +27,7 @@ public class MoveState : BaseState
         {
             Ctx.TargetSpeed = Ctx.FightSpeed;
         }
-        CheckSwitchStates();
+
     }
 
     public override void ExitState()
@@ -41,9 +43,9 @@ public class MoveState : BaseState
         {
             SwitchState(Factory.Idle());
         }
-        if (Ctx.IsLightAttackPressed && !Ctx.IsAttacking)
+        if (Ctx.IsLightAttackPressed && !Ctx.IsLightAttacking1)
         {
-            SwitchState(Factory.LightAttack());
+            SwitchState(Factory.LightAttack1());
         }
     }
 

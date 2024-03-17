@@ -23,10 +23,14 @@ public class FightState : BaseState
     {
         //Debug.Log("FIGHT state is currently active");
 
-        Ctx.FreeRoamMovement();
-        Ctx.EnemyDetection();
         SetFightTimeout();
         CheckSwitchStates();
+        Ctx.EnemyDetection();
+        Ctx.FightMovement();
+        if (Ctx.VerticalVelocity < 0.0f)
+        {
+            Ctx.VerticalVelocity = -2f;
+        }
     }
 
     public override void ExitState()
@@ -47,21 +51,21 @@ public class FightState : BaseState
 
     public override void InitializeSubStates()
     {
-        if (Ctx.IsAttacking)
+        if(!Ctx.IsFighting)
         {
-            SetSubState(Factory.LightAttack());
+            SwitchState(Factory.FreeRoam());
         }
     }
     public void SetFightTimeout()
     {
-        if (Ctx.FightTimeoutActive && Ctx.FIghtTimeoutDelta > 0f)
+        if (Ctx.FightTimeoutActive && Ctx.FightTimeoutDelta > 0f)
         {
-            Ctx.FIghtTimeoutDelta -= Time.deltaTime;
+            Ctx.FightTimeoutDelta -= Time.deltaTime;
 
         }
         else
         {
-            Ctx.FIghtTimeoutDelta = 0f;
+            Ctx.FightTimeoutDelta = 0f;
             Ctx.IsFighting = false;
         }
     }

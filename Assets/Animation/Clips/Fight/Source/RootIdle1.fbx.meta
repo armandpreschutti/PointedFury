@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 19cd0003ab544547832bd9b9f191352e
+guid: f54d3c84c8826384197ae0239e1db1d1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: 8703357924341735485
-    second: combo7_pause
+      74: 1667369116567311112
+    second: idle02
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: combo7_pause
-      takeName: combo7_pause
+      name: idle02
+      takeName: idle02
       internalID: 0
       firstFrame: 0
-      lastFrame: 165
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -51,7 +51,7 @@ ModelImporter:
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1

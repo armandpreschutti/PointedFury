@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class FreeRoamState : BaseState
 {
@@ -14,7 +15,8 @@ public class FreeRoamState : BaseState
         //Debug.LogWarning("Player has entered FREE ROAM state");
         Ctx.DebugCurrentSuperState = "FreeRoam State";
 
-        Ctx.OnGrounded?.Invoke(true);
+        Ctx.Animator.SetBool(Ctx.AnimIDGrounded, true);
+        //Ctx.IsAttacking = true;
     }
 
     public override void UpdateState()
@@ -23,7 +25,7 @@ public class FreeRoamState : BaseState
 
         CheckSwitchStates();
         Ctx.EnemyDetection();
-        Ctx.ThirdPersonMovement();
+        Ctx.FightMovement();
         if (Ctx.VerticalVelocity < 0.0f)
         {
             Ctx.VerticalVelocity = -2f;
@@ -34,15 +36,16 @@ public class FreeRoamState : BaseState
     {
         //Debug.LogWarning("Player has exited FREE ROAM state");
 
-        Ctx.OnGrounded?.Invoke(false);
+        Ctx.Animator.SetBool(Ctx.AnimIDGrounded, false);
+
     }
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.IsAttacking)
+        /*if (Ctx.IsLightAttacking1)
         {
             SwitchState(Factory.Fight());
-        }
+        }*/
     }
 
     public override void InitializeSubStates()
