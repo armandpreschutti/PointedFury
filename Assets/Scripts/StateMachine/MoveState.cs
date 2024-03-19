@@ -12,6 +12,7 @@ public class MoveState : BaseState
 
         Ctx.AttackType = 0;
         Ctx.OnRun?.Invoke(true);
+
     }
 
     public override void UpdateState()
@@ -19,14 +20,7 @@ public class MoveState : BaseState
         //Debug.Log("MOVE state is currently active");
         CheckSwitchStates();
 
-        if (!Ctx.IsFighting)
-        {
-            Ctx.TargetSpeed = Ctx.MoveSpeed;
-        }
-        else
-        {
-            Ctx.TargetSpeed = Ctx.FightSpeed;
-        }
+        Ctx.TargetSpeed = Ctx.MoveSpeed;
 
     }
 

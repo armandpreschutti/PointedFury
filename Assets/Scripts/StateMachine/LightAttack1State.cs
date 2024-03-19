@@ -1,5 +1,6 @@
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class LightAttack1Sate : BaseState
 {
@@ -22,6 +23,7 @@ public class LightAttack1Sate : BaseState
         Ctx.IsComboAttacking = false;
         Ctx.CanComboAttack = true;
         Ctx.IsFighting= true;
+        Ctx.RotateTowardTarget();
     }
 
     public override void UpdateState()
@@ -30,9 +32,11 @@ public class LightAttack1Sate : BaseState
         
         CheckSwitchStates();
 
-        Ctx.RotateTowardTarget(.01f);
         Ctx.TargetSpeed = 0f;
-
+        if (Ctx.IsCharging)
+        {
+            Ctx.ChargeAtEnemy();
+        }
         if (Ctx.IsLightAttackPressed)
         {
             Ctx.IsComboAttacking = true;
@@ -54,6 +58,7 @@ public class LightAttack1Sate : BaseState
     public override void CheckSwitchStates()
     {
         //Ctx.CanComboAttack = false;
+        //Ctx.ChargeAtEnemy();
 
         if (!Ctx.IsLightAttacking1)
         {

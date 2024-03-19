@@ -27,8 +27,12 @@ public class LightAttack6State : BaseState
     {
         CheckSwitchStates();
 
-        Ctx.RotateTowardTarget(.01f);
+        Ctx.RotateTowardTarget();
         Ctx.TargetSpeed = 0f;
+        if (Ctx.IsCharging)
+        {
+            Ctx.ChargeAtEnemy();
+        }
         if (Ctx.IsLightAttackPressed)
         {
             Ctx.IsComboAttacking = true;

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class StateMachine : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class StateMachine : MonoBehaviour
     public float RotationSmoothTime = 0.12f;
     [Tooltip("Acceleration and deceleration")]
     public float SpeedChangeRate = 10.0f;
+    [Tooltip("How fast the character charges towards a direction while attacking")]
+    public float ChargeSpeed;
 
     // Player grounded variables
     [Header("Player Grounded")]
@@ -36,8 +39,8 @@ public class StateMachine : MonoBehaviour
     public LayerMask EnemyLayers;
     [Tooltip("The amount of time after an attack to exit attack state")]
     public float AttackTimeout;
-/*    [Tooltip("Array of light attacks in combo")]
-    public List<LightAttackSO> LightAttackCombo;*/
+    [Tooltip("The minimum distance between player and target")]
+    public float CombatDistance;
 
 
     // Debug State Variables
@@ -58,6 +61,7 @@ public class StateMachine : MonoBehaviour
     private bool _isLightAttacking5 = false;
     private bool _isLightAttacking6 = false;
     private bool _isLightAttacking7 = false;
+    private bool _isCharging = false;
 
     // Player fighting variables
     private GameObject _currentTarget;
@@ -98,23 +102,22 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnIdle;
 
     // Animation Variables
-    [SerializeField] public float AnimationBlend;
-    [SerializeField] public int AnimIDSpeed;
-    [SerializeField] public int AnimIDGrounded;
-    [SerializeField] public int AnimIDFight;
-    [SerializeField] public int AnimIDInputX;
-    [SerializeField] public int AnimIDInputY;
-    [SerializeField] public int AnimIDLightAttack1;
-    [SerializeField] public int AnimIDLightAttack2;
-    [SerializeField] public int AnimIDLightAttack3;
-    [SerializeField] public int AnimIDLightAttack4;
-    [SerializeField] public int AnimIDLightAttack5;
-    [SerializeField] public int AnimIDLightAttack6;
-    [SerializeField] public int AnimIDLightAttack7;
-    [SerializeField] public int AnimIDCombo;
-    [SerializeField] public int AnimationIDAttackType;
-    //[SerializeField] private bool _isFighting;
-    [SerializeField] private float _transitionTime;
+    [HideInInspector] public float AnimationBlend;
+    [HideInInspector] public int AnimIDSpeed;
+    [HideInInspector] public int AnimIDGrounded;
+    [HideInInspector] public int AnimIDFight;
+    [HideInInspector] public int AnimIDInputX;
+    [HideInInspector] public int AnimIDInputY;
+    [HideInInspector] public int AnimIDLightAttack1;
+    [HideInInspector] public int AnimIDLightAttack2;
+    [HideInInspector] public int AnimIDLightAttack3;
+    [HideInInspector] public int AnimIDLightAttack4;
+    [HideInInspector] public int AnimIDLightAttack5;
+    [HideInInspector] public int AnimIDLightAttack6;
+    [HideInInspector] public int AnimIDLightAttack7;
+    [HideInInspector] public int AnimIDCombo;
+    [HideInInspector] public int AnimationIDAttackType;
+    [HideInInspector] public float _transitionTime;
 
 
     // Player action events
@@ -144,6 +147,7 @@ public class StateMachine : MonoBehaviour
     public bool IsLightAttacking5 { get { return _isLightAttacking5; } set { _isLightAttacking5 = value; } }
     public bool IsLightAttacking6 { get { return _isLightAttacking6; } set { _isLightAttacking6 = value; } }
     public bool IsLightAttacking7 { get { return _isLightAttacking7; } set { _isLightAttacking7 = value; } }
+    public bool IsCharging { get { return _isCharging; } }
  
     // Fighting
     public int AttackType { get { return _attackType; } set { _attackType = value; } }
@@ -153,7 +157,7 @@ public class StateMachine : MonoBehaviour
     public bool IsComboAttacking { get { return _isComboAttacking;} set { _isComboAttacking = value; } }
 
     // Debug
-   //public Vector3 debugFloat;
+    public Vector3 _debugVector;
 
     // Awake is called when the script instance is being loaded
     private void Awake()
@@ -176,6 +180,7 @@ public class StateMachine : MonoBehaviour
         // Check if the player is grounded
         GroundedCheck();
         SetPlayerSpeed();
+        _debugVector = TargetRelativeInput();
         SetMovementAnimationValues();
         SetMovementAnimationSpeed();
     }
@@ -209,23 +214,18 @@ public class StateMachine : MonoBehaviour
     // Move the player
     public void FightMovement()
     {
-        if (!IsLightAttacking1)
+        if (!_isAttacking)
         {
-            if (_moveInput != Vector2.zero)
+            _controller.Move(InputDirection() * Time.deltaTime * TargetSpeed);
+            if (_currentTarget != null)
             {
-                transform.DOLookAt(transform.position + InputDirection(), .2f);
+                transform.DOLookAt(_currentTarget.transform.position, 1f);
             }
             else
             {
-                if(_currentTarget != null)
-                {
-                    transform.DOLookAt(_currentTarget.transform.position, .2f);
-                }
-                else
-                {
-                    return;
-                }
+                return;
             }
+           
         }
         else
         {
@@ -237,6 +237,7 @@ public class StateMachine : MonoBehaviour
     {
         Vector3 forwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
         transform.DOLookAt(transform.position + forwardDirection, .2f);
+        _controller.Move(InputDirection() * Time.deltaTime * TargetSpeed);
     }
 
     // Set component values
@@ -261,14 +262,14 @@ public class StateMachine : MonoBehaviour
         if (_moveInput != Vector2.zero)
         {
             RaycastHit info;
-            if (Physics.SphereCast(transform.position, 1f, InputDirection(), out info, 5f, EnemyLayers))
+            if (Physics.SphereCast(transform.position, 1f, InputDirection(), out info, 10f, EnemyLayers))
             {
                 _currentTarget = info.transform.gameObject;
             }
-            else
+            /*else
             {
                 _currentTarget = null;
-            }
+            }*/
         }
         else
         {
@@ -294,21 +295,60 @@ public class StateMachine : MonoBehaviour
                 _currentTarget = closestTarget.gameObject;
                 // You can add any additional logic here, such as locking onto the target or performing an action
             }
+            else
+            {
+                _currentTarget = null;
+            }
         }
     }
-
-
-    public void RotateTowardTarget(float duration)
+    public void ChargeAtEnemy()
     {
-        if (_currentTarget != null)
+        if(_moveInput != Vector2.zero && _currentTarget == null)
         {
-            transform.DOLookAt(_currentTarget.transform.position, duration);
+            // Calculate the movement direction based on the forward direction of the character
+            Vector3 moveDirection = transform.forward * ChargeSpeed;
+
+            // Move the character using the CharacterController
+            _controller.Move(moveDirection * Time.deltaTime);
         }
         else
         {
-            if (_moveInput != Vector2.zero)
+            if (_currentTarget != null)
             {
-                transform.DOLookAt(transform.position + InputDirection(), duration);
+                // Calculate the direction towards the target
+                Vector3 directionToTarget = _currentTarget.transform.position - transform.position;
+
+                // Check the distance to the target
+                float distanceToTarget = directionToTarget.magnitude;
+
+                // If the distance is greater than stopDistance, move towards the target
+                if (distanceToTarget > CombatDistance)
+                {
+                    // Calculate the movement direction based on the forward direction of the character
+                    Vector3 moveDirection = transform.forward * ChargeSpeed;
+
+                    // Move the character using the CharacterController
+                    _controller.Move(moveDirection * Time.deltaTime);
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    public void RotateTowardTarget()
+    {
+        if (_moveInput != Vector2.zero)
+        {
+            transform.LookAt(transform.position + InputDirection());
+        }
+        else
+        {
+            if (_currentTarget != null)
+            {
+                transform.LookAt(_currentTarget.transform.position);
             }
             else
             {
@@ -334,13 +374,42 @@ public class StateMachine : MonoBehaviour
         return inputDirection;
     }
 
-    public void OnAttackAnimationBegin()
+    public Vector3 TargetRelativeInput()
     {
+        if(_currentTarget!= null && _moveInput != Vector2.zero)
+        {
+            // Calculate the direction from player to target
+            Vector3 directionToTarget = (_currentTarget.transform.position - transform.position).normalized;
 
+            // Calculate the angle between input direction and direction to target
+            float angle = Vector3.SignedAngle(directionToTarget, InputDirection(), Vector3.up);
+
+            // Create a vector3 based on angle to represent the direction relative to the target
+            Vector3 relativeDirection = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+
+            return relativeDirection;
+        }
+        else
+        {
+            return Vector3.zero;
+        }
+       
+    }
+
+    public Vector3 TargetOffset(Transform target)
+    {
+        Vector3 position;
+        position = target.position;
+        return Vector3.MoveTowards(position, transform.position, .95f);
+    }
+    public void OnAttackAnimationCharge()
+    {
+        _isCharging = true;
     }
     public void OnAttackAnimationContact()
     {
-        OnAttackContact?.Invoke();          
+        OnAttackContact?.Invoke();
+        _isCharging = false;
     }
     public void OnAttackAnimationComplete()
     {
@@ -401,8 +470,8 @@ public class StateMachine : MonoBehaviour
 
     private void SetMovementAnimationValues()
     {
-        _anim.SetFloat(AnimIDInputX, _moveInput.x);
-        _anim.SetFloat(AnimIDInputY, _moveInput.y);
+        _anim.SetFloat(AnimIDInputX, TargetRelativeInput().x);
+        _anim.SetFloat(AnimIDInputY, TargetRelativeInput().z);
     }
     private void SetMovementAnimationSpeed()
     {

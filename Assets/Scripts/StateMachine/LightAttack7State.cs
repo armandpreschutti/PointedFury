@@ -26,9 +26,12 @@ public class LightAttack7State : BaseState
         //Debug.Log("LIGHT ATTACK state is currently active");
         CheckSwitchStates();
 
-        Ctx.RotateTowardTarget(.01f);
+        Ctx.RotateTowardTarget();
         Ctx.TargetSpeed = 0f;
-
+        if (Ctx.IsCharging)
+        {
+            Ctx.ChargeAtEnemy();
+        }
     }
 
     public override void ExitState()

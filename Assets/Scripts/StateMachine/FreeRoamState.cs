@@ -1,5 +1,7 @@
 using UnityEngine;
+using DG.Tweening;
 using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class FreeRoamState : BaseState
 {
@@ -26,6 +28,8 @@ public class FreeRoamState : BaseState
         CheckSwitchStates();
         Ctx.EnemyDetection();
         Ctx.FightMovement();
+        //Ctx.FreeRoamMovement();
+
         if (Ctx.VerticalVelocity < 0.0f)
         {
             Ctx.VerticalVelocity = -2f;

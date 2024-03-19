@@ -43,8 +43,8 @@ public class HitBroadcastHandler : MonoBehaviour
     {
         foreach(GameObject hit in _hitTargets)
         {
-            /*Debug.Log(hit.name);*/
-            hit.GetComponent<DebugTester>().TakeHit(_StateMachine.AttackType);
+            Debug.Log($"Player has attacked {hit.name}");
+            //hit.GetComponent<DebugTester>().TakeHit(_StateMachine.AttackType);
             //Debug.Log(_playerStateMachine.AttackType);
         }
     }
