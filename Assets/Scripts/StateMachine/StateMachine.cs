@@ -338,7 +338,7 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    public void RotateTowardTarget()
+    public void SetAttackDirection()
     {
         if (_moveInput != Vector2.zero)
         {

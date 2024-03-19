@@ -8,10 +8,9 @@ public class LightAttack2State : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered LIGHT ATTACK 2 state");
+        //Debug.LogWarning("Player has entered LIGHT ATTACK 2 state");
         Ctx.DebugCurrentSubState = "Light Attack 2 State";
 
-        //Ctx.IsFighting = true;
         Ctx.AttackType = 2;
         Ctx.IsLightAttacking2 = true;
         Ctx.IsAttacking = true;
@@ -19,11 +18,12 @@ public class LightAttack2State : BaseState
         Ctx.IsComboAttacking = false;
         Ctx.CanComboAttack = true;
         Ctx.IsFighting = true;
-        Ctx.RotateTowardTarget();
+        Ctx.SetAttackDirection();
     }
 
     public override void UpdateState()
-    { 
+    {
+        //Debug.Log("LIGHT ATTACK 2 state is currently active");
         CheckSwitchStates();
 
         Ctx.TargetSpeed = 0f;
@@ -42,9 +42,8 @@ public class LightAttack2State : BaseState
 
     public override void ExitState()
     {
-        Debug.Log("Player has exited LIGHT ATTACK 2 state");
+        //Debug.Log("Player has exited LIGHT ATTACK 2 state");
 
-        //Ctx.OnLightAttack2?.Invoke(true);
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack2, false);
         Ctx.IsAttacking = false;
     }

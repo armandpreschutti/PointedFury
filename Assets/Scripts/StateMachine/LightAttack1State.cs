@@ -23,7 +23,7 @@ public class LightAttack1Sate : BaseState
         Ctx.IsComboAttacking = false;
         Ctx.CanComboAttack = true;
         Ctx.IsFighting= true;
-        Ctx.RotateTowardTarget();
+        Ctx.SetAttackDirection();
     }
 
     public override void UpdateState()
@@ -57,9 +57,6 @@ public class LightAttack1Sate : BaseState
 
     public override void CheckSwitchStates()
     {
-        //Ctx.CanComboAttack = false;
-        //Ctx.ChargeAtEnemy();
-
         if (!Ctx.IsLightAttacking1)
         {
             if(Ctx.IsComboAttacking)
@@ -83,28 +80,6 @@ public class LightAttack1Sate : BaseState
             }
             
         }
-
-        /* if (!Ctx.IsLightAttacking1)
-         {
-             if(Ctx.IsComboAttacking)
-             {
-                 SwitchState(Factory.LightAttack2());
-             }
-             else
-             {
-                 Ctx.CanComboAttack = false;
-                 Ctx.FightTimeoutActive = true;
-                 Ctx.FIghtTimeoutDelta = Ctx.AttackTimeout;
-                 if (Ctx.MoveInput != Vector2.zero)
-                 {
-                     SwitchState(Factory.Move());
-                 }
-                 else
-                 {
-                     SwitchState(Factory.Idle());
-                 }
-             }   
-         }        */
     }
 
     public override void InitializeSubStates()

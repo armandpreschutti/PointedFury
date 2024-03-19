@@ -28,7 +28,6 @@ public class FreeRoamState : BaseState
         CheckSwitchStates();
         Ctx.EnemyDetection();
         Ctx.FightMovement();
-        //Ctx.FreeRoamMovement();
 
         if (Ctx.VerticalVelocity < 0.0f)
         {
@@ -46,10 +45,7 @@ public class FreeRoamState : BaseState
 
     public override void CheckSwitchStates()
     {
-        /*if (Ctx.IsLightAttacking1)
-        {
-            SwitchState(Factory.Fight());
-        }*/
+
     }
 
     public override void InitializeSubStates()

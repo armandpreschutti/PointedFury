@@ -10,8 +10,8 @@ public class LightAttack7State : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered LIGHT ATTACK 3 state");
-        Ctx.DebugCurrentSubState = "Light Attack 3 State";
+        //Debug.LogWarning("Player has entered LIGHT ATTACK 7 state");
+        Ctx.DebugCurrentSubState = "Light Attack 7 State";
 
         Ctx.AttackType = 7;
         Ctx.IsLightAttacking7 = true;
@@ -23,10 +23,10 @@ public class LightAttack7State : BaseState
 
     public override void UpdateState()
     {
-        //Debug.Log("LIGHT ATTACK state is currently active");
+        //Debug.Log("LIGHT ATTACK 7 state is currently active");
         CheckSwitchStates();
 
-        Ctx.RotateTowardTarget();
+        Ctx.SetAttackDirection();
         Ctx.TargetSpeed = 0f;
         if (Ctx.IsCharging)
         {
@@ -36,7 +36,7 @@ public class LightAttack7State : BaseState
 
     public override void ExitState()
     {
-        //Debug.Log("Player has exited LIGHT ATTACK state");
+        //Debug.Log("Player has exited LIGHT ATTACK 7 state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack7, false);
         Ctx.IsAttacking = false;

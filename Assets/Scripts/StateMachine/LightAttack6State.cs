@@ -10,10 +10,9 @@ public class LightAttack6State : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered LIGHT ATTACK 2 state");
-        Ctx.DebugCurrentSubState = "Light Attack 2 State";
+        //Debug.LogWarning("Player has entered LIGHT ATTACK 6 state");
+        Ctx.DebugCurrentSubState = "Light Attack 6 State";
 
-        //Ctx.IsFighting = true;
         Ctx.AttackType = 6;
         Ctx.IsLightAttacking6 = true;
         Ctx.IsAttacking = true;
@@ -25,9 +24,10 @@ public class LightAttack6State : BaseState
 
     public override void UpdateState()
     {
+        //Debug.Log("LIGHT ATTACK 6 state is currently active");
         CheckSwitchStates();
 
-        Ctx.RotateTowardTarget();
+        Ctx.SetAttackDirection();
         Ctx.TargetSpeed = 0f;
         if (Ctx.IsCharging)
         {
@@ -43,9 +43,8 @@ public class LightAttack6State : BaseState
 
     public override void ExitState()
     {
-        Debug.Log("Player has exited LIGHT ATTACK 2 state");
+        Debug.Log("Player has exited LIGHT ATTACK 6 state");
 
-        //Ctx.OnLightAttack2?.Invoke(true);
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack6, false);
         Ctx.IsAttacking = false;
     }

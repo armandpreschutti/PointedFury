@@ -8,10 +8,9 @@ public class LightAttack3State : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered LIGHT ATTACK 2 state");
-        Ctx.DebugCurrentSubState = "Light Attack 2 State";
+        //Debug.LogWarning("Player has entered LIGHT ATTACK 3 state");
+        Ctx.DebugCurrentSubState = "Light Attack 3 State";
 
-        //Ctx.IsFighting = true;
         Ctx.AttackType = 3;
         Ctx.IsLightAttacking3 = true;
         Ctx.IsAttacking = true;
@@ -19,11 +18,12 @@ public class LightAttack3State : BaseState
         Ctx.IsComboAttacking = false;
         Ctx.CanComboAttack = true;
         Ctx.IsFighting = true;
-        Ctx.RotateTowardTarget();
+        Ctx.SetAttackDirection();
     }
 
     public override void UpdateState()
     {
+        //Debug.Log("LIGHT ATTACK 3 state is currently active");
         CheckSwitchStates();
 
         Ctx.TargetSpeed = 0f;
@@ -41,9 +41,8 @@ public class LightAttack3State : BaseState
 
     public override void ExitState()
     {
-        Debug.Log("Player has exited LIGHT ATTACK 2 state");
+        //Debug.Log("Player has exited LIGHT ATTACK 3 state");
 
-        //Ctx.OnLightAttack2?.Invoke(true);
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack3, false);
         Ctx.IsAttacking = false;
     }
