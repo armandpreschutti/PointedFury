@@ -10,13 +10,11 @@ public class LightAttack1Sate : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered LIGHT ATTACK 1 state");
+        //Debug.LogWarning("Player has entered LIGHT ATTACK 1 state");
         Ctx.DebugCurrentSubState = "Light Attack 1 State";
 
-        //Ctx.IsFighting = true;
         Ctx.AttackType = 1;
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, true);
-
         Ctx.IsLightAttacking1= true;
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
@@ -42,13 +40,12 @@ public class LightAttack1Sate : BaseState
             Ctx.IsComboAttacking = true;
             Ctx.CanComboAttack = false;
             Ctx.Animator.SetBool(Ctx.AnimIDLightAttack2, true);
-            //Ctx.IsLightAttackPressed= false;
         }
     }
 
     public override void ExitState()
     {
-        //Debug.Log("Player has exited LIGHT ATTACK state");
+        //Debug.LogWarning("Player has exited LIGHT ATTACK state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
         Ctx.IsAttacking = false;
@@ -66,7 +63,6 @@ public class LightAttack1Sate : BaseState
             }
             else
             {
-                //Ctx.IsFighting = false;
                 Ctx.FightTimeoutActive = true;
                 Ctx.FightTimeoutDelta = Ctx.AttackTimeout;
                 if (Ctx.MoveInput != Vector2.zero)

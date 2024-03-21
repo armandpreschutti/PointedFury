@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
@@ -44,8 +45,7 @@ public class StateMachine : MonoBehaviour
 
 
     // Debug State Variables
-    public string DebugCurrentSuperState;
-    public string DebugCurrentSubState;
+
 
     // Player state variables
     private bool _isGrounded = true;
@@ -62,6 +62,11 @@ public class StateMachine : MonoBehaviour
     private bool _isLightAttacking6 = false;
     private bool _isLightAttacking7 = false;
     private bool _isCharging = false;
+    private bool _isHurt = false;
+    private bool _hitLanded = false;
+    [SerializeField] bool _isAI;
+    public string DebugCurrentSuperState;
+    public string DebugCurrentSubState;
 
     // Player fighting variables
     private GameObject _currentTarget;
@@ -70,6 +75,7 @@ public class StateMachine : MonoBehaviour
     private int _attackType = 0;
     private bool _canComboAttack = false;
     private bool _isComboAttacking = false;
+    private int _hitType = 0;
 
     // Player input variables
     private Vector2 _moveInput;
@@ -78,7 +84,7 @@ public class StateMachine : MonoBehaviour
 
 
     // Player components
-    private Animator _anim;
+    private Animator _animator;
     private CharacterController _controller;
 
     // Player state machine
@@ -98,8 +104,9 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnLightAttack5;
     public Action<bool> OnLightAttack6;
     public Action<bool> OnLightAttack7;
-    public Action<bool> OnRun;
+    public Action<bool> OnMove;
     public Action<bool> OnIdle;
+    public Action<bool> OnHurt;
 
     // Animation Variables
     [HideInInspector] public float AnimationBlend;
@@ -115,6 +122,8 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDLightAttack5;
     [HideInInspector] public int AnimIDLightAttack6;
     [HideInInspector] public int AnimIDLightAttack7;
+    [HideInInspector] public int AnimIDHurt;
+    [HideInInspector] public int AnimIDHurtTrigger;
     [HideInInspector] public int AnimIDCombo;
     [HideInInspector] public int AnimationIDAttackType;
     [HideInInspector] public float _transitionTime;
@@ -136,7 +145,7 @@ public class StateMachine : MonoBehaviour
     public float VerticalVelocity { get { return _verticalVelocity; } set { _verticalVelocity = value; } }
 
     // State
-    public Animator Animator { get { return _anim; } set { _anim = value; } }
+    public Animator Animator { get { return _animator; } set { _animator = value; } }
     public bool IsGrounded { get { return _isGrounded; } }
     public bool IsFighting { get { return _isFighting; } set { _isFighting = value; } }
     public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
@@ -147,10 +156,13 @@ public class StateMachine : MonoBehaviour
     public bool IsLightAttacking5 { get { return _isLightAttacking5; } set { _isLightAttacking5 = value; } }
     public bool IsLightAttacking6 { get { return _isLightAttacking6; } set { _isLightAttacking6 = value; } }
     public bool IsLightAttacking7 { get { return _isLightAttacking7; } set { _isLightAttacking7 = value; } }
+    public bool IsHurt { get { return _isHurt; } set { _isHurt = value; } }
     public bool IsCharging { get { return _isCharging; } }
+    public bool HitLanded { get { return _hitLanded; } set { _hitLanded = value; } }
  
     // Fighting
     public int AttackType { get { return _attackType; } set { _attackType = value; } }
+    public int HitType { get { return _hitType; } set { _hitType = value; } }
     public float FightTimeoutDelta { get { return _fightTimeoutDelta; } set { _fightTimeoutDelta = value; } }
     public bool FightTimeoutActive { get { return _fightTimeout; } set { _fightTimeout = value; } }
     public bool CanComboAttack { get { return _canComboAttack; } set { _canComboAttack = value; } }
@@ -224,8 +236,7 @@ public class StateMachine : MonoBehaviour
             else
             {
                 return;
-            }
-           
+            }           
         }
         else
         {
@@ -244,7 +255,7 @@ public class StateMachine : MonoBehaviour
     private void SetComponentValues()
     {
         // Set references to components and initialize player controls
-        _anim = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
     }
 
@@ -262,14 +273,13 @@ public class StateMachine : MonoBehaviour
         if (_moveInput != Vector2.zero)
         {
             RaycastHit info;
-            if (Physics.SphereCast(transform.position, 1f, InputDirection(), out info, 10f, EnemyLayers))
+            if(!_isAI)
             {
-                _currentTarget = info.transform.gameObject;
-            }
-            /*else
-            {
-                _currentTarget = null;
-            }*/
+                if (Physics.SphereCast(transform.position, 1f, InputDirection(), out info, 10f, EnemyLayers))
+                {
+                    _currentTarget = info.transform.gameObject;
+                }
+            }            
         }
         else
         {
@@ -419,6 +429,20 @@ public class StateMachine : MonoBehaviour
     {
         _isFighting = false;
     }
+    public void OnHurtAnimationBegin()
+    {
+
+    }
+    public void OnHurtAnimationComplete()
+    {
+        _animator.SetBool(AnimIDHurt, false);
+        _isHurt = false;
+    }
+    public void TakeHit(int attackType)
+    {
+        _hitType = attackType;
+        _hitLanded = true;
+    }
 
     public void ExitCurrentAttackState()
     {
@@ -466,18 +490,20 @@ public class StateMachine : MonoBehaviour
         AnimIDLightAttack5 = Animator.StringToHash("LightAttack5");
         AnimIDLightAttack6 = Animator.StringToHash("LightAttack6");
         AnimIDLightAttack7 = Animator.StringToHash("LightAttack7");
+        AnimIDHurt = Animator.StringToHash("Hurt");
+        AnimIDHurtTrigger = Animator.StringToHash("HurtTrigger");
     }
 
     private void SetMovementAnimationValues()
     {
-        _anim.SetFloat(AnimIDInputX, TargetRelativeInput().x);
-        _anim.SetFloat(AnimIDInputY, TargetRelativeInput().z);
+        _animator.SetFloat(AnimIDInputX, TargetRelativeInput().x);
+        _animator.SetFloat(AnimIDInputY, TargetRelativeInput().z);
     }
     private void SetMovementAnimationSpeed()
     {
         AnimationBlend = Mathf.Lerp(AnimationBlend, _targetSpeed, Time.deltaTime * SpeedChangeRate);
         if (AnimationBlend < 0.01f) AnimationBlend = 0f;
-        _anim.SetFloat(AnimIDSpeed, AnimationBlend);
+        _animator.SetFloat(AnimIDSpeed, AnimationBlend);
     }
 
     private void OnDrawGizmos()

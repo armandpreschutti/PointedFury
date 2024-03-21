@@ -10,7 +10,7 @@ public class LightAttack4State : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered LIGHT ATTACK 4 state");
+        //Debug.LogWarning("Player has entered LIGHT ATTACK 4 state");
         Ctx.DebugCurrentSubState = "Light Attack 4 State";
 
         Ctx.AttackType = 4;
@@ -43,7 +43,7 @@ public class LightAttack4State : BaseState
 
     public override void ExitState()
     {
-        Debug.Log("Player has exited LIGHT ATTACK 4 state");
+        //Debug.Log("Player has exited LIGHT ATTACK 4 state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack4, false);
         Ctx.IsAttacking = false;

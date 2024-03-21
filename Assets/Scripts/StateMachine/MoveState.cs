@@ -11,7 +11,7 @@ public class MoveState : BaseState
         Ctx.DebugCurrentSubState = "Run State";
 
         Ctx.AttackType = 0;
-        Ctx.OnRun?.Invoke(true);
+        Ctx.OnMove?.Invoke(true);
 
     }
 
@@ -28,7 +28,7 @@ public class MoveState : BaseState
     {
         //Debug.LogWarning("Player has exited MOVE state");
 
-        Ctx.OnRun?.Invoke(false);
+        Ctx.OnMove?.Invoke(false);
     }
 
     public override void CheckSwitchStates()

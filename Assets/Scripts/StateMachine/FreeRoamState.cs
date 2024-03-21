@@ -17,8 +17,7 @@ public class FreeRoamState : BaseState
         //Debug.LogWarning("Player has entered FREE ROAM state");
         Ctx.DebugCurrentSuperState = "FreeRoam State";
 
-        Ctx.Animator.SetBool(Ctx.AnimIDGrounded, true);
-        //Ctx.IsAttacking = true;
+
     }
 
     public override void UpdateState()
@@ -39,7 +38,6 @@ public class FreeRoamState : BaseState
     {
         //Debug.LogWarning("Player has exited FREE ROAM state");
 
-        Ctx.Animator.SetBool(Ctx.AnimIDGrounded, false);
 
     }
 

@@ -43,7 +43,7 @@ public class LightAttack6State : BaseState
 
     public override void ExitState()
     {
-        Debug.Log("Player has exited LIGHT ATTACK 6 state");
+        //Debug.Log("Player has exited LIGHT ATTACK 6 state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack6, false);
         Ctx.IsAttacking = false;

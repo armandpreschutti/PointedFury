@@ -7,10 +7,11 @@ public class IdleState : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered IDLE state");
+       // Debug.LogWarning("Player has entered IDLE state");
         Ctx.DebugCurrentSubState = "Idle State";
 
         Ctx.AttackType = 0;
+        Ctx.HitType = 0;
         Ctx.OnIdle?.Invoke(true);
     }
 
@@ -38,6 +39,10 @@ public class IdleState : BaseState
         if (Ctx.IsLightAttackPressed)
         {
             SwitchState(Factory.LightAttack1());
+        }
+        if (Ctx.HitLanded)
+        {
+            SwitchState(Factory.Hurt());
         }
     }
 

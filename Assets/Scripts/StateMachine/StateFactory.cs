@@ -51,6 +51,10 @@ public class StateFactory
     {
         return new LightAttack7State(_context, this);
     }
+    public BaseState Hurt()
+    {
+        return new HurtState(_context, this);
+    }
     /*public PlayerBaseState Sprint()
     {
         return new PlayerSprintState(_context, this);
