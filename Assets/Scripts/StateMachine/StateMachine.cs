@@ -235,6 +235,7 @@ public class StateMachine : MonoBehaviour
             }
             else
             {
+                transform.DOLookAt(transform.position + InputDirection(), 1f);
                 return;
             }           
         }
@@ -429,10 +430,7 @@ public class StateMachine : MonoBehaviour
     {
         _isFighting = false;
     }
-    public void OnHurtAnimationBegin()
-    {
-
-    }
+ 
     public void OnHurtAnimationComplete()
     {
         _animator.SetBool(AnimIDHurt, false);

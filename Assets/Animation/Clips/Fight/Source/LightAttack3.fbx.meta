@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: e374c31802209cd4db57e527998b4c41
+guid: 0c36f2ecc3194efb92d861c73e6c58eb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: -9124097185675158277
-    second: combo7
+      74: -5851387242789802308
+    second: punch02
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: combo7
-      takeName: combo7
+      name: punch02
+      takeName: punch02
       internalID: 0
-      firstFrame: 27
-      lastFrame: 39
+      firstFrame: 3
+      lastFrame: 17
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

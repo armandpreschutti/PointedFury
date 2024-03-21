@@ -13,7 +13,7 @@ public class HurtState : BaseState
         Ctx.HitLanded = false;
         Ctx.IsHurt = true;
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
-        Ctx.Animator.Play($"Hurt{Ctx.HitType}", 0, 0);
+        Ctx.Animator.Play($"LightHurt{Ctx.HitType}", 0, 0);
     }
 
     public override void UpdateState()
@@ -30,7 +30,7 @@ public class HurtState : BaseState
     public override void ExitState()
     {
         Debug.LogWarning("Player has exited HURT state");
-        Ctx.Animator.Play($"Hurt{Ctx.HitType}", 0, 0);
+        //Ctx.Animator.Play($"Hurt{Ctx.HitType}", 0, 0);
     }
 
     public override void CheckSwitchStates()

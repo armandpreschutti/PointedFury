@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: c16a1e83e980449083b82686c8b7cbf4
+guid: c2423d1384d7d6242a2fbdd48492bb01
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: -5572631589276072495
-    second: hit_body_lower
+      74: 5946708163653373921
+    second: hit_body_front
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,22 +36,22 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: hit_body_lower
-      takeName: hit_body_lower
+      name: hit_body_front
+      takeName: hit_body_front
       internalID: 0
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 12
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
