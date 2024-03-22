@@ -28,7 +28,6 @@ public class LightAttack5State : BaseState
         CheckSwitchStates();
 
         Ctx.SetAttackDirection();
-        Ctx.TargetSpeed = 0f;
         if (Ctx.IsCharging)
         {
             Ctx.ChargeAtEnemy();

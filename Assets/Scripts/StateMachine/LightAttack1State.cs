@@ -21,7 +21,7 @@ public class LightAttack1Sate : BaseState
         Ctx.IsComboAttacking = false;
         Ctx.CanComboAttack = true;
         Ctx.IsFighting= true;
-        Ctx.SetAttackDirection();
+
     }
 
     public override void UpdateState()
@@ -30,7 +30,7 @@ public class LightAttack1Sate : BaseState
         
         CheckSwitchStates();
 
-        Ctx.TargetSpeed = 0f;
+        Ctx.SetAttackDirection();
         if (Ctx.IsCharging)
         {
             Ctx.ChargeAtEnemy();

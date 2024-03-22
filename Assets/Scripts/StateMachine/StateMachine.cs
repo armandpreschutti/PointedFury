@@ -231,11 +231,11 @@ public class StateMachine : MonoBehaviour
             _controller.Move(InputDirection() * Time.deltaTime * TargetSpeed);
             if (_currentTarget != null)
             {
-                transform.DOLookAt(_currentTarget.transform.position, 1f);
+                transform.LookAt(_currentTarget.transform.position);
             }
             else
             {
-                transform.DOLookAt(transform.position + InputDirection(), 1f);
+                transform.LookAt(transform.position + InputDirection());
                 return;
             }           
         }
@@ -351,21 +351,23 @@ public class StateMachine : MonoBehaviour
 
     public void SetAttackDirection()
     {
-        if (_moveInput != Vector2.zero)
+        if (_currentTarget != null)
         {
-            transform.LookAt(transform.position + InputDirection());
+            transform.LookAt(_currentTarget.transform.position);
         }
         else
         {
-            if (_currentTarget != null)
+            if (_moveInput != Vector2.zero)
             {
-                transform.LookAt(_currentTarget.transform.position);
+                transform.LookAt(transform.position + InputDirection());
             }
             else
             {
                 return;
             }
+           
         }
+        
     }
 
     public Vector3 InputDirection()

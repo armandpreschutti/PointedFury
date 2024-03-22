@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LightAttack4State : BaseState
@@ -28,7 +26,6 @@ public class LightAttack4State : BaseState
         CheckSwitchStates();
 
         Ctx.SetAttackDirection();
-        Ctx.TargetSpeed = 0f;
         if (Ctx.IsCharging)
         {
             Ctx.ChargeAtEnemy();

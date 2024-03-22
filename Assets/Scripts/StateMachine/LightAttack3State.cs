@@ -18,7 +18,6 @@ public class LightAttack3State : BaseState
         Ctx.IsComboAttacking = false;
         Ctx.CanComboAttack = true;
         Ctx.IsFighting = true;
-        Ctx.SetAttackDirection();
     }
 
     public override void UpdateState()
@@ -26,7 +25,7 @@ public class LightAttack3State : BaseState
         //Debug.Log("LIGHT ATTACK 3 state is currently active");
         CheckSwitchStates();
 
-        Ctx.TargetSpeed = 0f;
+        Ctx.SetAttackDirection();
         if (Ctx.IsCharging)
         {
             Ctx.ChargeAtEnemy();

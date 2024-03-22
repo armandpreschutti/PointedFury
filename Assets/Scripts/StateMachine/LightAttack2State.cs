@@ -18,7 +18,7 @@ public class LightAttack2State : BaseState
         Ctx.IsComboAttacking = false;
         Ctx.CanComboAttack = true;
         Ctx.IsFighting = true;
-        Ctx.SetAttackDirection();
+
     }
 
     public override void UpdateState()
@@ -26,12 +26,11 @@ public class LightAttack2State : BaseState
         //Debug.Log("LIGHT ATTACK 2 state is currently active");
         CheckSwitchStates();
 
-        Ctx.TargetSpeed = 0f;
+        Ctx.SetAttackDirection();
         if (Ctx.IsCharging)
         {
             Ctx.ChargeAtEnemy();
         }
-        Ctx.TargetSpeed = 0f;
         if (Ctx.IsLightAttackPressed)
         {
             Ctx.IsComboAttacking = true;
