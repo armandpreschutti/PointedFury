@@ -30,7 +30,7 @@ public class LightAttack7State : BaseState
 /*        Ctx.TargetSpeed = 0f;*/
         if (Ctx.IsCharging)
         {
-            Ctx.ChargeAtEnemy();
+            Ctx.LightAttackMovement();
         }
     }
 
@@ -56,6 +56,11 @@ public class LightAttack7State : BaseState
             {
                 SwitchState(Factory.Idle());
             }
+        }
+        if (Ctx.IsHitLanded)
+        {
+            SwitchState(Factory.Hurt());
+            Ctx.IsLightAttacking7 = false;
         }
     }
 

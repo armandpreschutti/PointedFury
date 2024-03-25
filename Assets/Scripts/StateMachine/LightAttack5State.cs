@@ -28,11 +28,12 @@ public class LightAttack5State : BaseState
         CheckSwitchStates();
 
         Ctx.SetAttackDirection();
+
         if (Ctx.IsCharging)
         {
-            Ctx.ChargeAtEnemy();
+            Ctx.LightAttackMovement();
         }
-        if (Ctx.IsLightAttackPressed)
+        if (Ctx.IsLightAttackPressed && !Ctx.IsHurt)
         {
             Ctx.IsComboAttacking = true;
             Ctx.CanComboAttack = false;
@@ -70,6 +71,13 @@ public class LightAttack5State : BaseState
                 }
             }
 
+        }
+        if (Ctx.IsHitLanded)
+        {
+            SwitchState(Factory.Hurt());
+            Ctx.IsLightAttacking5 = false;
+/*            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack5, false);
+            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack6, false);*/
         }
     }
 

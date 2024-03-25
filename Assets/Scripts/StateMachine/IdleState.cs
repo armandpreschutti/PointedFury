@@ -11,7 +11,7 @@ public class IdleState : BaseState
         Ctx.DebugCurrentSubState = "Idle State";
 
         Ctx.AttackType = 0;
-        Ctx.HitType = 0;
+        //Ctx.HitType = 0;
         Ctx.OnIdle?.Invoke(true);
     }
 
@@ -36,13 +36,17 @@ public class IdleState : BaseState
         {
             SwitchState(Factory.Move());
         }
-        if (Ctx.IsLightAttackPressed)
+        if (Ctx.IsLightAttackPressed && !Ctx.IsHurt)
         {
             SwitchState(Factory.LightAttack1());
         }
-        if (Ctx.HitLanded)
+        if (Ctx.IsHitLanded)
         {
             SwitchState(Factory.Hurt());
+        }
+        if (Ctx.IsDodgePressed)
+        {
+            SwitchState(Factory.Dodge());
         }
     }
 

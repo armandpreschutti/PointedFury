@@ -33,9 +33,9 @@ public class LightAttack1Sate : BaseState
         Ctx.SetAttackDirection();
         if (Ctx.IsCharging)
         {
-            Ctx.ChargeAtEnemy();
+            Ctx.LightAttackMovement();
         }
-        if (Ctx.IsLightAttackPressed)
+        if (Ctx.IsLightAttackPressed && !Ctx.IsHurt)
         {
             Ctx.IsComboAttacking = true;
             Ctx.CanComboAttack = false;
@@ -47,6 +47,7 @@ public class LightAttack1Sate : BaseState
     {
         //Debug.LogWarning("Player has exited LIGHT ATTACK state");
 
+       // Ctx.IsLightAttacking1 = false;
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
         Ctx.IsAttacking = false;
 
@@ -75,6 +76,14 @@ public class LightAttack1Sate : BaseState
                 }
             }
             
+        }
+        if (Ctx.IsHitLanded)
+        {
+            SwitchState(Factory.Hurt());
+            Ctx.IsLightAttacking1 = false;
+/*            // Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
+            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
+            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack2, false);*/
         }
     }
 

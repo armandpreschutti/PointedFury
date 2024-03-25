@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.XR;
 
 public class StateMachine : MonoBehaviour
@@ -23,6 +24,8 @@ public class StateMachine : MonoBehaviour
     public float SpeedChangeRate = 10.0f;
     [Tooltip("How fast the character charges towards a direction while attacking")]
     public float ChargeSpeed;
+    [Tooltip("How fast the character leaps towards while dodging")]
+    public float DodgeSpeed;
 
     // Player grounded variables
     [Header("Player Grounded")]
@@ -42,7 +45,8 @@ public class StateMachine : MonoBehaviour
     public float AttackTimeout;
     [Tooltip("The minimum distance between player and target")]
     public float CombatDistance;
-
+    [Tooltip("The amount of force added to landed attacks")]
+    public float KnockBackPower;
 
     // Debug State Variables
 
@@ -63,7 +67,12 @@ public class StateMachine : MonoBehaviour
     private bool _isLightAttacking7 = false;
     private bool _isCharging = false;
     private bool _isHurt = false;
-    private bool _hitLanded = false;
+    private bool _isHitLanded = false;
+    private bool _isKnockedBack = false;
+    private bool _isDodging = false; 
+    private bool _isLeaping = false;
+
+
     [SerializeField] bool _isAI;
     public string DebugCurrentSuperState;
     public string DebugCurrentSubState;
@@ -81,6 +90,7 @@ public class StateMachine : MonoBehaviour
     private Vector2 _moveInput;
     private Vector2 _lookInput;
     private bool _isLightAttackPressed = false;
+    private bool _isDodgePressed = false;
 
 
     // Player components
@@ -123,21 +133,22 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDLightAttack6;
     [HideInInspector] public int AnimIDLightAttack7;
     [HideInInspector] public int AnimIDHurt;
-    [HideInInspector] public int AnimIDHurtTrigger;
+    [HideInInspector] public int AnimIDDodge;
     [HideInInspector] public int AnimIDCombo;
     [HideInInspector] public int AnimationIDAttackType;
     [HideInInspector] public float _transitionTime;
-
+    
 
     // Player action events
     public Action OnAttackContact;
-/*    public Action<bool> OnComboAttack;*/
+    public Action OnHitLanded;
 
     // Getters and setters
     // Input
     public Vector2 MoveInput { get { return _moveInput; } set { _moveInput = value; } }
     public Vector2 LookInput { get { return _lookInput; } set { _lookInput = value; } }
     public bool IsLightAttackPressed { get { return _isLightAttackPressed; } set { _isLightAttackPressed = value; } }
+    public bool IsDodgePressed { get { return _isDodgePressed; } set { _isDodgePressed = value; } }
 
     // Speed
     public float Speed { get { return _speed; } }
@@ -158,9 +169,13 @@ public class StateMachine : MonoBehaviour
     public bool IsLightAttacking7 { get { return _isLightAttacking7; } set { _isLightAttacking7 = value; } }
     public bool IsHurt { get { return _isHurt; } set { _isHurt = value; } }
     public bool IsCharging { get { return _isCharging; } }
-    public bool HitLanded { get { return _hitLanded; } set { _hitLanded = value; } }
+    public bool IsHitLanded { get { return _isHitLanded; } set { _isHitLanded = value; } }
+    public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack= value; } }
+    public bool IsDodging { get { return _isDodging; } set { _isDodging = value; } }
+    public bool IsLeaping { get { return _isLeaping; } set { _isLeaping = value; } }
  
     // Fighting
+    public GameObject CurrentTarget { get { return _currentTarget; } }
     public int AttackType { get { return _attackType; } set { _attackType = value; } }
     public int HitType { get { return _hitType; } set { _hitType = value; } }
     public float FightTimeoutDelta { get { return _fightTimeoutDelta; } set { _fightTimeoutDelta = value; } }
@@ -226,7 +241,7 @@ public class StateMachine : MonoBehaviour
     // Move the player
     public void FightMovement()
     {
-        if (!_isAttacking)
+        if (!_isAttacking && !_isHurt)
         {
             _controller.Move(InputDirection() * Time.deltaTime * TargetSpeed);
             if (_currentTarget != null)
@@ -312,9 +327,9 @@ public class StateMachine : MonoBehaviour
             }
         }
     }
-    public void ChargeAtEnemy()
+    public void LightAttackMovement()
     {
-        if(_moveInput != Vector2.zero && _currentTarget == null)
+        if(_currentTarget == null)
         {
             // Calculate the movement direction based on the forward direction of the character
             Vector3 moveDirection = transform.forward * ChargeSpeed;
@@ -349,6 +364,19 @@ public class StateMachine : MonoBehaviour
         }
     }
 
+    public void DodgeMovement(Vector3 dodgeDirection)
+    {
+        if(_moveInput != Vector2.zero)
+        {
+            _controller.Move(dodgeDirection * Time.deltaTime * DodgeSpeed);
+        }
+        else
+        {
+            _controller.Move((transform.position - _currentTarget.transform.position).normalized * Time.deltaTime * DodgeSpeed);
+        }
+
+    }
+
     public void SetAttackDirection()
     {
         if (_currentTarget != null)
@@ -370,11 +398,17 @@ public class StateMachine : MonoBehaviour
         
     }
 
+    public void SetHitKnockback()
+    {
+        _controller.Move((transform.position - _currentTarget.transform.position).normalized * KnockBackPower * Time.deltaTime);
+    }
+
     public Vector3 InputDirection()
     {
+
         var camera = Camera.main;
-        var forward = camera.transform.forward;
-        var right = camera.transform.right;
+        var forward = _isAI? transform.forward : camera.transform.forward;
+        var right = _isAI ? transform.right: camera.transform.right;
 
         forward.y = 0f;
         right.y = 0f;
@@ -432,16 +466,42 @@ public class StateMachine : MonoBehaviour
     {
         _isFighting = false;
     }
- 
+    
+    public void OnHurtAnimationKnockbackComplete()
+    {
+        _isKnockedBack= false;
+    }
     public void OnHurtAnimationComplete()
     {
         _animator.SetBool(AnimIDHurt, false);
         _isHurt = false;
     }
+    public void OnLeapStart()
+    {
+        _isLeaping = true;
+    }
+    public void OnLeapComplete()
+    {
+        _isLeaping = false;
+    }
+    public void OnDodgeAnimationComplete()
+    {
+        //_animator.SetBool(AnimIDDodge, false);
+        _isDodging = false;
+    }
     public void TakeHit(int attackType)
     {
-        _hitType = attackType;
-        _hitLanded = true;
+        if(!_isDodging)
+        {
+            _hitType = attackType;
+            _isHitLanded = true;
+            OnHitLanded?.Invoke();
+        }
+        else
+        {
+            return;
+        }
+
     }
 
     public void ExitCurrentAttackState()
@@ -491,7 +551,7 @@ public class StateMachine : MonoBehaviour
         AnimIDLightAttack6 = Animator.StringToHash("LightAttack6");
         AnimIDLightAttack7 = Animator.StringToHash("LightAttack7");
         AnimIDHurt = Animator.StringToHash("Hurt");
-        AnimIDHurtTrigger = Animator.StringToHash("HurtTrigger");
+        AnimIDDodge = Animator.StringToHash("Dodge");
     }
 
     private void SetMovementAnimationValues()

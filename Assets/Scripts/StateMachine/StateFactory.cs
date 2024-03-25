@@ -55,6 +55,10 @@ public class StateFactory
     {
         return new HurtState(_context, this);
     }
+    public BaseState Dodge()
+    {
+        return new DodgeState(_context, this);
+    }
     /*public PlayerBaseState Sprint()
     {
         return new PlayerSprintState(_context, this);

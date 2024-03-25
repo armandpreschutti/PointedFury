@@ -20,7 +20,7 @@ public class MoveState : BaseState
         //Debug.Log("MOVE state is currently active");
         CheckSwitchStates();
 
-        Ctx.TargetSpeed = Ctx.MoveSpeed;
+        Ctx.TargetSpeed = Ctx.FightSpeed;
 
     }
 
@@ -40,6 +40,14 @@ public class MoveState : BaseState
         if (Ctx.IsLightAttackPressed && !Ctx.IsLightAttacking1)
         {
             SwitchState(Factory.LightAttack1());
+        }
+        if (Ctx.IsHitLanded)
+        {
+            SwitchState(Factory.Hurt());
+        }
+        if (Ctx.IsDodgePressed)
+        {
+            SwitchState(Factory.Dodge());
         }
     }
 

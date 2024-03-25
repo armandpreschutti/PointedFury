@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: de54b2f62d92415fac5bea0d0aae2254
+guid: 0a3baa45fac3f4b41b0172503f173ff7
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: -9124097185675158277
-    second: combo7
+      74: -219386519827830158
+    second: avoid_left
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,25 +36,25 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: combo7
-      takeName: combo7
+      name: avoid_left
+      takeName: avoid_left
       internalID: 0
       firstFrame: 0
-      lastFrame: 147
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000

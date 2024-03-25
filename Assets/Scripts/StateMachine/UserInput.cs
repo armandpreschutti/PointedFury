@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class UserInput : MonoBehaviour
 {
@@ -46,10 +47,31 @@ public class UserInput : MonoBehaviour
     public void SetLightAttackInput(bool value)
     {
         
-        if (_stateMachine.AttackType == 0 || _stateMachine.CanComboAttack)
+        if(!_stateMachine.IsHurt)
         {
-            _stateMachine.IsLightAttackPressed = value;
+            if (_stateMachine.AttackType == 0 || _stateMachine.CanComboAttack)
+            {
+                _stateMachine.IsLightAttackPressed = value;
+            }
+            else
+            {
+                return;
+            }
         }
+       
+        else
+        {
+            return;
+        }
+    }
+    public void SetDodgeInput(bool value)
+    {
+        if (/*!_stateMachine.IsHurt && */!_stateMachine.IsDodging && !_stateMachine.IsAttacking)
+        {
+            Debug.Log("Dodge button hooked up");
+            _stateMachine.IsDodgePressed = value;
+        }
+
         else
         {
             return;
@@ -63,5 +85,6 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Move.performed += ctx => SetMoveInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.LightAttack.performed += ctx => SetLightAttackInput(ctx.ReadValueAsButton());
+        _playerControls.Player.Dodge.performed += ctx => SetDodgeInput(ctx.ReadValueAsButton());
     }
 }

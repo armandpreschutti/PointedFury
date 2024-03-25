@@ -2,68 +2,48 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
-    [SerializeField] bool _isPlayer;
-    [SerializeField] bool _isAi;
-    [SerializeField] DebugTester _aiStateMachine;
-    [SerializeField] PlayerStateMachine _playerStateMachine;
-    [SerializeField] float _maxHealth;
+    [SerializeField] StateMachine _stateMachine;
+    [SerializeField] float MaxHealth = 100;
+    [SerializeField] float MinHealth = 0;
     [SerializeField] float _currentHealh;
-    [SerializeField] float _DamageAmount;
+    [SerializeField] Slider _healthBar;
+    
     public Action OnDeath;
 
     private void Awake()
     {
-        if (_isPlayer)
-        {
-            _playerStateMachine= GetComponent<PlayerStateMachine>();
-        }
-        if (_isAi)
-        {
-            _aiStateMachine = GetComponent<DebugTester>();
-        }
+       _stateMachine = GetComponent<StateMachine>();
+       _healthBar = GetComponentInChildren<Slider>();
     }
     private void OnEnable()
     {
-        if(_playerStateMachine != null)
-        {
-
-        }
-        if(_aiStateMachine != null)
-        {
-            _aiStateMachine.OnHit += TakeDamage;
-        }
+        _stateMachine.OnHitLanded += TakeDamage;
     }
     private void OnDisable()
     {
-        if (_playerStateMachine != null)
-        {
-
-        }
-        if (_aiStateMachine != null)
-        {
-            _aiStateMachine.OnHit -= TakeDamage;
-        }
-
+        _stateMachine.OnHitLanded -= TakeDamage;
     }
     // Start is called before the first frame update
     void Start()
     {
-        _currentHealh = _maxHealth;
+        _currentHealh = MaxHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        _healthBar.transform.LookAt(Camera.main.transform.position);
     }
 
-    public void TakeDamage(int attackType)
+    public void TakeDamage()
     {
         _currentHealh -= 20;
-        if(_currentHealh <= 0)
+        _healthBar.value = _currentHealh;
+        if(_currentHealh <= MinHealth)
         {
             Debug.Log($"{gameObject.name} has died!");
             OnDeath?.Invoke();
