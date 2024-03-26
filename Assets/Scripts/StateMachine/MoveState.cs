@@ -45,7 +45,11 @@ public class MoveState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-        if (Ctx.IsDodgePressed)
+        if (Ctx.IsDashPressed)
+        {
+            SwitchState(Factory.Dash());
+        }
+        if (Ctx.IsDodgeSuccess)
         {
             SwitchState(Factory.Dodge());
         }

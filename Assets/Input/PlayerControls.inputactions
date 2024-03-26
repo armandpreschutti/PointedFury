@@ -60,9 +60,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Dodge",
+                    "name": "Dash",
                     "type": "Value",
                     "id": "42bebc7d-e8fd-46d2-aac7-a1dc0c665533",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Dodge",
+                    "type": "Value",
+                    "id": "3f7c26e7-91a2-4976-b278-3c7c3d5517ad",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -140,6 +149,17 @@
                     "name": "",
                     "id": "94aad3d6-dda9-4629-9a9a-ced7c32a199e",
                     "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3338680-596b-4813-803e-24a48c6acb9a",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",

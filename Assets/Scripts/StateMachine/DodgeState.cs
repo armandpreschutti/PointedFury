@@ -5,43 +5,29 @@ using UnityEngine;
 public class DodgeState : BaseState
 {
     public DodgeState(StateMachine currentContext, StateFactory stateFactory)
-     : base(currentContext, stateFactory) { }
+       : base(currentContext, stateFactory) { }
 
-    Vector3 dodgeDirection;
     public override void EnterState()
     {
-        //Debug.LogWarning("Player has entered LIGHT ATTACK 1 state");
-        Ctx.DebugCurrentSubState = "Dodge State";
+        //Debug.LogWarning("Player has entered DODGE state");
 
-        Ctx.Animator.SetBool(Ctx.AnimIDDodge, true);
+        Ctx.IsDodgeSuccess = false;
         Ctx.IsDodging = true;
-        Ctx.IsDodgePressed= false;
-        Ctx.IsFighting = true;
-        dodgeDirection = Ctx.InputDirection();
-
+        Ctx.Animator.SetBool(Ctx.AnimIDDodge, true);
+        Ctx.Animator.Play($"Dodge{Ctx.DodgeType()}", 0, 0);
     }
 
     public override void UpdateState()
     {
-        //Debug.Log("LIGHT ATTACK state is currently active");
+        //Debug.Log("DODGE state is currently active");
 
+        Ctx.DebugCurrentSubState = "Dodge State";
         CheckSwitchStates();
-
-        ///Ctx.SetAttackDirection();
-        if (Ctx.IsLeaping)
-        {
-            Ctx.DodgeMovement(dodgeDirection);
-        }
-       
     }
 
     public override void ExitState()
     {
-        //Debug.LogWarning("Player has exited LIGHT ATTACK state");
-
-        // Ctx.IsLightAttacking1 = false;
-        Ctx.Animator.SetBool(Ctx.AnimIDDodge, false);
-        //Ctx.IsDodging = false;
+        //Debug.LogWarning("Player has exited DODGE state");
 
     }
 
@@ -57,12 +43,10 @@ public class DodgeState : BaseState
             {
                 SwitchState(Factory.Idle());
             }
-
         }
-        if (Ctx.IsHitLanded)
+        if(Ctx.IsDodgeSuccess)
         {
-            SwitchState(Factory.Hurt());
-            Ctx.IsDodging= false;
+            SwitchState(Factory.Dodge());
         }
     }
 

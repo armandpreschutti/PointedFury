@@ -82,9 +82,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Dodge"",
+                    ""name"": ""Dash"",
                     ""type"": ""Value"",
                     ""id"": ""42bebc7d-e8fd-46d2-aac7-a1dc0c665533"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Dodge"",
+                    ""type"": ""Value"",
+                    ""id"": ""3f7c26e7-91a2-4976-b278-3c7c3d5517ad"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -165,6 +174,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3338680-596b-4813-803e-24a48c6acb9a"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -230,6 +250,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Fight = m_Player.FindAction("Fight", throwIfNotFound: true);
         m_Player_LightAttack = m_Player.FindAction("LightAttack", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
     }
 
@@ -298,6 +319,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Fight;
     private readonly InputAction m_Player_LightAttack;
+    private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Dodge;
     public struct PlayerActions
     {
@@ -309,6 +331,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Fight => m_Wrapper.m_Player_Fight;
         public InputAction @LightAttack => m_Wrapper.m_Player_LightAttack;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Dodge => m_Wrapper.m_Player_Dodge;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -337,6 +360,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @LightAttack.started += instance.OnLightAttack;
             @LightAttack.performed += instance.OnLightAttack;
             @LightAttack.canceled += instance.OnLightAttack;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
@@ -362,6 +388,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @LightAttack.started -= instance.OnLightAttack;
             @LightAttack.performed -= instance.OnLightAttack;
             @LightAttack.canceled -= instance.OnLightAttack;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
@@ -426,6 +455,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnFight(InputAction.CallbackContext context);
         void OnLightAttack(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
     }
 }

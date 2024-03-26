@@ -55,41 +55,14 @@ public class StateFactory
     {
         return new HurtState(_context, this);
     }
+    public BaseState Dash()
+    {
+        return new DashState(_context, this);
+    }
+
     public BaseState Dodge()
     {
         return new DodgeState(_context, this);
     }
-    /*public PlayerBaseState Sprint()
-    {
-        return new PlayerSprintState(_context, this);
-    }
-    public PlayerBaseState Jump()
-    {
-        return new PlayerJumpState(_context, this);
-    }
 
-    public PlayerBaseState Grounded()
-    {
-        return new PlayerGroundedState(_context, this);
-    }
-
-    public PlayerBaseState Fight()
-    {
-        return new PlayerFightState(_context, this);
-    }
-
-    public PlayerBaseState FightIdle()
-    {
-        return new PlayerFightIdleState(_context, this);
-    }
-
-    public PlayerBaseState FightStrafe()
-    {
-        return new PlayerFightStrafeState(_context, this);
-    }
-
-    public PlayerBaseState LightAttack()
-    {
-        return new PlayerLightAttackSate(_context, this);
-    }*/
 }

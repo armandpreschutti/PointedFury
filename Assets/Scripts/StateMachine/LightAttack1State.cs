@@ -81,9 +81,6 @@ public class LightAttack1Sate : BaseState
         {
             SwitchState(Factory.Hurt());
             Ctx.IsLightAttacking1 = false;
-/*            // Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
-            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
-            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack2, false);*/
         }
     }
 

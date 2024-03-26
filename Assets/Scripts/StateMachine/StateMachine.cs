@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.XR;
+using static TreeEditor.TreeEditorHelper;
 
 public class StateMachine : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class StateMachine : MonoBehaviour
     [Tooltip("How fast the character charges towards a direction while attacking")]
     public float ChargeSpeed;
     [Tooltip("How fast the character leaps towards while dodging")]
-    public float DodgeSpeed;
+    public float DashSpeed;
 
     // Player grounded variables
     [Header("Player Grounded")]
@@ -69,9 +70,10 @@ public class StateMachine : MonoBehaviour
     private bool _isHurt = false;
     private bool _isHitLanded = false;
     private bool _isKnockedBack = false;
-    private bool _isDodging = false; 
-    private bool _isLeaping = false;
-
+    private bool _isDashing = false; 
+    private bool _isDashMoving = false;
+    private bool _isDodging = false;
+    private bool _isDodgeSuccess = false;
 
     [SerializeField] bool _isAI;
     public string DebugCurrentSuperState;
@@ -85,13 +87,14 @@ public class StateMachine : MonoBehaviour
     private bool _canComboAttack = false;
     private bool _isComboAttacking = false;
     private int _hitType = 0;
+    private int _dodgeType = 1;
 
     // Player input variables
     private Vector2 _moveInput;
     private Vector2 _lookInput;
     private bool _isLightAttackPressed = false;
+    private bool _isDashPressed = false;
     private bool _isDodgePressed = false;
-
 
     // Player components
     private Animator _animator;
@@ -133,6 +136,7 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDLightAttack6;
     [HideInInspector] public int AnimIDLightAttack7;
     [HideInInspector] public int AnimIDHurt;
+    [HideInInspector] public int AnimIDDash;
     [HideInInspector] public int AnimIDDodge;
     [HideInInspector] public int AnimIDCombo;
     [HideInInspector] public int AnimationIDAttackType;
@@ -142,13 +146,15 @@ public class StateMachine : MonoBehaviour
     // Player action events
     public Action OnAttackContact;
     public Action OnHitLanded;
+    public Action OnCounterSuccess;
 
     // Getters and setters
     // Input
     public Vector2 MoveInput { get { return _moveInput; } set { _moveInput = value; } }
     public Vector2 LookInput { get { return _lookInput; } set { _lookInput = value; } }
     public bool IsLightAttackPressed { get { return _isLightAttackPressed; } set { _isLightAttackPressed = value; } }
-    public bool IsDodgePressed { get { return _isDodgePressed; } set { _isDodgePressed = value; } }
+    public bool IsDashPressed { get { return _isDashPressed; } set { _isDashPressed = value; } }
+    public bool IsDodgePressed { get { return _isDodgePressed; } set { _isDodgePressed = value; } }   
 
     // Speed
     public float Speed { get { return _speed; } }
@@ -171,9 +177,11 @@ public class StateMachine : MonoBehaviour
     public bool IsCharging { get { return _isCharging; } }
     public bool IsHitLanded { get { return _isHitLanded; } set { _isHitLanded = value; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack= value; } }
+    public bool IsDashing { get { return _isDashing; } set { _isDashing = value; } }
+    public bool IsDashMoving { get { return _isDashMoving; } set { _isDashMoving = value; } }
     public bool IsDodging { get { return _isDodging; } set { _isDodging = value; } }
-    public bool IsLeaping { get { return _isLeaping; } set { _isLeaping = value; } }
- 
+    public bool IsDodgeSuccess { get { return _isDodgeSuccess; } set { _isDodgeSuccess = value; } }
+
     // Fighting
     public GameObject CurrentTarget { get { return _currentTarget; } }
     public int AttackType { get { return _attackType; } set { _attackType = value; } }
@@ -241,18 +249,28 @@ public class StateMachine : MonoBehaviour
     // Move the player
     public void FightMovement()
     {
-        if (!_isAttacking && !_isHurt)
+        if (!_isAttacking && !_isHurt && !_isDodging)
         {
             _controller.Move(InputDirection() * Time.deltaTime * TargetSpeed);
             if (_currentTarget != null)
             {
-                transform.LookAt(_currentTarget.transform.position);
+                Vector3 direction = _currentTarget.transform.position - transform.position;
+                direction.y = 0f; // Ignore y component
+                if (direction != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(direction);
+                }
             }
             else
             {
-                transform.LookAt(transform.position + InputDirection());
+                Vector3 direction = InputDirection();
+                direction.y = 0f; // Ignore y component
+                if (direction != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(direction);
+                }
                 return;
-            }           
+            }
         }
         else
         {
@@ -281,7 +299,8 @@ public class StateMachine : MonoBehaviour
         // Initialize the player state machine with default state
         _states = new StateFactory(this);
         _currentState = _states.FreeRoam();
-        _currentState.EnterState();
+        _currentState.EnterStates();
+
     }
 
     public void EnemyDetection()
@@ -364,15 +383,22 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    public void DodgeMovement(Vector3 dodgeDirection)
+    public void DashMovement()
     {
         if(_moveInput != Vector2.zero)
         {
-            _controller.Move(dodgeDirection * Time.deltaTime * DodgeSpeed);
+            _controller.Move(InputDirection() * Time.deltaTime * DashSpeed);
         }
         else
         {
-            _controller.Move((transform.position - _currentTarget.transform.position).normalized * Time.deltaTime * DodgeSpeed);
+            if(_currentTarget != null)
+            {
+                _controller.Move((transform.position - _currentTarget.transform.position).normalized * Time.deltaTime * DashSpeed);
+            }
+            else
+            {
+                return;
+            }
         }
 
     }
@@ -421,6 +447,20 @@ public class StateMachine : MonoBehaviour
         return inputDirection;
     }
 
+    public int DodgeType()
+    {
+        if(_dodgeType == 1)
+        {
+            _dodgeType = 2;
+        }
+        else 
+        {
+            _dodgeType = 1;
+
+        }
+        return _dodgeType;
+    }
+
     public Vector3 TargetRelativeInput()
     {
         if(_currentTarget!= null && _moveInput != Vector2.zero)
@@ -452,10 +492,12 @@ public class StateMachine : MonoBehaviour
     public void OnAttackAnimationCharge()
     {
         _isCharging = true;
+        OnLightAttack1?.Invoke(true);
     }
     public void OnAttackAnimationContact()
     {
         OnAttackContact?.Invoke();
+        OnLightAttack1?.Invoke(false);
         _isCharging = false;
     }
     public void OnAttackAnimationComplete()
@@ -476,22 +518,27 @@ public class StateMachine : MonoBehaviour
         _animator.SetBool(AnimIDHurt, false);
         _isHurt = false;
     }
-    public void OnLeapStart()
-    {
-        _isLeaping = true;
-    }
-    public void OnLeapComplete()
-    {
-        _isLeaping = false;
-    }
     public void OnDodgeAnimationComplete()
     {
-        //_animator.SetBool(AnimIDDodge, false);
+        _animator.SetBool(AnimIDDodge, false);
         _isDodging = false;
+    }
+    public void OnDashMoveStart()
+    {
+        _isDashMoving = true;
+    }
+    public void OnDashMoveComplete()
+    {
+        _isDashMoving = false;
+    }
+    public void OnDashAnimationComplete()
+    {
+        //_animator.SetBool(AnimIDDodge, false);
+        _isDashing = false;
     }
     public void TakeHit(int attackType)
     {
-        if(!_isDodging)
+        if(!_isDodgePressed)
         {
             _hitType = attackType;
             _isHitLanded = true;
@@ -499,6 +546,8 @@ public class StateMachine : MonoBehaviour
         }
         else
         {
+            _isDodgeSuccess = true;
+            OnCounterSuccess?.Invoke();
             return;
         }
 
@@ -551,6 +600,7 @@ public class StateMachine : MonoBehaviour
         AnimIDLightAttack6 = Animator.StringToHash("LightAttack6");
         AnimIDLightAttack7 = Animator.StringToHash("LightAttack7");
         AnimIDHurt = Animator.StringToHash("Hurt");
+        AnimIDDash = Animator.StringToHash("Dash");
         AnimIDDodge = Animator.StringToHash("Dodge");
     }
 

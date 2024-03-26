@@ -44,7 +44,11 @@ public class IdleState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-        if (Ctx.IsDodgePressed)
+      /*  if (Ctx.IsDodgePressed)
+        {
+            SwitchState(Factory.Dodge());
+        }*/
+        if (Ctx.IsDodgeSuccess)
         {
             SwitchState(Factory.Dodge());
         }

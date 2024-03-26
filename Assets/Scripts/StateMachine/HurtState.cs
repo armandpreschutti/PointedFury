@@ -33,7 +33,7 @@ public class HurtState : BaseState
 
     public override void ExitState()
     {
-        Debug.LogWarning("Player has exited HURT state");
+        //Debug.LogWarning("Player has exited HURT state");
         //Ctx.Animator.Play($"Hurt{Ctx.HitType}", 0, 0);
     }
 
@@ -47,12 +47,12 @@ public class HurtState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-        if(Ctx.IsDodgePressed)
+     /*   if (Ctx.IsDodgePressed)
         {
             SwitchState(Factory.Dodge());
             Ctx.Animator.SetBool(Ctx.AnimIDHurt, false);
             Ctx.IsHurt = false;
-        }
+        }*/
     }
 
     public override void InitializeSubStates()
