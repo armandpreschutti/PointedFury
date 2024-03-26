@@ -82,6 +82,11 @@ public class LightAttack1Sate : BaseState
             SwitchState(Factory.Hurt());
             Ctx.IsLightAttacking1 = false;
         }
+        if (Ctx.IsDodgeSuccess)
+        {
+            Ctx.IsLightAttacking1 = false;
+            SwitchState(Factory.Dodge());
+        }
     }
 
     public override void InitializeSubStates()
