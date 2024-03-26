@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: c20bc0a05964cdd4b8306a778a3065ea
+guid: badade9935c99ed4cb92d219ba6ef9ee
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: -9124097185675158277
-    second: combo7
+      74: -5572631589276072495
+    second: hit_body_lower
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: combo7
-      takeName: combo7
+      name: hit_body_lower
+      takeName: hit_body_lower
       internalID: 0
-      firstFrame: 113
-      lastFrame: 125
+      firstFrame: 0
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -54,7 +54,7 @@ ModelImporter:
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000

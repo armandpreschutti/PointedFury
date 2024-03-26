@@ -37,9 +37,9 @@ public class MoveState : BaseState
         {
             SwitchState(Factory.Idle());
         }
-        if (Ctx.IsLightAttackPressed && !Ctx.IsLightAttacking1)
+        if (Ctx.IsLightAttackPressed && !Ctx.IsLightAttacking)
         {
-            SwitchState(Factory.LightAttack1());
+            SwitchState(Factory.LightAttack());
         }
         if (Ctx.IsHitLanded)
         {

@@ -8,7 +8,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerAnimationHandler : MonoBehaviour
 {
-    [SerializeField] StateMachine _stateMachine;
+  /*  [SerializeField] StateMachine _stateMachine;
     [SerializeField] Animator _anim;
 
 
@@ -36,9 +36,9 @@ public class PlayerAnimationHandler : MonoBehaviour
     {
         _stateMachine.OnGrounded += SetGroundedAnimation;
         _stateMachine.OnFight += SetFightAnimation;
-        _stateMachine.OnLightAttack1 += SetLightAttack1Animation;
-        _stateMachine.OnLightAttack2 += SetLightAttack2Animation;
-        _stateMachine.OnLightAttack3 += SetLightAttack3Animation;
+        _stateMachine.OnLightAttack += SetLightAttack1Animation;
+*//*        _stateMachine.OnLightAttack2 += SetLightAttack2Animation;
+        _stateMachine.OnLightAttack3 += SetLightAttack3Animation;*//*
         //_stateMachine.OnComboAttack += SetComboAnimation;
     }
 
@@ -46,9 +46,9 @@ public class PlayerAnimationHandler : MonoBehaviour
     {
         _stateMachine.OnGrounded -= SetGroundedAnimation;
         _stateMachine.OnFight -= SetFightAnimation;
-        _stateMachine.OnLightAttack1 -= SetLightAttack1Animation;
-        _stateMachine.OnLightAttack2 -= SetLightAttack2Animation;
-        _stateMachine.OnLightAttack3 -= SetLightAttack3Animation;
+        _stateMachine.OnLightAttack -= SetLightAttack1Animation;
+*//*        _stateMachine.OnLightAttack2 -= SetLightAttack2Animation;
+        _stateMachine.OnLightAttack3 -= SetLightAttack3Animation;*//*
         //_stateMachine.OnComboAttack -= SetComboAnimation;
     }
 
@@ -160,5 +160,5 @@ public class PlayerAnimationHandler : MonoBehaviour
             
         }
         return debug;
-    }
+    }*/
 }

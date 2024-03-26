@@ -43,14 +43,10 @@ public class HitBroadcastHandler : MonoBehaviour
     {
         foreach(GameObject hit in _hitTargets)
         {
-           // Debug.Log("LandAttack() called correctly on HitBroadcastHandler");
             if(hit.GetComponent<StateMachine>() != null) 
             {
                 hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType);
             }
-            //Debug.Log($"Player has attacked {hit.name}");
-            //hit.GetComponent<DebugTester>().TakeHit(_StateMachine.AttackType);
-            //Debug.Log(_playerStateMachine.AttackType);
         }
     }
 }

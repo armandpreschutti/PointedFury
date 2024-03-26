@@ -59,13 +59,7 @@ public class StateMachine : MonoBehaviour
     private float _targetSpeed;
     private float _verticalVelocity;
     private bool _isAttacking;
-    private bool _isLightAttacking1 = false;
-    private bool _isLightAttacking2 = false;
-    private bool _isLightAttacking3 = false;
-    private bool _isLightAttacking4 = false;
-    private bool _isLightAttacking5 = false;
-    private bool _isLightAttacking6 = false;
-    private bool _isLightAttacking7 = false;
+    private bool _isLightAttacking = false;
     private bool _isCharging = false;
     private bool _isHurt = false;
     private bool _isHitLanded = false;
@@ -110,13 +104,7 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnFall;
     public Action<bool> OnGrounded;
     public Action<bool> OnFight;
-    public Action<bool> OnLightAttack1;
-    public Action<bool> OnLightAttack2;
-    public Action<bool> OnLightAttack3;
-    public Action<bool> OnLightAttack4; 
-    public Action<bool> OnLightAttack5;
-    public Action<bool> OnLightAttack6;
-    public Action<bool> OnLightAttack7;
+    public Action<bool> OnLightAttack;
     public Action<bool> OnMove;
     public Action<bool> OnIdle;
     public Action<bool> OnHurt;
@@ -128,13 +116,7 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDFight;
     [HideInInspector] public int AnimIDInputX;
     [HideInInspector] public int AnimIDInputY;
-    [HideInInspector] public int AnimIDLightAttack1;
-    [HideInInspector] public int AnimIDLightAttack2;
-    [HideInInspector] public int AnimIDLightAttack3;
-    [HideInInspector] public int AnimIDLightAttack4;
-    [HideInInspector] public int AnimIDLightAttack5;
-    [HideInInspector] public int AnimIDLightAttack6;
-    [HideInInspector] public int AnimIDLightAttack7;
+    [HideInInspector] public int AnimIDLightAttack;
     [HideInInspector] public int AnimIDHurt;
     [HideInInspector] public int AnimIDDash;
     [HideInInspector] public int AnimIDDodge;
@@ -166,13 +148,7 @@ public class StateMachine : MonoBehaviour
     public bool IsGrounded { get { return _isGrounded; } }
     public bool IsFighting { get { return _isFighting; } set { _isFighting = value; } }
     public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
-    public bool IsLightAttacking1 { get { return _isLightAttacking1; } set { _isLightAttacking1 = value; } }
-    public bool IsLightAttacking2 { get { return _isLightAttacking2; } set { _isLightAttacking2 = value; } }
-    public bool IsLightAttacking3 { get { return _isLightAttacking3; } set { _isLightAttacking3 = value; } }
-    public bool IsLightAttacking4 { get { return _isLightAttacking4; } set { _isLightAttacking4 = value; } }
-    public bool IsLightAttacking5 { get { return _isLightAttacking5; } set { _isLightAttacking5 = value; } }
-    public bool IsLightAttacking6 { get { return _isLightAttacking6; } set { _isLightAttacking6 = value; } }
-    public bool IsLightAttacking7 { get { return _isLightAttacking7; } set { _isLightAttacking7 = value; } }
+    public bool IsLightAttacking { get { return _isLightAttacking; } set { _isLightAttacking = value; } }
     public bool IsHurt { get { return _isHurt; } set { _isHurt = value; } }
     public bool IsCharging { get { return _isCharging; } }
     public bool IsHitLanded { get { return _isHitLanded; } set { _isHitLanded = value; } }
@@ -492,17 +468,16 @@ public class StateMachine : MonoBehaviour
     public void OnAttackAnimationCharge()
     {
         _isCharging = true;
-        OnLightAttack1?.Invoke(true);
     }
     public void OnAttackAnimationContact()
     {
         OnAttackContact?.Invoke();
-        OnLightAttack1?.Invoke(false);
+
         _isCharging = false;
     }
     public void OnAttackAnimationComplete()
     {
-        ExitCurrentAttackState();     
+        _isLightAttacking = false;
     }
     public void OnAttackAnimationRecover()
     {
@@ -538,7 +513,7 @@ public class StateMachine : MonoBehaviour
     }
     public void TakeHit(int attackType)
     {
-        if(!_isDodgePressed)
+        if (!_isDodgePressed)
         {
             _hitType = attackType;
             _isHitLanded = true;
@@ -550,37 +525,6 @@ public class StateMachine : MonoBehaviour
             OnCounterSuccess?.Invoke();
             return;
         }
-
-    }
-
-    public void ExitCurrentAttackState()
-    {
-        switch (_attackType)
-        {
-            case 1:
-                _isLightAttacking1 = false;
-                break;
-            case 2:
-                _isLightAttacking2 = false;
-                break;
-            case 3:
-                _isLightAttacking3 = false;
-                break;
-            case 4:
-                _isLightAttacking4 = false;
-                break;
-            case 5:
-                _isLightAttacking5 = false;
-                break;
-            case 6:
-                _isLightAttacking6 = false;
-                break;
-            case 7:
-                _isLightAttacking7 = false;
-                break;
-            default:
-                break;
-        }
     }
 
     private void AssignAnimationIDs()
@@ -590,15 +534,7 @@ public class StateMachine : MonoBehaviour
         AnimIDFight = Animator.StringToHash("Fight");
         AnimIDInputX = Animator.StringToHash("InputX");
         AnimIDInputY = Animator.StringToHash("InputY");
-        AnimIDLightAttack1 = Animator.StringToHash("LightAttack1");
-        AnimIDLightAttack2 = Animator.StringToHash("LightAttack2");
-        AnimIDLightAttack3 = Animator.StringToHash("LightAttack3");
-        AnimIDLightAttack1 = Animator.StringToHash("LightAttack1");
-        AnimIDLightAttack2 = Animator.StringToHash("LightAttack2");
-        AnimIDLightAttack4 = Animator.StringToHash("LightAttack4");
-        AnimIDLightAttack5 = Animator.StringToHash("LightAttack5");
-        AnimIDLightAttack6 = Animator.StringToHash("LightAttack6");
-        AnimIDLightAttack7 = Animator.StringToHash("LightAttack7");
+        AnimIDLightAttack = Animator.StringToHash("LightAttack");
         AnimIDHurt = Animator.StringToHash("Hurt");
         AnimIDDash = Animator.StringToHash("Dash");
         AnimIDDodge = Animator.StringToHash("Dodge");

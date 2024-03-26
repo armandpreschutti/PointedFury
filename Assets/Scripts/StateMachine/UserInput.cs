@@ -66,7 +66,7 @@ public class UserInput : MonoBehaviour
     }
     public void SetDashInput(bool value)
     {
-        if (!_stateMachine.IsDashing && !_stateMachine.IsAttacking && _stateMachine.MoveInput != Vector2.zero)
+        if (!_stateMachine.IsDashing && !_stateMachine.IsAttacking && _stateMachine.MoveInput != Vector2.zero && !_stateMachine.IsDodging)
         {
             _stateMachine.IsDashPressed = value;
         }
@@ -78,15 +78,7 @@ public class UserInput : MonoBehaviour
     }
     public void SetDodgeInput(bool value)
     {
-        if (!_stateMachine.IsDodging)
-        {
-            Debug.Log("Counter button hooked up");
-            _stateMachine.IsDodgePressed = value;
-        }
-        else
-        {
-            return;
-        }
+        _stateMachine.IsDodgePressed = value;
 
     }
 

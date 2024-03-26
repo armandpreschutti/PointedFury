@@ -38,7 +38,8 @@ public class IdleState : BaseState
         }
         if (Ctx.IsLightAttackPressed && !Ctx.IsHurt)
         {
-            SwitchState(Factory.LightAttack1());
+           // SwitchState(Factory.LightAttack1());
+            SwitchState(Factory.LightAttack());
         }
         if (Ctx.IsHitLanded)
         {

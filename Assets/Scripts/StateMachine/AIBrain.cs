@@ -77,7 +77,7 @@ public class AIBrain : MonoBehaviour
 
     public IEnumerator GetRandomDirection()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.25f);
         Debug.Log("New chance assigned");
 
         _attackChance = UnityEngine.Random.Range(1, 11);
@@ -88,7 +88,7 @@ public class AIBrain : MonoBehaviour
         }
         else
         {
-            if(_attackChance > Difficulty )
+            if(_attackChance > Difficulty)
             {
                 _moveInput = Vector2.zero;
                 _stateMachine.IsLightAttackPressed = true;

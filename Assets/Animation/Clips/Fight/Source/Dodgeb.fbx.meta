@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: c20bc0a05964cdd4b8306a778a3065ea
+guid: d0e818f66240b074eaae78f0f20a2831
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: -9124097185675158277
-    second: combo7
+      74: 4904706792348712832
+    second: step_fwd
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: combo7
-      takeName: combo7
+      name: step_fwd
+      takeName: step_fwd
       internalID: 0
-      firstFrame: 113
-      lastFrame: 125
+      firstFrame: 0
+      lastFrame: 10
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

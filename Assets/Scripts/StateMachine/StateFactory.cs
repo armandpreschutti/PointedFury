@@ -23,33 +23,9 @@ public class StateFactory
     {
         return new FightState(_context, this);
     }
-    public BaseState LightAttack1()
+    public BaseState LightAttack()
     {
-        return new LightAttack1Sate(_context, this);
-    }
-    public BaseState LightAttack2() 
-    {
-        return new LightAttack2State(_context, this);
-    }
-    public BaseState LightAttack3() 
-    {
-        return new LightAttack3State(_context, this);
-    }
-    public BaseState LightAttack4()
-    {
-        return new LightAttack4State(_context, this);
-    }
-    public BaseState LightAttack5()
-    {
-        return new LightAttack5State(_context, this);
-    }
-    public BaseState LightAttack6()
-    {
-        return new LightAttack6State(_context, this);
-    }
-    public BaseState LightAttack7()
-    {
-        return new LightAttack7State(_context, this);
+        return new LightAttackState(_context, this);
     }
     public BaseState Hurt()
     {

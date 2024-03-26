@@ -14,7 +14,8 @@ public class DodgeState : BaseState
         Ctx.IsDodgeSuccess = false;
         Ctx.IsDodging = true;
         Ctx.Animator.SetBool(Ctx.AnimIDDodge, true);
-        Ctx.Animator.Play($"Dodge{Ctx.DodgeType()}", 0, 0);
+        //Ctx.Animator.Play($"Dodge{Ctx.DodgeType()}", 0, 0);
+        Ctx.Animator.Play($"Dodge", 0, 0);
     }
 
     public override void UpdateState()

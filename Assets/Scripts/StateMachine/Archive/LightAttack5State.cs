@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -76,8 +76,8 @@ public class LightAttack5State : BaseState
         {
             SwitchState(Factory.Hurt());
             Ctx.IsLightAttacking5 = false;
-/*            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack5, false);
-            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack6, false);*/
+*//*            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack5, false);
+            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack6, false);*//*
         }
     }
 
@@ -86,3 +86,4 @@ public class LightAttack5State : BaseState
 
     }
 }
+*/

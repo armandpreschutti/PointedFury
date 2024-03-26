@@ -7,7 +7,7 @@ public class HurtState : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered HURT state");
+        //SsDebug.LogWarning("Player has entered HURT state");
         Ctx.DebugCurrentSubState = "Hurt State";
 
 
@@ -62,12 +62,13 @@ public class HurtState : BaseState
 
     public void ExitAllAnimations()
     {
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack2, false);
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack3, false);
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack4, false);
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack5, false);
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack6, false);
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack7, false);
+        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
+        /* Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
+         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack2, false);
+         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack3, false);
+         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack4, false);
+         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack5, false);
+         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack6, false);
+         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack7, false);*/
     }
 }

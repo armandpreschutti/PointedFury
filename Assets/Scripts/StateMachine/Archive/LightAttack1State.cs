@@ -1,28 +1,33 @@
-using UnityEngine;
+/*using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class LightAttack4State : BaseState
+public class LightAttack1Sate : BaseState
 {
-    public LightAttack4State(StateMachine currentContext, StateFactory stateFactory)
+    public LightAttack1Sate(StateMachine currentContext, StateFactory stateFactory)
     : base(currentContext, stateFactory) { }
 
 
     public override void EnterState()
     {
-        //Debug.LogWarning("Player has entered LIGHT ATTACK 4 state");
-        Ctx.DebugCurrentSubState = "Light Attack 4 State";
+        //Debug.LogWarning("Player has entered LIGHT ATTACK 1 state");
+        Ctx.DebugCurrentSubState = "Light Attack 1 State";
 
-        Ctx.AttackType = 4;
-        Ctx.IsLightAttacking4 = true;
+        Ctx.AttackType = 1;
+        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, true);
+        Ctx.IsLightAttacking1= true;
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
         Ctx.IsComboAttacking = false;
         Ctx.CanComboAttack = true;
-        Ctx.IsFighting = true;
+        Ctx.IsFighting= true;
+
     }
 
     public override void UpdateState()
     {
-        //Debug.Log("LIGHT ATTACK 4state is currently active");
+        //Debug.Log("LIGHT ATTACK state is currently active");
+        
         CheckSwitchStates();
 
         Ctx.SetAttackDirection();
@@ -34,25 +39,28 @@ public class LightAttack4State : BaseState
         {
             Ctx.IsComboAttacking = true;
             Ctx.CanComboAttack = false;
-            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack5, true);
+            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack2, true);
         }
     }
 
     public override void ExitState()
     {
-        //Debug.Log("Player has exited LIGHT ATTACK 4 state");
+        //Debug.LogWarning("Player has exited LIGHT ATTACK state");
 
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack4, false);
+       // Ctx.IsLightAttacking1 = false;
+        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
         Ctx.IsAttacking = false;
+
     }
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsLightAttacking4)
+        if (!Ctx.IsLightAttacking1)
         {
-            if (Ctx.IsComboAttacking)
+            if(Ctx.IsComboAttacking)
             {
-                SwitchState(Factory.LightAttack5());
+                SwitchState(Factory.LightAttack2());
+
             }
             else
             {
@@ -67,14 +75,17 @@ public class LightAttack4State : BaseState
                     SwitchState(Factory.Idle());
                 }
             }
-
+            
         }
         if (Ctx.IsHitLanded)
         {
             SwitchState(Factory.Hurt());
-            Ctx.IsLightAttacking4 = false;
-/*            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack4, false);
-            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack5, false);*/
+            Ctx.IsLightAttacking1 = false;
+        }
+        if (Ctx.IsDodgeSuccess)
+        {
+            Ctx.IsLightAttacking1 = false;
+            SwitchState(Factory.Dodge());
         }
     }
 
@@ -82,4 +93,7 @@ public class LightAttack4State : BaseState
     {
 
     }
+
+    
 }
+*/
