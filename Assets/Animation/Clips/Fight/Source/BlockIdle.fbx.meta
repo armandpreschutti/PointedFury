@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 87b0437f84675e844ae90e119f2a5895
+guid: e20473fd6aac4854db97a5c683a2f7a0
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: 1667369116567311112
-    second: idle02
+      74: 3636898681644418735
+    second: side_idle
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,14 +36,14 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: idle02
-      takeName: idle02
+      name: side_idle
+      takeName: side_idle
       internalID: 0
       firstFrame: 0
-      lastFrame: 40
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
-      level: 0.02
+      level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
@@ -53,9 +53,9 @@ ModelImporter:
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
-      keepOriginalPositionY: 0
-      keepOriginalPositionXZ: 1
-      heightFromFeet: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []

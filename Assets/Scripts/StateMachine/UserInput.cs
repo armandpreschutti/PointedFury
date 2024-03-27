@@ -47,7 +47,7 @@ public class UserInput : MonoBehaviour
     public void SetLightAttackInput(bool value)
     {
         
-        if(!_stateMachine.IsHurt && !_stateMachine.IsDodging)
+        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned)
         {
             if (_stateMachine.AttackType == 0 || _stateMachine.CanComboAttack)
             {
@@ -66,7 +66,7 @@ public class UserInput : MonoBehaviour
     }
     public void SetDashInput(bool value)
     {
-        if (!_stateMachine.IsDashing && !_stateMachine.IsAttacking && _stateMachine.MoveInput != Vector2.zero && !_stateMachine.IsDodging)
+        if (!_stateMachine.IsDashing && !_stateMachine.IsAttacking && _stateMachine.MoveInput != Vector2.zero && !_stateMachine.IsHurt && !_stateMachine.IsStunned)
         {
             _stateMachine.IsDashPressed = value;
         }
@@ -76,10 +76,17 @@ public class UserInput : MonoBehaviour
             return;
         }
     }
-    public void SetDodgeInput(bool value)
+    public void SetBlockInput(bool value)
     {
-        _stateMachine.IsDodgePressed = value;
+        _stateMachine.IsBlockPressed = value;      
+    }
 
+    public void SetParryInput()
+    {
+        if (!_stateMachine.IsLightAttacking)
+        {
+            _stateMachine.OnAttemptParty?.Invoke();
+        }
     }
 
     // Set input values
@@ -90,6 +97,7 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.LightAttack.performed += ctx => SetLightAttackInput(ctx.ReadValueAsButton());
         _playerControls.Player.Dash.performed += ctx => SetDashInput(ctx.ReadValueAsButton());
-        _playerControls.Player.Dodge.performed += ctx => SetDodgeInput(ctx.ReadValueAsButton());
+        _playerControls.Player.Block.performed += ctx => SetBlockInput(ctx.ReadValueAsButton());
+        _playerControls.Player.Parry.performed += ctx => SetParryInput();
     }
 }

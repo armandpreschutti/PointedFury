@@ -91,10 +91,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Dodge"",
+                    ""name"": ""Block"",
                     ""type"": ""PassThrough"",
                     ""id"": ""3f7c26e7-91a2-4976-b278-3c7c3d5517ad"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Parry"",
+                    ""type"": ""Value"",
+                    ""id"": ""093635a4-d649-4519-8383-a092dbcfd980"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -181,11 +190,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f3338680-596b-4813-803e-24a48c6acb9a"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c68b545c-19d8-4fd8-97f8-354df8184c5e"",
                     ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Dodge"",
+                    ""action"": ""Parry"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -251,7 +271,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Fight = m_Player.FindAction("Fight", throwIfNotFound: true);
         m_Player_LightAttack = m_Player.FindAction("LightAttack", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
-        m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
+        m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
+        m_Player_Parry = m_Player.FindAction("Parry", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -320,7 +341,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fight;
     private readonly InputAction m_Player_LightAttack;
     private readonly InputAction m_Player_Dash;
-    private readonly InputAction m_Player_Dodge;
+    private readonly InputAction m_Player_Block;
+    private readonly InputAction m_Player_Parry;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -332,7 +354,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Fight => m_Wrapper.m_Player_Fight;
         public InputAction @LightAttack => m_Wrapper.m_Player_LightAttack;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
-        public InputAction @Dodge => m_Wrapper.m_Player_Dodge;
+        public InputAction @Block => m_Wrapper.m_Player_Block;
+        public InputAction @Parry => m_Wrapper.m_Player_Parry;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -363,9 +386,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
-            @Dodge.started += instance.OnDodge;
-            @Dodge.performed += instance.OnDodge;
-            @Dodge.canceled += instance.OnDodge;
+            @Block.started += instance.OnBlock;
+            @Block.performed += instance.OnBlock;
+            @Block.canceled += instance.OnBlock;
+            @Parry.started += instance.OnParry;
+            @Parry.performed += instance.OnParry;
+            @Parry.canceled += instance.OnParry;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -391,9 +417,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
-            @Dodge.started -= instance.OnDodge;
-            @Dodge.performed -= instance.OnDodge;
-            @Dodge.canceled -= instance.OnDodge;
+            @Block.started -= instance.OnBlock;
+            @Block.performed -= instance.OnBlock;
+            @Block.canceled -= instance.OnBlock;
+            @Parry.started -= instance.OnParry;
+            @Parry.performed -= instance.OnParry;
+            @Parry.canceled -= instance.OnParry;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -456,6 +485,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnFight(InputAction.CallbackContext context);
         void OnLightAttack(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
-        void OnDodge(InputAction.CallbackContext context);
+        void OnBlock(InputAction.CallbackContext context);
+        void OnParry(InputAction.CallbackContext context);
     }
 }

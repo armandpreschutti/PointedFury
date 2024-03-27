@@ -80,7 +80,7 @@ public class AIBrain : MonoBehaviour
         yield return new WaitForSeconds(.25f);
         Debug.Log("New chance assigned");
 
-        _attackChance = UnityEngine.Random.Range(1, 11);
+        _attackChance = UnityEngine.Random.Range(1, 101);
         if (!_isMeleeRange )
         {
             _moveInput = new Vector2(0, 1);

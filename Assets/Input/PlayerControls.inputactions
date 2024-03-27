@@ -69,10 +69,19 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Dodge",
+                    "name": "Block",
                     "type": "PassThrough",
                     "id": "3f7c26e7-91a2-4976-b278-3c7c3d5517ad",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Parry",
+                    "type": "Value",
+                    "id": "093635a4-d649-4519-8383-a092dbcfd980",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -159,11 +168,22 @@
                 {
                     "name": "",
                     "id": "f3338680-596b-4813-803e-24a48c6acb9a",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c68b545c-19d8-4fd8-97f8-354df8184c5e",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Dodge",
+                    "action": "Parry",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

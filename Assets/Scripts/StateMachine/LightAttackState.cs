@@ -20,6 +20,7 @@ public class LightAttackState : BaseState
         Ctx.IsLightAttackPressed = false;
         Ctx.IsComboAttacking = false;
         Ctx.IsFighting = true;
+        Ctx.IsParryable = true;
         if (Ctx.AttackType < 7)
         {
             Ctx.CanComboAttack = true;
@@ -38,7 +39,7 @@ public class LightAttackState : BaseState
         {
             Ctx.LightAttackMovement();
         }
-        if (Ctx.IsLightAttackPressed && /*!Ctx.IsHurt */ Ctx.CanComboAttack)
+        if (Ctx.IsLightAttackPressed && Ctx.CanComboAttack)
         {
             Ctx.IsComboAttacking = true;
             Ctx.CanComboAttack = false;
@@ -51,6 +52,9 @@ public class LightAttackState : BaseState
 
         Ctx.IsAttacking = false;
         Ctx.OnLightAttack?.Invoke(false);
+        Ctx.IsLightAttacking = false;
+        Ctx.IsCharging = false;
+        Ctx.IsParryable = false;
     }
 
     public override void CheckSwitchStates()
@@ -61,10 +65,12 @@ public class LightAttackState : BaseState
             {
                 SwitchState(Factory.LightAttack());
             }
+            else if (Ctx.IsBlockPressed)
+            {
+                SwitchState(Factory.Block());
+            }
             else
             {
-                Ctx.FightTimeoutActive = true;
-                Ctx.FightTimeoutDelta = Ctx.AttackTimeout;
                 if (Ctx.MoveInput != Vector2.zero)
                 {
                     SwitchState(Factory.Move());
@@ -74,17 +80,18 @@ public class LightAttackState : BaseState
                     SwitchState(Factory.Idle());
                 }
             }
-
         }
         if (Ctx.IsHitLanded)
         {
             SwitchState(Factory.Hurt());
-            Ctx.IsLightAttacking = false;
         }
-        if (Ctx.IsDodgeSuccess)
+        if (Ctx.IsParried)
         {
-            Ctx.IsLightAttacking = false;
-            SwitchState(Factory.Dodge());
+            SwitchState(Factory.Stunned());
+        }
+        if (Ctx.IsParrySucces)
+        {
+            SwitchState(Factory.Parry());
         }
     }
 

@@ -6,8 +6,7 @@ public class HitBroadcastHandler : MonoBehaviour
 {
     [SerializeField] StateMachine _stateMachine;
     [SerializeField] List<GameObject> _hitTargets = new List<GameObject>();
-    [SerializeField] LayerMask _enemyLayer;
-
+    [SerializeField] string _enemyTag;
     private void Awake()
     {
         _stateMachine = GetComponentInParent<StateMachine>();
@@ -16,17 +15,22 @@ public class HitBroadcastHandler : MonoBehaviour
     private void OnEnable()
     {
         _stateMachine.OnAttackContact += LandAttack;
+        _stateMachine.OnAttemptParty += AttemptParry;
     }
 
     private void OnDisable()
     {
         _stateMachine.OnAttackContact -= LandAttack;
+        _stateMachine.OnAttemptParty -= AttemptParry;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         // Add the object to the list of objects in the trigger area
-        _hitTargets.Add(other.gameObject);
+        if(other.CompareTag(_enemyTag))   
+        {
+            _hitTargets.Add(other.gameObject);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -45,8 +49,25 @@ public class HitBroadcastHandler : MonoBehaviour
         {
             if(hit.GetComponent<StateMachine>() != null) 
             {
-                hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType);
+                hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.transform.position);
             }
         }
+    }
+    private void AttemptParry()
+    {
+        foreach (GameObject hit in _hitTargets)
+        {
+            if (hit.GetComponent<StateMachine>() != null)
+            {
+                if (hit.GetComponent<StateMachine>().IsParryable)
+                {
+                    hit.GetComponent<StateMachine>().TakeParry();
+                    _stateMachine.IncomingAttackDirection = hit.transform.position;
+                    _stateMachine.IsParrySucces = true;
+                }
+            }
+        }
+
+
     }
 }

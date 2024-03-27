@@ -25,22 +25,18 @@ public class DashState : BaseState
 
         CheckSwitchStates();
 
-        //Ctx.SetAttackDirection();
+        Ctx.AttackType = 0;
         if (Ctx.IsDashMoving)
         {
             Ctx.DashMovement();
-        }
-       
+        }       
     }
 
     public override void ExitState()
     {
         //Debug.LogWarning("Player has exited state");
 
-        // Ctx.IsLightAttacking1 = false;
         Ctx.Animator.SetBool(Ctx.AnimIDDash, false);
-        //Ctx.IsDodging = false;
-
     }
 
     public override void CheckSwitchStates()
@@ -51,11 +47,14 @@ public class DashState : BaseState
             {
                 SwitchState(Factory.Move());
             }
+            else if (Ctx.IsBlockPressed)
+            {
+                SwitchState(Factory.Block());
+            }
             else
             {
                 SwitchState(Factory.Idle());
             }
-
         }
         if (Ctx.IsHitLanded)
         {

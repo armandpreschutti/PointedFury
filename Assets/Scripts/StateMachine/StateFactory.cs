@@ -36,9 +36,19 @@ public class StateFactory
         return new DashState(_context, this);
     }
 
-    public BaseState Dodge()
+    public BaseState Block()
     {
-        return new DodgeState(_context, this);
+        return new BlockState(_context, this);
+    }
+
+    public BaseState Stunned()
+    {
+        return new StunnedState(_context, this);
+    }
+
+    public BaseState Parry()
+    {
+        return new ParryState(_context, this);
     }
 
 }

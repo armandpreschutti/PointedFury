@@ -49,9 +49,13 @@ public class MoveState : BaseState
         {
             SwitchState(Factory.Dash());
         }
-        if (Ctx.IsDodgeSuccess)
+        if (Ctx.IsBlockPressed)
         {
-            SwitchState(Factory.Dodge());
+            SwitchState(Factory.Block());
+        }
+        if (Ctx.IsParrySucces)
+        {
+            SwitchState(Factory.Parry());
         }
     }
 

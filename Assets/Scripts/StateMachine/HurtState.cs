@@ -10,7 +10,7 @@ public class HurtState : BaseState
         //SsDebug.LogWarning("Player has entered HURT state");
         Ctx.DebugCurrentSubState = "Hurt State";
 
-
+        Ctx.SetIncomingAttackDirection();
         Ctx.IsHitLanded = false;
         Ctx.IsKnockedBack = true;
         Ctx.IsHurt = true;
@@ -34,25 +34,36 @@ public class HurtState : BaseState
     public override void ExitState()
     {
         //Debug.LogWarning("Player has exited HURT state");
-        //Ctx.Animator.Play($"Hurt{Ctx.HitType}", 0, 0);
+        Ctx.Animator.SetBool(Ctx.AnimIDHurt, false);
+        Ctx.IsHurt = false;
+        Ctx.IsKnockedBack = false;
     }
 
     public override void CheckSwitchStates()
     {
         if (!Ctx.IsHurt)
         {
-            SwitchState(Factory.Idle());
+            if (Ctx.MoveInput != Vector2.zero)
+            {
+                SwitchState(Factory.Move());
+            }
+            else
+            {
+                SwitchState(Factory.Idle());
+            }
         }
         if(Ctx.IsHitLanded)
         {
             SwitchState(Factory.Hurt());
         }
-     /*   if (Ctx.IsDodgePressed)
+        if(Ctx.IsBlockPressed && !Ctx.IsKnockedBack)
         {
-            SwitchState(Factory.Dodge());
-            Ctx.Animator.SetBool(Ctx.AnimIDHurt, false);
-            Ctx.IsHurt = false;
-        }*/
+            SwitchState(Factory.Block());
+        }
+        if(Ctx.IsParrySucces)
+        {
+            SwitchState(Factory.Parry());
+        }
     }
 
     public override void InitializeSubStates()
@@ -63,12 +74,5 @@ public class HurtState : BaseState
     public void ExitAllAnimations()
     {
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
-        /* Ctx.Animator.SetBool(Ctx.AnimIDLightAttack1, false);
-         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack2, false);
-         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack3, false);
-         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack4, false);
-         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack5, false);
-         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack6, false);
-         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack7, false);*/
     }
 }
