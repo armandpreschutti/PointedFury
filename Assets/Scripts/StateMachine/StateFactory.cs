@@ -50,5 +50,8 @@ public class StateFactory
     {
         return new ParryState(_context, this);
     }
-
+    public BaseState Death()
+    {
+        return new DeathState(_context, this);
+    }
 }

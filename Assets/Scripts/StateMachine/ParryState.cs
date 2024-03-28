@@ -10,9 +10,9 @@ public class ParryState : BaseState
 
     public override void EnterState()
     {
-        Ctx.SetIncomingAttackDirection();
         //Debug.LogWarning("Player has entered PARRY state");
-        Ctx.DebugCurrentSubState = $"Parry State";
+
+        Ctx.SetIncomingAttackDirection();
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
         Ctx.Animator.Play($"Parry", 0, 0);
         Ctx.IsParrying = true;
@@ -22,15 +22,11 @@ public class ParryState : BaseState
     public override void UpdateState()
     {
         //Debug.Log("PARRY state is currently active");
-
+        Ctx.DebugCurrentSubState = $"Parry State";
         CheckSwitchStates();
 
-
-        if (Ctx.IsCharging)
-        {
-            Ctx.LightAttackMovement();
-        }
-}
+        Ctx.LightAttackMovement();
+    }
 
     public override void ExitState()
     {

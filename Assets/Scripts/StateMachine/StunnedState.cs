@@ -10,8 +10,9 @@ public class StunnedState : BaseState
     public override void EnterState()
     {
         //SsDebug.LogWarning("Player has entered STUNNED state");
-        Ctx.DebugCurrentSubState = "Stunned State";
 
+        Ctx.SetIncomingAttackDirection();
+        Ctx.IsParryable = false;
         Ctx.IsParried = false;
         Ctx.IsKnockedBack = true;
         Ctx.IsStunned = true;
@@ -23,13 +24,14 @@ public class StunnedState : BaseState
     public override void UpdateState()
     {
         //Debug.Log("STUNNEDstate is currently active");
-
+        Ctx.DebugCurrentSubState = "Stunned State";
         CheckSwitchStates();
 
         if (Ctx.IsKnockedBack)
         {
             Ctx.SetHitKnockback();
         }
+
     }
 
     public override void ExitState()
@@ -37,6 +39,7 @@ public class StunnedState : BaseState
         //Debug.LogWarning("Player has exited STUNNED state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDStunned, false);
+        Ctx.IsStunned = false;
     }
 
     public override void CheckSwitchStates()
@@ -55,7 +58,6 @@ public class StunnedState : BaseState
         if (Ctx.IsHitLanded)
         {
             SwitchState(Factory.Hurt());
-            Ctx.IsStunned = false;
         }        
     }
 

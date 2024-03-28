@@ -17,15 +17,14 @@ public class BlockState : BaseState
         Ctx.IsBlockSuccess = false;
         Ctx.IsBlocking = true;
         Ctx.Animator.SetBool(Ctx.AnimIDBlock, true);
-        //Ctx.Animator.Play($"BlockIdle", 0, 0);
     }
 
     public override void UpdateState()
     {
         //Debug.Log("BLOCK state is currently active");
-
         Ctx.DebugCurrentSubState = "Block State";
         CheckSwitchStates();
+
         if (Ctx.IsBlockSuccess)
         {
             Ctx.SetIncomingAttackDirection();
@@ -37,6 +36,7 @@ public class BlockState : BaseState
     public override void ExitState()
     {
         //Debug.LogWarning("Player has exited BLOCK state");
+
         Ctx.Animator.SetBool(Ctx.AnimIDBlock, false);
         Ctx.IsBlocking = false;
     }

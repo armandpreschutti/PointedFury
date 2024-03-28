@@ -48,6 +48,8 @@ public class StateMachine : MonoBehaviour
     public float CombatDistance;
     [Tooltip("The amount of force added to landed attacks")]
     public float KnockBackPower;
+    [Tooltip("The radius of the enemy detection zone when not aiming")]
+    public float EnemyDetectionRadius;
 
     // Debug State Variables
 
@@ -73,7 +75,7 @@ public class StateMachine : MonoBehaviour
     private bool _isParrying = false;
     private bool _isParryable = false;
     private bool _isStunned = false;
-    
+    private bool _isDead = false;
 
     [SerializeField] bool _isAI;
     public string DebugCurrentSuperState;
@@ -108,7 +110,7 @@ public class StateMachine : MonoBehaviour
     public BaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
 
     // Player state events
-    public Action<bool> OnJump;
+    public Action<bool> OnDeath;
     public Action<bool> OnFall;
     public Action<bool> OnGrounded;
     public Action<bool> OnFight;
@@ -131,6 +133,7 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDCombo;
     [HideInInspector] public int AnimIDParry;
     [HideInInspector] public int AnimIDStunned;
+    [HideInInspector] public int AnimIDDeath;
     [HideInInspector] public int AnimationIDAttackType;
     [HideInInspector] public float _transitionTime;
     
@@ -156,6 +159,7 @@ public class StateMachine : MonoBehaviour
 
     // State
     public Animator Animator { get { return _animator; } set { _animator = value; } }
+    public CharacterController Controller { get { return _controller; } set { _controller = value; } }
     public bool IsGrounded { get { return _isGrounded; } }
     public bool IsFighting { get { return _isFighting; } set { _isFighting = value; } }
     public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
@@ -173,6 +177,7 @@ public class StateMachine : MonoBehaviour
     public bool IsParried { get { return _isParried; } set { _isParried = value; } }
     public bool IsParryable { get { return _isParryable; }set { _isParryable = value; } }
     public bool IsStunned { get { return _isStunned; } set { _isStunned = value; } }    
+    public bool IsDead { get { return _isDead; } set { _isDead = value; } }
 
     // Fighting
     public GameObject CurrentTarget { get { return _currentTarget; } }
@@ -314,7 +319,7 @@ public class StateMachine : MonoBehaviour
         else
         {
             // Perform a spherecast to detect all colliders on the specified layer within the detection radius
-            RaycastHit[] hits = Physics.SphereCastAll(transform.position, 5f, transform.forward, Mathf.Infinity, EnemyLayers);
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, EnemyDetectionRadius, transform.forward, Mathf.Infinity, EnemyLayers);
 
             float closestDistance = Mathf.Infinity;
             Transform closestTarget = null;
@@ -339,6 +344,25 @@ public class StateMachine : MonoBehaviour
             {
                 _currentTarget = null;
             }
+        }
+    }
+
+    public void ParryMovement()
+    {
+        // Calculate the direction towards the target
+        Vector3 directionToTarget = _currentTarget.transform.position - _incomingAttackDirection;
+
+        // Check the distance to the target
+        float distanceToTarget = directionToTarget.magnitude;
+
+        // If the distance is greater than stopDistance, move towards the target
+        if (distanceToTarget > CombatDistance)
+        {
+            // Calculate the movement direction based on the forward direction of the character
+            Vector3 moveDirection = transform.forward * (ChargeSpeed * 2f);
+
+            // Move the character using the CharacterController
+            _controller.Move(moveDirection * Time.deltaTime);
         }
     }
     public void LightAttackMovement()
@@ -411,7 +435,7 @@ public class StateMachine : MonoBehaviour
 
     public void SetHitKnockback()
     {
-        _controller.Move((transform.position - _currentTarget.transform.position).normalized * KnockBackPower * Time.deltaTime);
+        _controller.Move((transform.position - _incomingAttackDirection).normalized * KnockBackPower * Time.deltaTime);
     }
 
     public Vector3 InputDirection()
@@ -532,8 +556,11 @@ public class StateMachine : MonoBehaviour
         if (!_isBlocking && !_isParrying)
         {
             _hitType = attackType;
-            _isHitLanded = true;
             OnHitLanded?.Invoke();
+            if (!_isDead)
+            {
+                _isHitLanded = true;
+            }
         }
         else
         {
@@ -542,8 +569,9 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    public void TakeParry()
+    public void TakeParry(Vector3 attackerPosition)
     {
+        _incomingAttackDirection = attackerPosition;
         _isParried = true;
     }
 
@@ -560,6 +588,7 @@ public class StateMachine : MonoBehaviour
         AnimIDBlock = Animator.StringToHash("Block");
         AnimIDParry = Animator.StringToHash("Parry");
         AnimIDStunned = Animator.StringToHash("Stunned");
+        AnimIDDeath = Animator.StringToHash("Death");
     }
 
     private void SetMovementAnimationValues()
@@ -585,6 +614,6 @@ public class StateMachine : MonoBehaviour
         {
             Gizmos.DrawSphere(_currentTarget.transform.position, 1f);
         }
-        Gizmos.DrawWireSphere(transform.position, 5f);
+        Gizmos.DrawWireSphere(transform.position, EnemyDetectionRadius);
     }
 }

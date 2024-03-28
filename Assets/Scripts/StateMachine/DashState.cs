@@ -11,7 +11,6 @@ public class DashState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered DASH state");
-        Ctx.DebugCurrentSubState = "Dash State";
 
         Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
         Ctx.IsDashing = true;
@@ -22,7 +21,7 @@ public class DashState : BaseState
     public override void UpdateState()
     {
         //Debug.Log("DASH state is currently active");
-
+        Ctx.DebugCurrentSubState = "Dash State";
         CheckSwitchStates();
 
         Ctx.AttackType = 0;
@@ -37,6 +36,7 @@ public class DashState : BaseState
         //Debug.LogWarning("Player has exited state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDDash, false);
+        Ctx.IsDashing = false;
     }
 
     public override void CheckSwitchStates()

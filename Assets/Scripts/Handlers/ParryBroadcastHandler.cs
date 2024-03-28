@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitBroadcastHandler : MonoBehaviour
+public class ParryBroadcastHandler : MonoBehaviour
 {
     [SerializeField] StateMachine _stateMachine;
     [SerializeField] List<GameObject> _hitTargets = new List<GameObject>();
@@ -14,18 +14,18 @@ public class HitBroadcastHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _stateMachine.OnAttackContact += LandAttack;
+        _stateMachine.OnAttemptParty += AttemptParry;
     }
 
     private void OnDisable()
     {
-        _stateMachine.OnAttackContact -= LandAttack;
+        _stateMachine.OnAttemptParty -= AttemptParry;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         // Add the object to the list of objects in the trigger area
-        if(other.CompareTag(_enemyTag))   
+        if (other.CompareTag(_enemyTag))
         {
             _hitTargets.Add(other.gameObject);
         }
@@ -41,17 +41,7 @@ public class HitBroadcastHandler : MonoBehaviour
         }
     }
 
-    private void LandAttack()
-    {
-        foreach(GameObject hit in _hitTargets)
-        {
-            if(hit.GetComponent<StateMachine>() != null) 
-            {
-                hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.transform.position);
-            }
-        }
-    }
-/*    private void AttemptParry()
+    private void AttemptParry()
     {
         foreach (GameObject hit in _hitTargets)
         {
@@ -65,7 +55,5 @@ public class HitBroadcastHandler : MonoBehaviour
                 }
             }
         }
-
-
-    }*/
+    }
 }

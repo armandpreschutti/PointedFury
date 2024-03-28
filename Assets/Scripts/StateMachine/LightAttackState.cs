@@ -10,10 +10,9 @@ public class LightAttackState : BaseState
 
     public override void EnterState()
     {
-        SetAttackType();
         //Debug.LogWarning("Player has entered LIGHT ATTACK state");
-        Ctx.DebugCurrentSubState = $"Light Attack State ({Ctx.AttackType})";
 
+        SetAttackType();
         Ctx.Animator.Play($"LightAttack{Ctx.AttackType}", 0, 0);
         Ctx.IsLightAttacking = true;
         Ctx.IsAttacking = true;
@@ -31,7 +30,7 @@ public class LightAttackState : BaseState
     public override void UpdateState()
     {
         //Debug.Log("LIGHT ATTACK state is currently active");
-
+        Ctx.DebugCurrentSubState = $"Light Attack State ({Ctx.AttackType})";
         CheckSwitchStates();
 
         Ctx.SetAttackDirection();
@@ -55,6 +54,7 @@ public class LightAttackState : BaseState
         Ctx.IsLightAttacking = false;
         Ctx.IsCharging = false;
         Ctx.IsParryable = false;
+        Ctx.CanComboAttack = false;
     }
 
     public override void CheckSwitchStates()

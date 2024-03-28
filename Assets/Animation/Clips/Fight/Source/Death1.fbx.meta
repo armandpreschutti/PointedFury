@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: badade9935c99ed4cb92d219ba6ef9ee
+guid: 8aa3bd2e58a178a4f8cd3889634f9002
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
   - first:
-      74: -5572631589276072495
-    second: hit_body_lower
+      74: -4815723476054843372
+    second: dead4
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: hit_body_lower
-      takeName: hit_body_lower
+      name: dead4
+      takeName: dead4
       internalID: 0
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

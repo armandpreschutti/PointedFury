@@ -8,7 +8,6 @@ public class HurtState : BaseState
     public override void EnterState()
     {
         //SsDebug.LogWarning("Player has entered HURT state");
-        Ctx.DebugCurrentSubState = "Hurt State";
 
         Ctx.SetIncomingAttackDirection();
         Ctx.IsHitLanded = false;
@@ -22,7 +21,7 @@ public class HurtState : BaseState
     public override void UpdateState()
     {
         //Debug.Log("HURT state is currently active");
-
+        Ctx.DebugCurrentSubState = "Hurt State";
         CheckSwitchStates();
         
         if(Ctx.IsKnockedBack)
@@ -36,7 +35,11 @@ public class HurtState : BaseState
         //Debug.LogWarning("Player has exited HURT state");
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, false);
         Ctx.IsHurt = false;
-        Ctx.IsKnockedBack = false;
+        if (!Ctx.IsDead)
+        {
+            Ctx.IsKnockedBack = false;
+        }
+
     }
 
     public override void CheckSwitchStates()

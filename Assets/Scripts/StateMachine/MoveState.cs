@@ -8,16 +8,15 @@ public class MoveState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered MOVE state");
-        Ctx.DebugCurrentSubState = "Run State";
 
         Ctx.AttackType = 0;
         Ctx.OnMove?.Invoke(true);
-
     }
 
     public override void UpdateState()
     {
         //Debug.Log("MOVE state is currently active");
+        Ctx.DebugCurrentSubState = "Run State";
         CheckSwitchStates();
 
         Ctx.TargetSpeed = Ctx.FightSpeed;
@@ -56,6 +55,10 @@ public class MoveState : BaseState
         if (Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
+        }
+        if (Ctx.IsParried)
+        {
+            SwitchState(Factory.Stunned());
         }
     }
 
