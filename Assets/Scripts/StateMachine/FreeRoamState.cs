@@ -1,12 +1,9 @@
 using UnityEngine;
-using DG.Tweening;
-using static UnityEngine.Rendering.DebugUI;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class FreeRoamState : BaseState
 {
     public FreeRoamState(StateMachine currentContext, StateFactory stateFactory)
-    : base(currentContext, stateFactory)
+     : base(currentContext, stateFactory)
     {
         IsRootState = true;
         InitializeSubStates();
@@ -14,19 +11,21 @@ public class FreeRoamState : BaseState
 
     public override void EnterState()
     {
-        //Debug.LogWarning("Player has entered FREE ROAM state");
-
+        //Debug.LogWarning("Player has entered FIGHT state");
+/*        Ctx.IsAttacking = false;
+        Ctx.IsPostAttack = false;
+        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
+        Ctx.Animator.SetBool(Ctx.AnimIDPostAttack, false);*/
     }
 
     public override void UpdateState()
     {
-        // Debug.Log("FREE ROAM state is currently active");
-        Ctx.DebugCurrentSuperState = "FreeRoam State";
+        //Debug.Log("FIGHT state is currently active");
+        Ctx.DebugCurrentSuperState = "Free RoamState";
         CheckSwitchStates();
 
-        Ctx.EnemyDetection();
-        Ctx.FightMovement();
-
+        Ctx.SetFreeRoamMovementAnimationValues();
+        Ctx.FreeRoamMovement();
         if (Ctx.VerticalVelocity < 0.0f)
         {
             Ctx.VerticalVelocity = -2f;
@@ -35,13 +34,16 @@ public class FreeRoamState : BaseState
 
     public override void ExitState()
     {
-        //Debug.LogWarning("Player has exited FREE ROAM state");
-
+        // Debug.LogError("Player has exited FIGHT state");
 
     }
 
     public override void CheckSwitchStates()
     {
+        if (Ctx.IsFighting)
+        {
+            SwitchState(Factory.CombatState());
+        }
         if (Ctx.IsDead)
         {
             SwitchState(Factory.Death());
@@ -49,14 +51,21 @@ public class FreeRoamState : BaseState
     }
 
     public override void InitializeSubStates()
-    {   
-        if (Ctx.MoveInput != Vector2.zero)
+    {
+        if(Ctx.IsAttacking)
         {
-            SetSubState(Factory.Move());
+            SetSubState(Factory.PostAttack());
         }
         else
         {
-            SetSubState(Factory.Idle());
-        }
+            if (Ctx.MoveInput != Vector2.zero)
+            {
+                SetSubState(Factory.Move());
+            }
+            else
+            {
+                SetSubState(Factory.Idle());
+            }
+        }       
     }
 }

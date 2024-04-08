@@ -7,9 +7,9 @@ public class StateFactory
         _context = currentContext;
     }
 
-    public BaseState FreeRoam()
+    public BaseState CombatState()
     {
-        return new FreeRoamState(_context, this);
+        return new CombatState(_context, this);
     }
     public BaseState Idle()
     {
@@ -19,13 +19,17 @@ public class StateFactory
     {
         return new MoveState(_context, this);
     }
-    public BaseState Fight()
+    public BaseState FreeRoam()
     {
-        return new FightState(_context, this);
+        return new FreeRoamState(_context, this);
     }
     public BaseState LightAttack()
     {
         return new LightAttackState(_context, this);
+    }
+    public BaseState PostAttack()
+    {
+        return new PostAttackState(_context, this);
     }
     public BaseState Hurt()
     {

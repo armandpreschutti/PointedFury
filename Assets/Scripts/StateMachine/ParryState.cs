@@ -25,7 +25,11 @@ public class ParryState : BaseState
         Ctx.DebugCurrentSubState = $"Parry State";
         CheckSwitchStates();
 
-        Ctx.LightAttackMovement();
+        if(Ctx.IsCharging)
+        {
+            Ctx.ParryMovement();
+        }
+
     }
 
     public override void ExitState()
@@ -35,7 +39,6 @@ public class ParryState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDParry, false);
         Ctx.IsAttacking = false;
         Ctx.OnLightAttack?.Invoke(false);
-        Ctx.IsLightAttacking = false;
         Ctx.IsCharging = false;
     }
 

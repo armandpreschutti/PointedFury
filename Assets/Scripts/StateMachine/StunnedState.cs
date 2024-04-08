@@ -29,7 +29,7 @@ public class StunnedState : BaseState
 
         if (Ctx.IsKnockedBack)
         {
-            Ctx.SetHitKnockback();
+            Ctx.SetHitKnockBack();
         }
 
     }
@@ -55,7 +55,7 @@ public class StunnedState : BaseState
                 SwitchState(Factory.Idle());
             }
         }
-        if (Ctx.IsHitLanded)
+        else if (Ctx.IsHitLanded)
         {
             SwitchState(Factory.Hurt());
         }        

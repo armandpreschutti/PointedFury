@@ -10,38 +10,28 @@ public class LightAttackState : BaseState
 
     public override void EnterState()
     {
-        //Debug.LogWarning("Player has entered LIGHT ATTACK state");
+        Debug.LogWarning("Player has entered LIGHT ATTACK state");
 
         SetAttackType();
         Ctx.Animator.Play($"LightAttack{Ctx.AttackType}", 0, 0);
-        Ctx.IsLightAttacking = true;
+        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
-        Ctx.IsComboAttacking = false;
-        Ctx.IsFighting = true;
         Ctx.IsParryable = true;
-        if (Ctx.AttackType < 7)
-        {
-            Ctx.CanComboAttack = true;
-        }
         Ctx.OnLightAttack?.Invoke(true);
+        Ctx.IsBlockPressed = false;
     }
 
     public override void UpdateState()
     {
         //Debug.Log("LIGHT ATTACK state is currently active");
-        Ctx.DebugCurrentSubState = $"Light Attack State ({Ctx.AttackType})";
+        Ctx.DebugCurrentSubState = $"Light Attack {Ctx.AttackType} State";
         CheckSwitchStates();
 
-        Ctx.SetAttackDirection();
         if (Ctx.IsCharging)
         {
-            Ctx.LightAttackMovement();
-        }
-        if (Ctx.IsLightAttackPressed && Ctx.CanComboAttack)
-        {
-            Ctx.IsComboAttacking = true;
-            Ctx.CanComboAttack = false;
+            Ctx.SetAttackDirection();
+            Ctx.AttackMovement();
         }
     }
 
@@ -49,36 +39,24 @@ public class LightAttackState : BaseState
     {
         //Debug.LogWarning("Player has exited LIGHT ATTACK state");
 
+        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
         Ctx.IsAttacking = false;
         Ctx.OnLightAttack?.Invoke(false);
-        Ctx.IsLightAttacking = false;
         Ctx.IsCharging = false;
         Ctx.IsParryable = false;
-        Ctx.CanComboAttack = false;
     }
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsLightAttacking)
+        if (!Ctx.IsAttacking)
         {
-            if (Ctx.IsComboAttacking)
-            {
-                SwitchState(Factory.LightAttack());
-            }
-            else if (Ctx.IsBlockPressed)
+            if (Ctx.IsBlockPressed)
             {
                 SwitchState(Factory.Block());
             }
             else
-            {
-                if (Ctx.MoveInput != Vector2.zero)
-                {
-                    SwitchState(Factory.Move());
-                }
-                else
-                {
-                    SwitchState(Factory.Idle());
-                }
+            { 
+                SwitchState(Factory.PostAttack());
             }
         }
         if (Ctx.IsHitLanded)
@@ -125,6 +103,9 @@ public class LightAttackState : BaseState
                 break;
             case 6:
                 Ctx.AttackType = 7;
+                break;
+            case 7:
+                Ctx.AttackType = 1;
                 break;
             default:
                 break;

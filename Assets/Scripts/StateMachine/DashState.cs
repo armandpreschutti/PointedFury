@@ -15,7 +15,8 @@ public class DashState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
         Ctx.IsDashing = true;
         Ctx.IsDashPressed= false;
-        Ctx.IsFighting = true;
+       // Ctx.IsFighting = true;
+        
     }
 
     public override void UpdateState()
@@ -27,6 +28,7 @@ public class DashState : BaseState
         Ctx.AttackType = 0;
         if (Ctx.IsDashMoving)
         {
+            Ctx.SetDashDirection();
             Ctx.DashMovement();
         }       
     }

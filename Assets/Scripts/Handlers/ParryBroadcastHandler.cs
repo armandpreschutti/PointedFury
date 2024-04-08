@@ -43,6 +43,7 @@ public class ParryBroadcastHandler : MonoBehaviour
 
     private void AttemptParry()
     {
+
         foreach (GameObject hit in _hitTargets)
         {
             if (hit.GetComponent<StateMachine>() != null)
@@ -50,10 +51,13 @@ public class ParryBroadcastHandler : MonoBehaviour
                 if (hit.GetComponent<StateMachine>().IsParryable)
                 {
                     hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position);
-                    _stateMachine.IncomingAttackDirection = hit.transform.position;
+                    //_stateMachine.IncomingAttackDirection = hit.transform.position;
+                    _stateMachine.CurrentTarget = hit;
                     _stateMachine.IsParrySucces = true;
                 }
             }
         }
     }
+
+   
 }

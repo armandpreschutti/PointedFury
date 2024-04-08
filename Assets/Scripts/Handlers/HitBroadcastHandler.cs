@@ -47,25 +47,9 @@ public class HitBroadcastHandler : MonoBehaviour
         {
             if(hit.GetComponent<StateMachine>() != null) 
             {
+                _stateMachine.OnAttackSuccess?.Invoke();
                 hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.transform.position);
             }
         }
     }
-/*    private void AttemptParry()
-    {
-        foreach (GameObject hit in _hitTargets)
-        {
-            if (hit.GetComponent<StateMachine>() != null)
-            {
-                if (hit.GetComponent<StateMachine>().IsParryable)
-                {
-                    hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position);
-                    _stateMachine.IncomingAttackDirection = hit.transform.position;
-                    _stateMachine.IsParrySucces = true;
-                }
-            }
-        }
-
-
-    }*/
 }

@@ -20,7 +20,7 @@ public class DeathState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDDeath, true);
         Ctx.Animator.Play($"Death", 0, 0);
         ExitAllAnimations();
-        Ctx.StartCoroutine(TestRespawn());
+       // Ctx.StartCoroutine(TestRespawn());
     }
 
     public override void UpdateState()
@@ -31,7 +31,7 @@ public class DeathState : BaseState
 
         if (Ctx.IsKnockedBack)
         {
-            Ctx.SetHitKnockback();
+            Ctx.SetHitKnockBack();
         }
         else
         {
@@ -61,7 +61,7 @@ public class DeathState : BaseState
     public IEnumerator TestRespawn()
     {
         yield return new WaitForSeconds(5f);
-        SwitchState(Factory.FreeRoam());
+        SwitchState(Factory.CombatState());
         Ctx.Controller.enabled = true;
         Ctx.OnDeath?.Invoke(true);
     }

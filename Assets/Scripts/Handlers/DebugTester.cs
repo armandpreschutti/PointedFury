@@ -14,6 +14,7 @@ public class DebugTester : MonoBehaviour
     private void OnEnable()
     {
         _stateMachine.OnLightAttack += SetIndicator;
+        
     }
     private void OnDisable()
     {
@@ -49,10 +50,4 @@ public class DebugTester : MonoBehaviour
                 break;
         }
     }
-
-    public void SetAttackType()
-    {
-       
-    }
-
 }

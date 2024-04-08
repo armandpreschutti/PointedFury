@@ -82,7 +82,7 @@ public class AIBrain : MonoBehaviour
         yield return new WaitForSeconds(.25f);
         //Debug.Log("New chance assigned");
 
-        if(!_isAttacking)
+        if(!_isAttacking && _stateMachine.CurrentTarget != null)
         {
             if (!_isMeleeRange)
             {
@@ -106,11 +106,11 @@ public class AIBrain : MonoBehaviour
 
     public IEnumerator SetAttackAttempt()
     {
-        Debug.LogError("Enemy is thinking about attacking");
+       // Debug.LogError("Enemy is thinking about attacking");
         _attackChance = UnityEngine.Random.Range(1, 11);
         yield return new WaitForSeconds(.25f);
 
-        if (_attackChance > Difficulty && !_isAttacking && !_stateMachine.IsStunned)
+        if (_attackChance > Difficulty && !_isAttacking && !_stateMachine.IsStunned && _stateMachine.CurrentTarget != null)
         {
             StartCoroutine(SetParryState());
             
@@ -123,7 +123,8 @@ public class AIBrain : MonoBehaviour
     }
     public IEnumerator SetParryState()
     {
-        Debug.LogError("Enemy is going to attack");
+
+       // Debug.LogError("Enemy is going to attack");
 
         _stateMachine.IsParryable = true;
         _isAttacking = true;
@@ -133,7 +134,7 @@ public class AIBrain : MonoBehaviour
             _stateMachine.IsLightAttackPressed = true;
             _isAttacking = false;
         }
-        Debug.LogError("Enemy is finished attacking");
+        //Debug.LogError("Enemy is finished attacking");
         StartCoroutine(SetAttackAttempt());
     }
 }

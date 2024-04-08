@@ -47,16 +47,9 @@ public class UserInput : MonoBehaviour
     public void SetLightAttackInput(bool value)
     {
         
-        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned)
+        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsAttacking /*&& !_stateMachine.IsBlocking*/)
         {
-            if (_stateMachine.AttackType == 0 || _stateMachine.CanComboAttack)
-            {
-                _stateMachine.IsLightAttackPressed = value;
-            }
-            else
-            {
-                return;
-            }
+            _stateMachine.IsLightAttackPressed = true;
         }
        
         else
@@ -83,7 +76,7 @@ public class UserInput : MonoBehaviour
 
     public void SetParryInput()
     {
-        if (!_stateMachine.IsLightAttacking)
+        if (!_stateMachine.IsAttacking)
         {
             _stateMachine.OnAttemptParty?.Invoke();
         }

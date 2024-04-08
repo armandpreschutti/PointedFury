@@ -26,7 +26,7 @@ public class HurtState : BaseState
         
         if(Ctx.IsKnockedBack)
         {
-            Ctx.SetHitKnockback();
+            Ctx.SetHitKnockBack();
         }
     }
 

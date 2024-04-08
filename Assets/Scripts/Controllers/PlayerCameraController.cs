@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cinemachine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerCameraController : MonoBehaviour
 {
@@ -36,12 +37,12 @@ public class PlayerCameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        _stateMachine.OnFight += SetFightCamera;
+
     }
 
     private void OnDisable()
     {
-        _stateMachine.OnFight -= SetFightCamera;
+
     }
 
     // Start is called before the first frame update
@@ -54,14 +55,20 @@ public class PlayerCameraController : MonoBehaviour
     void LateUpdate()
     {
         CameraRotation();
-       /* if (!_playerStateMachine.IsFighting)
-        {
-            CameraRotation();
-        }
-        else
-        {
-            return;
-        }*/
+        SetFightCamera();
+        /* if (!_playerStateMachine.IsFighting)
+         {
+             CameraRotation();
+         }
+         else
+         {
+             return;
+         }*/
+    }
+    public void SetFightCamera()
+    {
+        _fightCamera.gameObject.SetActive(_stateMachine.IsFighting);
+        
     }
 
     private void CameraRotation()
