@@ -94,16 +94,14 @@ public class EnemyDetectionHandler : MonoBehaviour
             if (_stateMachine.MoveInput != Vector2.zero)
             {
                 RaycastHit info;
-                if (!_stateMachine.IsAI)
+                if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius, EnemyLayers))
                 {
-                    if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius, EnemyLayers))
+                    if (_stateMachine.EnemiesNearby.Contains(info.transform.gameObject))
                     {
-                        if (_stateMachine.EnemiesNearby.Contains(info.transform.gameObject))
-                        {
-                            _stateMachine.CurrentTarget = info.transform.gameObject;
-                        }
+                        _stateMachine.CurrentTarget = info.transform.gameObject;
                     }
                 }
+
             }
             else
             {

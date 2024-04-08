@@ -20296,6 +20296,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: OnAttackAnimationBegin
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.1
     functionName: OnAttackAnimationContact
     data: 
@@ -20303,7 +20310,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.26666668
+  - time: 0.2
     functionName: OnAttackAnimationComplete
     data: 
     objectReferenceParameter: {fileID: 0}

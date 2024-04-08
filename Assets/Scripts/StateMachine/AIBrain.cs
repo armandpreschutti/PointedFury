@@ -8,27 +8,38 @@ using UnityEngine.InputSystem.XR;
 public class AIBrain : MonoBehaviour
 {
     [SerializeField] StateMachine _stateMachine;
-    [SerializeField] Animator _anim;
-    [SerializeField] GameObject _target;
-    [SerializeField] Vector2 _randomInput;
-    [SerializeField] CharacterController _characterController;
-    [SerializeField] float _targetDistance;
-    [SerializeField] Vector3 _moveDirection;
-    [SerializeField] Vector3 _inputDirection;
-    [SerializeField] bool _isMeleeRange;
     [SerializeField] float _distanceToTarget;
     [SerializeField] Vector2 _moveInput;
-    [SerializeField] int _attackChance = 0;
-    [SerializeField] int Difficulty = 0;
-    [SerializeField] float _closeInDistance;
-    [SerializeField] bool _isAttacking;
+    [SerializeField] float _attackingDistance;
+    [SerializeField] float _watchingDistance;
 
+    // debug variables
+    [SerializeField] SkinnedMeshRenderer _enemySkin;
+    [SerializeField] Material _attackerMaterial;
+    [SerializeField] Material _watcherMaterial;
 
-    public Action<int> OnHit;
+    // statevariables
+    float _closeInCheckTime;
+    public float CloseInCheckInterval = .1f;
+    float _strafeCheckTime;
+    public float StrafeCheckInterval = 4f;
+    float _attackCheckTime;
+    public float AttackCheckInterval =3f;
+    float _blockCheckTime;
+    public float BlockCheckInterval = .25f;   
+
+    // enemy stats
+    public int AttackSkill;
+    public int ComboSkill;
+    public int BlockSkill;
+
+    // enemy management variables
+    public bool isActivated;
+    public bool isAttacker;
+    public bool isWatcher;
 
     private void Awake()
     {
-        _anim = GetComponent<Animator>();
         _stateMachine =GetComponent<StateMachine>();
     }
     private void OnEnable()
@@ -41,100 +52,232 @@ public class AIBrain : MonoBehaviour
     }
     private void Start()
     {
-        _target = GameObject.Find("Player").gameObject;
-        StartCoroutine(SetAttackAttempt());
-        StartCoroutine(GetRandomDirection());
+        _attackCheckTime = AttackCheckInterval;
+        _closeInCheckTime = CloseInCheckInterval;
+        _blockCheckTime = BlockCheckInterval;
+        //StartCoroutine(SetAttackState());
+        //StartCoroutine(SetMovementState());
     }
 
     private void Update()
     {
-        CloseFightDistance();
-        if (_stateMachine.IsStunned || _stateMachine.IsHurt || _stateMachine.IsDead)
-        {
-            _isAttacking = false;
-            _stateMachine.IsParryable = false;
-        }
+        CloseInLoop();
+        StrafeLoop();
+        AttackLoop();
+        BlockLoop();
+        CheckFightDistance();
 
         _stateMachine.MoveInput = _moveInput;
     }
 
-    public void CloseFightDistance()
+    public void CheckFightDistance()
     {
         if (_stateMachine.CurrentTarget != null)
         {
-            // Calculate the direction towards the target
             Vector3 directionToTarget = transform.position - _stateMachine.CurrentTarget.transform.position;
 
-            // Check the distance to the target
             _distanceToTarget = directionToTarget.magnitude;
+        }
+        else
+        {
+            return;
+        }
+    } 
 
-            _isMeleeRange = _distanceToTarget < _closeInDistance ? true : false;
+    public void SetAttackState()
+    {
+        if (isActivated)
+        {
+            if (isAttacker && !_stateMachine.IsAttacking)
+            {
+                Attack();
+
+            }
+            else
+            {
+                return;
+            }
+        }
+
+    }
+
+    public void Attack()
+    {
+        if (!_stateMachine.IsAttacking)
+        {
+            int attackChance = UnityEngine.Random.Range(1, AttackSkill + 1);
+            if (attackChance < AttackSkill)
+            {
+                _stateMachine.IsLightAttackPressed = true;
+            }
+        }
+        else if (_stateMachine.IsPostAttack)
+        {
+            int comboChance = UnityEngine.Random.Range(1, ComboSkill+ 1);
+            if (comboChance < ComboSkill)
+            {
+                _stateMachine.IsLightAttackPressed = true;
+            }
         }
         else
         {
             return;
         }
     }
- 
 
-    public IEnumerator GetRandomDirection()
+    public void ChangeEnemyMaterial()
     {
-        yield return new WaitForSeconds(.25f);
-        //Debug.Log("New chance assigned");
-
-        if(!_isAttacking && _stateMachine.CurrentTarget != null)
+      /*  if (isActivated)
         {
-            if (!_isMeleeRange)
+            if (isAttacker)
             {
-                _moveInput = new Vector2(0, 1);
-                _stateMachine.IsLightAttackPressed = false;
+                _enemySkin.material = _attackerMaterial;
             }
             else
             {
-                _moveInput = new Vector2(UnityEngine.Random.Range(-1, 2), 0);
+                _enemySkin.material = _watcherMaterial;
             }
         }
         else
         {
-            _moveInput = Vector2.zero;
-        }
+            return;
+        }*/
         
-        //_randomInput = new Vector2(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
-        //_stateMachine.MoveInput = _randomInput;
-        StartCoroutine(GetRandomDirection());
+    }
+    public void StrafeLoop()
+    {
+        _strafeCheckTime -= Time.deltaTime;
+
+        // Check if the timer has reached zero
+        if (_strafeCheckTime <= 0)
+        {
+           
+            // Reset the timer
+            _strafeCheckTime = StrafeCheckInterval;
+
+            if (isActivated)
+            {
+                float strafeDirection = UnityEngine.Random.Range(-1, 2);
+                if (strafeDirection == -1)
+                {
+                    _moveInput.x = -1;
+                }
+                else if (strafeDirection == 1)
+                {
+                    _moveInput.x = 1;
+                }
+                else
+                {
+                    _moveInput.x = 0;
+                }
+            }
+        }
     }
 
-    public IEnumerator SetAttackAttempt()
+    public void CloseInLoop()
     {
-       // Debug.LogError("Enemy is thinking about attacking");
-        _attackChance = UnityEngine.Random.Range(1, 11);
-        yield return new WaitForSeconds(.25f);
 
-        if (_attackChance > Difficulty && !_isAttacking && !_stateMachine.IsStunned && _stateMachine.CurrentTarget != null)
-        {
-            StartCoroutine(SetParryState());
-            
-        }
-        else
-        {
-            StartCoroutine(SetAttackAttempt());
-        }
 
+        _closeInCheckTime -= Time.deltaTime;
+
+        // Check if the timer has reached zero
+        if (_closeInCheckTime <= 0)
+        {
+
+            // Reset the timer
+            _closeInCheckTime = CloseInCheckInterval;
+
+            if (isActivated)
+            {
+                if (isWatcher)
+                {
+                    if (_distanceToTarget > _watchingDistance + .5f)
+                    {
+                        _moveInput.y = 1f;
+                    }
+                    else if (_distanceToTarget < _watchingDistance - .5f)
+                    {
+                        _moveInput.y = -1f;
+                    }
+                    else
+                    {
+                        _moveInput.y = 0f;
+                    }
+                }
+                else if (isAttacker)
+                {
+                    if (_distanceToTarget > _attackingDistance + .5f)
+                    {
+                        _moveInput.y = 1f;
+                    }
+                    else if (_distanceToTarget < _attackingDistance - .5f)
+                    {
+                        _moveInput.y = -1f;
+                    }
+                    else
+                    {
+                        _moveInput.y = 0f;
+                    }
+                }
+            }
+            else
+            {
+                _moveInput = Vector2.zero;
+            }
+        }
     }
-    public IEnumerator SetParryState()
+    public void AttackLoop()
     {
+        _attackCheckTime -= Time.deltaTime;
 
-       // Debug.LogError("Enemy is going to attack");
-
-        _stateMachine.IsParryable = true;
-        _isAttacking = true;
-        yield return new WaitForSeconds(1f);
-        if (_isAttacking)
+        // Check if the timer has reached zero
+        if (_attackCheckTime <= 0)
         {
-            _stateMachine.IsLightAttackPressed = true;
-            _isAttacking = false;
+
+            // Reset the timer
+            _attackCheckTime = AttackCheckInterval;
+
+            if (isActivated)
+            {
+                if (isAttacker)
+                {
+                    Attack();
+
+                }
+                else
+                {
+                    return;
+                }
+            }
+            // Perform actions when timer reaches zero (You can put your desired actions here)
+            //Debug.Log("Timer reached zero. Resetting...");
         }
-        //Debug.LogError("Enemy is finished attacking");
-        StartCoroutine(SetAttackAttempt());
+    }
+
+    public void BlockLoop()
+    {
+        _blockCheckTime -= Time.deltaTime;
+
+        // Check if the timer has reached zero
+        if (_blockCheckTime <= 0)
+        {
+
+            // Reset the timer
+            _blockCheckTime = BlockCheckInterval;
+
+            if (isActivated)
+            {
+                int blockChance = UnityEngine.Random.Range(1, BlockSkill + 1);
+                if (_stateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && _stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == this.gameObject && blockChance < BlockSkill)
+                {
+                    _stateMachine.IsBlockPressed = true;
+
+                }
+                else
+                {
+                    _stateMachine.IsBlockPressed = false;
+                }
+            }
+        }
     }
 }

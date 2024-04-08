@@ -294,6 +294,7 @@ public class StateMachine : MonoBehaviour
             {
                 Vector3 forwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
                 transform.LookAt(transform.position + forwardDirection);
+                
                 _controller.Move(InputDirection() * Time.deltaTime * TargetSpeed);
             }
             else
@@ -469,6 +470,10 @@ public class StateMachine : MonoBehaviour
         Vector3 position;
         position = target.position;
         return Vector3.MoveTowards(position, transform.position, .95f);
+    }
+    public void OnAttackAnimationBegin()
+    {
+        _isParryable = true;
     }
     public void OnAttackAnimationCharge()
     {
