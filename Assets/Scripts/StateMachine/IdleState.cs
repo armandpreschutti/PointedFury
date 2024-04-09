@@ -10,6 +10,7 @@ public class IdleState : BaseState
        // Debug.LogWarning("Player has entered IDLE state");
 
         Ctx.AttackType = 0;
+
         Ctx.OnIdle?.Invoke(true);
     }
 

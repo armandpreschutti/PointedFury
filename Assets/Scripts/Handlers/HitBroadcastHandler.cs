@@ -48,7 +48,7 @@ public class HitBroadcastHandler : MonoBehaviour
             if(hit.GetComponent<StateMachine>() != null) 
             {
                 _stateMachine.OnAttackSuccess?.Invoke();
-                hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.transform.position);
+                hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.transform.position, _stateMachine.AttackDamage);
             }
         }
     }

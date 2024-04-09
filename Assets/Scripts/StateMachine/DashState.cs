@@ -58,11 +58,6 @@ public class DashState : BaseState
                 SwitchState(Factory.Idle());
             }
         }
-        if (Ctx.IsHitLanded)
-        {
-            SwitchState(Factory.Hurt());
-            Ctx.IsDashing= false;
-        }
     }
 
     public override void InitializeSubStates()

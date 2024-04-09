@@ -40,6 +40,8 @@ public class StateMachine : MonoBehaviour
 
     // Player combat variables
     [Header("Player Combat")]
+    [Tooltip("The amount of damage a player will inflict with attacks")]
+    public float AttackDamage;
     [Tooltip("What layers the character detects enemies on")]
     public LayerMask EnemyLayers;
     [Tooltip("The amount of time after an attack to exit attack state")]
@@ -48,8 +50,6 @@ public class StateMachine : MonoBehaviour
     public float CombatDistance;
     [Tooltip("The amount of force added to landed attacks")]
     public float KnockBackPower;
-/*    [Tooltip("The radius of the enemy detection zone when not aiming")]
-    public float EnemyDetectionRadius;*/
     [Tooltip("A list of enemies detected via sphere casr")]
     public List<GameObject> EnemiesNearby = new List<GameObject>();
 
@@ -146,7 +146,7 @@ public class StateMachine : MonoBehaviour
 
     // Player action events
     public Action OnAttackContact;
-    public Action OnHitLanded;
+    public Action<float> OnHitLanded;
     public Action OnAttemptParty;
     public Action OnAttackSuccess;
 
@@ -541,13 +541,31 @@ public class StateMachine : MonoBehaviour
     {
         _isDashing = false;
     }
-    public void TakeHit(int attackType, Vector3 attackerPosition)
+    public void TakeHit(int attackType, Vector3 attackerPosition, float attackDamage)
     {
         _incomingAttackDirection = attackerPosition;
-        if (!_isBlocking && !_isParrying)
+
+        if(_isBlocking)
+        {
+            _isBlockSuccess = true;
+        }
+        else if(_isDashing)
+        {
+            return;
+        }
+        else
         {
             _hitType = attackType;
-            OnHitLanded?.Invoke();
+            OnHitLanded?.Invoke(attackDamage);
+            if (!_isDead)
+            {
+                _isHitLanded = true;
+            }
+        }
+        /*if (!_isBlocking && !_isParrying)
+        {
+            _hitType = attackType;
+            OnHitLanded?.Invoke(attackDamage);
             if (!_isDead)
             {
                 _isHitLanded = true;
@@ -557,7 +575,7 @@ public class StateMachine : MonoBehaviour
         {
             _isBlockSuccess = true;
             return;
-        }
+        }*/
     }
 
     public void TakeParry(Vector3 attackerPosition)

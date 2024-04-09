@@ -47,7 +47,7 @@ public class UserInput : MonoBehaviour
     public void SetLightAttackInput(bool value)
     {
         
-        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsAttacking /*&& !_stateMachine.IsBlocking*/)
+        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsAttacking && !_stateMachine.IsBlocking)
         {
             _stateMachine.IsLightAttackPressed = true;
         }

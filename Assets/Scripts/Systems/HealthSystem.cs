@@ -13,6 +13,9 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] Slider _healthBar;
     
     public Action OnDeath;
+    public Action OnDamage;
+
+    public float CurrentHealth { get { return _currentHealh; } }
 
     private void Awake()
     {
@@ -41,14 +44,16 @@ public class HealthSystem : MonoBehaviour
         //_healthBar.transform.LookAt(Camera.main.transform.position);
     }
 
-    public void TakeDamage()
+    public void TakeDamage(float value)
     {
         if(!_stateMachine.IsDead)
         {
-            _currentHealh -= 20;
+            _currentHealh -= value;
+            OnDamage?.Invoke();
             if (_currentHealh <= MinHealth)
             {
                 Debug.Log($"{gameObject.name} has died!");
+                OnDeath?.Invoke();
                 _stateMachine.IsDead = true;
             }
         }
