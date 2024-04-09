@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class UserInput : MonoBehaviour
     // Player input variables
     private StateMachine _stateMachine;
     private PlayerControls _playerControls;
+
+    public Action OnPausePressed;
 
     private void Awake()
     {
@@ -82,6 +85,12 @@ public class UserInput : MonoBehaviour
         }
     }
 
+    public void SetPauseInput()
+    {
+        Debug.Log("Button Hooked up Correctly");
+        OnPausePressed?.Invoke();
+    }
+
     // Set input values
     private void SetInputValues()
     {
@@ -92,5 +101,6 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Dash.performed += ctx => SetDashInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed += ctx => SetBlockInput(ctx.ReadValueAsButton());
         _playerControls.Player.Parry.performed += ctx => SetParryInput();
+        _playerControls.Player.Pause.performed += ctx => SetPauseInput();
     }
 }

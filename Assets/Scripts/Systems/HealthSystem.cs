@@ -52,7 +52,7 @@ public class HealthSystem : MonoBehaviour
             OnDamage?.Invoke();
             if (_currentHealh <= MinHealth)
             {
-                Debug.Log($"{gameObject.name} has died!");
+              //  Debug.Log($"{gameObject.name} has died!");
                 OnDeath?.Invoke();
                 _stateMachine.IsDead = true;
             }

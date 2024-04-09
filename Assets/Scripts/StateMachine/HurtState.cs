@@ -11,6 +11,7 @@ public class HurtState : BaseState
 
         Ctx.SetIncomingAttackDirection();
         Ctx.IsHitLanded = false;
+        Ctx.IsAttacking = false;
         Ctx.IsKnockedBack = true;
         Ctx.IsHurt = true;
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);

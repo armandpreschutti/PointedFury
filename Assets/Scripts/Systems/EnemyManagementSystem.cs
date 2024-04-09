@@ -8,6 +8,25 @@ public class EnemyManagementSystem : MonoBehaviour
     public GameObject currentAttacker;
     public bool zoneActive;
 
+    /*    private void OnEnable()
+        {
+            foreach (GameObject enemy in managedEnemies)
+            {
+                enemy.GetComponent<HealthSystem>().OnDeath += RemoveDeadEnemy;
+            }
+        }
+        private void OnDisable()
+        {
+            foreach (GameObject enemy in managedEnemies)
+            {
+                enemy.GetComponent<HealthSystem>().OnDeath -= RemoveDeadEnemy;
+            }
+        }*/
+
+    private void Update()
+    {
+        CleanEnemyList();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -46,7 +65,7 @@ public class EnemyManagementSystem : MonoBehaviour
     private void Start()
     {
         StartCoroutine(PickAttacker());
-        StartCoroutine(CleanEnemyList());
+        //StartCoroutine(CleanEnemyList());
     }
 
     public IEnumerator PickAttacker()
@@ -71,9 +90,9 @@ public class EnemyManagementSystem : MonoBehaviour
         StartCoroutine(PickAttacker());
     }
 
-    public IEnumerator CleanEnemyList()
+    public void CleanEnemyList()
     {
-        yield return new WaitForSeconds(.25f);
+       // yield return new WaitForSeconds(2f);
         if (zoneActive)
         {
             foreach (GameObject enemy in managedEnemies)
@@ -84,7 +103,6 @@ public class EnemyManagementSystem : MonoBehaviour
                 }
             }
         }        
-        StartCoroutine(CleanEnemyList());
+        //StartCoroutine(CleanEnemyList());
     }
-
 }

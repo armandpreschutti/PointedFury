@@ -38,36 +38,50 @@ public class AIBrain : MonoBehaviour
     public bool isAttacker;
     public bool isWatcher;
 
+    bool _isPaused;
+
     private void Awake()
     {
         _stateMachine =GetComponent<StateMachine>();
     }
     private void OnEnable()
     {
-
+        PauseMenuController.OnGamePaused += SetPauseState;
     }
     private void OnDisable()
     {
-
+        PauseMenuController.OnGamePaused -= SetPauseState;
     }
+
+    public void SetPauseState(bool value)
+    {
+        _isPaused = value;
+    }
+
     private void Start()
     {
         _attackCheckTime = AttackCheckInterval;
         _closeInCheckTime = CloseInCheckInterval;
         _blockCheckTime = BlockCheckInterval;
-        //StartCoroutine(SetAttackState());
-        //StartCoroutine(SetMovementState());
     }
 
     private void Update()
     {
-        CloseInLoop();
-        StrafeLoop();
-        AttackLoop();
-        BlockLoop();
-        CheckFightDistance();
+        if(!_isPaused)
+        {
+            CloseInLoop();
+            StrafeLoop();
+            AttackLoop();
+            BlockLoop();
+            CheckFightDistance();
 
-        _stateMachine.MoveInput = _moveInput;
+            _stateMachine.MoveInput = _moveInput;
+        }
+        else
+        {
+            return;
+        }
+
     }
 
     public void CheckFightDistance()
