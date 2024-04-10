@@ -79,7 +79,7 @@ public class UserInput : MonoBehaviour
 
     public void SetParryInput()
     {
-        if (!_stateMachine.IsAttacking)
+        if (!_stateMachine.IsAttacking && !_stateMachine.IsDashing)
         {
             _stateMachine.OnAttemptParty?.Invoke();
         }
