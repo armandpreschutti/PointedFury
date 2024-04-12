@@ -15,12 +15,14 @@ public class DeathState : BaseState
         //Debug.LogWarning("Player has entered DEATH state");
 
         Ctx.SetIncomingAttackDirection();
+        Ctx.IsHitLanded = false;
+        Ctx.IsPostAttack = false;
+        Ctx.IsAttacking = false;
         Ctx.IsKnockedBack = true;
         Ctx.IsDead = true;        
         Ctx.Animator.SetBool(Ctx.AnimIDDeath, true);
         Ctx.Animator.Play($"Death", 0, 0);
         ExitAllAnimations();
-       // Ctx.StartCoroutine(TestRespawn());
     }
 
     public override void UpdateState()
@@ -58,13 +60,6 @@ public class DeathState : BaseState
         SetSubState(Factory.Idle());
     }
 
-    public IEnumerator TestRespawn()
-    {
-        yield return new WaitForSeconds(5f);
-        SwitchState(Factory.CombatState());
-        Ctx.Controller.enabled = true;
-        Ctx.OnDeath?.Invoke(true);
-    }
     public void ExitAllAnimations()
     {
 

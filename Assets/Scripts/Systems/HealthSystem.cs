@@ -25,12 +25,10 @@ public class HealthSystem : MonoBehaviour
     private void OnEnable()
     {
         _stateMachine.OnHitLanded += TakeDamage;
-        _stateMachine.OnDeath += ResetHealth;
     }
     private void OnDisable()
     {
         _stateMachine.OnHitLanded -= TakeDamage;
-        _stateMachine.OnDeath -= ResetHealth;
     }
     // Start is called before the first frame update
     void Start()
@@ -55,6 +53,7 @@ public class HealthSystem : MonoBehaviour
               //  Debug.Log($"{gameObject.name} has died!");
                 OnDeath?.Invoke();
                 _stateMachine.IsDead = true;
+                _stateMachine.OnDeath?.Invoke();
             }
         }
         

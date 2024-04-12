@@ -22,6 +22,17 @@ public class HitBroadcastHandler : MonoBehaviour
         _stateMachine.OnAttackContact -= LandAttack;
     }
 
+
+    private void Update()
+    {
+        foreach (GameObject enemy in _hitTargets)
+        {
+            if (enemy.GetComponent<StateMachine>().IsDead)
+            {
+                _hitTargets.Remove(enemy);
+            }
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         // Add the object to the list of objects in the trigger area

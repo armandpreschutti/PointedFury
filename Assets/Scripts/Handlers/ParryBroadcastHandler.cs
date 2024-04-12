@@ -21,7 +21,16 @@ public class ParryBroadcastHandler : MonoBehaviour
     {
         _stateMachine.OnAttemptParty -= AttemptParry;
     }
-
+    private void Update()
+    {
+        foreach (GameObject enemy in _hitTargets)
+        {
+            if (enemy.GetComponent<StateMachine>().IsDead)
+            {
+                _hitTargets.Remove(enemy);
+            }
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         // Add the object to the list of objects in the trigger area
@@ -51,9 +60,10 @@ public class ParryBroadcastHandler : MonoBehaviour
                 if (hit.GetComponent<StateMachine>().IsParryable)
                 {
                     hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position);
-                    //_stateMachine.IncomingAttackDirection = hit.transform.position;
-                    _stateMachine.CurrentTarget = hit;
                     _stateMachine.IsParrySucces = true;
+                    _stateMachine.OnParrySuccessful?.Invoke();
+                    _stateMachine.CurrentTarget = hit;
+
                 }
             }
         }

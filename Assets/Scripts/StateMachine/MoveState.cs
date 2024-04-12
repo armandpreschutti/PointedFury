@@ -11,6 +11,11 @@ public class MoveState : BaseState
 
         Ctx.AttackType = 0;
         Ctx.OnMove?.Invoke(true);
+        if (!Ctx.IsAI)
+        {
+            Ctx.IsFighting = false;
+        }
+        
     }
 
     public override void UpdateState()

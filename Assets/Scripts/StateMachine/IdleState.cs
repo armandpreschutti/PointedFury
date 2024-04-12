@@ -12,6 +12,10 @@ public class IdleState : BaseState
         Ctx.AttackType = 0;
 
         Ctx.OnIdle?.Invoke(true);
+        if (!Ctx.IsAI)
+        {
+            Ctx.IsFighting = false;
+        }
     }
 
     public override void UpdateState()

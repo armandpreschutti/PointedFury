@@ -17,7 +17,8 @@ public class LightAttackState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
-       // Ctx.IsParryable = true;
+        // Ctx.IsParryable = true;
+        Ctx.IsFighting = true;
         Ctx.OnLightAttack?.Invoke(true);
         Ctx.IsBlockPressed = false;
     }

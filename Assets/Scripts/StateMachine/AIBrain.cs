@@ -13,6 +13,7 @@ public class AIBrain : MonoBehaviour
     [SerializeField] float _attackingDistance;
     [SerializeField] float _watchingDistance;
 
+
     // debug variables
     [SerializeField] SkinnedMeshRenderer _enemySkin;
     [SerializeField] Material _attackerMaterial;
@@ -38,6 +39,8 @@ public class AIBrain : MonoBehaviour
     public bool isAttacker;
     public bool isWatcher;
 
+    bool isMeleeRange;
+    bool isFightRange;
     bool _isPaused;
 
     private void Awake()
@@ -222,14 +225,17 @@ public class AIBrain : MonoBehaviour
                 {
                     if (_distanceToTarget > _attackingDistance + .5f)
                     {
+                        isMeleeRange = false;
                         _moveInput.y = 1f;
                     }
                     else if (_distanceToTarget < _attackingDistance - .5f)
                     {
+                        isMeleeRange = false;
                         _moveInput.y = -1f;
                     }
                     else
                     {
+                        isMeleeRange = true;
                         _moveInput.y = 0f;
                     }
                 }
@@ -253,7 +259,7 @@ public class AIBrain : MonoBehaviour
 
             if (isActivated)
             {
-                if (isAttacker)
+                if (isAttacker && isMeleeRange)
                 {
                     Attack();
 
@@ -282,14 +288,18 @@ public class AIBrain : MonoBehaviour
             if (isActivated)
             {
                 int blockChance = UnityEngine.Random.Range(1, BlockSkill + 1);
-                if (_stateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && _stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == this.gameObject && blockChance < BlockSkill)
+                if (_stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == this.gameObject && blockChance < BlockSkill)
                 {
                     _stateMachine.IsBlockPressed = true;
 
                 }
                 else
                 {
-                    _stateMachine.IsBlockPressed = false;
+                    if(!_stateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking)
+                    {
+                        _stateMachine.IsBlockPressed = false;
+                    }
+
                 }
             }
         }

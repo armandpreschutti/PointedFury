@@ -8,27 +8,19 @@ public class EnemyManagementSystem : MonoBehaviour
     public GameObject currentAttacker;
     public bool zoneActive;
 
-    /*    private void OnEnable()
-        {
-            foreach (GameObject enemy in managedEnemies)
-            {
-                enemy.GetComponent<HealthSystem>().OnDeath += RemoveDeadEnemy;
-            }
-        }
-        private void OnDisable()
-        {
-            foreach (GameObject enemy in managedEnemies)
-            {
-                enemy.GetComponent<HealthSystem>().OnDeath -= RemoveDeadEnemy;
-            }
-        }*/
-
     private void Update()
     {
         CleanEnemyList();
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Enemy"))
+        {
+            if (!managedEnemies.Contains(other.gameObject))
+            {
+                managedEnemies.Add(other.gameObject);
+            }           
+        }
         if (other.CompareTag("Player"))
         {
             zoneActive = true;
@@ -37,13 +29,13 @@ public class EnemyManagementSystem : MonoBehaviour
                 enemy.GetComponent<AIBrain>().isActivated = true;
                 enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
                 enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
+                enemy.GetComponent<StateMachine>().IsFighting = true;
             }
         }
-        else
-        {
-            return;
-        }
     }
+
+
+  
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -54,18 +46,14 @@ public class EnemyManagementSystem : MonoBehaviour
                 enemy.GetComponent<AIBrain>().isActivated = false;
                 enemy.GetComponent<StateMachine>().CurrentTarget = null;
                 enemy.GetComponent<StateMachine>().EnemiesNearby.Remove(other.gameObject);
+                enemy.GetComponent<StateMachine>().IsFighting = false;
             }
-        }
-        else
-        {
-            return;
         }
        
     }
     private void Start()
     {
         StartCoroutine(PickAttacker());
-        //StartCoroutine(CleanEnemyList());
     }
 
     public IEnumerator PickAttacker()
@@ -92,7 +80,6 @@ public class EnemyManagementSystem : MonoBehaviour
 
     public void CleanEnemyList()
     {
-       // yield return new WaitForSeconds(2f);
         if (zoneActive)
         {
             foreach (GameObject enemy in managedEnemies)
@@ -103,6 +90,5 @@ public class EnemyManagementSystem : MonoBehaviour
                 }
             }
         }        
-        //StartCoroutine(CleanEnemyList());
     }
 }

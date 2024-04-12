@@ -27,6 +27,8 @@ public class StateMachine : MonoBehaviour
     public float ChargeSpeed;
     [Tooltip("How fast the character leaps towards while dodging")]
     public float DashSpeed;
+    [Tooltip("How much gravity is applied to the player")]
+    public float Gravity;
 
     // Player grounded variables
     [Header("Player Grounded")]
@@ -57,7 +59,7 @@ public class StateMachine : MonoBehaviour
     public bool IsAI;
     // Debug State Variables
 
-
+    public Vector3 moveDirection;
     // Player state variables
     private bool _isGrounded = true;
     private bool _isFighting = false;
@@ -85,6 +87,8 @@ public class StateMachine : MonoBehaviour
 
     public string DebugCurrentSuperState;
     public string DebugCurrentSubState;
+
+    private float _verticalSpeed;
 
     // Player fighting variables
     private GameObject _currentTarget;
@@ -115,7 +119,6 @@ public class StateMachine : MonoBehaviour
     public BaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
 
     // Player state events
-    public Action<bool> OnDeath;
     public Action<bool> OnFall;
     public Action<bool> OnGrounded;
     public Action<bool> OnFight;
@@ -149,6 +152,10 @@ public class StateMachine : MonoBehaviour
     public Action<float> OnHitLanded;
     public Action OnAttemptParty;
     public Action OnAttackSuccess;
+    public Action OnBlockSuccessful;
+    public Action OnParrySuccessful;
+    public Action OnDashSuccessful;
+    public Action OnDeath;
 
     // Getters and setters
     // Input
@@ -226,6 +233,7 @@ public class StateMachine : MonoBehaviour
         CheckIsFighting();
         SetMovementAnimationSpeed();
         CheckIsFighting();
+        SimulateGravity();
     }
 
     // Check if the player is grounded
@@ -236,6 +244,18 @@ public class StateMachine : MonoBehaviour
         _isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
     }
 
+    private void SimulateGravity()
+    {
+        // Apply gravity
+        if (!IsGrounded)
+        {
+            _verticalSpeed = Gravity;
+        }
+        else
+        {
+            _verticalSpeed= 0;
+        }
+    }
 
     public void SetPlayerSpeed()
     {
@@ -257,9 +277,10 @@ public class StateMachine : MonoBehaviour
     // Move the player
     public void CombatMovement()
     {
-        if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !IsPostAttack)
+        if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isParrying)
         {
-            _controller.Move(InputDirection() * Time.deltaTime * TargetSpeed);
+            moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
+            _controller.Move(moveDirection * Time.deltaTime);
             if (_currentTarget != null)
             {
                 Vector3 direction = _currentTarget.transform.position - transform.position;
@@ -288,14 +309,14 @@ public class StateMachine : MonoBehaviour
 
     public void FreeRoamMovement()
     {
-        if (!_isHurt && !_isBlocking && !_isStunned && !_isDashing && !IsPostAttack && !IsAttacking) 
+        if (!_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isAttacking && !_isParrying) 
         {
             if (!IsAI)
             {
                 Vector3 forwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
                 transform.LookAt(transform.position + forwardDirection);
-                
-                _controller.Move(InputDirection() * Time.deltaTime * TargetSpeed);
+                moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
+                _controller.Move(moveDirection * Time.deltaTime/* * TargetSpeed*/);
             }
             else
             {
@@ -338,7 +359,7 @@ public class StateMachine : MonoBehaviour
         if (distanceToTarget > CombatDistance)
         {
             // Calculate the movement direction based on the forward direction of the character
-            Vector3 moveDirection = transform.forward * (ChargeSpeed * 3f);
+            Vector3 moveDirection = transform.forward * (ChargeSpeed * 2f);
 
             // Move the character using the CharacterController
             _controller.Move(moveDirection * Time.deltaTime);
@@ -548,8 +569,9 @@ public class StateMachine : MonoBehaviour
         if(_isBlocking)
         {
             _isBlockSuccess = true;
+            OnBlockSuccessful?.Invoke();
         }
-        else if(_isDashing)
+        else if(_isDashing || _isParrying)
         {
             return;
         }
@@ -621,12 +643,12 @@ public class StateMachine : MonoBehaviour
     {
         if (EnemiesNearby.Count > 0)
         {
-            _isFighting = true;
+            //_isFighting = true;
             _animator.SetBool(AnimIDFight, true);
         }
         else
         {
-            _isFighting = false;
+            //_isFighting = false;
             _animator.SetBool(AnimIDFight, false);
         }
     }
@@ -634,8 +656,8 @@ public class StateMachine : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
-        Gizmos.DrawSphere(transform.position + InputDirection(), .2f);
-
+       // Gizmos.DrawSphere(transform.position + InputDirection(), .2f);
+        Gizmos.DrawSphere(new Vector3(transform.position.x, GroundedOffset, transform.position.z), GroundedRadius);
         Gizmos.DrawRay(transform.position + Vector3.up, InputDirection() * 1f);
 
         if (_currentTarget != null)

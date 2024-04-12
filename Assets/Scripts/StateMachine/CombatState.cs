@@ -33,12 +33,6 @@ public class CombatState : BaseState
             Ctx.SetFreeRoamMovementAnimationValues();
             Ctx.FreeRoamMovement();
         }
-
-
-        if (Ctx.VerticalVelocity < 0.0f)
-        {
-            Ctx.VerticalVelocity = -2f;
-        }
     }
 
     public override void ExitState()

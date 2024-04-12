@@ -22,10 +22,14 @@ public class EnemyDetectionHandler : MonoBehaviour
     private void Update()
     {
         //_stateMachine.EnemiesNearby = _enemiesNearby;
-        ProximityDetection();
-        StickDetection();
+        if(!_stateMachine.IsParrying)
+        {
+            ProximityDetection();
+            StickDetection();
+        }       
         if(_stateMachine.EnemiesNearby.Count > 0)
         {
+            _stateMachine.IsFighting = true;
             //_stateMachine.IsFighting= true;
             foreach (GameObject enemy in _stateMachine.EnemiesNearby)
             {
@@ -35,7 +39,6 @@ public class EnemyDetectionHandler : MonoBehaviour
                 }
             }
         }
-        else
         {
             //_stateMachine.IsFighting = false;
             return;
@@ -44,10 +47,12 @@ public class EnemyDetectionHandler : MonoBehaviour
     }
     private void OnEnable()
     {
+
     }
 
     private void OnDisable()
     {
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,6 +61,7 @@ public class EnemyDetectionHandler : MonoBehaviour
         if (other.CompareTag(_enemyTag))
         {
             _stateMachine.EnemiesNearby.Add(other.gameObject);
+            _stateMachine.IsFighting = true;
         }
     }
 
@@ -66,6 +72,10 @@ public class EnemyDetectionHandler : MonoBehaviour
         {
             // Remove the object from the list of objects in the trigger area
             _stateMachine.EnemiesNearby.Remove(other.gameObject);
+            if (_stateMachine.EnemiesNearby.Count == 0)
+            {
+                _stateMachine.IsFighting = false;
+            }
         }
     }
 

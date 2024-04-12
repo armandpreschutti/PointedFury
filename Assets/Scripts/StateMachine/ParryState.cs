@@ -12,10 +12,12 @@ public class ParryState : BaseState
     {
         //Debug.LogWarning("Player has entered PARRY state");
 
-        Ctx.SetIncomingAttackDirection();
+        Ctx.IsParrying = true;
+        Ctx.SetAttackDirection();
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
         Ctx.Animator.Play($"Parry", 0, 0);
-        Ctx.IsParrying = true;
+
+        Ctx.IsFighting = true;
         Ctx.IsParrySucces = false;
     }
 

@@ -14,7 +14,9 @@ public class HurtState : BaseState
         Ctx.IsPostAttack = false;
         Ctx.IsAttacking = false;
         Ctx.IsKnockedBack = true;
+        Ctx.IsBlocking= false;  
         Ctx.IsHurt = true;
+        Ctx.IsFighting = true;
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
         Ctx.Animator.Play($"LightHurt{Ctx.HitType}", 0, 0);
         ExitAllAnimations();
