@@ -9,7 +9,8 @@ public class MoveState : BaseState
     {
         //Debug.LogWarning("Player has entered MOVE state");
 
-        Ctx.AttackType = 0;
+        Ctx.AttackID = 0;
+        Ctx.IsAttacking = false;
         Ctx.OnMove?.Invoke(true);
         if (!Ctx.IsAI)
         {
@@ -52,9 +53,17 @@ public class MoveState : BaseState
         {
             SwitchState(Factory.LightAttack());
         }
-        if (Ctx.IsHitLanded)
+        if(Ctx.IsHeavyAttackPressed&& !Ctx.IsAttacking)
+        {
+            SwitchState(Factory.HeavyAttack());
+        }
+        if (Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());
+        }
+        if (Ctx.IsHeavyHitLanded)
+        {
+            SwitchState(Factory.Stunned());
         }
         if (Ctx.IsDashPressed)
         {

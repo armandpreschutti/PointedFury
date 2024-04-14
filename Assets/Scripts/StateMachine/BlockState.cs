@@ -13,7 +13,7 @@ public class BlockState : BaseState
         //Debug.LogWarning("Player has entered BLOCK state");
 
         Ctx.SetAttackDirection();
-        Ctx.AttackType = 0;
+        Ctx.AttackID = 0;
         Ctx.IsBlockSuccess = false;
         Ctx.IsBlocking = true;
         Ctx.Animator.SetBool(Ctx.AnimIDBlock, true);
@@ -58,13 +58,17 @@ public class BlockState : BaseState
         {
             SwitchState(Factory.LightAttack());
         }*/
-        if (Ctx.IsDashPressed)
+        else if (Ctx.IsDashPressed)
         {
             SwitchState(Factory.Dash());
         }
-        if (Ctx.IsParrySucces)
+        else if (Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
+        }
+        else if(Ctx.IsHeavyHitLanded)
+        {
+            SwitchState(Factory.Hurt());   
         }
     }
 

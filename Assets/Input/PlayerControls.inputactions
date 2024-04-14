@@ -51,12 +51,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LightAttack",
+                    "name": "Attack",
                     "type": "Value",
                     "id": "feb06006-97b8-4421-aee4-1975a9a90b86",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Tap(duration=0.2),Hold(pressPoint=0.2)",
                     "initialStateCheck": true
                 },
                 {
@@ -159,7 +159,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "LightAttack",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

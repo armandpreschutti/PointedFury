@@ -24,11 +24,13 @@ public class HealthSystem : MonoBehaviour
     }
     private void OnEnable()
     {
-        _stateMachine.OnHitLanded += TakeDamage;
+        _stateMachine.OnLightHitLanded += TakeDamage;
+        _stateMachine.OnHeavyHitLanded += TakeDamage;
     }
     private void OnDisable()
     {
-        _stateMachine.OnHitLanded -= TakeDamage;
+        _stateMachine.OnLightHitLanded -= TakeDamage;
+        _stateMachine.OnHeavyHitLanded -= TakeDamage;
     }
     // Start is called before the first frame update
     void Start()

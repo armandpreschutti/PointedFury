@@ -7,10 +7,11 @@ public class HurtState : BaseState
 
     public override void EnterState()
     {
-        //SsDebug.LogWarning("Player has entered HURT state");
+        Debug.LogWarning("Player has entered HURT state");
 
         Ctx.SetIncomingAttackDirection();
-        Ctx.IsHitLanded = false;
+        Ctx.IsLightHitLanded = false;
+        Ctx.IsHeavyHitLanded = false;
         Ctx.IsPostAttack = false;
         Ctx.IsAttacking = false;
         Ctx.IsKnockedBack = true;
@@ -18,7 +19,7 @@ public class HurtState : BaseState
         Ctx.IsHurt = true;
         Ctx.IsFighting = true;
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
-        Ctx.Animator.Play($"LightHurt{Ctx.HitType}", 0, 0);
+        Ctx.Animator.Play($"LightHurt{Ctx.HitID}", 0, 0);
         ExitAllAnimations();
     }
 
@@ -59,14 +60,18 @@ public class HurtState : BaseState
                 SwitchState(Factory.Idle());
             }
         }
-        if(Ctx.IsHitLanded)
+        if(Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());
         }
-        if(Ctx.IsBlockPressed && !Ctx.IsKnockedBack)
+        if(Ctx.IsHeavyHitLanded)
+        {
+            SwitchState(Factory.Stunned());
+        }
+       /* if(Ctx.IsBlockPressed && !Ctx.IsKnockedBack)
         {
             SwitchState(Factory.Block());
-        }
+        }*/
         if(Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
@@ -81,5 +86,6 @@ public class HurtState : BaseState
     public void ExitAllAnimations()
     {
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
+        Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, false);
     }
 }

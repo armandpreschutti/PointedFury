@@ -9,8 +9,8 @@ public class IdleState : BaseState
     {
        // Debug.LogWarning("Player has entered IDLE state");
 
-        Ctx.AttackType = 0;
-
+        Ctx.AttackID = 0;
+        Ctx.IsAttacking = false;
         Ctx.OnIdle?.Invoke(true);
         if (!Ctx.IsAI)
         {
@@ -43,13 +43,21 @@ public class IdleState : BaseState
             {
                 SwitchState(Factory.Move());
             }
-            if (Ctx.IsLightAttackPressed && !Ctx.IsHurt)
+            if (Ctx.IsLightAttackPressed/* && !Ctx.IsHurt*/)
             {
                 SwitchState(Factory.LightAttack());
             }
-            if (Ctx.IsHitLanded)
+            if (Ctx.IsHeavyAttackPressed /*&& !Ctx.IsHurt*/)
+            {
+                SwitchState(Factory.HeavyAttack());
+            }
+            if (Ctx.IsLightHitLanded)
             {
                 SwitchState(Factory.Hurt());
+            }
+            if (Ctx.IsHeavyHitLanded)
+            {
+                SwitchState(Factory.Stunned());
             }
             if (Ctx.IsBlockPressed)
             {

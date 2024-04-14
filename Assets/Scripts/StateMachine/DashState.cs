@@ -27,7 +27,7 @@ public class DashState : BaseState
         Ctx.DebugCurrentSubState = "Dash State";
         CheckSwitchStates();
 
-        Ctx.AttackType = 0;
+        Ctx.AttackID = 0;
         if (Ctx.IsDashMoving)
         {
             Ctx.SetDashDirection();

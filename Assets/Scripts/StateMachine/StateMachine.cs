@@ -67,11 +67,11 @@ public class StateMachine : MonoBehaviour
     private float _targetSpeed;
     private float _verticalVelocity;
     private bool _isAttacking;
-    private bool _isLightAttacking = false;
     private bool _isPostAttack = false;
     private bool _isCharging = false;
     private bool _isHurt = false;
-    private bool _isHitLanded = false;
+    private bool _isLightHitLanded = false;
+    private bool _isHeavyHitLanded = false;
     private bool _isKnockedBack = false;
     private bool _isDashing = false; 
     private bool _isDashMoving = false;
@@ -92,12 +92,12 @@ public class StateMachine : MonoBehaviour
 
     // Player fighting variables
     private GameObject _currentTarget;
-    private bool _fightTimeout;
-    public float _fightTimeoutDelta;
-    private int _attackType = 0;
+    private int _attackID = 0;
     private bool _canComboAttack = false;
     private bool _isComboAttacking = false;
-    private int _hitType = 0;
+    private int _hitID = 0;
+    private string _attackType;
+    private string _hitType;
     private Vector3 _attackDirection;
     private Vector3 _incomingAttackDirection;
 
@@ -105,6 +105,7 @@ public class StateMachine : MonoBehaviour
     private Vector2 _moveInput;
     private Vector2 _lookInput;
     private bool _isLightAttackPressed = false;
+    private bool _isHeavyAttackPressed = false;
     private bool _isDashPressed = false;
     private bool _isBlockPressed = false;
     private bool _isParryPressed = false; 
@@ -123,6 +124,7 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnGrounded;
     public Action<bool> OnFight;
     public Action<bool> OnLightAttack;
+    public Action<bool> OnHeavyAttack;
     public Action<bool> OnMove;
     public Action<bool> OnIdle;
     public Action<bool> OnHurt;
@@ -135,6 +137,7 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDInputX;
     [HideInInspector] public int AnimIDInputY;
     [HideInInspector] public int AnimIDLightAttack;
+    [HideInInspector] public int AnimIDHeavyAttack;
     [HideInInspector] public int AnimIDPostAttack;
     [HideInInspector] public int AnimIDHurt;
     [HideInInspector] public int AnimIDDash;
@@ -149,7 +152,8 @@ public class StateMachine : MonoBehaviour
 
     // Player action events
     public Action OnAttackContact;
-    public Action<float> OnHitLanded;
+    public Action<float> OnLightHitLanded;
+    public Action<float> OnHeavyHitLanded;
     public Action OnAttemptParty;
     public Action OnAttackSuccess;
     public Action OnBlockSuccessful;
@@ -162,6 +166,7 @@ public class StateMachine : MonoBehaviour
     public Vector2 MoveInput { get { return _moveInput; } set { _moveInput = value; } }
     public Vector2 LookInput { get { return _lookInput; } set { _lookInput = value; } }
     public bool IsLightAttackPressed { get { return _isLightAttackPressed; } set { _isLightAttackPressed = value; } }
+    public bool IsHeavyAttackPressed { get { return _isHeavyAttackPressed; } set { _isHeavyAttackPressed = value; } }
     public bool IsDashPressed { get { return _isDashPressed; } set { _isDashPressed = value; } }
     public bool IsBlockPressed { get { return _isBlockPressed; } set { _isBlockPressed = value; } }   
     public bool IsParryPressed {  get { return _isParryPressed; } set { _isParryPressed= value; } }
@@ -177,11 +182,11 @@ public class StateMachine : MonoBehaviour
     public bool IsGrounded { get { return _isGrounded; } }
     public bool IsFighting { get { return _isFighting; } set { _isFighting = value; } }
     public bool IsAttacking { get { return _isAttacking; } set { _isAttacking = value; } }
-    public bool IsLightAttacking { get { return _isLightAttacking; } set { _isLightAttacking = value; } }
     public bool IsPostAttack { get { return _isPostAttack; } set { _isPostAttack = value; } }   
     public bool IsHurt { get { return _isHurt; } set { _isHurt = value; } }
     public bool IsCharging { get { return _isCharging; } set { _isCharging = value; } }
-    public bool IsHitLanded { get { return _isHitLanded; } set { _isHitLanded = value; } }
+    public bool IsLightHitLanded { get { return _isLightHitLanded; } set { _isLightHitLanded = value; } }
+    public bool IsHeavyHitLanded { get { return _isHeavyHitLanded; } set { _isHeavyHitLanded = value; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack= value; } }
     public bool IsDashing { get { return _isDashing; } set { _isDashing = value; } }
     public bool IsDashMoving { get { return _isDashMoving; } set { _isDashMoving = value; } }
@@ -196,10 +201,10 @@ public class StateMachine : MonoBehaviour
 
     // Fighting
     public GameObject CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; } }
-    public int AttackType { get { return _attackType; } set { _attackType = value; } }
-    public int HitType { get { return _hitType; } set { _hitType = value; } }
-    public float FightTimeoutDelta { get { return _fightTimeoutDelta; } set { _fightTimeoutDelta = value; } }
-    public bool FightTimeoutActive { get { return _fightTimeout; } set { _fightTimeout = value; } }
+    public int AttackID { get { return _attackID; } set { _attackID = value; } }
+    public int HitID { get { return _hitID; } set { _hitID = value; } }
+    public string AttackType { get { return _attackType; } set { _attackType = value; } }
+    public string HitType { get { return _hitType; } set { _hitType = value; } }
     public bool CanComboAttack { get { return _canComboAttack; } set { _canComboAttack = value; } }
     public bool IsComboAttacking { get { return _isComboAttacking;} set { _isComboAttacking = value; } }
     public Vector3 AttackDirection { get { return _attackDirection; } set { _attackDirection= value; } }
@@ -388,11 +393,17 @@ public class StateMachine : MonoBehaviour
                 // If the distance is greater than stopDistance, move towards the target
                 if (distanceToTarget > CombatDistance)
                 {
+                    
                     // Calculate the movement direction based on the forward direction of the character
                     Vector3 moveDirection = transform.forward * ChargeSpeed;
 
+                   
                     // Move the character using the CharacterController
                     _controller.Move(moveDirection * Time.deltaTime);
+                }
+                else
+                {
+                    return;
                 }
             }
             else
@@ -562,42 +573,41 @@ public class StateMachine : MonoBehaviour
     {
         _isDashing = false;
     }
-    public void TakeHit(int attackType, Vector3 attackerPosition, float attackDamage)
+    public void TakeHit(string hitType, int attackID, Vector3 attackerPosition, float attackDamage)
     {
         _incomingAttackDirection = attackerPosition;
 
-        if(_isBlocking)
-        {
-            _isBlockSuccess = true;
-            OnBlockSuccessful?.Invoke();
-        }
-        else if(_isDashing || _isParrying)
+        if(_isDashing || _isParrying)
         {
             return;
         }
         else
         {
-            _hitType = attackType;
-            OnHitLanded?.Invoke(attackDamage);
-            if (!_isDead)
+            _hitID = attackID;
+            _hitType = hitType;
+            if (!IsDead)
             {
-                _isHitLanded = true;
-            }
+                if (_isBlocking && HitType != "Heavy")
+                {
+                    
+                    Debug.LogError("Player blocked correctly");
+                    _isBlockSuccess = true;
+                    OnBlockSuccessful?.Invoke();
+                }
+                else if (hitType == "Light" && !_isParrying)
+                {
+                    Debug.LogError("Player light attack correctly");
+                    OnLightHitLanded?.Invoke(attackDamage);
+                    _isLightHitLanded = true;
+                }
+                else if (hitType == "Heavy" && !_isParrying)
+                {
+                    Debug.LogError("Player heavy attack correctly");
+                    OnHeavyHitLanded?.Invoke(attackDamage);
+                    _isHeavyHitLanded = true;
+                }
+            }          
         }
-        /*if (!_isBlocking && !_isParrying)
-        {
-            _hitType = attackType;
-            OnHitLanded?.Invoke(attackDamage);
-            if (!_isDead)
-            {
-                _isHitLanded = true;
-            }
-        }
-        else
-        {
-            _isBlockSuccess = true;
-            return;
-        }*/
     }
 
     public void TakeParry(Vector3 attackerPosition)
@@ -614,6 +624,7 @@ public class StateMachine : MonoBehaviour
         AnimIDInputX = Animator.StringToHash("InputX");
         AnimIDInputY = Animator.StringToHash("InputY");
         AnimIDLightAttack = Animator.StringToHash("LightAttack");
+        AnimIDHeavyAttack = Animator.StringToHash("HeavyAttack");
         AnimIDPostAttack = Animator.StringToHash("PostAttack");
         AnimIDHurt = Animator.StringToHash("Hurt");
         AnimIDDash = Animator.StringToHash("Dash");

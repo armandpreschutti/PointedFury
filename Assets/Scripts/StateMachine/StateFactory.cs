@@ -27,6 +27,10 @@ public class StateFactory
     {
         return new LightAttackState(_context, this);
     }
+    public BaseState HeavyAttack()
+    {
+        return new HeavyAttackState(_context, this);
+    }
     public BaseState PostAttack()
     {
         return new PostAttackState(_context, this);

@@ -20,8 +20,10 @@ public class SFXPunchHandler : MonoBehaviour
     }
     private void OnEnable()
     {
-        _stateMachine.OnLightAttack += PlayPunchSFX;
-        _stateMachine.OnHitLanded += PlayAttackImpactSFX;
+        _stateMachine.OnLightAttack += PlayLightAttackWhooshSFX;
+        _stateMachine.OnHeavyAttack += PlayLightAttackWhooshSFX;
+        _stateMachine.OnLightHitLanded += PlayLightAttackImpactSFX;
+        _stateMachine.OnHeavyHitLanded += PlayLightAttackImpactSFX;
         _stateMachine.OnBlockSuccessful += PlayBlockImpactSFX;
         _stateMachine.OnParrySuccessful += PlayParrySFX;
         _stateMachine.OnDashSuccessful += PlayDashSFX;
@@ -30,15 +32,16 @@ public class SFXPunchHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        _stateMachine.OnLightAttack -= PlayPunchSFX;
-        _stateMachine.OnHitLanded -= PlayAttackImpactSFX;
+        _stateMachine.OnLightAttack -= PlayLightAttackWhooshSFX;
+        _stateMachine.OnLightHitLanded -= PlayLightAttackImpactSFX;
+        _stateMachine.OnHeavyHitLanded -= PlayLightAttackImpactSFX;
         _stateMachine.OnBlockSuccessful -= PlayBlockImpactSFX;
         _stateMachine.OnParrySuccessful -= PlayParrySFX;
         _stateMachine.OnDashSuccessful -= PlayDashSFX;
         _stateMachine.OnDeath -= PlayDeathSFX;
     }
 
-    public void PlayPunchSFX(bool value)
+    public void PlayLightAttackWhooshSFX(bool value)
     {
         if (value)
         {
@@ -46,7 +49,7 @@ public class SFXPunchHandler : MonoBehaviour
         }
     }
 
-    public void PlayAttackImpactSFX(float value)
+    public void PlayLightAttackImpactSFX(float value)
     {
         CreateSFXOneShot(_attackImpactSFX);
     }

@@ -14,7 +14,8 @@ public class EntityVFXHandler : MonoBehaviour
     [SerializeField] GameObject _rightFootVFX;
 
     [SerializeField] Transform _vfxOrigin;
-    [SerializeField] GameObject _attackImpactVFX;
+    [SerializeField] GameObject _lightAttackImpactVFX;
+    [SerializeField] GameObject _heavyAttackImpactVFX;
     [SerializeField] GameObject _blockImpactVFX;
     [SerializeField] GameObject _parryVFX;
     //[SerializeField] GameObject _dashVFX;
@@ -22,7 +23,9 @@ public class EntityVFXHandler : MonoBehaviour
     private void OnEnable()
     {
         _stateMachine.OnLightAttack += SetIndicator;
-        _stateMachine.OnHitLanded += PlayAttackImpactVFX;
+        _stateMachine.OnHeavyAttack += SetIndicator;
+        _stateMachine.OnLightHitLanded += PlayLightAttackImpactVFX;
+        _stateMachine.OnHeavyHitLanded += PlayLightAttackImpactVFX;
         _stateMachine.OnBlockSuccessful += PlayBlockImpactVFX;
         _stateMachine.OnParrySuccessful += PlayParryVFX;
         //_stateMachine.OnDashSuccessful += PlayDashVFX;
@@ -30,7 +33,9 @@ public class EntityVFXHandler : MonoBehaviour
     private void OnDisable()
     {
         _stateMachine.OnLightAttack -= SetIndicator;
-        _stateMachine.OnHitLanded -= PlayAttackImpactVFX;
+        _stateMachine.OnHeavyAttack -= SetIndicator;
+        _stateMachine.OnLightHitLanded -= PlayLightAttackImpactVFX;
+        _stateMachine.OnHeavyHitLanded -= PlayLightAttackImpactVFX;
         _stateMachine.OnBlockSuccessful -= PlayBlockImpactVFX;
         _stateMachine.OnParrySuccessful -= PlayParryVFX;
        // _stateMachine.OnDashSuccessful -= PlayDashVFX;
@@ -42,7 +47,7 @@ public class EntityVFXHandler : MonoBehaviour
     }
     public void SetIndicator(bool value)
     {
-        switch (_stateMachine.AttackType)
+        switch (_stateMachine.AttackID)
         {
             case 1:
                 _rightHandVFX.SetActive(value);
@@ -69,9 +74,13 @@ public class EntityVFXHandler : MonoBehaviour
                 break;
         }
     }
-    public void PlayAttackImpactVFX(float value)
+    public void PlayLightAttackImpactVFX(float value)
     {
-        CreateVFXOneShot(_attackImpactVFX, _vfxOrigin);
+        CreateVFXOneShot(_lightAttackImpactVFX, _vfxOrigin);
+    }
+    public void PlayHeavyAttackImpactVFX(float value)
+    {
+        CreateVFXOneShot(_heavyAttackImpactVFX, _vfxOrigin);
     }
 
     public void PlayBlockImpactVFX()

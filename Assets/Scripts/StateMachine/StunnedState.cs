@@ -9,16 +9,19 @@ public class StunnedState : BaseState
 
     public override void EnterState()
     {
-        //SsDebug.LogWarning("Player has entered STUNNED state");
+        Debug.LogWarning("Player has entered STUNNED state");
 
         Ctx.SetIncomingAttackDirection();
+        Ctx.Animator.SetBool(Ctx.AnimIDStunned, true);
+        Ctx.Animator.Play($"Stunned", 0, 0);
         Ctx.IsParryable = false;
         Ctx.IsParried = false;
+        Ctx.IsBlockPressed = false;
+        Ctx.IsLightHitLanded = false;
+        Ctx.IsHeavyHitLanded = false;
         Ctx.IsKnockedBack = true;
         Ctx.IsFighting = true;
         Ctx.IsStunned = true;
-        Ctx.Animator.SetBool(Ctx.AnimIDStunned, true);
-        Ctx.Animator.Play($"Stunned", 0, 0);
         ExitAllAnimations();
     }
 
@@ -56,10 +59,18 @@ public class StunnedState : BaseState
                 SwitchState(Factory.Idle());
             }
         }
-        else if (Ctx.IsHitLanded)
+        else if (Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());
-        }        
+        }
+        else if (Ctx.IsHeavyHitLanded)
+        {
+            SwitchState(Factory.Stunned());
+        }
+        if (Ctx.IsParrySucces)
+        {
+            SwitchState(Factory.Parry());
+        }
     }
 
     public override void InitializeSubStates()

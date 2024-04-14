@@ -15,7 +15,8 @@ public class DeathState : BaseState
         //Debug.LogWarning("Player has entered DEATH state");
 
         Ctx.SetIncomingAttackDirection();
-        Ctx.IsHitLanded = false;
+        Ctx.IsLightHitLanded = false;
+        Ctx.IsHeavyHitLanded = false;
         Ctx.IsPostAttack = false;
         Ctx.IsAttacking = false;
         Ctx.IsKnockedBack = true;

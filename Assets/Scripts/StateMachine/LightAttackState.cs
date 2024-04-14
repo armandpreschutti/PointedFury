@@ -10,10 +10,10 @@ public class LightAttackState : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered LIGHT ATTACK state");
+        //Debug.LogWarning("Player has entered LIGHT ATTACK state");
 
         SetAttackType();
-        Ctx.Animator.Play($"LightAttack{Ctx.AttackType}", 0, 0);
+        Ctx.Animator.Play($"LightAttack{Ctx.AttackID}", 0, 0);
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
@@ -26,7 +26,7 @@ public class LightAttackState : BaseState
     public override void UpdateState()
     {
         //Debug.Log("LIGHT ATTACK state is currently active");
-        Ctx.DebugCurrentSubState = $"Light Attack {Ctx.AttackType} State";
+        Ctx.DebugCurrentSubState = $"Light Attack {Ctx.AttackID} State";
         CheckSwitchStates();
 
         if (Ctx.IsCharging)
@@ -60,9 +60,13 @@ public class LightAttackState : BaseState
                 SwitchState(Factory.PostAttack());
             }
         }
-        if (Ctx.IsHitLanded)
+        if (Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());
+        }
+        if (Ctx.IsHeavyHitLanded)
+        {
+            SwitchState(Factory.Stunned());
         }
         if (Ctx.IsParried)
         {
@@ -81,32 +85,33 @@ public class LightAttackState : BaseState
 
     public void SetAttackType()
     {
-        switch (Ctx.AttackType)
+        Ctx.AttackType = "Light";
+        switch (Ctx.AttackID)
         {
 
             case 0:
-                Ctx.AttackType = 1;
+                Ctx.AttackID = 1;
                 break;
             case 1:
-                Ctx.AttackType = 2;
+                Ctx.AttackID = 2;
                 break;
             case 2:
-                Ctx.AttackType = 3;
+                Ctx.AttackID = 3;
                 break;
             case 3:
-                Ctx.AttackType = 4;
+                Ctx.AttackID = 4;
                 break;
             case 4:
-                Ctx.AttackType = 5;
+                Ctx.AttackID = 5;
                 break;
             case 5:
-                Ctx.AttackType = 6;
+                Ctx.AttackID = 6;
                 break;
             case 6:
-                Ctx.AttackType = 7;
+                Ctx.AttackID = 7;
                 break;
             case 7:
-                Ctx.AttackType = 1;
+                Ctx.AttackID = 1;
                 break;
             default:
                 break;

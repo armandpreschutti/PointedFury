@@ -73,12 +73,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""LightAttack"",
+                    ""name"": ""Attack"",
                     ""type"": ""Value"",
                     ""id"": ""feb06006-97b8-4421-aee4-1975a9a90b86"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap(duration=0.2),Hold(pressPoint=0.2)"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -181,7 +181,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""LightAttack"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -289,7 +289,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Fight = m_Player.FindAction("Fight", throwIfNotFound: true);
-        m_Player_LightAttack = m_Player.FindAction("LightAttack", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
         m_Player_Parry = m_Player.FindAction("Parry", throwIfNotFound: true);
@@ -360,7 +360,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Fight;
-    private readonly InputAction m_Player_LightAttack;
+    private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Block;
     private readonly InputAction m_Player_Parry;
@@ -374,7 +374,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Fight => m_Wrapper.m_Player_Fight;
-        public InputAction @LightAttack => m_Wrapper.m_Player_LightAttack;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputAction @Parry => m_Wrapper.m_Player_Parry;
@@ -403,9 +403,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Fight.started += instance.OnFight;
             @Fight.performed += instance.OnFight;
             @Fight.canceled += instance.OnFight;
-            @LightAttack.started += instance.OnLightAttack;
-            @LightAttack.performed += instance.OnLightAttack;
-            @LightAttack.canceled += instance.OnLightAttack;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
@@ -437,9 +437,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Fight.started -= instance.OnFight;
             @Fight.performed -= instance.OnFight;
             @Fight.canceled -= instance.OnFight;
-            @LightAttack.started -= instance.OnLightAttack;
-            @LightAttack.performed -= instance.OnLightAttack;
-            @LightAttack.canceled -= instance.OnLightAttack;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
@@ -512,7 +512,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnFight(InputAction.CallbackContext context);
-        void OnLightAttack(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);

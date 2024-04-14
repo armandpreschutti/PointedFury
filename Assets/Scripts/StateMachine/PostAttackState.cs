@@ -12,6 +12,8 @@ public class PostAttackState : BaseState
     {
         //Debug.LogWarning("Player has entered POST ATTACK state");
         Ctx.Animator.SetBool(Ctx.AnimIDPostAttack, true);
+        Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, false);
+        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
         Ctx.IsPostAttack = true;
         Ctx.SetAttackDirection();
     }
@@ -39,13 +41,21 @@ public class PostAttackState : BaseState
         {
             SwitchState(Factory.LightAttack());
         }
+        else if (Ctx.IsHeavyAttackPressed)
+        {
+            SwitchState(Factory.HeavyAttack());
+        }
         else if (Ctx.IsBlockPressed)
         {
             SwitchState(Factory.Block());
         }        
-        else if (Ctx.IsHitLanded)
+        else if (Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());
+        }
+        else if (Ctx.IsHeavyHitLanded)
+        {
+            SwitchState(Factory.Stunned());
         }
         else if (Ctx.IsParrySucces)
         {
