@@ -9,7 +9,7 @@ public class StunnedState : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered STUNNED state");
+        //Debug.LogWarning("Player has entered STUNNED state");
 
         Ctx.SetIncomingAttackDirection();
         Ctx.Animator.SetBool(Ctx.AnimIDStunned, true);
@@ -22,6 +22,8 @@ public class StunnedState : BaseState
         Ctx.IsKnockedBack = true;
         Ctx.IsFighting = true;
         Ctx.IsStunned = true;
+        Ctx.LightAttackID = 0;
+        Ctx.HeavyAttackID = 0;
         ExitAllAnimations();
     }
 
@@ -81,5 +83,6 @@ public class StunnedState : BaseState
     public void ExitAllAnimations()
     {
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
+        Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, false);
     }
 }

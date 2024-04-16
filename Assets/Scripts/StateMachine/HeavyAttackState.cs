@@ -13,8 +13,8 @@ public class HeavyAttackState : BaseState
         //Debug.LogWarning("Player has entered HEAVY ATTACK state");
 
         SetAttackType();
-        Ctx.Animator.Play($"HeavyAttack{Ctx.AttackID}", 0, 0);
         Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, true);
+        Ctx.Animator.SetInteger(Ctx.AnimIDHeavyAttackID, Ctx.HeavyAttackID);
         Ctx.IsAttacking = true;
         Ctx.IsHeavyAttackPressed = false;
         Ctx.IsFighting = true;
@@ -25,7 +25,7 @@ public class HeavyAttackState : BaseState
     public override void UpdateState()
     {
         //Debug.Log("LIGHT ATTACK state is currently active");
-        Ctx.DebugCurrentSubState = $"Heavy Attack {Ctx.AttackID} State";
+        Ctx.DebugCurrentSubState = $"Heavy Attack {Ctx.HeavyAttackID} State";
         CheckSwitchStates();
 
         if (Ctx.IsCharging)
@@ -50,28 +50,21 @@ public class HeavyAttackState : BaseState
     {
         if (!Ctx.IsAttacking)
         {
-            if (Ctx.IsBlockPressed)
-            {
-                SwitchState(Factory.Block());
-            }
-            else
-            {
-                SwitchState(Factory.PostAttack());
-            }
+            SwitchState(Factory.PostAttack());
         }
-        if (Ctx.IsLightHitLanded)
+        else if (Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());
         }
-        if (Ctx.IsHeavyHitLanded)
+        else if (Ctx.IsHeavyHitLanded)
         {
             SwitchState(Factory.Stunned());
         }
-        if (Ctx.IsParried)
+        else if (Ctx.IsParried)
         {
             SwitchState(Factory.Stunned());
         }
-        if (Ctx.IsParrySucces)
+        else if (Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
         }
@@ -85,31 +78,25 @@ public class HeavyAttackState : BaseState
     public void SetAttackType()
     {
         Ctx.AttackType = "Heavy";
-        switch (Ctx.AttackID)
+        switch (Ctx.HeavyAttackID)
         {
             case 0:
-                Ctx.AttackID = 1;
+                Ctx.HeavyAttackID = 1;
                 break;
             case 1:
-                Ctx.AttackID = 2;
+                Ctx.HeavyAttackID = 2;
                 break;
             case 2:
-                Ctx.AttackID = 3;
+                Ctx.HeavyAttackID = 3;
                 break;
             case 3:
-                Ctx.AttackID = 4;
+                Ctx.HeavyAttackID = 4;
                 break;
             case 4:
-                Ctx.AttackID = 5;
+                Ctx.HeavyAttackID = 5;
                 break;
             case 5:
-                Ctx.AttackID = 6;
-                break;
-            case 6:
-                Ctx.AttackID = 7;
-                break;
-            case 7:
-                Ctx.AttackID = 1;
+                Ctx.HeavyAttackID = 1;
                 break;
             default:
                 break;

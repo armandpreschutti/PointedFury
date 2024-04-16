@@ -7,6 +7,7 @@ public class ParryBroadcastHandler : MonoBehaviour
     [SerializeField] StateMachine _stateMachine;
     [SerializeField] List<GameObject> _hitTargets = new List<GameObject>();
     [SerializeField] string _enemyTag;
+
     private void Awake()
     {
         _stateMachine = GetComponentInParent<StateMachine>();
@@ -21,6 +22,7 @@ public class ParryBroadcastHandler : MonoBehaviour
     {
         _stateMachine.OnAttemptParty -= AttemptParry;
     }
+
     private void Update()
     {
         foreach (GameObject enemy in _hitTargets)
@@ -31,6 +33,7 @@ public class ParryBroadcastHandler : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         // Add the object to the list of objects in the trigger area
@@ -52,7 +55,6 @@ public class ParryBroadcastHandler : MonoBehaviour
 
     private void AttemptParry()
     {
-
         foreach (GameObject hit in _hitTargets)
         {
             if (hit.GetComponent<StateMachine>() != null)
@@ -63,7 +65,6 @@ public class ParryBroadcastHandler : MonoBehaviour
                     _stateMachine.IsParrySucces = true;
                     _stateMachine.OnParrySuccessful?.Invoke();
                     _stateMachine.CurrentTarget = hit;
-
                 }
             }
         }

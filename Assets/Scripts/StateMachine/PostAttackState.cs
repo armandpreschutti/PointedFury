@@ -11,11 +11,12 @@ public class PostAttackState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered POST ATTACK state");
+
         Ctx.Animator.SetBool(Ctx.AnimIDPostAttack, true);
         Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, false);
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
         Ctx.IsPostAttack = true;
-        Ctx.SetAttackDirection();
+        //Ctx.SetAttackDirection();
     }
 
     public override void UpdateState()
@@ -23,8 +24,6 @@ public class PostAttackState : BaseState
         //Debug.Log("POST ATTACK state is currently active");
         Ctx.DebugCurrentSubState = $"Post Attack State";
         CheckSwitchStates();
-
-        //Ctx.SetAttackDirection();
     }
 
     public override void ExitState()

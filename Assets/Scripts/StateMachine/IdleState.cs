@@ -9,7 +9,8 @@ public class IdleState : BaseState
     {
        // Debug.LogWarning("Player has entered IDLE state");
 
-        Ctx.AttackID = 0;
+        Ctx.LightAttackID = 0;
+        Ctx.HeavyAttackID = 0;
         Ctx.IsAttacking = false;
         Ctx.OnIdle?.Invoke(true);
         if (!Ctx.IsAI)
@@ -25,7 +26,6 @@ public class IdleState : BaseState
         CheckSwitchStates();
         
         Ctx.TargetSpeed = 0f;
-
     }
 
     public override void ExitState()
@@ -58,6 +58,10 @@ public class IdleState : BaseState
             if (Ctx.IsHeavyHitLanded)
             {
                 SwitchState(Factory.Stunned());
+            }
+            if (Ctx.IsDashPressed)
+            {
+                SwitchState(Factory.Dash());
             }
             if (Ctx.IsBlockPressed)
             {

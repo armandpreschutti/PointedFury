@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 96e7defc6d4f30b47b9e3b5a9b0858c6
+guid: c20bc0a05964cdd4b8306a778a3065ea
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -39,8 +39,8 @@ ModelImporter:
       name: combo7
       takeName: combo7
       internalID: 0
-      firstFrame: 23
-      lastFrame: 36
+      firstFrame: 108
+      lastFrame: 122
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

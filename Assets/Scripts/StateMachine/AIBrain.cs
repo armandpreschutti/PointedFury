@@ -8,18 +8,19 @@ using UnityEngine.InputSystem.XR;
 public class AIBrain : MonoBehaviour
 {
     [SerializeField] StateMachine _stateMachine;
+
+    // enemy mobility variables
     [SerializeField] float _distanceToTarget;
     [SerializeField] Vector2 _moveInput;
     [SerializeField] float _attackingDistance;
     [SerializeField] float _watchingDistance;
-
 
     // debug variables
     [SerializeField] SkinnedMeshRenderer _enemySkin;
     [SerializeField] Material _attackerMaterial;
     [SerializeField] Material _watcherMaterial;
 
-    // statevariables
+    // enemy interation variables
     float _closeInCheckTime;
     public float CloseInCheckInterval = .1f;
     float _strafeCheckTime;
@@ -39,8 +40,8 @@ public class AIBrain : MonoBehaviour
     public bool isAttacker;
     public bool isWatcher;
 
+    // other variables
     bool isMeleeRange;
-    bool isFightRange;
     bool _isPaused;
 
     private void Awake()
@@ -84,7 +85,6 @@ public class AIBrain : MonoBehaviour
         {
             return;
         }
-
     }
 
     public void CheckFightDistance()
@@ -108,14 +108,12 @@ public class AIBrain : MonoBehaviour
             if (isAttacker && !_stateMachine.IsAttacking)
             {
                 Attack();
-
             }
             else
             {
                 return;
             }
         }
-
     }
 
     public void Attack()
@@ -142,25 +140,6 @@ public class AIBrain : MonoBehaviour
         }
     }
 
-    public void ChangeEnemyMaterial()
-    {
-      /*  if (isActivated)
-        {
-            if (isAttacker)
-            {
-                _enemySkin.material = _attackerMaterial;
-            }
-            else
-            {
-                _enemySkin.material = _watcherMaterial;
-            }
-        }
-        else
-        {
-            return;
-        }*/
-        
-    }
     public void StrafeLoop()
     {
         _strafeCheckTime -= Time.deltaTime;
@@ -193,14 +172,11 @@ public class AIBrain : MonoBehaviour
 
     public void CloseInLoop()
     {
-
-
         _closeInCheckTime -= Time.deltaTime;
 
         // Check if the timer has reached zero
         if (_closeInCheckTime <= 0)
         {
-
             // Reset the timer
             _closeInCheckTime = CloseInCheckInterval;
 
@@ -253,7 +229,6 @@ public class AIBrain : MonoBehaviour
         // Check if the timer has reached zero
         if (_attackCheckTime <= 0)
         {
-
             // Reset the timer
             _attackCheckTime = AttackCheckInterval;
 
@@ -262,15 +237,12 @@ public class AIBrain : MonoBehaviour
                 if (isAttacker && isMeleeRange)
                 {
                     Attack();
-
                 }
                 else
                 {
                     return;
                 }
             }
-            // Perform actions when timer reaches zero (You can put your desired actions here)
-            //Debug.Log("Timer reached zero. Resetting...");
         }
     }
 
@@ -281,7 +253,6 @@ public class AIBrain : MonoBehaviour
         // Check if the timer has reached zero
         if (_blockCheckTime <= 0)
         {
-
             // Reset the timer
             _blockCheckTime = BlockCheckInterval;
 
@@ -291,7 +262,6 @@ public class AIBrain : MonoBehaviour
                 if (_stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == this.gameObject && blockChance < BlockSkill)
                 {
                     _stateMachine.IsBlockPressed = true;
-
                 }
                 else
                 {
@@ -299,7 +269,6 @@ public class AIBrain : MonoBehaviour
                     {
                         _stateMachine.IsBlockPressed = false;
                     }
-
                 }
             }
         }

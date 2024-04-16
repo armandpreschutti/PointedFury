@@ -23,8 +23,12 @@ public class StateMachine : MonoBehaviour
     public float RotationSmoothTime = 0.12f;
     [Tooltip("Acceleration and deceleration")]
     public float SpeedChangeRate = 10.0f;
-    [Tooltip("How fast the character charges towards a direction while attacking")]
-    public float ChargeSpeed;
+    [Tooltip("How fast the character charges towards a direction while light attacking")]
+    public float LightAttackChargeSpeed;
+    [Tooltip("How fast the character charges towards a direction while heavy attacking")]
+    public float HeavyAttackChargeSpeed;
+    [Tooltip("How fast the character charges towards a direction while parrying")]
+    public float ParryChargeSpeed;
     [Tooltip("How fast the character leaps towards while dodging")]
     public float DashSpeed;
     [Tooltip("How much gravity is applied to the player")]
@@ -92,7 +96,8 @@ public class StateMachine : MonoBehaviour
 
     // Player fighting variables
     private GameObject _currentTarget;
-    private int _attackID = 0;
+    private int _lightAttackID = 0;
+    private int _heavyAttackID = 0;
     private bool _canComboAttack = false;
     private bool _isComboAttacking = false;
     private int _hitID = 0;
@@ -137,7 +142,9 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDInputX;
     [HideInInspector] public int AnimIDInputY;
     [HideInInspector] public int AnimIDLightAttack;
+    [HideInInspector] public int AnimIDLightAttackID;
     [HideInInspector] public int AnimIDHeavyAttack;
+    [HideInInspector] public int AnimIDHeavyAttackID;
     [HideInInspector] public int AnimIDPostAttack;
     [HideInInspector] public int AnimIDHurt;
     [HideInInspector] public int AnimIDDash;
@@ -201,7 +208,9 @@ public class StateMachine : MonoBehaviour
 
     // Fighting
     public GameObject CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; } }
-    public int AttackID { get { return _attackID; } set { _attackID = value; } }
+    public Transform ClosestTarget;
+    public int LightAttackID { get { return _lightAttackID; } set { _lightAttackID = value; } }
+    public int HeavyAttackID { get { return _heavyAttackID; } set { _heavyAttackID = value; } }
     public int HitID { get { return _hitID; } set { _hitID = value; } }
     public string AttackType { get { return _attackType; } set { _attackType = value; } }
     public string HitType { get { return _hitType; } set { _hitType = value; } }
@@ -210,11 +219,6 @@ public class StateMachine : MonoBehaviour
     public Vector3 AttackDirection { get { return _attackDirection; } set { _attackDirection= value; } }
     public Vector3 IncomingAttackDirection { get { return _incomingAttackDirection; } set { _incomingAttackDirection = value; } }
 
-
-    // Debug
-    public Vector3 _debugVector;
-
-    // Awake is called when the script instance is being loaded
     private void Awake()
     {
         SetComponentValues();
@@ -226,13 +230,10 @@ public class StateMachine : MonoBehaviour
         AssignAnimationIDs();
     }
 
-    // Update is called once per frame
     private void Update()
     {
-        // Update the current state of the player
         _currentState.UpdateStates();
 
-        // Check if the player is grounded
         GroundedCheck();
         SetPlayerSpeed();
         CheckIsFighting();
@@ -241,7 +242,6 @@ public class StateMachine : MonoBehaviour
         SimulateGravity();
     }
 
-    // Check if the player is grounded
     private void GroundedCheck()
     {
         // Perform a sphere check to determine if the player is grounded
@@ -279,7 +279,6 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    // Move the player
     public void CombatMovement()
     {
         if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isParrying)
@@ -333,7 +332,7 @@ public class StateMachine : MonoBehaviour
             return;
         }
     }
-    // Set component values
+
     private void SetComponentValues()
     {
         // Set references to components and initialize player controls
@@ -348,15 +347,13 @@ public class StateMachine : MonoBehaviour
         _states = new StateFactory(this);
         _currentState = _states.CombatState();
         _currentState.EnterStates();
-
     }
 
     public void ParryMovement()
     {
         // Calculate the direction towards the target
-        /*        Vector3 directionToTarget = _incomingAttackDirection - transform.position ;*/
-
         Vector3 directionToTarget = _currentTarget.transform.position - transform.position;
+
         // Check the distance to the target
         float distanceToTarget = directionToTarget.magnitude;
 
@@ -364,7 +361,7 @@ public class StateMachine : MonoBehaviour
         if (distanceToTarget > CombatDistance)
         {
             // Calculate the movement direction based on the forward direction of the character
-            Vector3 moveDirection = transform.forward * (ChargeSpeed * 2f);
+            Vector3 moveDirection = transform.forward * ParryChargeSpeed;
 
             // Move the character using the CharacterController
             _controller.Move(moveDirection * Time.deltaTime);
@@ -375,7 +372,7 @@ public class StateMachine : MonoBehaviour
         if(_currentTarget == null)
         {
             // Calculate the movement direction based on the forward direction of the character
-            Vector3 moveDirection = transform.forward * ChargeSpeed;
+            Vector3 moveDirection = transform.forward * (_attackType == "Light" ? LightAttackChargeSpeed : HeavyAttackChargeSpeed);
 
             // Move the character using the CharacterController
             _controller.Move(moveDirection * Time.deltaTime);
@@ -393,11 +390,9 @@ public class StateMachine : MonoBehaviour
                 // If the distance is greater than stopDistance, move towards the target
                 if (distanceToTarget > CombatDistance)
                 {
-                    
                     // Calculate the movement direction based on the forward direction of the character
-                    Vector3 moveDirection = transform.forward * ChargeSpeed;
+                    Vector3 moveDirection = transform.forward * (_attackType == "Light" ? LightAttackChargeSpeed : HeavyAttackChargeSpeed);
 
-                   
                     // Move the character using the CharacterController
                     _controller.Move(moveDirection * Time.deltaTime);
                 }
@@ -412,10 +407,10 @@ public class StateMachine : MonoBehaviour
             }
         }
     }
-
+    
     public void DashMovement()
     {
-        _controller.Move(InputDirection() * Time.deltaTime * DashSpeed);
+        _controller.Move(/*InputDirection()*/transform.forward * Time.deltaTime * DashSpeed);
     }
 
     public void SetIncomingAttackDirection()
@@ -437,11 +432,12 @@ public class StateMachine : MonoBehaviour
             }
             else
             {
-                return;
+                transform.LookAt(transform.position + transform.forward);
+               // return;
             }
-        }
-        
+        }        
     }
+
     public void SetDashDirection()
     {
         transform.LookAt(transform.position + InputDirection());
@@ -463,13 +459,10 @@ public class StateMachine : MonoBehaviour
         var camera = Camera.main;
         var forward = IsAI? transform.forward : camera.transform.forward;
         var right = IsAI ? transform.right: camera.transform.right;
-
         forward.y = 0f;
         right.y = 0f;
-
         forward.Normalize();
         right.Normalize();
-
         Vector3 inputDirection = forward * _moveInput.y + right * _moveInput.x;
         inputDirection = inputDirection.normalized;
         return inputDirection;
@@ -494,7 +487,6 @@ public class StateMachine : MonoBehaviour
         {
             return Vector2.zero;
         }
-        
     }
 
     public Vector3 TargetOffset(Transform target)
@@ -503,20 +495,24 @@ public class StateMachine : MonoBehaviour
         position = target.position;
         return Vector3.MoveTowards(position, transform.position, .95f);
     }
+
     public void OnAttackAnimationBegin()
     {
         _isParryable = true;
     }
+
     public void OnAttackAnimationCharge()
     {
         _isCharging = true;
     }
+
     public void OnAttackAnimationContact()
     {
         OnAttackContact?.Invoke();
         _isParryable = false;
         _isCharging = false;
     }
+
     public void OnAttackAnimationComplete()
     {
         _isAttacking = false;
@@ -526,18 +522,22 @@ public class StateMachine : MonoBehaviour
     {
         _isPostAttack = false;
     }
+
     public void OnStunAnimationKnockbackComplete()
     {
         _isKnockedBack = false;
     }
+
     public void OnParryAnimationCharge()
     {
         _isCharging = true;
     }
+
     public void OnParryAnimationContact()
     {
         _isCharging = false;
     }
+
     public void OnParryAnimationComplete()
     {
         _isParrying = false;    
@@ -557,22 +557,27 @@ public class StateMachine : MonoBehaviour
     {
         _isHurt = false;
     }
+
     public void OnBlockAnimationComplete()
     {
         _isBlocking = false;
     }
+
     public void OnDashMoveStart()
     {
         _isDashMoving = true;
     }
+
     public void OnDashMoveComplete()
     {
         _isDashMoving = false;
     }
+
     public void OnDashAnimationComplete()
     {
         _isDashing = false;
     }
+
     public void TakeHit(string hitType, int attackID, Vector3 attackerPosition, float attackDamage)
     {
         _incomingAttackDirection = attackerPosition;
@@ -589,20 +594,16 @@ public class StateMachine : MonoBehaviour
             {
                 if (_isBlocking && HitType != "Heavy")
                 {
-                    
-                    Debug.LogError("Player blocked correctly");
                     _isBlockSuccess = true;
                     OnBlockSuccessful?.Invoke();
                 }
                 else if (hitType == "Light" && !_isParrying)
-                {
-                    Debug.LogError("Player light attack correctly");
+                { 
                     OnLightHitLanded?.Invoke(attackDamage);
                     _isLightHitLanded = true;
                 }
                 else if (hitType == "Heavy" && !_isParrying)
                 {
-                    Debug.LogError("Player heavy attack correctly");
                     OnHeavyHitLanded?.Invoke(attackDamage);
                     _isHeavyHitLanded = true;
                 }
@@ -624,7 +625,9 @@ public class StateMachine : MonoBehaviour
         AnimIDInputX = Animator.StringToHash("InputX");
         AnimIDInputY = Animator.StringToHash("InputY");
         AnimIDLightAttack = Animator.StringToHash("LightAttack");
+        AnimIDLightAttackID = Animator.StringToHash("LightAttackID");
         AnimIDHeavyAttack = Animator.StringToHash("HeavyAttack");
+        AnimIDHeavyAttackID = Animator.StringToHash("HeavyAttackID");
         AnimIDPostAttack = Animator.StringToHash("PostAttack");
         AnimIDHurt = Animator.StringToHash("Hurt");
         AnimIDDash = Animator.StringToHash("Dash");
@@ -639,17 +642,20 @@ public class StateMachine : MonoBehaviour
         _animator.SetFloat(AnimIDInputX, TargetRelativeInput().x * TargetSpeed);
         _animator.SetFloat(AnimIDInputY, TargetRelativeInput().z * TargetSpeed);
     }
+
     public void SetFreeRoamMovementAnimationValues()
     {
         _animator.SetFloat(AnimIDInputX, _moveInput.x * TargetSpeed);
         _animator.SetFloat(AnimIDInputY, _moveInput.y * TargetSpeed);
     }
+
     private void SetMovementAnimationSpeed()
     {
         AnimationBlend = Mathf.Lerp(AnimationBlend, _targetSpeed, Time.deltaTime * SpeedChangeRate);
         if (AnimationBlend < 0.01f) AnimationBlend = 0f;
         _animator.SetFloat(AnimIDSpeed, AnimationBlend);
     }
+
     public void CheckIsFighting()
     {
         if (EnemiesNearby.Count > 0)
@@ -670,7 +676,6 @@ public class StateMachine : MonoBehaviour
        // Gizmos.DrawSphere(transform.position + InputDirection(), .2f);
         Gizmos.DrawSphere(new Vector3(transform.position.x, GroundedOffset, transform.position.z), GroundedRadius);
         Gizmos.DrawRay(transform.position + Vector3.up, InputDirection() * 1f);
-
         if (_currentTarget != null)
         {
             Gizmos.DrawSphere(_currentTarget.transform.position, 1f);

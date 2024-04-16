@@ -15,7 +15,6 @@ public class CombatState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered COMBAT state");
-
     }
 
     public override void UpdateState()
@@ -23,6 +22,7 @@ public class CombatState : BaseState
         // Debug.Log("COMBAT state is currently active");
         Ctx.DebugCurrentSuperState = "Combat State";
         CheckSwitchStates();
+
         if (Ctx.IsFighting)
         {
             Ctx.SetCombatMovementAnimationValues();

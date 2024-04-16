@@ -39,8 +39,8 @@ ModelImporter:
       name: jump_kick02
       takeName: jump_kick02
       internalID: 0
-      firstFrame: 3
-      lastFrame: 20
+      firstFrame: 0
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

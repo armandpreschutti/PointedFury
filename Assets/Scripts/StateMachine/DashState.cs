@@ -11,14 +11,13 @@ public class DashState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered DASH state");
-
+        Ctx.SetDashDirection();
         Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
         Ctx.Animator.Play($"Dash", 0, 0);
         Ctx.IsDashing = true;
         Ctx.IsFighting = true;
         Ctx.IsDashPressed= false;
-        Ctx.OnDashSuccessful?.Invoke();
-        
+        Ctx.OnDashSuccessful?.Invoke();        
     }
 
     public override void UpdateState()
@@ -27,10 +26,11 @@ public class DashState : BaseState
         Ctx.DebugCurrentSubState = "Dash State";
         CheckSwitchStates();
 
-        Ctx.AttackID = 0;
+        Ctx.LightAttackID = 0;
+        Ctx.HeavyAttackID = 0;
         if (Ctx.IsDashMoving)
         {
-            Ctx.SetDashDirection();
+
             Ctx.DashMovement();
         }       
     }

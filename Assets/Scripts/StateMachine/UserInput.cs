@@ -102,7 +102,6 @@ public class UserInput : MonoBehaviour
 
     public void SetPauseInput()
     {
-        Debug.Log("Button Hooked up Correctly");
         OnPausePressed?.Invoke();
     }
 
@@ -112,21 +111,11 @@ public class UserInput : MonoBehaviour
         // Set up input actions for player controls
         _playerControls.Player.Move.performed += ctx => SetMoveInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
-
         _playerControls.Player.Dash.performed += ctx => SetDashInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed += ctx => SetBlockInput(ctx.ReadValueAsButton());
         _playerControls.Player.Parry.performed += ctx => SetParryInput();
-        _playerControls.Player.Pause.performed += ctx => SetPauseInput();
-        _playerControls.Player.Attack.performed += ctx =>
-        {
-            if (ctx.interaction is TapInteraction)
-            {
-                SetLightAttackInput(ctx.ReadValueAsButton());
-            }
-            else if (ctx.interaction is HoldInteraction)
-            {
-                SetHeavyAttackInput(ctx.ReadValueAsButton());
-            }
-        };
+        _playerControls.Player.Pause.performed += ctx => SetParryInput();
+        _playerControls.Player.LightAttack.performed += ctx => SetLightAttackInput(ctx.ReadValueAsButton());
+        _playerControls.Player.HeavyAttack.performed += ctx => SetHeavyAttackInput(ctx.ReadValueAsButton());
     }
 }

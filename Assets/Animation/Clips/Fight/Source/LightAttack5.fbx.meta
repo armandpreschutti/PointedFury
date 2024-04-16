@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 298956020acf91943a288cf4900d6c6d
+guid: 96e7defc6d4f30b47b9e3b5a9b0858c6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -39,8 +39,8 @@ ModelImporter:
       name: combo7
       takeName: combo7
       internalID: 0
-      firstFrame: 71
-      lastFrame: 79
+      firstFrame: 22
+      lastFrame: 36
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -54,7 +54,7 @@ ModelImporter:
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000

@@ -20,28 +20,23 @@ public class HealthSystem : MonoBehaviour
     private void Awake()
     {
        _stateMachine = GetComponent<StateMachine>();
-       //_healthBar = GetComponentInChildren<Slider>();
     }
+
     private void OnEnable()
     {
         _stateMachine.OnLightHitLanded += TakeDamage;
         _stateMachine.OnHeavyHitLanded += TakeDamage;
     }
+
     private void OnDisable()
     {
         _stateMachine.OnLightHitLanded -= TakeDamage;
         _stateMachine.OnHeavyHitLanded -= TakeDamage;
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         _currentHealh = MaxHealth;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //_healthBar.transform.LookAt(Camera.main.transform.position);
     }
 
     public void TakeDamage(float value)
@@ -52,14 +47,13 @@ public class HealthSystem : MonoBehaviour
             OnDamage?.Invoke();
             if (_currentHealh <= MinHealth)
             {
-              //  Debug.Log($"{gameObject.name} has died!");
                 OnDeath?.Invoke();
                 _stateMachine.IsDead = true;
                 _stateMachine.OnDeath?.Invoke();
             }
-        }
-        
+        }        
     }
+
     public void ResetHealth(bool value)
     {
         _currentHealh = MaxHealth;

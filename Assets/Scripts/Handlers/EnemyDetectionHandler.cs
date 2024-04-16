@@ -13,15 +13,15 @@ public class EnemyDetectionHandler : MonoBehaviour
     public float EnemyDetectionRadius;
     [Tooltip("What layers the character detects enemies on")]
     public LayerMask EnemyLayers;
-    private Transform closestTarget;
+    public Transform closestTarget;
 
     private void Awake()
     {
         _stateMachine = GetComponentInParent<StateMachine>();
     }
+
     private void Update()
     {
-        //_stateMachine.EnemiesNearby = _enemiesNearby;
         if(!_stateMachine.IsParrying)
         {
             ProximityDetection();
@@ -38,23 +38,9 @@ public class EnemyDetectionHandler : MonoBehaviour
                     _stateMachine.EnemiesNearby.Remove(enemy);
                 }
             }
-        }
-        {
-            //_stateMachine.IsFighting = false;
-            return;
-        }
-        
+        }        
     }
-    private void OnEnable()
-    {
-
-    }
-
-    private void OnDisable()
-    {
-
-    }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         // Add the object to the list of objects in the trigger area
@@ -79,7 +65,6 @@ public class EnemyDetectionHandler : MonoBehaviour
         }
     }
 
-
     public void ProximityDetection()
     {
         float closestDistance = Mathf.Infinity;
@@ -93,10 +78,11 @@ public class EnemyDetectionHandler : MonoBehaviour
             {
                 closestDistance = distance;
                 closestTarget = hit.transform;
+                _stateMachine.ClosestTarget = closestTarget;
             }
-        }
-        
+        }        
     }
+
     public void StickDetection()
     {
         if(closestTarget != null)
@@ -111,7 +97,6 @@ public class EnemyDetectionHandler : MonoBehaviour
                         _stateMachine.CurrentTarget = info.transform.gameObject;
                     }
                 }
-
             }
             else
             {
@@ -122,6 +107,5 @@ public class EnemyDetectionHandler : MonoBehaviour
         {
             _stateMachine.CurrentTarget = null;
         }
-
     }
 }

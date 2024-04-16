@@ -485,20 +485,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7368748c9ba1a44943502722299c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 4
+  MoveSpeed: 5
   SprintSpeed: 7.5
   FightSpeed: 1.5
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
-  ChargeSpeed: 10
-  DashSpeed: 7
-  Gravity: -2
+  ChargeSpeed: 7.5
+  DashSpeed: 6
+  Gravity: -9.81
   GroundedOffset: -0.2
   GroundedRadius: 0.2
   GroundLayers:
     serializedVersion: 2
     m_Bits: 512
-  AttackDamage: 50
+  AttackDamage: 10
   EnemyLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -510,7 +510,6 @@ MonoBehaviour:
   moveDirection: {x: 0, y: 0, z: 0}
   DebugCurrentSuperState: 
   DebugCurrentSubState: 
-  _fightTimeoutDelta: 0
   AnimationBlend: 0
   AnimIDSpeed: 0
   AnimIDGrounded: 0
@@ -518,6 +517,7 @@ MonoBehaviour:
   AnimIDInputX: 0
   AnimIDInputY: 0
   AnimIDLightAttack: 0
+  AnimIDHeavyAttack: 0
   AnimIDPostAttack: 0
   AnimIDHurt: 0
   AnimIDDash: 0
@@ -649,7 +649,8 @@ MonoBehaviour:
   _leftFootVFX: {fileID: 5971684440724125885}
   _rightFootVFX: {fileID: 5189851981947794453}
   _vfxOrigin: {fileID: 7355812914605160882}
-  _attackImpactVFX: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+  _lightAttackImpactVFX: {fileID: 0}
+  _heavyAttackImpactVFX: {fileID: 0}
   _blockImpactVFX: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
   _parryVFX: {fileID: 2955623459812423943, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
 --- !u!114 &8271953067650651371

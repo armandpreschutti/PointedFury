@@ -9,7 +9,8 @@ public class MoveState : BaseState
     {
         //Debug.LogWarning("Player has entered MOVE state");
 
-        Ctx.AttackID = 0;
+        Ctx.LightAttackID = 0;
+        Ctx.HeavyAttackID = 0;
         Ctx.IsAttacking = false;
         Ctx.OnMove?.Invoke(true);
         if (!Ctx.IsAI)
@@ -22,8 +23,9 @@ public class MoveState : BaseState
     public override void UpdateState()
     {
         //Debug.Log("MOVE state is currently active");
-        Ctx.DebugCurrentSubState = "Run State";
+        Ctx.DebugCurrentSubState = "Move State";
         CheckSwitchStates();
+
         if (Ctx.IsFighting)
         {
             Ctx.TargetSpeed = Ctx.FightSpeed;

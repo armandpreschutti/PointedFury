@@ -7,6 +7,7 @@ public class HitBroadcastHandler : MonoBehaviour
     [SerializeField] StateMachine _stateMachine;
     [SerializeField] List<GameObject> _hitTargets = new List<GameObject>();
     [SerializeField] string _enemyTag;
+
     private void Awake()
     {
         _stateMachine = GetComponentInParent<StateMachine>();
@@ -22,7 +23,6 @@ public class HitBroadcastHandler : MonoBehaviour
         _stateMachine.OnAttackContact -= LandAttack;
     }
 
-
     private void Update()
     {
         foreach (GameObject enemy in _hitTargets)
@@ -33,6 +33,7 @@ public class HitBroadcastHandler : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         // Add the object to the list of objects in the trigger area
@@ -58,8 +59,7 @@ public class HitBroadcastHandler : MonoBehaviour
         {
             if(hit.GetComponent<StateMachine>() != null) 
             {
-                //_stateMachine.OnAttackSuccess?.Invoke();
-                hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.AttackID, _stateMachine.transform.position, _stateMachine.AttackDamage);
+                hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackID : _stateMachine.HeavyAttackID, _stateMachine.transform.position, _stateMachine.AttackDamage);
             }
         }
     }

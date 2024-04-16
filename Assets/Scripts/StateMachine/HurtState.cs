@@ -7,7 +7,7 @@ public class HurtState : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered HURT state");
+        //Debug.LogWarning("Player has entered HURT state");
 
         Ctx.SetIncomingAttackDirection();
         Ctx.IsLightHitLanded = false;
@@ -38,6 +38,7 @@ public class HurtState : BaseState
     public override void ExitState()
     {
         //Debug.LogWarning("Player has exited HURT state");
+
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, false);
         Ctx.IsHurt = false;
         if (!Ctx.IsDead)

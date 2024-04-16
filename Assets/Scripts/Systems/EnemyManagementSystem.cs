@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,25 @@ using UnityEngine;
 public class EnemyManagementSystem : MonoBehaviour
 {
     public List<GameObject> managedEnemies = new List<GameObject>();
+    public GameObject newAttacker;
     public GameObject currentAttacker;
+    public GameObject previousAttacker;
     public bool zoneActive;
+
+    public static Action<GameObject, GameObject> OnNewAttacker;
+    public static Action<GameObject> OnAttackerDeath;
+    public static Action<GameObject> OnRemoveUnusedAttacker;
+
+    // statevariables
+    float _newAttackerCheckTime;
+    public float NewAttackerCheckInterval = .1f;
+    float _enemyDeathCheckTime;
+    public float EnemyDeathCheckInterval = 4f;
+
 
     private void Update()
     {
+        SetAttacker();
         CleanEnemyList();
     }
     private void OnTriggerEnter(Collider other)
@@ -19,7 +34,7 @@ public class EnemyManagementSystem : MonoBehaviour
             if (!managedEnemies.Contains(other.gameObject))
             {
                 managedEnemies.Add(other.gameObject);
-            }           
+            }
         }
         if (other.CompareTag("Player"))
         {
@@ -33,9 +48,6 @@ public class EnemyManagementSystem : MonoBehaviour
             }
         }
     }
-
-
-  
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -49,46 +61,88 @@ public class EnemyManagementSystem : MonoBehaviour
                 enemy.GetComponent<StateMachine>().IsFighting = false;
             }
         }
-       
-    }
-    private void Start()
-    {
-        StartCoroutine(PickAttacker());
+
     }
 
-    public IEnumerator PickAttacker()
+    public void SetAttacker()
     {
-        yield return new WaitForSeconds(5f);
         if (zoneActive)
         {
-            foreach (GameObject enemy in managedEnemies)
+            _newAttackerCheckTime -= Time.deltaTime;
+            
+            if (_newAttackerCheckTime < 0 || currentAttacker == null)
             {
-                enemy.GetComponent<AIBrain>().isAttacker = false;
-                enemy.GetComponent<AIBrain>().isWatcher = true;
-            }
-            currentAttacker = managedEnemies[Random.Range(0, managedEnemies.Count)];
-            currentAttacker.GetComponent<AIBrain>().isAttacker = true;
-            currentAttacker.GetComponent<AIBrain>().isWatcher = false;
-            foreach (GameObject enemy in managedEnemies)
-            {
-                enemy.GetComponent<AIBrain>().ChangeEnemyMaterial();
-            }
-        }        
+                if (managedEnemies.Count > 0)
+                {
+                    _newAttackerCheckTime = NewAttackerCheckInterval;
+                    ResetEnemyStates(managedEnemies);
+                    SetNewAttacker();
+                    currentAttacker.GetComponent<AIBrain>().isAttacker = true;
+                    currentAttacker.GetComponent<AIBrain>().isWatcher = false;
+                    OnNewAttacker?.Invoke(currentAttacker, previousAttacker);
+                }
+                else
+                {
+                    newAttacker = null;
+                    currentAttacker = null;
+                    previousAttacker = null;
+                    return;
+                }
 
-        StartCoroutine(PickAttacker());
+            }
+        }
     }
 
     public void CleanEnemyList()
     {
         if (zoneActive)
         {
-            foreach (GameObject enemy in managedEnemies)
+            _enemyDeathCheckTime -= Time.deltaTime;
+            if (_enemyDeathCheckTime < 0)
             {
-                if (enemy.GetComponent<StateMachine>().IsDead)
+                _enemyDeathCheckTime = EnemyDeathCheckInterval;
+                foreach (GameObject enemy in managedEnemies)
                 {
-                    managedEnemies.Remove(enemy);
+                    if (enemy.GetComponent<StateMachine>().IsDead)
+                    {
+                        if (enemy == currentAttacker)
+                        {
+                            SetAttacker();
+                        }
+                        OnAttackerDeath?.Invoke(enemy);
+                        managedEnemies.Remove(enemy);
+                    }
                 }
             }
-        }        
+        }
+    }
+    public void ResetEnemyStates(List<GameObject> enemies)
+    {
+        foreach (GameObject enemy in enemies)
+        {
+            enemy.GetComponent<AIBrain>().isAttacker = false;
+            enemy.GetComponent<AIBrain>().isWatcher = true;
+        }
+    }
+    public void SetNewAttacker()
+    {
+        newAttacker = managedEnemies[UnityEngine.Random.Range(0, managedEnemies.Count)];
+        if(newAttacker != currentAttacker)
+        {
+            if(currentAttacker == null)
+            {
+                currentAttacker = newAttacker; 
+                if(previousAttacker == null)
+                {
+                    previousAttacker = currentAttacker;
+                }
+            }
+            else
+            {
+                previousAttacker = currentAttacker;
+                currentAttacker = newAttacker;
+            }
+
+        }
     }
 }

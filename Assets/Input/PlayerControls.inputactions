@@ -51,12 +51,21 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "LightAttack",
                     "type": "Value",
                     "id": "feb06006-97b8-4421-aee4-1975a9a90b86",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap(duration=0.2),Hold(pressPoint=0.2)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "HeavyAttack",
+                    "type": "Value",
+                    "id": "2645a0bd-616c-44a5-9821-dd9cbc5c937b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": true
                 },
                 {
@@ -159,7 +168,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack",
+                    "action": "LightAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -188,7 +197,7 @@
                 {
                     "name": "",
                     "id": "c68b545c-19d8-4fd8-97f8-354df8184c5e",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -204,6 +213,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bdb05cb8-9d05-4c6a-8d36-78b6737cf4f2",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HeavyAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

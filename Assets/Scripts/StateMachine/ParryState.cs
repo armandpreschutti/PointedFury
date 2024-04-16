@@ -17,7 +17,6 @@ public class ParryState : BaseState
         Ctx.SetAttackDirection();
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
         Ctx.Animator.Play($"Parry", 0, 0);
-
         Ctx.IsFighting = true;
         Ctx.IsParrySucces = false;
     }
@@ -32,7 +31,6 @@ public class ParryState : BaseState
         {
             Ctx.ParryMovement();
         }
-
     }
 
     public override void ExitState()
