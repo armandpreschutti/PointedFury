@@ -9,15 +9,16 @@ public class MoveState : BaseState
     {
         //Debug.LogWarning("Player has entered MOVE state");
 
-        Ctx.LightAttackID = 0;
-        Ctx.HeavyAttackID = 0;
+/*        Ctx.LightAttackID = 0;
+        Ctx.HeavyAttackID = 0;*/
         Ctx.IsAttacking = false;
         Ctx.OnMove?.Invoke(true);
-        if (!Ctx.IsAI)
+        if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
         {
             Ctx.IsFighting = false;
+            Ctx.OnFight?.Invoke(false);
         }
-        
+
     }
 
     public override void UpdateState()
@@ -26,7 +27,7 @@ public class MoveState : BaseState
         Ctx.DebugCurrentSubState = "Move State";
         CheckSwitchStates();
 
-        if (Ctx.IsFighting)
+        if (Ctx.IsFighting || Ctx.EnemiesNearby.Count > 0)
         {
             Ctx.TargetSpeed = Ctx.FightSpeed;
         }
@@ -65,7 +66,7 @@ public class MoveState : BaseState
         }
         if (Ctx.IsHeavyHitLanded)
         {
-            SwitchState(Factory.Stunned());
+            SwitchState(Factory.Hurt());
         }
         if (Ctx.IsDashPressed)
         {

@@ -16,6 +16,8 @@ public class PostAttackState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, false);
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
         Ctx.IsPostAttack = true;
+        Ctx.IsFighting = true;
+        Ctx.OnFight?.Invoke(true);
         //Ctx.SetAttackDirection();
     }
 
@@ -54,7 +56,7 @@ public class PostAttackState : BaseState
         }
         else if (Ctx.IsHeavyHitLanded)
         {
-            SwitchState(Factory.Stunned());
+            SwitchState(Factory.Hurt());
         }
         else if (Ctx.IsParrySucces)
         {

@@ -46,8 +46,10 @@ public class StateMachine : MonoBehaviour
 
     // Player combat variables
     [Header("Player Combat")]
-    [Tooltip("The amount of damage a player will inflict with attacks")]
-    public float AttackDamage;
+    [Tooltip("The amount of damage a player will inflict with light attacks")]
+    public float LightAttackDamage;
+    [Tooltip("The amount of damage a player will inflict with heavy attacks")]
+    public float HeavyAttackDamage;
     [Tooltip("What layers the character detects enemies on")]
     public LayerMask EnemyLayers;
     [Tooltip("The amount of time after an attack to exit attack state")]
@@ -238,7 +240,6 @@ public class StateMachine : MonoBehaviour
         SetPlayerSpeed();
         CheckIsFighting();
         SetMovementAnimationSpeed();
-        CheckIsFighting();
         SimulateGravity();
     }
 

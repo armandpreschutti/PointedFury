@@ -13,7 +13,7 @@ public class IdleState : BaseState
         Ctx.HeavyAttackID = 0;
         Ctx.IsAttacking = false;
         Ctx.OnIdle?.Invoke(true);
-        if (!Ctx.IsAI)
+        if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
         {
             Ctx.IsFighting = false;
         }
@@ -33,6 +33,7 @@ public class IdleState : BaseState
         //Debug.LogWarning("Player has exited IDLE state");
 
         Ctx.OnIdle?.Invoke(false);
+        Ctx.OnFight?.Invoke(false);
     }
 
     public override void CheckSwitchStates()
@@ -57,7 +58,7 @@ public class IdleState : BaseState
             }
             if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Stunned());
+                SwitchState(Factory.Hurt());
             }
             if (Ctx.IsDashPressed)
             {

@@ -26,8 +26,6 @@ public class DashState : BaseState
         Ctx.DebugCurrentSubState = "Dash State";
         CheckSwitchStates();
 
-        Ctx.LightAttackID = 0;
-        Ctx.HeavyAttackID = 0;
         if (Ctx.IsDashMoving)
         {
 

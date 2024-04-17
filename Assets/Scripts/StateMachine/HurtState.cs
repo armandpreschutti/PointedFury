@@ -10,6 +10,8 @@ public class HurtState : BaseState
         //Debug.LogWarning("Player has entered HURT state");
 
         Ctx.SetIncomingAttackDirection();
+/*        Ctx.LightAttackID = 0;
+        Ctx.HeavyAttackID = 0;*/
         Ctx.IsLightHitLanded = false;
         Ctx.IsHeavyHitLanded = false;
         Ctx.IsPostAttack = false;
@@ -18,8 +20,9 @@ public class HurtState : BaseState
         Ctx.IsBlocking= false;  
         Ctx.IsHurt = true;
         Ctx.IsFighting = true;
+        Ctx.OnFight?.Invoke(true);
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
-        Ctx.Animator.Play($"LightHurt{Ctx.HitID}", 0, 0);
+        Ctx.Animator.Play($"{Ctx.HitType}Hurt{Ctx.HitID}", 0, 0);
         ExitAllAnimations();
     }
 
@@ -67,7 +70,7 @@ public class HurtState : BaseState
         }
         if(Ctx.IsHeavyHitLanded)
         {
-            SwitchState(Factory.Stunned());
+            SwitchState(Factory.Hurt());
         }
        /* if(Ctx.IsBlockPressed && !Ctx.IsKnockedBack)
         {

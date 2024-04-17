@@ -18,6 +18,7 @@ public class LightAttackState : BaseState
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
         Ctx.IsFighting = true;
+        Ctx.OnFight?.Invoke(true);
         Ctx.OnLightAttack?.Invoke(true);
         Ctx.IsBlockPressed = false;
     }
@@ -59,7 +60,7 @@ public class LightAttackState : BaseState
         }
         else if (Ctx.IsHeavyHitLanded)
         {
-            SwitchState(Factory.Stunned());
+            SwitchState(Factory.Hurt());
         }
         else if (Ctx.IsParried)
         {
@@ -98,12 +99,6 @@ public class LightAttackState : BaseState
                 break;
             case 5:
                 Ctx.LightAttackID = 1;
-                break;
-/*            case 6:
-                Ctx.LightAttackID = 7;
-                break;
-            case 7:
-                Ctx.LightAttackID = 1;*/
                 break;
             default:
                 break;

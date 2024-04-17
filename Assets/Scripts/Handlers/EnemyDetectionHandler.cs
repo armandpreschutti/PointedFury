@@ -29,8 +29,8 @@ public class EnemyDetectionHandler : MonoBehaviour
         }       
         if(_stateMachine.EnemiesNearby.Count > 0)
         {
-            _stateMachine.IsFighting = true;
-            //_stateMachine.IsFighting= true;
+            //_stateMachine.IsFighting = true;
+
             foreach (GameObject enemy in _stateMachine.EnemiesNearby)
             {
                 if (enemy.GetComponent<StateMachine>().IsDead)
@@ -47,7 +47,7 @@ public class EnemyDetectionHandler : MonoBehaviour
         if (other.CompareTag(_enemyTag))
         {
             _stateMachine.EnemiesNearby.Add(other.gameObject);
-            _stateMachine.IsFighting = true;
+            //_stateMachine.IsFighting = true;
         }
     }
 
@@ -58,10 +58,10 @@ public class EnemyDetectionHandler : MonoBehaviour
         {
             // Remove the object from the list of objects in the trigger area
             _stateMachine.EnemiesNearby.Remove(other.gameObject);
-            if (_stateMachine.EnemiesNearby.Count == 0)
+            /*if (_stateMachine.EnemiesNearby.Count == 0)
             {
                 _stateMachine.IsFighting = false;
-            }
+            }*/
         }
     }
 

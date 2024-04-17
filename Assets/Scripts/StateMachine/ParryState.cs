@@ -18,6 +18,7 @@ public class ParryState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
         Ctx.Animator.Play($"Parry", 0, 0);
         Ctx.IsFighting = true;
+        Ctx.OnFight?.Invoke(true);
         Ctx.IsParrySucces = false;
     }
 

@@ -23,7 +23,7 @@ public class CombatState : BaseState
         Ctx.DebugCurrentSuperState = "Combat State";
         CheckSwitchStates();
 
-        if (Ctx.IsFighting)
+        if (Ctx.IsFighting || Ctx.EnemiesNearby.Count > 0)
         {
             Ctx.SetCombatMovementAnimationValues();
             Ctx.CombatMovement();

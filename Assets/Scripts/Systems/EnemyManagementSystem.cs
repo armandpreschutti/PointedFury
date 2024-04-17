@@ -11,9 +11,15 @@ public class EnemyManagementSystem : MonoBehaviour
     public GameObject previousAttacker;
     public bool zoneActive;
 
+    public static Action<Transform> OnEnemyDetected;
+    public static Action<Transform> OnAttackerDeath;
+
+    public static Action<Transform> OnTargetGroupFound;
+    public static Action<bool> OnZoneEntered;
+    public static Action<bool> OnZoneEnemiesCleared;
     public static Action<GameObject, GameObject> OnNewAttacker;
-    public static Action<GameObject> OnAttackerDeath;
     public static Action<GameObject> OnRemoveUnusedAttacker;
+    public static Action<bool, Transform> OnLastEnemyStanding;
 
     // statevariables
     float _newAttackerCheckTime;
@@ -26,6 +32,7 @@ public class EnemyManagementSystem : MonoBehaviour
     {
         SetAttacker();
         CleanEnemyList();
+/*        GameObject.Find("Player").GetComponent<StateMachine>().IsFighting = zoneActive ? true : false;*/
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -33,14 +40,19 @@ public class EnemyManagementSystem : MonoBehaviour
         {
             if (!managedEnemies.Contains(other.gameObject))
             {
+               // OnEnemyDetected?.Invoke(other.transform.Find("PlayerCameraTarget").transform);
                 managedEnemies.Add(other.gameObject);
             }
         }
         if (other.CompareTag("Player"))
         {
+            //other.GetComponent<StateMachine>().IsFighting = true;
             zoneActive = true;
+            OnZoneEntered?.Invoke(true);
+            //OnTargetGroupFound?.Invoke(transform.Find("TargetGroup"));
             foreach (GameObject enemy in managedEnemies)
             {
+                OnEnemyDetected?.Invoke(enemy.transform.Find("PlayerCameraTarget"));
                 enemy.GetComponent<AIBrain>().isActivated = true;
                 enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
                 enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
@@ -52,7 +64,10 @@ public class EnemyManagementSystem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            other.GetComponent<StateMachine>().IsFighting = false;
             zoneActive = false;
+            OnZoneEntered?.Invoke(false);
+            //OnTargetGroupFound?.Invoke(null);
             foreach (GameObject enemy in managedEnemies)
             {
                 enemy.GetComponent<AIBrain>().isActivated = false;
@@ -109,9 +124,13 @@ public class EnemyManagementSystem : MonoBehaviour
                         {
                             SetAttacker();
                         }
-                        OnAttackerDeath?.Invoke(enemy);
+                        OnAttackerDeath?.Invoke(enemy.transform.Find("PlayerCameraTarget").transform);
                         managedEnemies.Remove(enemy);
                     }
+                }
+                if (managedEnemies.Count == 0)
+                {
+                    OnZoneEnemiesCleared?.Invoke(false);
                 }
             }
         }
@@ -124,6 +143,7 @@ public class EnemyManagementSystem : MonoBehaviour
             enemy.GetComponent<AIBrain>().isWatcher = true;
         }
     }
+
     public void SetNewAttacker()
     {
         newAttacker = managedEnemies[UnityEngine.Random.Range(0, managedEnemies.Count)];

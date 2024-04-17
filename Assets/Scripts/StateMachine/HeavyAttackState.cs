@@ -13,6 +13,7 @@ public class HeavyAttackState : BaseState
         //Debug.LogWarning("Player has entered HEAVY ATTACK state");
 
         SetAttackType();
+
         Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, true);
         Ctx.Animator.SetInteger(Ctx.AnimIDHeavyAttackID, Ctx.HeavyAttackID);
         Ctx.IsAttacking = true;
@@ -58,7 +59,7 @@ public class HeavyAttackState : BaseState
         }
         else if (Ctx.IsHeavyHitLanded)
         {
-            SwitchState(Factory.Stunned());
+            SwitchState(Factory.Hurt());
         }
         else if (Ctx.IsParried)
         {
