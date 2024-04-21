@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ParryState : BaseState
 {
@@ -12,12 +13,19 @@ public class ParryState : BaseState
     {
         //Debug.LogWarning("Player has entered PARRY state");
 
+        if (Ctx.name == "Player")
+        {
+            Debug.LogError("Parry State entered");
+        }
+
+
         Ctx.IsParrying = true;
         Ctx.IsAttacking = false;
         Ctx.SetAttackDirection();
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
         Ctx.Animator.Play($"Parry", 0, 0);
         Ctx.IsFighting = true;
+        Ctx.IsBlockPressed = false;
         Ctx.OnFight?.Invoke(true);
         Ctx.IsParrySucces = false;
     }
@@ -52,11 +60,17 @@ public class ParryState : BaseState
             {
                 SwitchState(Factory.Move());
             }
+            else if (Ctx.IsBlockPressed)
+            {
+                SwitchState(Factory.Block());
+            }
             else
             {
                 SwitchState(Factory.Idle());
             }
         }
+        
+
     }
 
     public override void InitializeSubStates()

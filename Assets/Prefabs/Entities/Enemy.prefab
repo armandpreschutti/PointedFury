@@ -1295,7 +1295,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   AttackTimeout: 3
-  CombatDistance: 1
+  CombatDistance: 1.2
   KnockBackPower: 3
   EnemiesNearby: []
   IsAI: 1

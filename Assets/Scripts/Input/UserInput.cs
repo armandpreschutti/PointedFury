@@ -24,17 +24,19 @@ public class UserInput : MonoBehaviour
     private void OnEnable()
     {
         _playerControls.Enable();
+        SubscribeToActions();
     }
 
     // This function is called when the behaviour becomes disabled
     private void OnDisable()
     {
         _playerControls.Disable();
+        UnsubscribeFromActions();
     }
 
     private void Start()
     {
-        SetInputValues();
+
     }
 
     // Set move input value
@@ -125,14 +127,14 @@ public class UserInput : MonoBehaviour
     }
 
     // Set input values
-    private void SetInputValues()
+    private void SubscribeToActions()
     {
         // Set up input actions for player controls
         _playerControls.Player.Move.performed += ctx => SetMoveInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Dash.performed += ctx => SetDashInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed += ctx => SetBlockInput(ctx.ReadValueAsButton());
-        _playerControls.Player.Parry.performed += ctx => SetParryInput();
+        _playerControls.Player.Block.started += ctor => SetParryInput();
         _playerControls.Player.Pause.performed += ctx => SetPauseInput();
         _playerControls.Player.LightAttack.performed += ctx => SetLightAttackInput(ctx.ReadValueAsButton());
         _playerControls.Player.HeavyAttack.performed += ctx => SetHeavyAttackInput(ctx.ReadValueAsButton());
@@ -140,5 +142,23 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.ToggleHealthSystems.performed += ctx => SetToggleHealthSystemsInput();
         _playerControls.Player.ReturnToTitle.performed += ctx => SetResetGameInput();
         _playerControls.Player.DisableEnemies.performed += ctx => SetDisableEnemiesInput();
+    }
+
+    // Set input values
+    private void UnsubscribeFromActions()
+    {
+        // Set up input actions for player controls
+        _playerControls.Player.Move.performed -= ctx => SetMoveInput(ctx.ReadValue<Vector2>());
+        _playerControls.Player.Look.performed -= ctx => SetLookInput(ctx.ReadValue<Vector2>());
+        _playerControls.Player.Dash.performed -= ctx => SetDashInput(ctx.ReadValueAsButton());
+        _playerControls.Player.Block.performed -= ctx => SetBlockInput(ctx.ReadValueAsButton());
+        _playerControls.Player.Block.started -= ctor => SetParryInput();
+        _playerControls.Player.Pause.performed -= ctx => SetPauseInput();
+        _playerControls.Player.LightAttack.performed -= ctx => SetLightAttackInput(ctx.ReadValueAsButton());
+        _playerControls.Player.HeavyAttack.performed -= ctx => SetHeavyAttackInput(ctx.ReadValueAsButton());
+        _playerControls.Player.ResetLevel.performed -= ctx => SetResetLevelInput();
+        _playerControls.Player.ToggleHealthSystems.performed -= ctx => SetToggleHealthSystemsInput();
+        _playerControls.Player.ReturnToTitle.performed -= ctx => SetResetGameInput();
+        _playerControls.Player.DisableEnemies.performed -= ctx => SetDisableEnemiesInput();
     }
 }
