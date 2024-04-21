@@ -125,6 +125,42 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ResetLevel"",
+                    ""type"": ""Value"",
+                    ""id"": ""ba8df754-b3d0-4f56-819d-ba440f946dfd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ToggleHealthSystems"",
+                    ""type"": ""Value"",
+                    ""id"": ""21751700-b830-43d2-995a-85d088f42066"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ReturnToTitle"",
+                    ""type"": ""Button"",
+                    ""id"": ""656b2c83-c1e4-4b37-b370-6dcc45543938"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DisableEnemies"",
+                    ""type"": ""Value"",
+                    ""id"": ""e0ac0eb2-ce20-42d8-b17c-9c96ecb49c9e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -248,6 +284,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""HeavyAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd143d6e-bf14-4191-bf27-2102f08e82b9"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ResetLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7f920ba-15c6-45d6-9812-de6c74cd1587"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleHealthSystems"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""046dec68-d76d-43f9-9c3c-c2bb277374ec"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ReturnToTitle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2097c134-689c-4c97-95e4-f4b07f906bd9"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""DisableEnemies"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -315,6 +395,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
         m_Player_Parry = m_Player.FindAction("Parry", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_ResetLevel = m_Player.FindAction("ResetLevel", throwIfNotFound: true);
+        m_Player_ToggleHealthSystems = m_Player.FindAction("ToggleHealthSystems", throwIfNotFound: true);
+        m_Player_ReturnToTitle = m_Player.FindAction("ReturnToTitle", throwIfNotFound: true);
+        m_Player_DisableEnemies = m_Player.FindAction("DisableEnemies", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -387,6 +471,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Block;
     private readonly InputAction m_Player_Parry;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_ResetLevel;
+    private readonly InputAction m_Player_ToggleHealthSystems;
+    private readonly InputAction m_Player_ReturnToTitle;
+    private readonly InputAction m_Player_DisableEnemies;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -402,6 +490,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Block => m_Wrapper.m_Player_Block;
         public InputAction @Parry => m_Wrapper.m_Player_Parry;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @ResetLevel => m_Wrapper.m_Player_ResetLevel;
+        public InputAction @ToggleHealthSystems => m_Wrapper.m_Player_ToggleHealthSystems;
+        public InputAction @ReturnToTitle => m_Wrapper.m_Player_ReturnToTitle;
+        public InputAction @DisableEnemies => m_Wrapper.m_Player_DisableEnemies;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -444,6 +536,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @ResetLevel.started += instance.OnResetLevel;
+            @ResetLevel.performed += instance.OnResetLevel;
+            @ResetLevel.canceled += instance.OnResetLevel;
+            @ToggleHealthSystems.started += instance.OnToggleHealthSystems;
+            @ToggleHealthSystems.performed += instance.OnToggleHealthSystems;
+            @ToggleHealthSystems.canceled += instance.OnToggleHealthSystems;
+            @ReturnToTitle.started += instance.OnReturnToTitle;
+            @ReturnToTitle.performed += instance.OnReturnToTitle;
+            @ReturnToTitle.canceled += instance.OnReturnToTitle;
+            @DisableEnemies.started += instance.OnDisableEnemies;
+            @DisableEnemies.performed += instance.OnDisableEnemies;
+            @DisableEnemies.canceled += instance.OnDisableEnemies;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -481,6 +585,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @ResetLevel.started -= instance.OnResetLevel;
+            @ResetLevel.performed -= instance.OnResetLevel;
+            @ResetLevel.canceled -= instance.OnResetLevel;
+            @ToggleHealthSystems.started -= instance.OnToggleHealthSystems;
+            @ToggleHealthSystems.performed -= instance.OnToggleHealthSystems;
+            @ToggleHealthSystems.canceled -= instance.OnToggleHealthSystems;
+            @ReturnToTitle.started -= instance.OnReturnToTitle;
+            @ReturnToTitle.performed -= instance.OnReturnToTitle;
+            @ReturnToTitle.canceled -= instance.OnReturnToTitle;
+            @DisableEnemies.started -= instance.OnDisableEnemies;
+            @DisableEnemies.performed -= instance.OnDisableEnemies;
+            @DisableEnemies.canceled -= instance.OnDisableEnemies;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -547,5 +663,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnBlock(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnResetLevel(InputAction.CallbackContext context);
+        void OnToggleHealthSystems(InputAction.CallbackContext context);
+        void OnReturnToTitle(InputAction.CallbackContext context);
+        void OnDisableEnemies(InputAction.CallbackContext context);
     }
 }

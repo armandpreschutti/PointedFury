@@ -55,14 +55,14 @@ public class BlockState : BaseState
                 SwitchState(Factory.Idle());
             }
         }
-/*        else if (Ctx.IsLightAttackPressed)
+        else if (Ctx.IsLightAttackPressed)
         {
             SwitchState(Factory.LightAttack());
         }
         else if (Ctx.IsHeavyAttackPressed)
         {
-            SwitchState(Factory.LightAttack());
-        }*/
+            SwitchState(Factory.HeavyAttack());
+        }
         else if (Ctx.IsDashPressed)
         {
             SwitchState(Factory.Dash());

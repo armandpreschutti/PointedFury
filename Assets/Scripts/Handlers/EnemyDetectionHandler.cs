@@ -29,7 +29,7 @@ public class EnemyDetectionHandler : MonoBehaviour
         }       
         if(_stateMachine.EnemiesNearby.Count > 0)
         {
-            //_stateMachine.IsFighting = true;
+           // _stateMachine.IsFighting = true;
 
             foreach (GameObject enemy in _stateMachine.EnemiesNearby)
             {
@@ -47,7 +47,7 @@ public class EnemyDetectionHandler : MonoBehaviour
         if (other.CompareTag(_enemyTag))
         {
             _stateMachine.EnemiesNearby.Add(other.gameObject);
-            //_stateMachine.IsFighting = true;
+
         }
     }
 
@@ -58,10 +58,10 @@ public class EnemyDetectionHandler : MonoBehaviour
         {
             // Remove the object from the list of objects in the trigger area
             _stateMachine.EnemiesNearby.Remove(other.gameObject);
-            /*if (_stateMachine.EnemiesNearby.Count == 0)
+            if(_stateMachine.EnemiesNearby.Count == 0f)
             {
                 _stateMachine.IsFighting = false;
-            }*/
+            }
         }
     }
 
@@ -87,7 +87,7 @@ public class EnemyDetectionHandler : MonoBehaviour
     {
         if(closestTarget != null)
         {
-            if (_stateMachine.MoveInput != Vector2.zero)
+            if (_stateMachine.MoveInput != Vector2.zero && _stateMachine.EnemiesNearby.Count >1)
             {
                 RaycastHit info;
                 if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius, EnemyLayers))

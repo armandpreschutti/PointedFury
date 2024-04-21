@@ -40,7 +40,7 @@ public class ParryState : BaseState
 
         Ctx.Animator.SetBool(Ctx.AnimIDParry, false);
         Ctx.IsAttacking = false;
-        Ctx.OnLightAttack?.Invoke(false);
+        Ctx.OnLightAttack?.Invoke(false, "Light");
         Ctx.IsCharging = false;
     }
 

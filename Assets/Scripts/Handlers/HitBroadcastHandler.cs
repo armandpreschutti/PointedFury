@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HitBroadcastHandler : MonoBehaviour
 {
-    [SerializeField] StateMachine _stateMachine;
-    [SerializeField] List<GameObject> _hitTargets = new List<GameObject>();
+    StateMachine _stateMachine;
+    List<GameObject> _hitTargets = new List<GameObject>();
     [SerializeField] string _enemyTag;
 
     private void Awake()
@@ -60,6 +60,7 @@ public class HitBroadcastHandler : MonoBehaviour
             if(hit.GetComponent<StateMachine>() != null) 
             {
                 hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackID : _stateMachine.HeavyAttackID, _stateMachine.transform.position, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackDamage : _stateMachine.HeavyAttackDamage);
+                _stateMachine.GiveHit(_stateMachine.AttackType);
             }
         }
     }

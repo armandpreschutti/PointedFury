@@ -8,10 +8,10 @@ using UnityEngine;
 public class EntityVFXHandler : MonoBehaviour
 {
     [SerializeField] StateMachine _stateMachine;
-    [SerializeField] GameObject _leftHandVFX;
-    [SerializeField] GameObject _rightHandVFX;
-    [SerializeField] GameObject _leftFootVFX;
-    [SerializeField] GameObject _rightFootVFX;
+    [SerializeField] ParticleSystem _leftHandVFX;
+    [SerializeField] ParticleSystem _rightHandVFX;
+    [SerializeField] ParticleSystem _leftFootVFX;
+    [SerializeField] ParticleSystem _rightFootVFX;
 
     [SerializeField] Transform _vfxOrigin;
     [SerializeField] GameObject _lightAttackImpactVFX;
@@ -21,67 +21,88 @@ public class EntityVFXHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        _stateMachine.OnAttackWindUp += SetIndicator;
         _stateMachine.OnLightAttack += SetIndicator;
         _stateMachine.OnHeavyAttack += SetIndicator;
-        _stateMachine.OnLightHitLanded += PlayLightAttackImpactVFX;
-        _stateMachine.OnHeavyHitLanded += PlayLightAttackImpactVFX;
+        _stateMachine.OnLightAttackRecieved += PlayAttackImpactVFX;
+        _stateMachine.OnHeavyAttackRecieved += PlayAttackImpactVFX;
         _stateMachine.OnBlockSuccessful += PlayBlockImpactVFX;
         _stateMachine.OnParrySuccessful += PlayParryVFX;
     }
     private void OnDisable()
     {
+        _stateMachine.OnAttackWindUp -= SetIndicator;
         _stateMachine.OnLightAttack -= SetIndicator;
         _stateMachine.OnHeavyAttack -= SetIndicator;
-        _stateMachine.OnLightHitLanded -= PlayLightAttackImpactVFX;
-        _stateMachine.OnHeavyHitLanded -= PlayLightAttackImpactVFX;
+        _stateMachine.OnLightAttackRecieved -= PlayAttackImpactVFX;
+        _stateMachine.OnHeavyAttackRecieved -= PlayAttackImpactVFX;
         _stateMachine.OnBlockSuccessful -= PlayBlockImpactVFX;
         _stateMachine.OnParrySuccessful -= PlayParryVFX;
     }
-    public void SetIndicator(bool value)
+    public void SetIndicator(bool value, string attackType)
     {
-        if(_stateMachine.AttackType == "Light")
+        if(attackType == "Light")
         {
-            switch (_stateMachine.LightAttackID)
+            if (value)
             {
-                case 1:                    
-                    _rightHandVFX.SetActive(value);
-                    break;
-                case 2:
-                    _leftHandVFX.SetActive(value);
-                    break;
-                case 3:
-                    _leftFootVFX.SetActive(value);
-                    break;
-                case 4:
-                    _leftHandVFX.SetActive(value);
-                    break;
-                case 5:
-                    _leftFootVFX.SetActive(value);
-                    break;
-                case 6:
-                    _rightHandVFX.SetActive(value);
-                    break;
-                case 7:
-                    _rightFootVFX.SetActive(value);
-                    break;
-                default:
-                    break;
+                switch (_stateMachine.LightAttackID)
+                {
+                    case 1:
+                        _rightHandVFX.Play();
+                        break;
+                    case 2:
+                        _leftFootVFX.Play();
+                        break;
+                    case 3:
+                        _rightHandVFX.Play();
+                        break;
+                    case 4:
+                        _rightFootVFX.Play();
+                        break;
+                    case 5:
+                        _leftHandVFX.Play();
+                        break;
+                    default:
+                        break;
+                }
             }
+            else
+            {
+                switch (_stateMachine.LightAttackID)
+                {
+                    case 1:
+                        _rightHandVFX.Stop();
+                        break;
+                    case 2:
+                        _leftFootVFX.Stop();
+                        break;
+                    case 3:
+                        _rightHandVFX.Stop();
+                        break;
+                    case 4:
+                        _rightFootVFX.Stop();
+                        break;
+                    case 5:
+                        _leftHandVFX.Stop();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
         }
-        else if (_stateMachine.AttackType == "Heavy")
+        else if (attackType == "Heavy")
         {
-            _rightHandVFX.SetActive(value);
-            _leftHandVFX.SetActive(value);
-            _leftFootVFX.SetActive(value);
-            _rightFootVFX.SetActive(value);
-            _leftHandVFX.GetComponent<TrailRenderer>().endColor = value ? Color.yellow : Color.white;
-            _rightHandVFX.GetComponent<TrailRenderer>().endColor = value ? Color.yellow : Color.white;
-            _leftFootVFX.GetComponent<TrailRenderer>().endColor = value ? Color.yellow : Color.white;
-            _rightFootVFX.GetComponent<TrailRenderer>().endColor = value ? Color.yellow : Color.white;
-            _leftHandVFX.GetComponent<TrailRenderer>().startColor = value ? Color.red : Color.white;
-            _rightHandVFX.GetComponent<TrailRenderer>().startColor = value ? Color.red : Color.white;
-            _leftFootVFX.GetComponent<TrailRenderer>().startColor = value ? Color.red : Color.white;
-            _rightFootVFX.GetComponent<TrailRenderer>().startColor = value ? Color.red : Color.white;
+            if (value)
+            {
+                _leftFootVFX.Play();
+                _rightFootVFX.Play();
+            }
+            else
+            {
+                _leftFootVFX.Stop();
+                _rightFootVFX.Stop();
+            }
         }
         else
         {
@@ -89,13 +110,23 @@ public class EntityVFXHandler : MonoBehaviour
         }
        
     }
-    public void PlayLightAttackImpactVFX(float value)
+    public void PlayAttackImpactVFX(float value, string attackType)
     {
-        CreateVFXOneShot(_lightAttackImpactVFX, _vfxOrigin);
-    }
-    public void PlayHeavyAttackImpactVFX(float value)
-    {
-        CreateVFXOneShot(_heavyAttackImpactVFX, _vfxOrigin);
+        if (attackType == "Light")
+        {
+            CreateVFXOneShot(_lightAttackImpactVFX, _vfxOrigin);
+
+        }
+        else if (attackType == "Heavy")
+        {
+            CreateVFXOneShot(_heavyAttackImpactVFX, _vfxOrigin);
+
+        }
+        else
+        {
+            Debug.Log("Attack type not known");
+            return;
+        }
     }
 
     public void PlayBlockImpactVFX()

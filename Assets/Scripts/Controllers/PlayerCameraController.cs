@@ -8,7 +8,6 @@ using Unity.VisualScripting.Dependencies.NCalc;
 public class PlayerCameraController : MonoBehaviour
 {
     private StateMachine _stateMachine;
-    private EnemyDetectionHandler _enemyDetectionHandler;
     public Transform _followTarget;
     public LayerMask occlussionLayer;
 
@@ -21,7 +20,6 @@ public class PlayerCameraController : MonoBehaviour
 
     [SerializeField] CinemachineVirtualCamera _freeRoamCamera;
     [SerializeField] CinemachineVirtualCamera _groupFightCamera;
-    [SerializeField] CinemachineVirtualCamera _individualFightCamera;
     
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
@@ -63,7 +61,6 @@ public class PlayerCameraController : MonoBehaviour
     private void Awake()
     {
         _stateMachine = GetComponent<StateMachine>();
-        _enemyDetectionHandler = GetComponentInChildren<EnemyDetectionHandler>();
         _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
         _pitchResetTime = PitchResetDelay;
     }
@@ -71,13 +68,15 @@ public class PlayerCameraController : MonoBehaviour
     {
         EnemyManagementSystem.OnZoneEntered += SetGroupFightCameraTarget;
         EnemyManagementSystem.OnZoneEntered += SetGroupFightCameraState;
-        EnemyManagementSystem.OnZoneEnemiesCleared += SetGroupFightCameraTarget;
+        _stateMachine.OnFight += SetGroupFightCameraState;
+       // EnemyManagementSystem.OnZoneEnemiesCleared += SetGroupFightCameraTarget;
     }
     private void OnDisable()
     {
-        EnemyManagementSystem.OnZoneEntered += SetGroupFightCameraTarget;
+        EnemyManagementSystem.OnZoneEntered -= SetGroupFightCameraTarget;
         EnemyManagementSystem.OnZoneEntered -= SetGroupFightCameraState;
-        EnemyManagementSystem.OnZoneEnemiesCleared += SetGroupFightCameraTarget;
+        _stateMachine.OnFight -= SetGroupFightCameraState;
+        //EnemyManagementSystem.OnZoneEnemiesCleared += SetGroupFightCameraTarget;
     }
 
     // Start is called before the first frame update
@@ -95,21 +94,20 @@ public class PlayerCameraController : MonoBehaviour
     {
         CameraRotation();
         SetCameraSensitity();
-        SetGroupFightCameraState(_stateMachine.IsFighting);
         CameraPitchPositioningLoop();
-       // UnblockCamera();
     }
  
     public void SetGroupFightCameraState(bool value)
     {
-        
         _groupFightCamera.gameObject.SetActive(value);
-        
     }
+
     public void SetGroupFightCameraTarget(bool value)
     {
-        _groupFightCamera.LookAt = value ? GameObject.Find("TargetGroup").transform : transform.Find("TempTarget");
+        /*_groupFightCamera.LookAt = value ? GameObject.Find("TargetGroup").transform : transform.Find("TempTarget");*/
+        
     }
+
     public void SetCameraSensitity()
     {
         XAxisSensitivity = _stateMachine.IsFighting ? FightSensitivity : FreeRoamSensitivity;
@@ -164,25 +162,5 @@ public class PlayerCameraController : MonoBehaviour
             return;
         }
     }
-    public void UnblockCamera()
-    {
-        // Get the main camera
-        Camera mainCamera = Camera.main;
-
-        // Get the center of the screen in viewport coordinates (0.5, 0.5)
-        Vector3 viewportCenter = new Vector3(0.5f, 0.5f, 0f);
-
-        // Convert the viewport coordinates to a ray
-        Ray ray = mainCamera.ViewportPointToRay(viewportCenter);
-
-        // Declare a RaycastHit variable to store information about the hit
-        RaycastHit hit;
-
-        // Check if the ray hits any game object
-        if (Physics.Raycast(ray, out hit, 20f, occlussionLayer))
-        {
-            Debug.Log(hit.transform.name);
-            _cinemachineTargetYaw += 1f;
-        }
-    }
+ 
 }

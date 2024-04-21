@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ParryBroadcastHandler : MonoBehaviour
 {
-    [SerializeField] StateMachine _stateMachine;
-    [SerializeField] List<GameObject> _hitTargets = new List<GameObject>();
+    StateMachine _stateMachine;
+    List<GameObject> _hitTargets = new List<GameObject>();
     [SerializeField] string _enemyTag;
 
     private void Awake()

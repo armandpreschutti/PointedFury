@@ -11,7 +11,7 @@ public class EnemyManagementSystem : MonoBehaviour
     public GameObject previousAttacker;
     public bool zoneActive;
 
-    public static Action<Transform> OnEnemyDetected;
+    public static Action<bool, Transform> OnEnemyDetected;
     public static Action<Transform> OnAttackerDeath;
 
     public static Action<Transform> OnTargetGroupFound;
@@ -32,7 +32,6 @@ public class EnemyManagementSystem : MonoBehaviour
     {
         SetAttacker();
         CleanEnemyList();
-/*        GameObject.Find("Player").GetComponent<StateMachine>().IsFighting = zoneActive ? true : false;*/
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -40,36 +39,36 @@ public class EnemyManagementSystem : MonoBehaviour
         {
             if (!managedEnemies.Contains(other.gameObject))
             {
-               // OnEnemyDetected?.Invoke(other.transform.Find("PlayerCameraTarget").transform);
                 managedEnemies.Add(other.gameObject);
             }
         }
         if (other.CompareTag("Player"))
         {
-            //other.GetComponent<StateMachine>().IsFighting = true;
-            zoneActive = true;
-            OnZoneEntered?.Invoke(true);
-            //OnTargetGroupFound?.Invoke(transform.Find("TargetGroup"));
-            foreach (GameObject enemy in managedEnemies)
+            if(managedEnemies.Count != 0)
             {
-                OnEnemyDetected?.Invoke(enemy.transform.Find("PlayerCameraTarget"));
-                enemy.GetComponent<AIBrain>().isActivated = true;
-                enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
-                enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
-                enemy.GetComponent<StateMachine>().IsFighting = true;
-            }
+                zoneActive = true;
+                OnZoneEntered?.Invoke(true);
+                foreach (GameObject enemy in managedEnemies)
+                {
+                    OnEnemyDetected?.Invoke(true, enemy.transform.Find("PlayerCameraTarget"));
+                    enemy.GetComponent<AIBrain>().isActivated = true;
+                    enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
+                    enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
+                    enemy.GetComponent<StateMachine>().IsFighting = true;
+                }
+            }          
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<StateMachine>().IsFighting = false;
+            //other.GetComponent<StateMachine>().IsFighting = false;
             zoneActive = false;
             OnZoneEntered?.Invoke(false);
-            //OnTargetGroupFound?.Invoke(null);
             foreach (GameObject enemy in managedEnemies)
             {
+                OnEnemyDetected?.Invoke(false, enemy.transform.Find("PlayerCameraTarget"));
                 enemy.GetComponent<AIBrain>().isActivated = false;
                 enemy.GetComponent<StateMachine>().CurrentTarget = null;
                 enemy.GetComponent<StateMachine>().EnemiesNearby.Remove(other.gameObject);
@@ -131,6 +130,7 @@ public class EnemyManagementSystem : MonoBehaviour
                 if (managedEnemies.Count == 0)
                 {
                     OnZoneEnemiesCleared?.Invoke(false);
+                    zoneActive = false;
                 }
             }
         }

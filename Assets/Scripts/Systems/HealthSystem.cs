@@ -24,14 +24,14 @@ public class HealthSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        _stateMachine.OnLightHitLanded += TakeDamage;
-        _stateMachine.OnHeavyHitLanded += TakeDamage;
+        _stateMachine.OnLightAttackRecieved += TakeDamage;
+        _stateMachine.OnHeavyAttackRecieved += TakeDamage;
     }
 
     private void OnDisable()
     {
-        _stateMachine.OnLightHitLanded -= TakeDamage;
-        _stateMachine.OnHeavyHitLanded -= TakeDamage;
+        _stateMachine.OnLightAttackRecieved -= TakeDamage;
+        _stateMachine.OnHeavyAttackRecieved -= TakeDamage;
     }
 
     void Start()
@@ -39,11 +39,11 @@ public class HealthSystem : MonoBehaviour
         _currentHealh = MaxHealth;
     }
 
-    public void TakeDamage(float value)
+    public void TakeDamage(float damage, string attackType)
     {
         if(!_stateMachine.IsDead)
         {
-            _currentHealh -= value;
+            _currentHealh -= damage;
             OnDamage?.Invoke();
             if (_currentHealh <= MinHealth)
             {

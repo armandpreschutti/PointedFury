@@ -31,9 +31,11 @@ public class IdleState : BaseState
     public override void ExitState()
     {
         //Debug.LogWarning("Player has exited IDLE state");
-
-        Ctx.OnIdle?.Invoke(false);
-        Ctx.OnFight?.Invoke(false);
+        if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
+        {
+            Ctx.IsFighting = false;
+            Ctx.OnFight?.Invoke(false);
+        }
     }
 
     public override void CheckSwitchStates()

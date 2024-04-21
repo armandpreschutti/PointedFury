@@ -4,39 +4,87 @@ using UnityEngine;
 using Cinemachine;
 using TMPro;
 using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.InputSystem.LowLevel;
 
 public class CameraFramingHandler : MonoBehaviour
 {
     private CinemachineTargetGroup _targetGroup;
     [SerializeField] EnemyManagementSystem enemyManagementSystem;
-    private StateMachine _stateMachine;
-    public Transform _currentAttacker;
+    
+  /*  public Transform _currentAttacker;
     public Transform _previousAttacker;
     public float MinimumEnemyWeight = .3f;
-    public float MaximumEnemyWeight = 1f;
+    public float MaximumEnemyWeight = 1f;*/
+
     private void Awake()
     {
         _targetGroup = GetComponent<CinemachineTargetGroup>();
-        _stateMachine = GameObject.Find("Player").GetComponent<StateMachine>();
     }
     private void OnEnable()
     {
-        //EnemyManagementSystem.OnNewAttacker += AddEntityToGroup;
-        EnemyManagementSystem.OnAttackerDeath += RemoveEntityFromGroup;
-        EnemyManagementSystem.OnEnemyDetected += ConstructEntityTargetGroup;
-        //EnemyManagementSystem.OnRemoveUnusedAttacker += RemoveEntityFromGroup;
+        EnemyManagementSystem.OnAttackerDeath += RemoveEntityFromTargetGroup;
+        EnemyManagementSystem.OnEnemyDetected += SetZoneTargets;
+
     }
 
     private void OnDisable()
     {
-        //EnemyManagementSystem.OnNewAttacker -= AddEntityToGroup;
-        EnemyManagementSystem.OnAttackerDeath -= RemoveEntityFromGroup;
-        EnemyManagementSystem.OnEnemyDetected -= ConstructEntityTargetGroup;
-        //EnemyManagementSystem.OnRemoveUnusedAttacker -= RemoveEntityFromGroup;
+        EnemyManagementSystem.OnAttackerDeath -= RemoveEntityFromTargetGroup;
+        EnemyManagementSystem.OnEnemyDetected -= SetZoneTargets;
     }
-    private void Update()
-    {/*
-        if (_stateMachine.ClosestTarget != null)
+
+    public void SetZoneTargets(bool value, Transform entity)
+    {
+        if(value)
+        {
+            AddEntityToTargetGroup(entity);
+        }
+        else
+        {
+            RemoveEntityFromTargetGroup(entity);
+        }
+    }
+    public void AddEntityToTargetGroup(Transform entity)
+    {
+        if (!TargetGroupContainsTransform(_targetGroup, entity))
+        {
+            _targetGroup.AddMember(entity, 1, 0);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    private void RemoveEntityFromTargetGroup(Transform entity)
+    {
+        if (TargetGroupContainsTransform(_targetGroup, entity))
+        {
+            _targetGroup.RemoveMember(entity);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    bool TargetGroupContainsTransform(CinemachineTargetGroup targetGroup, Transform target)
+    {
+        // Iterate through all the members of the target group
+        for (int i = 0; i < targetGroup.m_Targets.Length; i++)
+        {
+            // Check if the transform matches the target we're looking for
+            if (targetGroup.m_Targets[i].target == target)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void RotateEnemyWeights()
+    {
+        /*if (_stateMachine.ClosestTarget != null)
         {
             // Iterate through all the members of the target group
             for (int i = 0; i < _targetGroup.m_Targets.Length; i++)
@@ -72,67 +120,7 @@ public class CameraFramingHandler : MonoBehaviour
                 }
             }
             _targetGroup.m_Targets[1].target = _stateMachine.ClosestTarget;
-        }
+        }*/
 
-*/
     }
-    private void AddEntityToGroup(GameObject newAttacker, GameObject currentAttacker)
-    {
-        if (!TargetGroupContainsTransform(_targetGroup, newAttacker.transform))
-        {
-            _targetGroup.AddMember(newAttacker.transform, 1, 0);
-            if (_previousAttacker != null)
-            {
-                if (TargetGroupContainsTransform(_targetGroup, _previousAttacker))
-                {
-                    _targetGroup.RemoveMember(_previousAttacker);
-                }
-                _currentAttacker = _previousAttacker;
-            }
-            else
-            {
-
-                _previousAttacker = _currentAttacker;
-            }
-            _currentAttacker = newAttacker.transform;
-        }
-    }
-    public void ConstructEntityTargetGroup(Transform entity)
-    {
-        if (!TargetGroupContainsTransform(_targetGroup, entity))
-        {
-            _targetGroup.AddMember(entity, 1, 0);
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    private void RemoveEntityFromGroup(Transform entity)
-    {
-        if (TargetGroupContainsTransform(_targetGroup, entity))
-        {
-            _targetGroup.RemoveMember(entity);
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    bool TargetGroupContainsTransform(CinemachineTargetGroup targetGroup, Transform target)
-    {
-        // Iterate through all the members of the target group
-        for (int i = 0; i < targetGroup.m_Targets.Length; i++)
-        {
-            // Check if the transform matches the target we're looking for
-            if (targetGroup.m_Targets[i].target == target)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

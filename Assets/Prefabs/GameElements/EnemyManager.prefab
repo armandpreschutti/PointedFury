@@ -46,8 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   managedEnemies: []
+  newAttacker: {fileID: 0}
   currentAttacker: {fileID: 0}
+  previousAttacker: {fileID: 0}
   zoneActive: 0
+  NewAttackerCheckInterval: 4
+  EnemyDeathCheckInterval: 0.1
 --- !u!135 &628791397051042868
 SphereCollider:
   m_ObjectHideFlags: 0

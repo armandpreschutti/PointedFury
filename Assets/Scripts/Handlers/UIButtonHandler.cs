@@ -7,11 +7,11 @@ public class UIButtonHandler : MonoBehaviour
 {
     public void EnterMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("CombatGym");
     }
     public void EnterGame()
     {
-        SceneManager.LoadScene("Debug");
+        SceneManager.LoadScene("CombatGym");
     }
     public void EnterSettingsMenu()
     {

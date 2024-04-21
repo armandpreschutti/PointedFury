@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class EntitSFXHandler : MonoBehaviour
 {
-    public List<AudioClip> _lightPunchSFX;
-    public List<AudioClip> _heavyPunchSFX;
-    public List<AudioClip> _attackImpactSFX;
-    public List<AudioClip> _blockImpactSFX;
-    public List<AudioClip> _parrySFX;
-    public List<AudioClip> _dashSFX;
-    public List<AudioClip> _deathSFX;
-
+    public EntitySFXSO sfxSO;
     public StateMachine _stateMachine;
     public GameObject _oneShotPrefab;
 
@@ -21,10 +14,9 @@ public class EntitSFXHandler : MonoBehaviour
     }
     private void OnEnable()
     {
-        _stateMachine.OnLightAttack += PlayLightAttackWhooshSFX;
-        _stateMachine.OnHeavyAttack += PlayHeavyAttackWhoosh;
-        _stateMachine.OnLightHitLanded += PlayLightAttackImpactSFX;
-        _stateMachine.OnHeavyHitLanded += PlayLightAttackImpactSFX;
+        _stateMachine.OnAttackWindUp += PlayAttackWhooshSFX;
+        _stateMachine.OnLightAttackRecieved += PlayAttackImpactSFX;
+        _stateMachine.OnHeavyAttackRecieved += PlayAttackImpactSFX;
         _stateMachine.OnBlockSuccessful += PlayBlockImpactSFX;
         _stateMachine.OnParrySuccessful += PlayParrySFX;
         _stateMachine.OnDashSuccessful += PlayDashSFX;
@@ -33,60 +25,73 @@ public class EntitSFXHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        _stateMachine.OnLightAttack -= PlayLightAttackWhooshSFX;
-        _stateMachine.OnHeavyAttack -= PlayHeavyAttackWhoosh;
-        _stateMachine.OnLightHitLanded -= PlayLightAttackImpactSFX;
-        _stateMachine.OnHeavyHitLanded -= PlayLightAttackImpactSFX;
+        _stateMachine.OnAttackWindUp -= PlayAttackWhooshSFX;
+        _stateMachine.OnLightAttackRecieved -= PlayAttackImpactSFX;
+        _stateMachine.OnHeavyAttackRecieved -= PlayAttackImpactSFX;
         _stateMachine.OnBlockSuccessful -= PlayBlockImpactSFX;
         _stateMachine.OnParrySuccessful -= PlayParrySFX;
         _stateMachine.OnDashSuccessful -= PlayDashSFX;
         _stateMachine.OnDeath -= PlayDeathSFX;
     }
 
-    public void PlayLightAttackWhooshSFX(bool value)
+    public void PlayAttackWhooshSFX(bool value, string attackType)
     {
-        if (value)
+        if(attackType == "Light")
         {
-            CreateSFXOneShot(_lightPunchSFX);
+            CreateSFXOneShot(sfxSO._lightAttackWhooshSFX);
         }
+        else if(attackType == "Heavy")
+        {
+            CreateSFXOneShot(sfxSO._heavyAttackWhooshSFX);
+        }
+        else
+        {
+            Debug.Log("Attack type not known");
+            return;
+        }
+
     }
 
-    public void PlayHeavyAttackWhoosh(bool value) 
+    public void PlayAttackImpactSFX(float value, string attackType)
     {
-        if (value) 
+       if(attackType == "Light")
         {
-            CreateSFXOneShot(_heavyPunchSFX);
+            CreateSFXOneShot(sfxSO._lightAttackImpactSFX);
         }
-    }
-
-    public void PlayLightAttackImpactSFX(float value)
-    {
-        CreateSFXOneShot(_attackImpactSFX);
+        else if(attackType == "Heavy")
+        {
+            CreateSFXOneShot(sfxSO._heavyAttackImpactSFX);
+        }
+        else
+        {
+            Debug.Log("Attack type not known");
+            return;
+        }
     }
 
     public void PlayBlockImpactSFX()
     {
-        CreateSFXOneShot(_blockImpactSFX);
+        CreateSFXOneShot(sfxSO._blockImpactSFX);
     }
 
     public void PlayParrySFX()
     {
-        CreateSFXOneShot(_parrySFX);
+        CreateSFXOneShot(sfxSO._parrySFX);
     }
 
     public void PlayDashSFX()
     {
-        CreateSFXOneShot(_dashSFX);
+        CreateSFXOneShot(sfxSO._dashSFX);
     }
 
     public void PlayDeathSFX()
     {
-        CreateSFXOneShot(_deathSFX);
+        CreateSFXOneShot(sfxSO._deathSFX);
     }
 
     public void CreateSFXOneShot(List<AudioClip> possibleClips)
     {
-        if(possibleClips == null)
+        if(possibleClips.Count != 0)
         {
             GameObject oneShotPrefab = _oneShotPrefab;
             AudioClip clipToPlay = possibleClips[Random.Range(0, possibleClips.Count)];
@@ -97,6 +102,5 @@ public class EntitSFXHandler : MonoBehaviour
         {
             return;
         }
-
     }
 }

@@ -1274,19 +1274,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7368748c9ba1a44943502722299c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 4
+  MoveSpeed: 5
   SprintSpeed: 7.5
   FightSpeed: 1.5
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
-  ChargeSpeed: 10
-  DashSpeed: 0
-  GroundedOffset: -0.14
-  GroundedRadius: 0.28
+  LightAttackChargeSpeed: 7.5
+  HeavyAttackChargeSpeed: 7.5
+  ParryChargeSpeed: 12
+  DashSpeed: 5
+  Gravity: -9.81
+  GroundedOffset: -0.2
+  GroundedRadius: 0.2
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 1
-  AttackDamage: 5
+    m_Bits: 512
+  LightAttackDamage: 5
+  HeavyAttackDamage: 10
   EnemyLayers:
     serializedVersion: 2
     m_Bits: 128
@@ -1295,9 +1299,9 @@ MonoBehaviour:
   KnockBackPower: 3
   EnemiesNearby: []
   IsAI: 1
+  moveDirection: {x: 0, y: 0, z: 0}
   DebugCurrentSuperState: 
   DebugCurrentSubState: 
-  _fightTimeoutDelta: 0
   AnimationBlend: 0
   AnimIDSpeed: 0
   AnimIDGrounded: 0
@@ -1305,6 +1309,9 @@ MonoBehaviour:
   AnimIDInputX: 0
   AnimIDInputY: 0
   AnimIDLightAttack: 0
+  AnimIDLightAttackID: 0
+  AnimIDHeavyAttack: 0
+  AnimIDHeavyAttackID: 0
   AnimIDPostAttack: 0
   AnimIDHurt: 0
   AnimIDDash: 0
@@ -1315,7 +1322,7 @@ MonoBehaviour:
   AnimIDDeath: 0
   AnimationIDAttackType: 0
   _transitionTime: 0
-  _debugVector: {x: 0, y: 0, z: 0}
+  ClosestTarget: {fileID: 0}
 --- !u!143 &4733270961991085552
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1352,7 +1359,7 @@ Animator:
   m_GameObject: {fileID: 2074535391245562779}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0ac1b930c727c8f428a3af46dde9ac10, type: 3}
-  m_Controller: {fileID: 9100000, guid: bd7bb02eb5a8d2843a9318c99722230a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 84ecd297ca5eb834388f4c9c1491587d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1383,13 +1390,13 @@ MonoBehaviour:
   _enemySkin: {fileID: 3409801489264694050}
   _attackerMaterial: {fileID: 2100000, guid: ee1b00e65abd506459fca1e5a99c683b, type: 2}
   _watcherMaterial: {fileID: 2100000, guid: c57bc559ca12ca843b5102446a11ad8a, type: 2}
-  CloseInCheckInterval: 0.1
+  CloseInCheckInterval: 6
   StrafeCheckInterval: 2
-  AttackCheckInterval: 0.5
-  BlockCheckInterval: 0.1
-  AttackSkill: 2
-  ComboSkill: 10
-  BlockSkill: 1
+  AttackCheckInterval: 1
+  BlockCheckInterval: 1
+  AttackSkill: 5
+  ComboSkill: 5
+  BlockSkill: 5
   isActivated: 0
   isAttacker: 0
   isWatcher: 0
@@ -1436,20 +1443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81fbf26044ff1b04cafa60c0713c997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _punchSFX:
-  - {fileID: 8300000, guid: a2c89e201c863de45bbc1bdcb1e91f27, type: 3}
-  _attackImpactSFX:
-  - {fileID: 8300000, guid: a772cac3ac0ed5040a683eb041e6c0a9, type: 3}
-  - {fileID: 8300000, guid: a3b24cfe14f3c5e4bb81ff8fe9156ba1, type: 3}
-  - {fileID: 8300000, guid: e452ca418fc7c9e45a438ac489686ac1, type: 3}
-  _blockImpactSFX:
-  - {fileID: 8300000, guid: a37109c51cd477548ad1c882be3971d5, type: 3}
-  _parrySFX:
-  - {fileID: 8300000, guid: 605611dd6463bbc4090ab6408907d9e8, type: 3}
-  _dashSFX:
-  - {fileID: 8300000, guid: bc742864e68de084ca074f2fffa86197, type: 3}
-  _deathSFX:
-  - {fileID: 8300000, guid: 4246fedcd6bbd394c846c85b4f2f1969, type: 3}
+  sfxSO: {fileID: 11400000, guid: e464c08a91fbd224eb8668ab66807689, type: 2}
   _stateMachine: {fileID: 6110702207848701011}
   _oneShotPrefab: {fileID: 7415942291697134555, guid: 088e3215978fa8f47b1a1955b948e855, type: 3}
 --- !u!114 &3237462766552877748
@@ -1459,7 +1453,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074535391245562779}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 572bac59c3b94774eac24daccab994c9, type: 3}
   m_Name: 
@@ -1470,7 +1464,8 @@ MonoBehaviour:
   _leftFootVFX: {fileID: 4554110454226022449}
   _rightFootVFX: {fileID: 3200799840589820241}
   _vfxOrigin: {fileID: 2208739425994233725}
-  _attackImpactVFX: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+  _lightAttackImpactVFX: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+  _heavyAttackImpactVFX: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
   _blockImpactVFX: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
   _parryVFX: {fileID: 2955623459812423943, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
 --- !u!1 &2141781451292519777
@@ -2335,8 +2330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb7f261677c88814bbef2f8369b78700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateMachine: {fileID: 0}
-  _hitTargets: []
   _enemyTag: Player
 --- !u!1 &4298186320796981492
 GameObject:
@@ -3159,6 +3152,7 @@ MonoBehaviour:
   EnemyLayers:
     serializedVersion: 2
     m_Bits: 128
+  closestTarget: {fileID: 0}
 --- !u!135 &9168809775930194074
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -4,9 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.XR;
-using static TreeEditor.TreeEditorHelper;
+
 
 public class StateMachine : MonoBehaviour
 {
@@ -130,8 +128,8 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnFall;
     public Action<bool> OnGrounded;
     public Action<bool> OnFight;
-    public Action<bool> OnLightAttack;
-    public Action<bool> OnHeavyAttack;
+    public Action<bool,string> OnLightAttack;
+    public Action<bool,string> OnHeavyAttack;
     public Action<bool> OnMove;
     public Action<bool> OnIdle;
     public Action<bool> OnHurt;
@@ -161,10 +159,13 @@ public class StateMachine : MonoBehaviour
 
     // Player action events
     public Action OnAttackContact;
-    public Action<float> OnLightHitLanded;
-    public Action<float> OnHeavyHitLanded;
+    public Action<float, string> OnLightAttackRecieved;
+    public Action<float, string> OnHeavyAttackRecieved;
+    public Action <bool, string> OnAttackWindUp;
+    public Action OnLightAttackGiven;
+    public Action OnHeavyAttackGiven;
     public Action OnAttemptParty;
-    public Action OnAttackSuccess;
+    public Action OnTestAction;
     public Action OnBlockSuccessful;
     public Action OnParrySuccessful;
     public Action OnDashSuccessful;
@@ -353,7 +354,7 @@ public class StateMachine : MonoBehaviour
     public void ParryMovement()
     {
         // Calculate the direction towards the target
-        Vector3 directionToTarget = _currentTarget.transform.position - transform.position;
+        Vector3 directionToTarget = /*_currentTarget.transform.position*/ IncomingAttackDirection - transform.position;
 
         // Check the distance to the target
         float distanceToTarget = directionToTarget.magnitude;
@@ -504,6 +505,7 @@ public class StateMachine : MonoBehaviour
 
     public void OnAttackAnimationCharge()
     {
+        OnAttackWindUp?.Invoke(true, _attackType);
         _isCharging = true;
     }
 
@@ -600,15 +602,27 @@ public class StateMachine : MonoBehaviour
                 }
                 else if (hitType == "Light" && !_isParrying)
                 { 
-                    OnLightHitLanded?.Invoke(attackDamage);
+                    OnLightAttackRecieved?.Invoke(attackDamage, "Light");
                     _isLightHitLanded = true;
                 }
                 else if (hitType == "Heavy" && !_isParrying)
                 {
-                    OnHeavyHitLanded?.Invoke(attackDamage);
+                    OnHeavyAttackRecieved?.Invoke(attackDamage, "Heavy");
+                    OnTestAction?.Invoke();
                     _isHeavyHitLanded = true;
                 }
             }          
+        }
+    }
+    public void GiveHit(string attackType)
+    {
+        if(attackType == "Light")
+        {
+            OnLightAttackGiven?.Invoke();
+        }
+        else if(attackType == "Heavy")
+        {
+            OnHeavyAttackGiven?.Invoke();
         }
     }
 
