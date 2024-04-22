@@ -11,14 +11,8 @@ public class BlockState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered BLOCK state");
-        if (Ctx.name == "Player")
-        {
-            Debug.LogError("BLOCK STATE IS PROBLEM");
-        }
 
-        Ctx.SetAttackDirection();
-/*        Ctx.LightAttackID = 0;
-        Ctx.HeavyAttackID = 0;*/
+       //Ctx.SetAttackDirection();
         Ctx.IsBlockSuccess = false;
         Ctx.IsBlocking = true;
         Ctx.Animator.SetBool(Ctx.AnimIDBlock, true);
@@ -30,7 +24,7 @@ public class BlockState : BaseState
         Ctx.DebugCurrentSubState = "Block State";
         CheckSwitchStates();
 
-        if (Ctx.IsBlockSuccess)
+        if (Ctx.IsBlockSuccess && !Ctx.IsParrySucces)
         {
             Debug.Log("Trying to block");
             Ctx.SetIncomingAttackDirection();

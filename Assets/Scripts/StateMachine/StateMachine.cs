@@ -212,6 +212,8 @@ public class StateMachine : MonoBehaviour
     // Fighting
     public GameObject CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; } }
     public Transform ClosestTarget;
+    public Transform SecondClosestTarget;
+    public Transform ThirdClosestTarget;
     public int LightAttackID { get { return _lightAttackID; } set { _lightAttackID = value; } }
     public int HeavyAttackID { get { return _heavyAttackID; } set { _heavyAttackID = value; } }
     public int HitID { get { return _hitID; } set { _hitID = value; } }
@@ -354,7 +356,7 @@ public class StateMachine : MonoBehaviour
     public void ParryMovement()
     {
         // Calculate the direction towards the target
-        Vector3 directionToTarget = IncomingAttackDirection - transform.position;
+        Vector3 directionToTarget = _currentTarget.transform.position - transform.position;
 
         // Check the distance to the target
         float distanceToTarget = directionToTarget.magnitude;
@@ -412,7 +414,7 @@ public class StateMachine : MonoBehaviour
     
     public void DashMovement()
     {
-        _controller.Move(/*InputDirection()*/transform.forward * Time.deltaTime * DashSpeed);
+        _controller.Move(transform.forward * Time.deltaTime * DashSpeed);
     }
 
     public void SetIncomingAttackDirection()
@@ -441,7 +443,14 @@ public class StateMachine : MonoBehaviour
     }
     public void SetParryDirection()
     {
-       transform.LookAt(_currentTarget.transform.position);
+        if (_currentTarget != null)
+        {
+            transform.LookAt(_currentTarget.transform.position);
+        }
+        else
+        {
+            return;
+        }
     }
 
     public void SetDashDirection()
@@ -635,7 +644,13 @@ public class StateMachine : MonoBehaviour
         _incomingAttackDirection = attackerPosition;
         _isParried = true;
     }
-
+    
+    public void GiveParry(Vector3 attackerPosition)
+    {
+        _incomingAttackDirection = attackerPosition;
+        IsParrySucces = true;
+        OnParrySuccessful?.Invoke();
+    }
     private void AssignAnimationIDs()
     {
         AnimIDSpeed = Animator.StringToHash("Speed");

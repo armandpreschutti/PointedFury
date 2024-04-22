@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class DeathState : BaseState
 {
@@ -65,4 +66,5 @@ public class DeathState : BaseState
     {
 
     }
+
 }

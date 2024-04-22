@@ -14,6 +14,8 @@ public class EnemyDetectionHandler : MonoBehaviour
     [Tooltip("What layers the character detects enemies on")]
     public LayerMask EnemyLayers;
     public Transform closestTarget;
+    public Transform secondClosestTarget;
+    public Transform thirdClosestTarget;
 
     private void Awake()
     {
@@ -67,6 +69,45 @@ public class EnemyDetectionHandler : MonoBehaviour
 
     public void ProximityDetection()
     {
+        float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
+        Transform[] closestTargets = new Transform[3] { null, null, null };
+
+        // Iterate through all hits to find the closest colliders
+        foreach (GameObject hit in _stateMachine.EnemiesNearby)
+        {
+            float distance = Vector3.Distance(transform.position, hit.transform.position);
+
+            // Update closest targets array if a closer target is found
+            for (int i = 0; i < distances.Length; i++)
+            {
+                if (distance < distances[i])
+                {
+                    // Shift elements to make space for the new closest target
+                    for (int j = distances.Length - 1; j > i; j--)
+                    {
+                        distances[j] = distances[j - 1];
+                        closestTargets[j] = closestTargets[j - 1];
+                    }
+
+                    // Assign the new closest target
+                    distances[i] = distance;
+                    closestTargets[i] = hit.transform;
+                    break; // Exit the loop after updating the closest target
+                }
+            }
+        }
+
+        // Assign closest, second closest, and third closest targets
+        closestTarget = closestTargets[0];
+        _stateMachine.ClosestTarget = closestTargets[0];
+        secondClosestTarget = closestTargets[1];
+        _stateMachine.SecondClosestTarget = closestTargets[1];
+        thirdClosestTarget = closestTargets[2];
+        _stateMachine.ThirdClosestTarget = closestTargets[2];
+    }
+
+    /*public void ProximityDetection()
+    {
         float closestDistance = Mathf.Infinity;
         closestTarget = null;
 
@@ -81,7 +122,7 @@ public class EnemyDetectionHandler : MonoBehaviour
                 _stateMachine.ClosestTarget = closestTarget;
             }
         }        
-    }
+    }*/
 
     public void StickDetection()
     {

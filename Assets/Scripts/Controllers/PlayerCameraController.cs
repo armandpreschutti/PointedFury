@@ -124,15 +124,24 @@ public class PlayerCameraController : MonoBehaviour
             float deltaTimeMultiplier = Time.deltaTime;
 
             _cinemachineTargetYaw += (_stateMachine.LookInput.x * XAxisSensitivity) * Time.deltaTime;
-            _cinemachineTargetPitch += (_stateMachine.LookInput.y *YAxisSensitivity) * Time.deltaTime;
+            _cinemachineTargetPitch += (_stateMachine.LookInput.y * YAxisSensitivity) * Time.deltaTime;
+
+            // Clamp our rotations so our values are limited 360 degrees
+            _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+
+            // Check if the rotation has changed
+            Quaternion newRotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+            if (newRotation != CinemachineCameraTarget.transform.rotation)
+            {
+                // Cinemachine will follow this target only if the rotation has changed
+                CinemachineCameraTarget.transform.rotation = newRotation;
+            }
+            else 
+            {
+                CinemachineCameraTarget.transform.rotation = Quaternion.identity;
+            }
         }
-
-        // clamp our rotations so our values are limited 360 degrees
-        _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-        _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-
-        // Cinemachine will follow this target
-        CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

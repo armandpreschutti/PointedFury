@@ -35,7 +35,7 @@ public class MoveState : BaseState
         {
             Ctx.TargetSpeed = Ctx.MoveSpeed;
         }
-
+        SetPlayerMovement();
 
     }
 
@@ -85,5 +85,19 @@ public class MoveState : BaseState
     public override void InitializeSubStates()
     {
 
+    }
+
+    public void SetPlayerMovement()
+    {
+        if (Ctx.IsFighting || Ctx.EnemiesNearby.Count > 0)
+        {
+            Ctx.SetCombatMovementAnimationValues();
+            Ctx.CombatMovement();
+        }
+        else
+        {
+            Ctx.SetFreeRoamMovementAnimationValues();
+            Ctx.FreeRoamMovement();
+        }
     }
 }

@@ -92,14 +92,17 @@ public class UserInput : MonoBehaviour
     }
     public void SetBlockInput(bool value)
     {
-        _stateMachine.IsBlockPressed = value;
+        if (!_stateMachine.IsParrying && !_stateMachine.IsParrySucces)
+        {
+            _stateMachine.IsBlockPressed = value;
+        }
+
     }
 
     public void SetParryInput()
     {
         if (!_stateMachine.IsAttacking && !_stateMachine.IsDashing)
-        {
-            Debug.Log("ParryPressed");
+        { 
             _stateMachine.OnAttemptParty?.Invoke();
         }
     }

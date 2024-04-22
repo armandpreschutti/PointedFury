@@ -248,6 +248,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   closestTarget: {fileID: 0}
+  secondClosestTarget: {fileID: 0}
+  thirdClosestTarget: {fileID: 0}
 --- !u!135 &3563350493170981739
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -493,9 +495,9 @@ MonoBehaviour:
   FightSpeed: 1.5
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
-  LightAttackChargeSpeed: 5
-  HeavyAttackChargeSpeed: 5
-  ParryChargeSpeed: 10
+  LightAttackChargeSpeed: 4
+  HeavyAttackChargeSpeed: 4
+  ParryChargeSpeed: 8
   DashSpeed: 5
   Gravity: -9.81
   GroundedOffset: -0.2
@@ -509,7 +511,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   AttackTimeout: 3
-  CombatDistance: 1.2
+  CombatDistance: 1.1
   KnockBackPower: 3
   EnemiesNearby: []
   IsAI: 0
@@ -537,6 +539,8 @@ MonoBehaviour:
   AnimationIDAttackType: 0
   _transitionTime: 0
   ClosestTarget: {fileID: 0}
+  SecondClosestTarget: {fileID: 0}
+  ThirdClosestTarget: {fileID: 0}
 --- !u!114 &2840689043906196808
 MonoBehaviour:
   m_ObjectHideFlags: 0

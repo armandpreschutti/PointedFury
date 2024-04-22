@@ -55,7 +55,11 @@ public class HurtState : BaseState
     {
         if (!Ctx.IsHurt)
         {
-            if (Ctx.MoveInput != Vector2.zero)
+            if(Ctx.IsBlocking)
+            {
+                SwitchState(Factory.Block());
+            }
+            else if (Ctx.MoveInput != Vector2.zero)
             {
                 SwitchState(Factory.Move());
             }
@@ -72,7 +76,7 @@ public class HurtState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-        if(Ctx.IsParrySucces)
+        if (Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
         }

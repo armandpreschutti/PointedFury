@@ -12,7 +12,11 @@ public class CameraFramingHandler : MonoBehaviour
     [SerializeField] EnemyManagementSystem enemyManagementSystem;
     [SerializeField] StateMachine _stateMachine;
 
-    public float MaximumEnemyWeight;
+    public float PlayerTargetWeight;
+    public float ClosestTargetWeight;
+    public float SecondClosestTargetWeight;
+    public float ThirdClosestTargetWeight;
+    public float CurrentTargetWeight;
     public float MinimumEnemyWeight;
     public float WeightRotationSpeed;
 
@@ -97,24 +101,63 @@ public class CameraFramingHandler : MonoBehaviour
         {
             if (_targetGroup.m_Targets[i].target.parent.name == "Player")
             {
-                _targetGroup.m_Targets[i].weight = 1f;
+                Debug.Log("Found the player");
+                _targetGroup.m_Targets[i].weight = PlayerTargetWeight;
             }
             else
             {
-                // Check if the transform matches the target we're looking for
-                if (_targetGroup.m_Targets[i].target.parent.transform == _stateMachine.ClosestTarget)
+               /* // Check if the transform matches the target we're looking for
+                if (_targetGroup.m_Targets[i].target.parent.gameObject == _stateMachine.CurrentTarget)
                 {
-                    if (_targetGroup.m_Targets[i].weight < MaximumEnemyWeight)
+                    if (_targetGroup.m_Targets[i].weight < CurrentTargetWeight)
                     {
+
                         _targetGroup.m_Targets[i].weight += .1f * Time.deltaTime * WeightRotationSpeed;
                     }
                     else
                     {
-                        _targetGroup.m_Targets[i].weight = MaximumEnemyWeight;
+                        _targetGroup.m_Targets[i].weight = CurrentTargetWeight;
                     }
                 }
-                else if (_targetGroup.m_Targets[i].target.parent.transform != _stateMachine.ClosestTarget)
+                else */if (_targetGroup.m_Targets[i].target.parent == _stateMachine.ClosestTarget)
                 {
+                    if (_targetGroup.m_Targets[i].weight < ClosestTargetWeight)
+                    {
+
+                        _targetGroup.m_Targets[i].weight += .1f * Time.deltaTime * WeightRotationSpeed;
+                    }
+                    else
+                    {
+                        _targetGroup.m_Targets[i].weight = ClosestTargetWeight;
+                    }
+                }
+                else if (_targetGroup.m_Targets[i].target.parent == _stateMachine.SecondClosestTarget)
+                {
+                    if (_targetGroup.m_Targets[i].weight < SecondClosestTargetWeight)
+                    {
+
+                        _targetGroup.m_Targets[i].weight += .1f * Time.deltaTime * WeightRotationSpeed;
+                    }
+                    else
+                    {
+                        _targetGroup.m_Targets[i].weight = SecondClosestTargetWeight;
+                    }
+                }
+                else if (_targetGroup.m_Targets[i].target.parent == _stateMachine.ThirdClosestTarget)
+                {
+                    if (_targetGroup.m_Targets[i].weight < ThirdClosestTargetWeight)
+                    {
+
+                        _targetGroup.m_Targets[i].weight += .1f * Time.deltaTime * WeightRotationSpeed;
+                    }
+                    else
+                    {
+                        _targetGroup.m_Targets[i].weight = ThirdClosestTargetWeight;
+                    }
+                }
+                else if (_targetGroup.m_Targets[i].target.parent.gameObject != _stateMachine.CurrentTarget)
+                {
+                  
                     if (_targetGroup.m_Targets[i].weight > MinimumEnemyWeight)
                     {
                         _targetGroup.m_Targets[i].weight -= .1f * Time.deltaTime * WeightRotationSpeed;
