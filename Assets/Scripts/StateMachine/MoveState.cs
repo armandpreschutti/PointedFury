@@ -52,35 +52,31 @@ public class MoveState : BaseState
         {
             SwitchState(Factory.Idle());
         }
-        if (Ctx.IsLightAttackPressed && !Ctx.IsAttacking)
+        else if (Ctx.IsLightAttackPressed && !Ctx.IsAttacking)
         {
             SwitchState(Factory.LightAttack());
         }
-        if(Ctx.IsHeavyAttackPressed&& !Ctx.IsAttacking)
+        else if(Ctx.IsHeavyAttackPressed&& !Ctx.IsAttacking)
         {
             SwitchState(Factory.HeavyAttack());
         }
-        if (Ctx.IsLightHitLanded)
+        else if (Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());
         }
-        if (Ctx.IsHeavyHitLanded)
+        else if (Ctx.IsHeavyHitLanded)
         {
             SwitchState(Factory.Hurt());
         }
-        if (Ctx.IsDashPressed)
+        else if (Ctx.IsDashPressed)
         {
             SwitchState(Factory.Dash());
         }
-        if (Ctx.IsBlockPressed)
+        else if (Ctx.IsBlockPressed)
         {
-            SwitchState(Factory.Block());
+           SwitchState(Factory.Block());
         }
-        if (Ctx.IsParrySucces)
-        {
-            SwitchState(Factory.Parry());
-        }
-        if (Ctx.IsParried)
+        else if (Ctx.IsParried)
         {
             SwitchState(Factory.Stunned());
         }

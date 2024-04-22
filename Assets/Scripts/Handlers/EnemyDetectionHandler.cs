@@ -100,7 +100,11 @@ public class EnemyDetectionHandler : MonoBehaviour
             }
             else
             {
-               _stateMachine.CurrentTarget = closestTarget.gameObject;
+                if (!_stateMachine.IsParrying)
+                {
+                    _stateMachine.CurrentTarget = closestTarget.gameObject;
+                }
+
             }
         }
         else

@@ -54,7 +54,7 @@ public class UserInput : MonoBehaviour
     public void SetLightAttackInput(bool value)
     {
         
-        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsAttacking)
+        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsAttacking && !_stateMachine.IsParrying)
         {
             _stateMachine.IsLightAttackPressed = true;
         }
@@ -68,7 +68,7 @@ public class UserInput : MonoBehaviour
     public void SetHeavyAttackInput(bool value)
     {
 
-        if (!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsAttacking)
+        if (!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsAttacking && !_stateMachine.IsParrying)
         {
             _stateMachine.IsHeavyAttackPressed = true;
         }
@@ -99,6 +99,7 @@ public class UserInput : MonoBehaviour
     {
         if (!_stateMachine.IsAttacking && !_stateMachine.IsDashing)
         {
+            Debug.Log("ParryPressed");
             _stateMachine.OnAttemptParty?.Invoke();
         }
     }
@@ -134,7 +135,7 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Dash.performed += ctx => SetDashInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed += ctx => SetBlockInput(ctx.ReadValueAsButton());
-        _playerControls.Player.Block.started += ctor => SetParryInput();
+        _playerControls.Player.Parry.performed += ctx => SetParryInput();
         _playerControls.Player.Pause.performed += ctx => SetPauseInput();
         _playerControls.Player.LightAttack.performed += ctx => SetLightAttackInput(ctx.ReadValueAsButton());
         _playerControls.Player.HeavyAttack.performed += ctx => SetHeavyAttackInput(ctx.ReadValueAsButton());
@@ -152,7 +153,7 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Look.performed -= ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Dash.performed -= ctx => SetDashInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed -= ctx => SetBlockInput(ctx.ReadValueAsButton());
-        _playerControls.Player.Block.started -= ctor => SetParryInput();
+        _playerControls.Player.Parry.performed -= ctx => SetParryInput();
         _playerControls.Player.Pause.performed -= ctx => SetPauseInput();
         _playerControls.Player.LightAttack.performed -= ctx => SetLightAttackInput(ctx.ReadValueAsButton());
         _playerControls.Player.HeavyAttack.performed -= ctx => SetHeavyAttackInput(ctx.ReadValueAsButton());

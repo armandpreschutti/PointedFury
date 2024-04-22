@@ -45,17 +45,24 @@ public class DashState : BaseState
     {
         if (!Ctx.IsDashing)
         {
-            if (Ctx.MoveInput != Vector2.zero)
-            {
-                SwitchState(Factory.Move());
-            }
-            else if (Ctx.IsBlockPressed)
+            if (Ctx.IsBlockPressed)
             {
                 SwitchState(Factory.Block());
             }
+            else if (Ctx.IsLightAttackPressed)
+            {
+                SwitchState(Factory.LightAttack());
+            }
             else
             {
-                SwitchState(Factory.Idle());
+                if (Ctx.MoveInput != Vector2.zero)
+                {
+                    SwitchState(Factory.Move());
+                }
+                else
+                {
+                    SwitchState(Factory.Idle());
+                }
             }
         }
     }

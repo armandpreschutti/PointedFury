@@ -495,7 +495,7 @@ MonoBehaviour:
   SpeedChangeRate: 10
   LightAttackChargeSpeed: 5
   HeavyAttackChargeSpeed: 5
-  ParryChargeSpeed: 12
+  ParryChargeSpeed: 10
   DashSpeed: 5
   Gravity: -9.81
   GroundedOffset: -0.2

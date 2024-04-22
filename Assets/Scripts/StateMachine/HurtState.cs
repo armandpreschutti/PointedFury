@@ -72,10 +72,6 @@ public class HurtState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-       /* if(Ctx.IsBlockPressed && !Ctx.IsKnockedBack)
-        {
-            SwitchState(Factory.Block());
-        }*/
         if(Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());

@@ -21,7 +21,7 @@ public class ParryState : BaseState
 
         Ctx.IsParrying = true;
         Ctx.IsAttacking = false;
-        Ctx.SetAttackDirection();
+        Ctx.SetParryDirection();
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
         Ctx.Animator.Play($"Parry", 0, 0);
         Ctx.IsFighting = true;
@@ -47,26 +47,28 @@ public class ParryState : BaseState
         //Debug.LogWarning("Player has exited PARRY state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDParry, false);
-        Ctx.IsAttacking = false;
-        Ctx.OnLightAttack?.Invoke(false, "Light");
-        Ctx.IsCharging = false;
+        Ctx.IsParrying = false;
     }
 
     public override void CheckSwitchStates()
     {
         if (!Ctx.IsParrying)
         {
-            if (Ctx.MoveInput != Vector2.zero)
-            {
-                SwitchState(Factory.Move());
-            }
-            else if (Ctx.IsBlockPressed)
+            if (Ctx.IsBlockPressed)
             {
                 SwitchState(Factory.Block());
             }
             else
             {
-                SwitchState(Factory.Idle());
+                if (Ctx.MoveInput != Vector2.zero)
+                {
+                    SwitchState(Factory.Move());
+                }
+                else
+                {
+                    SwitchState(Factory.Idle());
+                }
+
             }
         }
         

@@ -46,35 +46,31 @@ public class IdleState : BaseState
             {
                 SwitchState(Factory.Move());
             }
-            if (Ctx.IsLightAttackPressed/* && !Ctx.IsHurt*/)
+            else if (Ctx.IsLightAttackPressed)
             {
                 SwitchState(Factory.LightAttack());
             }
-            if (Ctx.IsHeavyAttackPressed /*&& !Ctx.IsHurt*/)
+            else if (Ctx.IsHeavyAttackPressed)
             {
                 SwitchState(Factory.HeavyAttack());
             }
-            if (Ctx.IsLightHitLanded)
+            else if (Ctx.IsLightHitLanded)
             {
                 SwitchState(Factory.Hurt());
             }
-            if (Ctx.IsHeavyHitLanded)
+            else if (Ctx.IsHeavyHitLanded)
             {
                 SwitchState(Factory.Hurt());
             }
-            if (Ctx.IsDashPressed)
+            else if (Ctx.IsDashPressed)
             {
                 SwitchState(Factory.Dash());
             }
-            if (Ctx.IsBlockPressed)
+            else if (Ctx.IsBlockPressed)
             {
                 SwitchState(Factory.Block());
             }
-            if (Ctx.IsParrySucces)
-            {
-                SwitchState(Factory.Parry());
-            }
-            if (Ctx.IsParried)
+            else if (Ctx.IsParried)
             {
                 SwitchState(Factory.Stunned());
             }

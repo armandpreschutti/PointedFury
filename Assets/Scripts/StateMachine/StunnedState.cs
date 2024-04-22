@@ -23,8 +23,6 @@ public class StunnedState : BaseState
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.IsStunned = true;
-/*        Ctx.LightAttackID = 0;
-        Ctx.HeavyAttackID = 0;*/
         ExitAllAnimations();
     }
 
@@ -70,7 +68,7 @@ public class StunnedState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-        if (Ctx.IsParrySucces)
+        else if (Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
         }

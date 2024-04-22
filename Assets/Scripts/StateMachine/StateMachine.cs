@@ -354,13 +354,13 @@ public class StateMachine : MonoBehaviour
     public void ParryMovement()
     {
         // Calculate the direction towards the target
-        Vector3 directionToTarget = /*_currentTarget.transform.position*/ IncomingAttackDirection - transform.position;
+        Vector3 directionToTarget = IncomingAttackDirection - transform.position;
 
         // Check the distance to the target
         float distanceToTarget = directionToTarget.magnitude;
 
         // If the distance is greater than stopDistance, move towards the target
-        if (distanceToTarget > CombatDistance)
+        if (distanceToTarget > 0)
         {
             // Calculate the movement direction based on the forward direction of the character
             Vector3 moveDirection = transform.forward * ParryChargeSpeed;
@@ -419,7 +419,7 @@ public class StateMachine : MonoBehaviour
     {
         transform.LookAt(_incomingAttackDirection);
     }
-
+    
     public void SetAttackDirection()
     {
         if (_currentTarget != null)
@@ -438,6 +438,10 @@ public class StateMachine : MonoBehaviour
                // return;
             }
         }        
+    }
+    public void SetParryDirection()
+    {
+       transform.LookAt(_currentTarget.transform.position);
     }
 
     public void SetDashDirection()
