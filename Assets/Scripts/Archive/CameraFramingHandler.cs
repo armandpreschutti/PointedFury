@@ -101,7 +101,6 @@ public class CameraFramingHandler : MonoBehaviour
         {
             if (_targetGroup.m_Targets[i].target.parent.name == "Player")
             {
-                Debug.Log("Found the player");
                 _targetGroup.m_Targets[i].weight = PlayerTargetWeight;
             }
             else

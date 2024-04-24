@@ -495,8 +495,8 @@ MonoBehaviour:
   FightSpeed: 1.5
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
-  LightAttackChargeSpeed: 4
-  HeavyAttackChargeSpeed: 4
+  LightAttackChargeSpeed: 7.5
+  HeavyAttackChargeSpeed: 6
   ParryChargeSpeed: 8
   DashSpeed: 5
   Gravity: -9.81
@@ -557,8 +557,11 @@ MonoBehaviour:
   occlussionLayer:
     serializedVersion: 2
     m_Bits: 0
+  _cinemachineTargetYaw: 0
+  _cinemachineTargetPitch: 0
   _freeRoamCamera: {fileID: 0}
-  _groupFightCamera: {fileID: 0}
+  _shortFightCamera: {fileID: 0}
+  _longFightCamera: {fileID: 0}
   CinemachineCameraTarget: {fileID: 8860572876160680510}
   TopClamp: 70
   FightTopClamp: 35
@@ -568,6 +571,7 @@ MonoBehaviour:
   FreeRoamBottomClamp: 70
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  RepositionYaw: 0
   FightSensitivity: 0
   FreeRoamSensitivity: 0
   YAxisSensitivity: 0.25
@@ -577,7 +581,7 @@ MonoBehaviour:
   FreeRoamPitchAngle: 0
   PitchResetSpeed: 0
   YawResetDelay: 0
-  FighYawAngle: 0
+  FightYawAngle: 0
   FreeRoamYawAngle: 0
   YawResetSpeed: 0
 --- !u!114 &568156552260017847

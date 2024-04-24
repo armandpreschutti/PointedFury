@@ -294,6 +294,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyManagementSystem: {fileID: 1742196162}
+  _stateMachine: {fileID: 0}
+  PlayerTargetWeight: 0
+  ClosestTargetWeight: 0
+  SecondClosestTargetWeight: 0
+  ThirdClosestTargetWeight: 0
+  CurrentTargetWeight: 0
+  MinimumEnemyWeight: 0
+  WeightRotationSpeed: 0
 --- !u!1 &164818128
 GameObject:
   m_ObjectHideFlags: 0
@@ -4286,15 +4294,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1298475517459355285, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.249999
+      value: -12.044
       objectReference: {fileID: 0}
     - target: {fileID: 1298475517459355285, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9990177
+      value: 0.99881107
       objectReference: {fileID: 0}
     - target: {fileID: 1298475517459355285, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.04431346
+      value: 0.048749126
       objectReference: {fileID: 0}
     - target: {fileID: 1298475517459355285, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
       propertyPath: m_LocalRotation.y
@@ -4336,6 +4344,42 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_Damping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_Strategy
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_CameraRadius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_DistanceLimit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_SmoothingTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_DampingWhenOccluded
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_CollideAgainst.m_Bits
+      value: 823
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_OptimalTargetDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559572492370036673, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: m_MinimumDistanceFromTarget
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6547999997958745422, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
       propertyPath: Damping.x
       value: 0.25
@@ -4347,6 +4391,10 @@ PrefabInstance:
     - target: {fileID: 6547999997958745422, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
       propertyPath: Damping.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6547999997958745422, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
+      propertyPath: CameraRadius
+      value: 0.356
       objectReference: {fileID: 0}
     - target: {fileID: 6547999997958745422, guid: e34d8e475ab7dd744aaa36bb9c87ca36, type: 3}
       propertyPath: CameraDistance
@@ -11365,15 +11413,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4069834466979212461, guid: 103c2065942ee524a974270c2b50c12d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.249999
+      value: -12.044
       objectReference: {fileID: 0}
     - target: {fileID: 4069834466979212461, guid: 103c2065942ee524a974270c2b50c12d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9990177
+      value: 0.99881107
       objectReference: {fileID: 0}
     - target: {fileID: 4069834466979212461, guid: 103c2065942ee524a974270c2b50c12d, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.04431346
+      value: 0.048749126
       objectReference: {fileID: 0}
     - target: {fileID: 4069834466979212461, guid: 103c2065942ee524a974270c2b50c12d, type: 3}
       propertyPath: m_LocalRotation.y

@@ -1,9 +1,6 @@
 using UnityEngine;
 using Cinemachine;
-using static UnityEngine.Rendering.DebugUI;
-using DG;
-using System.Collections.Generic;
-using Unity.VisualScripting.Dependencies.NCalc;
+
 
 public class PlayerCameraController : MonoBehaviour
 {
@@ -13,13 +10,17 @@ public class PlayerCameraController : MonoBehaviour
 
     // cinemachine
     private const float _threshold = 0.01f;
-    private float _cinemachineTargetYaw;
-    private float _cinemachineTargetPitch;
+    public float _cinemachineTargetYaw;
+    public float _cinemachineTargetPitch;
     private float _pitchResetTime;
     private float _yawResetTime;
 
     [SerializeField] CinemachineVirtualCamera _freeRoamCamera;
-    [SerializeField] CinemachineVirtualCamera _groupFightCamera;
+    [SerializeField] CinemachineVirtualCamera _zoomedAttackCamera;
+    [SerializeField] CinemachineVirtualCamera _shortFightCamera;
+    [SerializeField] CinemachineVirtualCamera _longFightCamera;
+
+
     
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
@@ -40,6 +41,7 @@ public class PlayerCameraController : MonoBehaviour
 
     [Tooltip("For locking the camera position on all axis")]
     public bool LockCameraPosition = false;
+    public bool RepositionYaw = false;
 
     public float FightSensitivity;
     public float FreeRoamSensitivity;
@@ -53,7 +55,7 @@ public class PlayerCameraController : MonoBehaviour
     public float PitchResetSpeed;
 
     public float YawResetDelay;
-    public float FighYawAngle;
+    public float FightYawAngle;
     public float FreeRoamYawAngle;
     public float YawResetSpeed;
 
@@ -61,32 +63,28 @@ public class PlayerCameraController : MonoBehaviour
     private void Awake()
     {
         _stateMachine = GetComponent<StateMachine>();
-        _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
+
         _pitchResetTime = PitchResetDelay;
+        _yawResetTime = YawResetDelay;
     }
     private void OnEnable()
     {
-        EnemyManagementSystem.OnZoneEntered += SetGroupFightCameraTarget;
-        EnemyManagementSystem.OnZoneEntered += SetGroupFightCameraState;
-        _stateMachine.OnFight += SetGroupFightCameraState;
-       // EnemyManagementSystem.OnZoneEnemiesCleared += SetGroupFightCameraTarget;
+        EnemyManagementSystem.OnZoneEntered += SetCameraState;
+       _stateMachine.OnFight += SetCameraState;
     }
     private void OnDisable()
     {
-        EnemyManagementSystem.OnZoneEntered -= SetGroupFightCameraTarget;
-        EnemyManagementSystem.OnZoneEntered -= SetGroupFightCameraState;
-        _stateMachine.OnFight -= SetGroupFightCameraState;
-        //EnemyManagementSystem.OnZoneEnemiesCleared += SetGroupFightCameraTarget;
+        EnemyManagementSystem.OnZoneEntered -= SetCameraState;
+         _stateMachine.OnFight -= SetCameraState;
     }
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update    
     void Start()
     {
-        _groupFightCamera = GameObject.Find("GroupFightCamera").GetComponent<CinemachineVirtualCamera>();
-        _groupFightCamera.Follow = _followTarget;
-        _freeRoamCamera = GameObject.Find("FreeRoamCamera").GetComponent<CinemachineVirtualCamera>();
-        _freeRoamCamera.Follow = _followTarget;
-        _groupFightCamera.gameObject.SetActive(false);
+        //_cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
+        _shortFightCamera.gameObject.SetActive(false);
+        _longFightCamera.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -97,16 +95,31 @@ public class PlayerCameraController : MonoBehaviour
         CameraPitchPositioningLoop();
     }
  
-    public void SetGroupFightCameraState(bool value)
+    public void SetCameraState(bool value)
     {
-        _groupFightCamera.gameObject.SetActive(value);
-    }
-
-    public void SetGroupFightCameraTarget(bool value)
-    {
-        /*_groupFightCamera.LookAt = value ? GameObject.Find("TargetGroup").transform : transform.Find("TempTarget");*/
         
+        //_shortFightCamera.gameObject.SetActive(value);
+        if (value)
+        {
+
+            if (_stateMachine.EnemiesNearby.Count < 2)
+            {
+                _shortFightCamera.gameObject.SetActive(true);
+                _longFightCamera.gameObject.SetActive(false);
+            }
+            else
+            {
+                _longFightCamera.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            _longFightCamera.gameObject.SetActive(false);
+            _shortFightCamera.gameObject.SetActive(false);
+        }
+
     }
+  
 
     public void SetCameraSensitity()
     {
@@ -118,7 +131,6 @@ public class PlayerCameraController : MonoBehaviour
 
     private void CameraRotation()
     {
-        // if there is an input and camera position is not fixed
         if (_stateMachine.LookInput.sqrMagnitude >= _threshold && !LockCameraPosition)
         {
             float deltaTimeMultiplier = Time.deltaTime;
@@ -126,22 +138,13 @@ public class PlayerCameraController : MonoBehaviour
             _cinemachineTargetYaw += (_stateMachine.LookInput.x * XAxisSensitivity) * Time.deltaTime;
             _cinemachineTargetPitch += (_stateMachine.LookInput.y * YAxisSensitivity) * Time.deltaTime;
 
-            // Clamp our rotations so our values are limited 360 degrees
+            // clamp our rotations so our values are limited 360 degrees
             _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
             _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
-
-            // Check if the rotation has changed
-            Quaternion newRotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
-            if (newRotation != CinemachineCameraTarget.transform.rotation)
-            {
-                // Cinemachine will follow this target only if the rotation has changed
-                CinemachineCameraTarget.transform.rotation = newRotation;
-            }
-            else 
-            {
-                CinemachineCameraTarget.transform.rotation = Quaternion.identity;
-            }
         }
+
+        // Cinemachine will follow this target
+        CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -152,9 +155,11 @@ public class PlayerCameraController : MonoBehaviour
     }
     
     public void CameraPitchPositioningLoop()
-    { 
+    {
+
         if (_stateMachine.LookInput == Vector2.zero)
         {
+
             _pitchResetTime -= Time.deltaTime;
 
             // Check if the timer has reached zero
@@ -162,7 +167,14 @@ public class PlayerCameraController : MonoBehaviour
             {
                 float resetDuration = 0f;
                 resetDuration += Time.deltaTime;
-                _cinemachineTargetPitch = Mathf.Lerp(_cinemachineTargetPitch, _stateMachine.IsFighting ? FightPitchAngle : FreeRoamPitchAngle, resetDuration * PitchResetSpeed);
+                if(_stateMachine.EnemiesNearby.Count > 1)
+                {
+                    _cinemachineTargetPitch = Mathf.Lerp(_cinemachineTargetPitch, FightPitchAngle, resetDuration * PitchResetSpeed);
+                }
+                else
+                {
+                    _cinemachineTargetPitch = Mathf.Lerp(_cinemachineTargetPitch, FreeRoamPitchAngle, resetDuration * PitchResetSpeed);
+                }               
             }
         }
         else
@@ -171,5 +183,4 @@ public class PlayerCameraController : MonoBehaviour
             return;
         }
     }
- 
 }

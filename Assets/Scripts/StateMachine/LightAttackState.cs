@@ -20,6 +20,7 @@ public class LightAttackState : BaseState
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.OnLightAttack?.Invoke(true, "Light");
+        Ctx.OnAttack?.Invoke(true);
         Ctx.IsBlockPressed = false;
     }
 
@@ -44,6 +45,7 @@ public class LightAttackState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
         Ctx.IsAttacking = false;
         Ctx.OnLightAttack?.Invoke(false, "Light");
+        Ctx.OnAttack?.Invoke(false);
         Ctx.IsCharging = false;
         Ctx.IsParryable = false;
     }

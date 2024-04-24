@@ -130,6 +130,7 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnFight;
     public Action<bool,string> OnLightAttack;
     public Action<bool,string> OnHeavyAttack;
+    public Action<bool> OnAttack;
     public Action<bool> OnMove;
     public Action<bool> OnIdle;
     public Action<bool> OnHurt;

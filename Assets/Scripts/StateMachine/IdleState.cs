@@ -16,6 +16,7 @@ public class IdleState : BaseState
         if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
         {
             Ctx.IsFighting = false;
+            Ctx.OnFight?.Invoke(false);
         }
     }
 
@@ -26,6 +27,7 @@ public class IdleState : BaseState
         CheckSwitchStates();
         
         Ctx.TargetSpeed = 0f;
+        SetPlayerMovement();
     }
 
     public override void ExitState()
@@ -80,5 +82,19 @@ public class IdleState : BaseState
     public override void InitializeSubStates()
     {
 
+    }
+
+    public void SetPlayerMovement()
+    {
+        if (Ctx.IsFighting || Ctx.EnemiesNearby.Count > 0)
+        {
+            Ctx.SetCombatMovementAnimationValues();
+            Ctx.CombatMovement();
+        }
+        else
+        {
+            Ctx.SetFreeRoamMovementAnimationValues();
+            Ctx.FreeRoamMovement();
+        }
     }
 }
