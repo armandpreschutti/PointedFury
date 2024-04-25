@@ -484,7 +484,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3531,8 +3532,8 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_HorizontalDamping: 1
-  m_VerticalDamping: 1
+  m_HorizontalDamping: 0.25
+  m_VerticalDamping: 0.25
   m_ScreenX: 0.5
   m_ScreenY: 0.5
   m_DeadZoneWidth: 0
@@ -7223,7 +7224,7 @@ MonoBehaviour:
   FadedAlpha: 0
   RetainShadows: 1
   TargetPositionOffset: {x: 0, y: 0, z: 0}
-  FadeSpeed: 2
+  FadeSpeed: 5
   ObjectsBlockingView: []
 --- !u!4 &8319006226357164354
 Transform:
