@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.UI;
 
 public class AIBrain : MonoBehaviour
 {
@@ -139,7 +140,7 @@ public class AIBrain : MonoBehaviour
             return;
         }
     }
-
+    
     public void StrafeLoop()
     {
         _strafeCheckTime -= Time.deltaTime;
