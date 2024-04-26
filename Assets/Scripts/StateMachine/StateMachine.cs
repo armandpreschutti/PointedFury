@@ -16,9 +16,6 @@ public class StateMachine : MonoBehaviour
     public float SprintSpeed = 7.5f;
     [Tooltip("Fight speed of the character in m/s")]
     public float FightSpeed = 2f;
-    [Tooltip("How fast the character turns to face movement direction")]
-    [Range(0.0f, 0.3f)]
-    public float RotationSmoothTime = 0.12f;
     [Tooltip("Acceleration and deceleration")]
     public float SpeedChangeRate = 10.0f;
     [Tooltip("How fast the character charges towards a direction while light attacking")]
@@ -289,7 +286,11 @@ public class StateMachine : MonoBehaviour
         if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isParrying)
         {
             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
-            _controller.Move(moveDirection * Time.deltaTime);
+            if(moveDirection != Vector3.zero)
+            {
+                _controller.Move(moveDirection * Time.deltaTime);
+            }
+
             if (_currentTarget != null)
             {
                 Vector3 direction = _currentTarget.transform.position - transform.position;

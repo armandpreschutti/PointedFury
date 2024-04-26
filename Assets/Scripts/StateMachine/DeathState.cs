@@ -40,6 +40,7 @@ public class DeathState : BaseState
         else
         {
             Ctx.Controller.enabled = false;
+            Ctx.enabled = false;
         }
     }
 

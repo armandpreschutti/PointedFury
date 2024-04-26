@@ -10,7 +10,6 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] float MaxHealth = 100;
     [SerializeField] float MinHealth = 0;
     [SerializeField] float _currentHealh;
-    [SerializeField] Slider _healthBar;
     
     public Action OnDeath;
     public Action OnDamage;

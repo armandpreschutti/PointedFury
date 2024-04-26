@@ -6,17 +6,38 @@ using UnityEngine.UI;
 public class HealthBarHandler : MonoBehaviour
 {
     [SerializeField] HealthSystem _healthSystem;
-    [SerializeField] Slider _healthBarSlider;
+    [SerializeField]  Slider _healthBarSlider;
     public bool IsAI;
+
+    private void Awake()
+    {
+        if(!IsAI)
+        {
+            _healthSystem = GameObject.Find("Player").GetComponent<HealthSystem>();
+        }
+        else
+        {
+            _healthBarSlider.gameObject.SetActive(false);
+        }
+        
+
+    }
     private void OnEnable()
     {
-        _healthSystem.OnDamage += SetHealthBarValue;
-        _healthSystem.OnDeath += DisableEnemyHealthBar;
+        if (_healthSystem != null)
+        {
+            _healthSystem.OnDamage += SetHealthBarValue;
+            _healthSystem.OnDeath += DisableEnemyHealthBar;
+        }
+
     }
     private void OnDisable()
     {
-        _healthSystem.OnDamage -= SetHealthBarValue;
-        _healthSystem.OnDeath += DisableEnemyHealthBar;
+        if (_healthSystem != null)
+        {
+            _healthSystem.OnDamage -= SetHealthBarValue;
+            _healthSystem.OnDeath -= DisableEnemyHealthBar;
+        }
     }
 
     public void SetHealthBarValue()

@@ -10,7 +10,6 @@ public class EnemyManagementSystem : MonoBehaviour
     public GameObject currentAttacker;
     public GameObject previousAttacker;
     public bool zoneActive;
-    public float enterYaw;
     public static Action<bool, Transform> OnEnemyDetected;
     public static Action<Transform> OnAttackerDeath;
 

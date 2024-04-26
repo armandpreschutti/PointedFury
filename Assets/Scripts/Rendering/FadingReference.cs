@@ -20,6 +20,7 @@ public class FadingReference : MonoBehaviour
 
     private void Start()
     {
+        Camera = Camera.main;
         StartCoroutine(CheckForObjects());
     }
 

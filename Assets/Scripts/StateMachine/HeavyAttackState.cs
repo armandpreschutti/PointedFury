@@ -19,6 +19,7 @@ public class HeavyAttackState : BaseState
         Ctx.IsAttacking = true;
         Ctx.IsHeavyAttackPressed = false;
         Ctx.IsFighting = true;
+        Ctx.OnFight?.Invoke(true);
         Ctx.OnHeavyAttack?.Invoke(true, "Heavy");
         Ctx.OnAttack?.Invoke(true);
         Ctx.IsBlockPressed = false;

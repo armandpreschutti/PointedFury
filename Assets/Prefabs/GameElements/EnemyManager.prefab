@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2339352017047182773}
   - component: {fileID: 7758266236152715252}
-  - component: {fileID: 628791397051042868}
+  - component: {fileID: 8252046819509858187}
   m_Layer: 0
   m_Name: EnemyManager
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7758266236152715252
 MonoBehaviour:
@@ -50,10 +50,11 @@ MonoBehaviour:
   currentAttacker: {fileID: 0}
   previousAttacker: {fileID: 0}
   zoneActive: 0
+  enterYaw: -20
   NewAttackerCheckInterval: 4
   EnemyDeathCheckInterval: 0.1
---- !u!135 &628791397051042868
-SphereCollider:
+--- !u!65 &8252046819509858187
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -71,5 +72,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 10, y: 1, z: 10}
+  m_Center: {x: 0, y: 0.5, z: 0}

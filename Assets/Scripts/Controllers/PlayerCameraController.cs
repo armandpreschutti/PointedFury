@@ -1,22 +1,18 @@
 using UnityEngine;
 using Cinemachine;
-
+using JetBrains.Annotations;
 
 public class PlayerCameraController : MonoBehaviour
 {
     private StateMachine _stateMachine;
-    public Transform _followTarget;
-    public LayerMask occlussionLayer;
 
     // cinemachine
     private const float _threshold = 0.01f;
     public float _cinemachineTargetYaw;
     public float _cinemachineTargetPitch;
     private float _pitchResetTime;
-    private float _yawResetTime;
 
     [SerializeField] CinemachineVirtualCamera _freeRoamCamera;
-    [SerializeField] CinemachineVirtualCamera _zoomedAttackCamera;
     [SerializeField] CinemachineVirtualCamera _shortFightCamera;
     [SerializeField] CinemachineVirtualCamera _longFightCamera;
 
@@ -24,51 +20,42 @@ public class PlayerCameraController : MonoBehaviour
     
     [Header("Cinemachine")]
     [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
-    public GameObject CinemachineCameraTarget;
+    public GameObject _cinemachineCameraTarget;
 
-    [Tooltip("How far in degrees can you move the camera up")]
-    public float TopClamp = 0f;
+    [Tooltip("How far in degrees can you move the camera up and down while in combat")]
     public float FightTopClamp = 35f;
-    public float FreeRoamTopClamp = 70f;
-
-    [Tooltip("How far in degrees can you move the camera down")]
-    public float BottomClamp = 0f;
     public float FightBottomClamp = 35f;
+
+
+    [Tooltip("How far in degrees can you move the camera up and down while in free roam")]
+    public float FreeRoamTopClamp = 70f;
     public float FreeRoamBottomClamp = 70f;
 
-    [Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
-    public float CameraAngleOverride = 0.0f;
 
     [Tooltip("For locking the camera position on all axis")]
     public bool LockCameraPosition = false;
-    public bool RepositionYaw = false;
 
     public float FightSensitivity;
     public float FreeRoamSensitivity;
-
-    public float YAxisSensitivity;
-    public float XAxisSensitivity;
+    private float _bottomClamp = 0f;
+    private float _topClamp = 0f;
+    private float _yAxisSensitivity;
+    private float _xAxisSensitivity;
 
     public float PitchResetDelay;
     public float FightPitchAngle;
     public float FreeRoamPitchAngle;
     public float PitchResetSpeed;
 
-    public float YawResetDelay;
-    public float FightYawAngle;
-    public float FreeRoamYawAngle;
-    public float YawResetSpeed;
-
-
     private void Awake()
     {
-        _stateMachine = GetComponent<StateMachine>();
-
+        _stateMachine = GameObject.Find("Player").GetComponent<StateMachine>();
+        _cinemachineCameraTarget = GameObject.Find("Player").transform.Find("PlayerCameraTarget").gameObject;
         _pitchResetTime = PitchResetDelay;
-        _yawResetTime = YawResetDelay;
     }
     private void OnEnable()
     {
+       
         EnemyManagementSystem.OnZoneEntered += SetCameraState;
        _stateMachine.OnFight += SetCameraState;
     }
@@ -84,7 +71,6 @@ public class PlayerCameraController : MonoBehaviour
         //_cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
         _shortFightCamera.gameObject.SetActive(false);
         _longFightCamera.gameObject.SetActive(false);
-
     }
 
     // Update is called once per frame
@@ -97,7 +83,6 @@ public class PlayerCameraController : MonoBehaviour
  
     public void SetCameraState(bool value)
     {
-        
         //_shortFightCamera.gameObject.SetActive(value);
         if (value)
         {
@@ -123,10 +108,10 @@ public class PlayerCameraController : MonoBehaviour
 
     public void SetCameraSensitity()
     {
-        XAxisSensitivity = _stateMachine.IsFighting ? FightSensitivity : FreeRoamSensitivity;
-        YAxisSensitivity = _stateMachine.IsFighting ? FightSensitivity : FreeRoamSensitivity;
-        TopClamp = _stateMachine.IsFighting ? FightTopClamp : FreeRoamTopClamp;
-        BottomClamp = _stateMachine.IsFighting ? FightBottomClamp : FreeRoamBottomClamp;
+        _xAxisSensitivity = _stateMachine.IsFighting ? FightSensitivity : FreeRoamSensitivity;
+        _yAxisSensitivity = _stateMachine.IsFighting ? FightSensitivity : FreeRoamSensitivity;
+        _topClamp = _stateMachine.IsFighting ? FightTopClamp : FreeRoamTopClamp;
+        _bottomClamp = _stateMachine.IsFighting ? FightBottomClamp : FreeRoamBottomClamp;
     }
 
     private void CameraRotation()
@@ -135,16 +120,16 @@ public class PlayerCameraController : MonoBehaviour
         {
             float deltaTimeMultiplier = Time.deltaTime;
 
-            _cinemachineTargetYaw += (_stateMachine.LookInput.x * XAxisSensitivity) * Time.deltaTime;
-            _cinemachineTargetPitch += (_stateMachine.LookInput.y * YAxisSensitivity) * Time.deltaTime;
+            _cinemachineTargetYaw += (_stateMachine.LookInput.x * _xAxisSensitivity) * Time.deltaTime;
+            _cinemachineTargetPitch += (_stateMachine.LookInput.y * _yAxisSensitivity) * Time.deltaTime;
 
             // clamp our rotations so our values are limited 360 degrees
             _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, _bottomClamp, _topClamp);
         }
 
         // Cinemachine will follow this target
-        CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+        _cinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch, _cinemachineTargetYaw, 0.0f);
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

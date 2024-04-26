@@ -441,7 +441,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7296948876398782289}
   - component: {fileID: 3438386013176793881}
-  - component: {fileID: 2840689043906196808}
   - component: {fileID: 568156552260017847}
   - component: {fileID: 8752606800031338048}
   - component: {fileID: 2666079967872998160}
@@ -449,6 +448,7 @@ GameObject:
   - component: {fileID: 1375543420371366101}
   - component: {fileID: 8271953067650651371}
   - component: {fileID: 5097342563021303938}
+  - component: {fileID: 1176269870918965308}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -463,8 +463,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2208048724951217285}
-  m_LocalRotation: {x: -0, y: -0.38268274, z: -0, w: 0.9238798}
-  m_LocalPosition: {x: 5.58, y: 0, z: -7.43}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -477,7 +477,7 @@ Transform:
   - {fileID: 8451285751464581416}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3438386013176793881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,11 +493,10 @@ MonoBehaviour:
   MoveSpeed: 5
   SprintSpeed: 7.5
   FightSpeed: 1.5
-  RotationSmoothTime: 0.12
-  SpeedChangeRate: 10
+  SpeedChangeRate: 1
   LightAttackChargeSpeed: 7.5
-  HeavyAttackChargeSpeed: 6
-  ParryChargeSpeed: 8
+  HeavyAttackChargeSpeed: 3
+  ParryChargeSpeed: 4
   DashSpeed: 5
   Gravity: -9.81
   GroundedOffset: -0.2
@@ -541,49 +540,6 @@ MonoBehaviour:
   ClosestTarget: {fileID: 0}
   SecondClosestTarget: {fileID: 0}
   ThirdClosestTarget: {fileID: 0}
---- !u!114 &2840689043906196808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2208048724951217285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee4258f89c01ee04eb49750d04d2d4c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _followTarget: {fileID: 460832530000120801}
-  occlussionLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _cinemachineTargetYaw: 0
-  _cinemachineTargetPitch: 0
-  _freeRoamCamera: {fileID: 0}
-  _shortFightCamera: {fileID: 0}
-  _longFightCamera: {fileID: 0}
-  CinemachineCameraTarget: {fileID: 8860572876160680510}
-  TopClamp: 70
-  FightTopClamp: 35
-  FreeRoamTopClamp: 70
-  BottomClamp: -30
-  FightBottomClamp: 35
-  FreeRoamBottomClamp: 70
-  CameraAngleOverride: 0
-  LockCameraPosition: 0
-  RepositionYaw: 0
-  FightSensitivity: 0
-  FreeRoamSensitivity: 0
-  YAxisSensitivity: 0.25
-  XAxisSensitivity: 0.25
-  PitchResetDelay: 0
-  FightPitchAngle: 0
-  FreeRoamPitchAngle: 0
-  PitchResetSpeed: 0
-  YawResetDelay: 0
-  FightYawAngle: 0
-  FreeRoamYawAngle: 0
-  YawResetSpeed: 0
 --- !u!114 &568156552260017847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,7 +606,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2208048724951217285}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3c17c5fd4688e948b7ff915f6d8b7ba, type: 3}
   m_Name: 
@@ -659,7 +615,6 @@ MonoBehaviour:
   MaxHealth: 100
   MinHealth: 0
   _currentHealh: 0
-  _healthBar: {fileID: 0}
 --- !u!114 &1375543420371366101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,6 +674,28 @@ MonoBehaviour:
   BlockRumbleTime: 0.1
   BlockLowIntesitiy: 0.1
   BlockHighIntesitiy: 0.25
+--- !u!114 &1176269870918965308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2208048724951217285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50c66429d468cec4e934c6b343c2299f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 1536
+  Target: {fileID: 6591796012056853349}
+  Camera: {fileID: 0}
+  FadedAlpha: 0
+  RetainShadows: 1
+  TargetPositionOffset: {x: 0, y: 0, z: 0}
+  FadeSpeed: 5
+  ObjectsBlockingView: []
 --- !u!1 &2404586928052489566
 GameObject:
   m_ObjectHideFlags: 0
@@ -22206,7 +22183,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8860572876160680510}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.375, z: 0}
+  m_LocalPosition: {x: 0, y: 0.975, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

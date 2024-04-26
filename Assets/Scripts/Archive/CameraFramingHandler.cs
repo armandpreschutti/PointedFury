@@ -24,6 +24,7 @@ public class CameraFramingHandler : MonoBehaviour
     {
         _targetGroup = GetComponent<CinemachineTargetGroup>();
         _stateMachine = GameObject.Find("Player").GetComponent<StateMachine>();
+        AddEntityToTargetGroup(_stateMachine.transform.Find("PlayerCameraTarget").transform);
     }
     private void OnEnable()
     {
