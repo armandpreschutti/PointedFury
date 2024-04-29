@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HealthBarHandler : MonoBehaviour
 {
-    [SerializeField] HealthSystem _healthSystem;
+    /*[SerializeField] HealthSystem _healthSystem;
     [SerializeField]  Slider _healthBarSlider;
     public bool IsAI;
 
@@ -54,5 +54,5 @@ public class HealthBarHandler : MonoBehaviour
         {
             _healthBarSlider.gameObject.SetActive(false);
         }
-    }
+    }*/
 }

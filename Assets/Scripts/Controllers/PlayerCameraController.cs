@@ -14,6 +14,7 @@ public class PlayerCameraController : MonoBehaviour
 
     [SerializeField] CinemachineVirtualCamera _freeRoamCamera;
     [SerializeField] CinemachineVirtualCamera _shortFightCamera;
+    [SerializeField] CinemachineVirtualCamera _zoomCamera;
     [SerializeField] CinemachineVirtualCamera _longFightCamera;
 
 
@@ -57,12 +58,12 @@ public class PlayerCameraController : MonoBehaviour
     {
        
         EnemyManagementSystem.OnZoneEntered += SetCameraState;
-       _stateMachine.OnFight += SetCameraState;
+        _stateMachine.OnFight += SetCameraState;
     }
     private void OnDisable()
     {
         EnemyManagementSystem.OnZoneEntered -= SetCameraState;
-         _stateMachine.OnFight -= SetCameraState;
+        _stateMachine.OnFight -= SetCameraState;
     }
 
     // Start is called before the first frame update    
@@ -79,6 +80,7 @@ public class PlayerCameraController : MonoBehaviour
         CameraRotation();
         SetCameraSensitity();
         CameraPitchPositioningLoop();
+
     }
  
     public void SetCameraState(bool value)
@@ -102,7 +104,6 @@ public class PlayerCameraController : MonoBehaviour
             _longFightCamera.gameObject.SetActive(false);
             _shortFightCamera.gameObject.SetActive(false);
         }
-
     }
   
 
