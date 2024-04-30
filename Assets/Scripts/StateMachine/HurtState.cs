@@ -76,10 +76,10 @@ public class HurtState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-        if (Ctx.IsParrySucces)
+/*        if (Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
-        }
+        }*/
     }
 
     public override void InitializeSubStates()

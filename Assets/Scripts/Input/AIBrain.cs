@@ -260,7 +260,7 @@ public class AIBrain : MonoBehaviour
             if (isActivated)
             {
                 int blockChance = UnityEngine.Random.Range(1, BlockSkill + 1);
-                if (_stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == this.gameObject && blockChance < BlockSkill)
+                if (_stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == this.gameObject && blockChance < BlockSkill && !_stateMachine.IsAttacking)
                 {
                     _stateMachine.IsBlockPressed = true;
                 }

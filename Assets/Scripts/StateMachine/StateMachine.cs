@@ -29,6 +29,8 @@ public class StateMachine : MonoBehaviour
     [Tooltip("How much gravity is applied to the player")]
     public float Gravity;
 
+    public float rotationSpeed;
+
     // Player grounded variables
     [Header("Player Grounded")]
     [Tooltip("Useful for rough ground")]
@@ -280,13 +282,49 @@ public class StateMachine : MonoBehaviour
             _speed = _targetSpeed;
         }
     }
+    /* public void CombatMovement()
+     {
+         if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isParrying)
+         {
+             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
+             if (moveDirection != Vector3.zero)
+             {
+                 _controller.Move(moveDirection * Time.deltaTime);
+             }
 
+             if (_currentTarget != null)
+             {
+                 Vector3 direction = _currentTarget.transform.position - transform.position;
+                 direction.y = 0f; // Ignore y component
+                 if (direction != Vector3.zero)
+                 {
+                     Quaternion targetRotation = Quaternion.LookRotation(direction);
+                     transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                 }
+             }
+             else
+             {
+                 Vector3 direction = InputDirection();
+                 direction.y = 0f; // Ignore y component
+                 if (direction != Vector3.zero)
+                 {
+                     Quaternion targetRotation = Quaternion.LookRotation(direction);
+                     transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                 }
+                 return;
+             }
+         }
+         else
+         {
+             return;
+         }
+     }*/
     public void CombatMovement()
     {
         if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isParrying)
         {
             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
-            if(moveDirection != Vector3.zero)
+            if (moveDirection != Vector3.zero)
             {
                 _controller.Move(moveDirection * Time.deltaTime);
             }
@@ -439,9 +477,34 @@ public class StateMachine : MonoBehaviour
             else
             {
                 transform.LookAt(transform.position + transform.forward);
-               // return;
+                // return;
             }
-        }        
+        }
+        /*if (_currentTarget != null)
+        {
+            Vector3 direction = _currentTarget.transform.position - transform.position;
+            direction.y = 0f; // Ignore y component
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
+        }
+        else
+        {
+            if (_moveInput != Vector2.zero)
+            {
+                Vector3 direction = new Vector3(_moveInput.x, 0f, _moveInput.y);
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
+            else
+            {
+                // No input, maintain current rotation
+                Quaternion targetRotation = Quaternion.LookRotation(transform.forward);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
+        }*/
     }
     public void SetParryDirection()
     {

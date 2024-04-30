@@ -5797,31 +5797,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7368748c9ba1a44943502722299c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
+  MoveSpeed: 2
   SprintSpeed: 7.5
   FightSpeed: 1.5
-  RotationSmoothTime: 0.12
-  SpeedChangeRate: 10
-  LightAttackChargeSpeed: 4
-  HeavyAttackChargeSpeed: 4
-  ParryChargeSpeed: 8
-  DashSpeed: 5
+  SpeedChangeRate: 1
+  LightAttackChargeSpeed: 6
+  HeavyAttackChargeSpeed: 6
+  ParryChargeSpeed: 4
+  DashSpeed: 4
   Gravity: -9.81
+  rotationSpeed: 3
   GroundedOffset: -0.2
   GroundedRadius: 0.2
   GroundLayers:
     serializedVersion: 2
     m_Bits: 512
-  LightAttackDamage: 5
-  HeavyAttackDamage: 10
+  LightAttackDamage: 10
+  HeavyAttackDamage: 25
   EnemyLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
   AttackTimeout: 3
-  CombatDistance: 1.1
-  KnockBackPower: 3
+  CombatDistance: 0.5
+  KnockBackPower: 5
   EnemiesNearby: []
-  IsAI: 1
+  IsAI: 0
   moveDirection: {x: 0, y: 0, z: 0}
   DebugCurrentSuperState: 
   DebugCurrentSubState: 
@@ -5868,7 +5868,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.25
+  m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
@@ -5887,7 +5887,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 84ecd297ca5eb834388f4c9c1491587d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -17308,9 +17308,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55ca9f7e72fd0f479aff0174ca12a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthSystem: {fileID: 5675704485256732118}
-  _healthBarSlider: {fileID: 6721315710630649540}
-  IsAI: 1
 --- !u!1 &7421896676709999905
 GameObject:
   m_ObjectHideFlags: 0

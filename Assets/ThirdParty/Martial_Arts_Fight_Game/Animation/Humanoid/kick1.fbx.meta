@@ -39,8 +39,8 @@ ModelImporter:
       name: kick1
       takeName: kick1
       internalID: 0
-      firstFrame: 15
-      lastFrame: 45
+      firstFrame: 0
+      lastFrame: 63
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

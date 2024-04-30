@@ -39,8 +39,8 @@ ModelImporter:
       name: combo5
       takeName: combo5
       internalID: 0
-      firstFrame: 10
-      lastFrame: 40
+      firstFrame: 0
+      lastFrame: 102
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
