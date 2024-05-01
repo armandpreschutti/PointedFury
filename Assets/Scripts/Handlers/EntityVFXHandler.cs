@@ -48,19 +48,19 @@ public class EntityVFXHandler : MonoBehaviour
                 switch (_stateMachine.LightAttackID)
                 {
                     case 1:
-                        _rightHandVFX.Play();
+                        _leftHandVFX.Play();
                         break;
                     case 2:
-                        _leftFootVFX.Play();
-                        break;
-                    case 3:
-                        _rightHandVFX.Play();
-                        break;
-                    case 4:
                         _rightFootVFX.Play();
                         break;
-                    case 5:
+                    case 3:
                         _leftHandVFX.Play();
+                        break;
+                    case 4:
+                        _leftFootVFX.Play();
+                        break;
+                    case 5:
+                        _rightHandVFX.Play();
                         break;
                     default:
                         break;
@@ -70,20 +70,20 @@ public class EntityVFXHandler : MonoBehaviour
             {
                 switch (_stateMachine.LightAttackID)
                 {
-                    case 1:
-                        _rightHandVFX.Stop();
+                   case 1:
+                        _leftHandVFX.Stop();
                         break;
                     case 2:
-                        _leftFootVFX.Stop();
-                        break;
-                    case 3:
-                        _rightHandVFX.Stop();
-                        break;
-                    case 4:
                         _rightFootVFX.Stop();
                         break;
-                    case 5:
+                    case 3:
                         _leftHandVFX.Stop();
+                        break;
+                    case 4:
+                        _leftFootVFX.Stop();
+                        break;
+                    case 5:
+                        _rightHandVFX.Stop();
                         break;
                     default:
                         break;
@@ -95,13 +95,58 @@ public class EntityVFXHandler : MonoBehaviour
         {
             if (value)
             {
-                _leftFootVFX.Play();
-                _rightFootVFX.Play();
+                _rightHandVFX.startColor = Color.red;
+                _leftFootVFX.startColor = Color.red;
+                _leftHandVFX.startColor = Color.red;
+                _rightFootVFX.startColor = Color.red;
+                switch (_stateMachine.HeavyAttackID)
+                {
+                    case 1:
+                        _rightHandVFX.Play();
+
+                        break;
+                    case 2:
+                        _rightFootVFX.Play();
+                        break;
+                    case 3:
+                        _leftHandVFX.Play();
+                        break;
+                    case 4:
+                        _leftFootVFX.Play();
+                        break;
+                    case 5:
+                        _rightFootVFX.Play();
+                        break;
+                    default:
+                        break;
+                }
             }
             else
             {
-                _leftFootVFX.Stop();
-                _rightFootVFX.Stop();
+                _rightHandVFX.startColor = Color.white;
+                _leftFootVFX.startColor = Color.white;
+                _leftHandVFX.startColor = Color.white;
+                _rightFootVFX.startColor = Color.white;
+                switch (_stateMachine.HeavyAttackID)
+                {
+                    case 1:
+                        _rightHandVFX.Stop();
+                        break;
+                    case 2:
+                        _rightFootVFX.Stop();
+                        break;
+                    case 3:
+                        _leftHandVFX.Stop();
+                        break;
+                    case 4:
+                        _leftFootVFX.Stop();
+                        break;
+                    case 5:
+                        _rightFootVFX.Stop();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         else

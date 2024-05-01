@@ -13,7 +13,7 @@ public class DashState : BaseState
         //Debug.LogWarning("Player has entered DASH state");
         Ctx.SetDashDirection();
         Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
-        Ctx.Animator.Play($"Dash", 0, 0);
+       // Ctx.Animator.Play($"Dash", 0, 0);
         Ctx.IsDashing = true;
         Ctx.IsFighting = true;
         Ctx.IsDashPressed= false;

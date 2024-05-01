@@ -119,7 +119,7 @@ public class AIBrain : MonoBehaviour
 
     public void Attack()
     {
-        if (!_stateMachine.IsAttacking)
+        if (!_stateMachine.IsAttacking && !_stateMachine.IsHurt)
         {
             int attackChance = UnityEngine.Random.Range(1, AttackSkill + 1);
             if (attackChance < AttackSkill)
@@ -187,11 +187,11 @@ public class AIBrain : MonoBehaviour
                 {
                     if (_distanceToTarget > _watchingDistance + .5f)
                     {
-                        _moveInput.y = 1f;
+                        _moveInput.y = -1f;
                     }
                     else if (_distanceToTarget < _watchingDistance - .5f)
                     {
-                        _moveInput.y = -1f;
+                        _moveInput.y = 1f;
                     }
                     else
                     {
@@ -203,12 +203,12 @@ public class AIBrain : MonoBehaviour
                     if (_distanceToTarget > _attackingDistance + .5f)
                     {
                         isMeleeRange = false;
-                        _moveInput.y = 1f;
+                        _moveInput.y = -1f;
                     }
                     else if (_distanceToTarget < _attackingDistance - .5f)
                     {
                         isMeleeRange = false;
-                        _moveInput.y = -1f;
+                        _moveInput.y = 1f;
                     }
                     else
                     {
@@ -260,7 +260,7 @@ public class AIBrain : MonoBehaviour
             if (isActivated)
             {
                 int blockChance = UnityEngine.Random.Range(1, BlockSkill + 1);
-                if (_stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == this.gameObject && blockChance < BlockSkill && !_stateMachine.IsAttacking)
+                if (_stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == this.gameObject && blockChance < BlockSkill && !_stateMachine.IsAttacking && !_stateMachine.IsHurt)
                 {
                     _stateMachine.IsBlockPressed = true;
                 }

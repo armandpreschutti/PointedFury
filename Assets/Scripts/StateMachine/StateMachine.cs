@@ -18,12 +18,7 @@ public class StateMachine : MonoBehaviour
     public float FightSpeed = 2f;
     [Tooltip("Acceleration and deceleration")]
     public float SpeedChangeRate = 10.0f;
-    [Tooltip("How fast the character charges towards a direction while light attacking")]
-    public float LightAttackChargeSpeed;
-    [Tooltip("How fast the character charges towards a direction while heavy attacking")]
-    public float HeavyAttackChargeSpeed;
-    [Tooltip("How fast the character charges towards a direction while parrying")]
-    public float ParryChargeSpeed;
+
     [Tooltip("How fast the character leaps towards while dodging")]
     public float DashSpeed;
     [Tooltip("How much gravity is applied to the player")]
@@ -48,13 +43,15 @@ public class StateMachine : MonoBehaviour
     [Tooltip("The amount of damage a player will inflict with heavy attacks")]
     public float HeavyAttackDamage;
     [Tooltip("What layers the character detects enemies on")]
-    public LayerMask EnemyLayers;
-    [Tooltip("The amount of time after an attack to exit attack state")]
-    public float AttackTimeout;
-    [Tooltip("The minimum distance between player and target")]
     public float CombatDistance;
+    [Tooltip("How fast the character charges towards a direction while light attacking")]
+    public float LightAttackChargeSpeed;
+    [Tooltip("How fast the character charges towards a direction while heavy attacking")]
+    public float HeavyAttackChargeSpeed;
     [Tooltip("The amount of force added to landed attacks")]
     public float KnockBackPower;
+    [Tooltip("How fast the character charges towards a direction while parrying")]
+    public float ParryChargeSpeed;
     [Tooltip("A list of enemies detected via sphere casr")]
     public List<GameObject> EnemiesNearby = new List<GameObject>();
 
@@ -147,6 +144,8 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDHeavyAttackID;
     [HideInInspector] public int AnimIDPostAttack;
     [HideInInspector] public int AnimIDHurt;
+    [HideInInspector] public int AnimIDHeavyHurt;
+    [HideInInspector] public int AnimIDHurtID;
     [HideInInspector] public int AnimIDDash;
     [HideInInspector] public int AnimIDBlock;
     [HideInInspector] public int AnimIDCombo;
@@ -268,7 +267,7 @@ public class StateMachine : MonoBehaviour
 
     public void SetPlayerSpeed()
     {
-        float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+/*        float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
         float speedOffset = 0.1f;
 
         if (currentHorizontalSpeed < _targetSpeed - speedOffset || currentHorizontalSpeed > _targetSpeed + speedOffset)
@@ -280,7 +279,7 @@ public class StateMachine : MonoBehaviour
         else
         {
             _speed = _targetSpeed;
-        }
+        }*/
     }
     /* public void CombatMovement()
      {
@@ -364,7 +363,7 @@ public class StateMachine : MonoBehaviour
                 Vector3 forwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
                 transform.LookAt(transform.position + forwardDirection);
                 moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
-                _controller.Move(moveDirection * Time.deltaTime/* * TargetSpeed*/);
+                _controller.Move(moveDirection * Time.deltaTime);
             }
             else
             {
@@ -480,31 +479,6 @@ public class StateMachine : MonoBehaviour
                 // return;
             }
         }
-        /*if (_currentTarget != null)
-        {
-            Vector3 direction = _currentTarget.transform.position - transform.position;
-            direction.y = 0f; // Ignore y component
-            if (direction != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-        }
-        else
-        {
-            if (_moveInput != Vector2.zero)
-            {
-                Vector3 direction = new Vector3(_moveInput.x, 0f, _moveInput.y);
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-            else
-            {
-                // No input, maintain current rotation
-                Quaternion targetRotation = Quaternion.LookRotation(transform.forward);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-        }*/
     }
     public void SetParryDirection()
     {
@@ -729,6 +703,8 @@ public class StateMachine : MonoBehaviour
         AnimIDHeavyAttackID = Animator.StringToHash("HeavyAttackID");
         AnimIDPostAttack = Animator.StringToHash("PostAttack");
         AnimIDHurt = Animator.StringToHash("Hurt");
+
+        AnimIDHurtID = Animator.StringToHash("HurtID");
         AnimIDDash = Animator.StringToHash("Dash");
         AnimIDBlock = Animator.StringToHash("Block");
         AnimIDParry = Animator.StringToHash("Parry");

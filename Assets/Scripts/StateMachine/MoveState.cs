@@ -9,8 +9,8 @@ public class MoveState : BaseState
     {
         //Debug.LogWarning("Player has entered MOVE state");
 
-/*        Ctx.LightAttackID = 0;
-        Ctx.HeavyAttackID = 0;*/
+        Ctx.LightAttackID = 0;
+        Ctx.HeavyAttackID = 0;
         Ctx.IsAttacking = false;
         Ctx.OnMove?.Invoke(true);
         if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
@@ -75,6 +75,10 @@ public class MoveState : BaseState
         else if (Ctx.IsBlockPressed)
         {
            SwitchState(Factory.Block());
+        }
+        else if (Ctx.IsParrySucces)
+        {
+            SwitchState(Factory.Parry());
         }
         else if (Ctx.IsParried)
         {

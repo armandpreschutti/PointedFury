@@ -12,7 +12,7 @@ public class BlockState : BaseState
     {
         //Debug.LogWarning("Player has entered BLOCK state");
 
-       //Ctx.SetAttackDirection();
+        Ctx.SetAttackDirection();
         Ctx.IsBlockSuccess = false;
         Ctx.IsBlocking = true;
         Ctx.Animator.SetBool(Ctx.AnimIDBlock, true);

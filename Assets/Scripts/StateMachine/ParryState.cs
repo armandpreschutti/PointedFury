@@ -16,9 +16,9 @@ public class ParryState : BaseState
         Ctx.IsParrying = true;
         Ctx.IsAttacking = false;
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
-        Ctx.Animator.Play($"Parry", 0, 0);
+        //Ctx.Animator.Play($"Parry", 0, 0);
         Ctx.IsFighting = true;
-        Ctx.IsBlockPressed = false;
+       // Ctx.IsBlockPressed = false;
         Ctx.OnFight?.Invoke(true);
         Ctx.IsParrySucces = false;
     }

@@ -72,6 +72,10 @@ public class IdleState : BaseState
             {
                 SwitchState(Factory.Block());
             }
+            else if (Ctx.IsParrySucces)
+            {
+                SwitchState(Factory.Parry());
+            }
             else if (Ctx.IsParried)
             {
                 SwitchState(Factory.Stunned());

@@ -21,8 +21,18 @@ public class HurtState : BaseState
         Ctx.IsHurt = true;
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
-        Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
+       // Ctx.Animator.SetBool(Ctx.AnimIDLightHurt, true);
         Ctx.Animator.Play($"{Ctx.HitType}Hurt{Ctx.HitID}", 0, 0);
+        Ctx.Animator.SetInteger(Ctx.AnimIDHurtID, Ctx.HitID);
+        Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
+      /*  if (Ctx.HitType == "Light")
+        {
+            Ctx.Animator.SetBool(Ctx.AnimIDLightHurt, true);
+        }
+        else
+        {
+            Ctx.Animator.SetBool(Ctx.AnimIDHeavyHurt, true);
+        }*/
         ExitAllAnimations();
     }
 
@@ -43,6 +53,7 @@ public class HurtState : BaseState
         //Debug.LogWarning("Player has exited HURT state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, false);
+        //Ctx.Animator.SetBool(Ctx.AnimIDHeavyHurt, false);
         Ctx.IsHurt = false;
         if (!Ctx.IsDead)
         {
@@ -68,15 +79,15 @@ public class HurtState : BaseState
                 SwitchState(Factory.Idle());
             }
         }
-        if(Ctx.IsLightHitLanded)
+        else if(Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());
         }
-        if(Ctx.IsHeavyHitLanded)
+        else if(Ctx.IsHeavyHitLanded)
         {
             SwitchState(Factory.Hurt());
         }
-/*        if (Ctx.IsParrySucces)
+/*        else if (Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
         }*/

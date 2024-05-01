@@ -70,6 +70,10 @@ public class PostAttackState : BaseState
         {
             SwitchState(Factory.Idle());
         }
+        else if (Ctx.MoveInput != Vector2.zero)
+        {
+            SwitchState(Factory.Move());
+        }
     }
 
     public override void InitializeSubStates()
