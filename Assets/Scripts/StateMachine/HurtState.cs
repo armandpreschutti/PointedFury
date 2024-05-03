@@ -10,8 +10,6 @@ public class HurtState : BaseState
         //Debug.LogWarning("Player has entered HURT state");
 
         Ctx.SetIncomingAttackDirection();
-/*        Ctx.LightAttackID = 0;
-        Ctx.HeavyAttackID = 0;*/
         Ctx.IsLightHitLanded = false;
         Ctx.IsHeavyHitLanded = false;
         Ctx.IsPostAttack = false;
@@ -20,19 +18,11 @@ public class HurtState : BaseState
         Ctx.IsBlocking= false;  
         Ctx.IsHurt = true;
         Ctx.IsFighting = true;
+        Ctx.OnHurt?.Invoke();
         Ctx.OnFight?.Invoke(true);
-       // Ctx.Animator.SetBool(Ctx.AnimIDLightHurt, true);
         Ctx.Animator.Play($"{Ctx.HitType}Hurt{Ctx.HitID}", 0, 0);
         Ctx.Animator.SetInteger(Ctx.AnimIDHurtID, Ctx.HitID);
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
-      /*  if (Ctx.HitType == "Light")
-        {
-            Ctx.Animator.SetBool(Ctx.AnimIDLightHurt, true);
-        }
-        else
-        {
-            Ctx.Animator.SetBool(Ctx.AnimIDHeavyHurt, true);
-        }*/
         ExitAllAnimations();
     }
 
@@ -53,7 +43,6 @@ public class HurtState : BaseState
         //Debug.LogWarning("Player has exited HURT state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, false);
-        //Ctx.Animator.SetBool(Ctx.AnimIDHeavyHurt, false);
         Ctx.IsHurt = false;
         if (!Ctx.IsDead)
         {
@@ -66,11 +55,8 @@ public class HurtState : BaseState
     {
         if (!Ctx.IsHurt)
         {
-            if(Ctx.IsBlocking)
-            {
-                SwitchState(Factory.Block());
-            }
-            else if (Ctx.MoveInput != Vector2.zero)
+
+            if (Ctx.MoveInput != Vector2.zero)
             {
                 SwitchState(Factory.Move());
             }
@@ -78,6 +64,10 @@ public class HurtState : BaseState
             {
                 SwitchState(Factory.Idle());
             }
+        }
+        else if (Ctx.IsBlockPressed && Ctx.HitType != "Heavy") 
+        {
+            SwitchState(Factory.Block());
         }
         else if(Ctx.IsLightHitLanded)
         {
@@ -87,10 +77,10 @@ public class HurtState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-/*        else if (Ctx.IsParrySucces)
+        else if(Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
-        }*/
+        }
     }
 
     public override void InitializeSubStates()

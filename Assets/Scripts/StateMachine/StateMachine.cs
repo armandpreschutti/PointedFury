@@ -24,8 +24,6 @@ public class StateMachine : MonoBehaviour
     [Tooltip("How much gravity is applied to the player")]
     public float Gravity;
 
-    public float rotationSpeed;
-
     // Player grounded variables
     [Header("Player Grounded")]
     [Tooltip("Useful for rough ground")]
@@ -129,7 +127,7 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnAttack;
     public Action<bool> OnMove;
     public Action<bool> OnIdle;
-    public Action<bool> OnHurt;
+    //public Action<bool> OnHurt;
 
     // Animation Variables
     [HideInInspector] public float AnimationBlend;
@@ -168,6 +166,7 @@ public class StateMachine : MonoBehaviour
     public Action OnBlockSuccessful;
     public Action OnParrySuccessful;
     public Action OnDashSuccessful;
+    public Action OnHurt;
     public Action OnDeath;
 
     // Getters and setters
@@ -267,57 +266,9 @@ public class StateMachine : MonoBehaviour
 
     public void SetPlayerSpeed()
     {
-/*        float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-        float speedOffset = 0.1f;
 
-        if (currentHorizontalSpeed < _targetSpeed - speedOffset || currentHorizontalSpeed > _targetSpeed + speedOffset)
-        {
-            // Smoothly adjust player speed to the target speed
-            _speed = Mathf.Lerp(currentHorizontalSpeed, _targetSpeed * _moveInput.magnitude, Time.deltaTime * SpeedChangeRate);
-            _speed = Mathf.Round(_speed * 1000f) / 1000f; // Round speed to 3 decimal places
-        }
-        else
-        {
-            _speed = _targetSpeed;
-        }*/
     }
-    /* public void CombatMovement()
-     {
-         if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isParrying)
-         {
-             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
-             if (moveDirection != Vector3.zero)
-             {
-                 _controller.Move(moveDirection * Time.deltaTime);
-             }
-
-             if (_currentTarget != null)
-             {
-                 Vector3 direction = _currentTarget.transform.position - transform.position;
-                 direction.y = 0f; // Ignore y component
-                 if (direction != Vector3.zero)
-                 {
-                     Quaternion targetRotation = Quaternion.LookRotation(direction);
-                     transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                 }
-             }
-             else
-             {
-                 Vector3 direction = InputDirection();
-                 direction.y = 0f; // Ignore y component
-                 if (direction != Vector3.zero)
-                 {
-                     Quaternion targetRotation = Quaternion.LookRotation(direction);
-                     transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                 }
-                 return;
-             }
-         }
-         else
-         {
-             return;
-         }
-     }*/
+  
     public void CombatMovement()
     {
         if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isParrying)

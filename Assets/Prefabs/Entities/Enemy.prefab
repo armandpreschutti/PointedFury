@@ -5803,7 +5803,6 @@ MonoBehaviour:
   SpeedChangeRate: 1
   DashSpeed: 4
   Gravity: -9.81
-  rotationSpeed: 3
   GroundedOffset: -0.2
   GroundedRadius: 0.2
   GroundLayers:
@@ -5817,7 +5816,7 @@ MonoBehaviour:
   KnockBackPower: 5
   ParryChargeSpeed: 4
   EnemiesNearby: []
-  IsAI: 0
+  IsAI: 1
   moveDirection: {x: 0, y: 0, z: 0}
   DebugCurrentSuperState: 
   DebugCurrentSubState: 
@@ -5905,18 +5904,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96bc58da44ce6074bbccf1d93339d23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
+  previousState: 0
   _stateMachine: {fileID: 0}
+  _currentTarget: {fileID: 0}
   _distanceToTarget: 0
   _moveInput: {x: 0, y: 0}
-  _attackingDistance: 1
+  _attackingDistance: 1.5
   _watchingDistance: 3
-  _enemySkin: {fileID: 3409801489264694050}
-  _attackerMaterial: {fileID: 2100000, guid: ee1b00e65abd506459fca1e5a99c683b, type: 2}
-  _watcherMaterial: {fileID: 2100000, guid: c57bc559ca12ca843b5102446a11ad8a, type: 2}
-  CloseInCheckInterval: 6
-  StrafeCheckInterval: 2
-  AttackCheckInterval: 1
-  BlockCheckInterval: 1
   AttackSkill: 2
   ComboSkill: 4
   BlockSkill: 2
