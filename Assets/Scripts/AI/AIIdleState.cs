@@ -6,19 +6,24 @@ public class AIIDleState : AIBaseState
     public AIIDleState(AIBrain currentContext, AIStateFactory stateFactory)
     : base(currentContext, stateFactory) { }
 
+
+    float stateTime;
+    float attackTime = Random.Range(0f, 2f);
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered IDLE state");
+        //Debug.LogWarning("Player has entered IDLE state");
+
+        Ctx.comboCount = 0;
     }
 
     public override void UpdateState()
     {
         // Debug.Log("COMBAT state is currently active");
-        Ctx.moveInput = Vector2.zero;
         Ctx.DebugSubState = "Idle State";
         CheckSwitchStates();
 
-
+        stateTime += Time.deltaTime;
+        Ctx.moveInput = Vector2.zero;
     }
 
     public override void ExitState()
@@ -30,41 +35,23 @@ public class AIIDleState : AIBaseState
 
     public override void CheckSwitchStates()
     {
-        if(Ctx._isHurt)
+
+        if (Ctx.DistanceToPlayer(Ctx._currentTarget.transform) > (Ctx.targetDistance + Ctx.DistanceBuffer))
+        {
+            SwitchState(Factory.Approaching());
+        }
+        else if (Ctx.isAttacker && stateTime > attackTime)
+        {
+            SwitchState(Factory.Attack());
+        }
+        else if (Ctx.isWatcher && stateTime > 3f)
+        {
+            SwitchState(Factory.Strafing());
+        }
+        else if (Ctx.isHurt)
         {
             SwitchState(Factory.Hurt());
         }
-       /* if (!_isHurt)
-        {
-            
-            if (isAttacker)
-            {
-                if (TargetDistance(_currentTarget.transform) > (AttackDistance + DistanceBuffer))
-                {
-                    ChangeState(AIState.Approaching);
-                }
-                else if (_stateTime > 1f)
-                {
-                    ChangeState(AIState.Attack);
-                }
-            }
-            else if (isWatcher)
-            {
-                if (TargetDistance(_currentTarget.transform) > WatchDistance + DistanceBuffer)
-                {
-                    ChangeState(AIState.Approaching);
-                }
-                else if (_stateTime > 3f)
-                {
-                    SetRandomStrafeDirection();
-                    ChangeState(AIState.Strafing);
-                }
-            }
-        }
-        else
-        {
-            ChangeState(AIState.Hurt);
-        }*/
     }
 
     public override void InitializeSubStates()

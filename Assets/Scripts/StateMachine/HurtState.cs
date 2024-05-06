@@ -60,15 +60,15 @@ public class HurtState : BaseState
             {
                 SwitchState(Factory.Move());
             }
+            else if (Ctx.IsBlockPressed)
+            {
+                SwitchState(Factory.Block());
+            }
             else
             {
                 SwitchState(Factory.Idle());
             }
-        }
-        else if (Ctx.IsBlockPressed && Ctx.HitType != "Heavy") 
-        {
-            SwitchState(Factory.Block());
-        }
+        }        
         else if(Ctx.IsLightHitLanded)
         {
             SwitchState(Factory.Hurt());

@@ -12,6 +12,7 @@ public class AIWatcherRooteState : AIBaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered COMBAT state");
+        Ctx.targetDistance = Ctx.WatchDistance;
     }
 
     public override void UpdateState()

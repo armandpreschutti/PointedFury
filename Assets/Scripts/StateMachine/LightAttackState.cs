@@ -62,7 +62,7 @@ public class LightAttackState : BaseState
             {
                 SwitchState(Factory.HeavyAttack());
             }
-            else if (Ctx.IsLightHitLanded)
+          /*  else if (Ctx.IsLightHitLanded)
             {
                 SwitchState(Factory.Hurt());
             }
@@ -70,7 +70,7 @@ public class LightAttackState : BaseState
             {
                 SwitchState(Factory.Hurt());
             }
-
+*/
             else
             {
                 SwitchState(Factory.PostAttack());

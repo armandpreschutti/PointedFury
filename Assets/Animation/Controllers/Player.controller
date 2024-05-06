@@ -753,7 +753,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightHurt3
-  m_Speed: 2.25
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8795535927762754048}
@@ -1033,7 +1033,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightHurt1
-  m_Speed: 2.25
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3666227337330431535}
@@ -1710,7 +1710,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightHurt4
-  m_Speed: 2.25
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1938470799868902287}
@@ -1954,7 +1954,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightHurt5
-  m_Speed: 2.25
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8570608995640026497}
@@ -3990,7 +3990,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightHurt2
-  m_Speed: 2.25
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8055302405981375694}

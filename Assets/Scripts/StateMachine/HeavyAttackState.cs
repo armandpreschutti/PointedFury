@@ -58,14 +58,14 @@ public class HeavyAttackState : BaseState
             {
                 SwitchState(Factory.HeavyAttack());
             }
-            else if (Ctx.IsLightHitLanded)
+         /*   else if (Ctx.IsLightHitLanded)
             {
                 SwitchState(Factory.Hurt());
             }
             else if (Ctx.IsHeavyHitLanded)
             {
                 SwitchState(Factory.Hurt());
-            }
+            }*/
             else
             {
                 SwitchState(Factory.PostAttack());

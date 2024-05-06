@@ -3,130 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.UI;
-
-public class AIBrain : MonoBehaviour
-{
-    private AIBaseState _currentState;
-    private AIStateFactory _states;
-    public AIBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
-
-    public float _stateTime;
-    public StateMachine _stateMachine;
-    public GameObject _currentTarget;
-
-    public string DebugSuperState;
-    public string DebugSubState;
-    // enemy mobility variables
-    public float _distanceToTarget;
-    public Vector2 moveInput;
-
-    public bool _isAttackRange;
-    public bool _isWatchRange;
-    public bool _isHurt;
-    public bool _isStunned;
-    public bool _isAttacking;
-    public float _strafeDirection;
-    public int _comboCount;
-    public int _hitCount;
-    public float _blockReleaseTime;
-    public float AttackDistance = 1.5f;
-    public float WatchDistance = 3f;
-    public float DistanceBuffer = 1f;
-
-    public int ComboSkill;
-    public int BlockSkill;
-    public int BlockBreakSkill;
-    public int HitTolerance;
-
-    // enemy management variables
-    public bool isActivated;
-    public bool isAttacker;
-    public bool isWatcher;
-
-    // other variables
-    bool isMeleeRange;
-    bool _isPaused;
-
-    private void Awake()
-    {
-        SetComponentValues();
-        InitilaizeStateMachine();
-    }
-
-    private void Start()
-    {
-       // AssignAnimationIDs();
-    }
-
-    private void Update()
-    {
-        _currentState.UpdateStates();
-        GetStateMachineVariables();
-
-      /*  GroundedCheck();
-        SetPlayerSpeed();
-        CheckIsFighting();
-        SetMovementAnimationSpeed();
-        SimulateGravity();*/
-    }
-    // Initialize player state machine
-    private void InitilaizeStateMachine()
-    {
-        // Initialize the player state machine with default state
-        _states = new AIStateFactory(this);
-        _currentState = _states.WatcherRootState();
-        _currentState.EnterStates();
-    }
-
-    private void SetComponentValues()
-    {
-        _stateMachine = GetComponent<StateMachine>();
-        _currentTarget = FindAnyObjectByType<UserInput>().gameObject;
-        _stateMachine.EnemiesNearby.Add(_currentTarget);
-        _stateMachine.CurrentTarget = _currentTarget;
-    }
-
-    private void GetStateMachineVariables()
-    {
-        _isHurt = _stateMachine.IsHurt;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*using DG.Tweening;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 
@@ -141,11 +17,11 @@ public enum AIState
     Parry
 }
 
-public class AIBrain : MonoBehaviour
+public class AIBrainDepricated : MonoBehaviour
 {
     public AIState currentState;
     public AIState previousState;
-    [SerializeField]float _stateTime;
+    [SerializeField] float _stateTime;
 
     [SerializeField] StateMachine _stateMachine;
     [SerializeField] GameObject _currentTarget;
@@ -168,7 +44,7 @@ public class AIBrain : MonoBehaviour
     public float DistanceBuffer = 1f;
 
     // enemy stats
-*//*    public int AttackSkill;*//*
+    public int AttackSkill;
     public int ComboSkill;
     public int BlockSkill;
     public int BlockBreakSkill;
@@ -219,7 +95,7 @@ public class AIBrain : MonoBehaviour
                 ApproachingState();
                 break;
             case AIState.Strafing:
-                StrafingState(); 
+                StrafingState();
                 break;
             case AIState.Hurt:
                 HurtState();
@@ -238,7 +114,7 @@ public class AIBrain : MonoBehaviour
 
     private void IdleState()
     {
-        if(!_isHurt)
+        /*if (!_isHurt)
         {
             _moveInput = Vector2.zero;
             if (isAttacker)
@@ -249,7 +125,7 @@ public class AIBrain : MonoBehaviour
                 }
                 else if (_stateTime > 1f)
                 {
-                    ChangeState(AIState.Attack); 
+                    ChangeState(AIState.Attack);
                 }
             }
             else if (isWatcher)
@@ -268,13 +144,13 @@ public class AIBrain : MonoBehaviour
         else
         {
             ChangeState(AIState.Hurt);
-        }
-        
+        }*/
+
     }
 
     private void ApproachingState()
     {
-        if(!_isHurt)
+       /* if (!_isHurt)
         {
             _moveInput.y = 1f;
             if (isAttacker)
@@ -295,14 +171,14 @@ public class AIBrain : MonoBehaviour
         else
         {
             ChangeState(AIState.Hurt);
-        }
-       
+        }*/
+
     }
 
     private void StrafingState()
     {
         _moveInput.x = _strafeDirection;
-        if(!_isHurt)
+        if (!_isHurt)
         {
             if (isAttacker)
             {
@@ -325,12 +201,12 @@ public class AIBrain : MonoBehaviour
         {
             ChangeState(AIState.Hurt);
         }
-       
+
     }
 
     private void HurtState()
     {
-        if(_hitCount >= HitTolerance)
+        if (_hitCount >= HitTolerance)
         {
             _hitCount = 0;
             ChangeState(AIState.Block);
@@ -353,10 +229,10 @@ public class AIBrain : MonoBehaviour
         else if (_comboCount < ComboSkill)
         {
             Debug.Log("Trying to Attacking");
-            _stateMachine.IsLightAttackPressed= true;
+            _stateMachine.IsLightAttackPressed = true;
             ChangeState(AIState.Attack);
         }
-      
+
         else
         {
             _comboCount = 0;
@@ -381,7 +257,7 @@ public class AIBrain : MonoBehaviour
 
     private void ParryState()
     {
-        if(!_stateMachine.IsParrying)
+        if (!_stateMachine.IsParrying)
         {
             ChangeState(AIState.Idle);
         }
@@ -391,7 +267,7 @@ public class AIBrain : MonoBehaviour
         _hitCount++;
     }
 
-    public void AddToComboCount(bool value, string attackType )
+    public void AddToComboCount(bool value, string attackType)
     {
         if (value)
         {
@@ -416,15 +292,15 @@ public class AIBrain : MonoBehaviour
 
     public void SetRandomStrafeDirection()
     {
-        _strafeDirection = UnityEngine.Random.Range(-1, 2);
-        if(_strafeDirection == 0)
+/*        _strafeDirection = UnityEngine.Random.Range(-1, 2);
+        if (_strafeDirection == 0)
         {
             SetRandomStrafeDirection();
-        }
+        }*/
     }
     public bool IsMeleeRange()
     {
-        if(_distanceToTarget <= AttackDistance + DistanceBuffer)
+        if (_distanceToTarget <= AttackDistance + DistanceBuffer)
         {
             return true;
         }
@@ -446,4 +322,4 @@ public class AIBrain : MonoBehaviour
         _isAttacking = _stateMachine.IsAttacking;
     }
 
-}*/
+}

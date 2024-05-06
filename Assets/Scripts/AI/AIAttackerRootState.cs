@@ -12,6 +12,7 @@ public class AIAttackerRooteState: AIBaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered COMBAT state");
+        Ctx.targetDistance = Ctx.AttackDistance;
     }
 
     public override void UpdateState()

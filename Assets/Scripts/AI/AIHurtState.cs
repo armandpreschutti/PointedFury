@@ -9,6 +9,8 @@ public class AIHurtState : AIBaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered HURT state");
+
+        Ctx.comboCount = 0;
     }
 
     public override void UpdateState()
@@ -30,9 +32,13 @@ public class AIHurtState : AIBaseState
 
     public override void CheckSwitchStates()
     {
-        if(!Ctx._isHurt)
+        if(!Ctx.isHurt)
         {
             SwitchState(Factory.Idle());
+        }
+        else if(Ctx.hitCount >= Ctx.HitTolerance)
+        {
+            SwitchState(Factory.Block());
         }
     }
 
