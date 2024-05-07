@@ -104,7 +104,7 @@ public class UserInput : MonoBehaviour
     {
         if (!_stateMachine.IsAttacking && !_stateMachine.IsDashing && !_stateMachine.IsHurt)
         { 
-            _stateMachine.OnAttemptParty?.Invoke();
+            _stateMachine.OnAttemptParry?.Invoke();
         }
     }
 

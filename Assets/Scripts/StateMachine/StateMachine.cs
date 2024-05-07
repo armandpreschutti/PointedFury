@@ -161,7 +161,7 @@ public class StateMachine : MonoBehaviour
     public Action <bool, string> OnAttackWindUp;
     public Action OnLightAttackGiven;
     public Action OnHeavyAttackGiven;
-    public Action OnAttemptParty;
+    public Action OnAttemptParry;
     public Action OnTestAction;
     public Action OnBlockSuccessful;
     public Action OnParrySuccessful;
@@ -542,6 +542,7 @@ public class StateMachine : MonoBehaviour
     public void OnParryAnimationContact()
     {
         _isCharging = false;
+        OnParrySuccessful?.Invoke();
     }
 
     public void OnParryAnimationComplete()
@@ -619,11 +620,11 @@ public class StateMachine : MonoBehaviour
     }
     public void GiveHit(string attackType)
     {
-        if(attackType == "Light")
+        if(attackType == "Light" && !_currentTarget.GetComponent<StateMachine>().IsParrying)
         {
             OnLightAttackGiven?.Invoke();
         }
-        else if(attackType == "Heavy")
+        else if(attackType == "Heavy" && !_currentTarget.GetComponent<StateMachine>().IsParrying)
         {
             OnHeavyAttackGiven?.Invoke();
         }
@@ -639,7 +640,7 @@ public class StateMachine : MonoBehaviour
     {
         _incomingAttackDirection = attackerPosition;
         IsParrySucces = true;
-        OnParrySuccessful?.Invoke();
+       // OnParrySuccessful?.Invoke();
     }
     private void AssignAnimationIDs()
     {

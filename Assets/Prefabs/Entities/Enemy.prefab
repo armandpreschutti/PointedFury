@@ -5782,6 +5782,7 @@ Transform:
   - {fileID: 5358826204584712042}
   - {fileID: 4476691500866905638}
   - {fileID: 2208739425994233725}
+  - {fileID: 8185109526602795403}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -179.998, z: 0}
@@ -5904,17 +5905,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96bc58da44ce6074bbccf1d93339d23b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
-  previousState: 0
-  _stateMachine: {fileID: 0}
+  _stateTime: 0
+  StateMachine: {fileID: 0}
   _currentTarget: {fileID: 0}
-  _distanceToTarget: 0
-  _moveInput: {x: 0, y: 0}
-  _attackingDistance: 1.5
-  _watchingDistance: 3
-  AttackSkill: 2
+  DebugSuperState: 
+  DebugSubState: 
+  distanceToTarget: 0
+  moveInput: {x: 0, y: 0}
+  _isAttackRange: 0
+  _isWatchRange: 0
+  isHurt: 0
+  _isStunned: 0
+  _isAttacking: 0
+  _strafeDirection: 0
+  comboCount: 0
+  hitCount: 0
+  _blockReleaseTime: 0
+  targetDistance: 0
+  AttackDistance: 1.5
+  WatchDistance: 3
+  DistanceBuffer: 1
   ComboSkill: 4
   BlockSkill: 2
+  BlockBreakSkill: 0
+  HitTolerance: 0
   isActivated: 0
   isAttacker: 0
   isWatcher: 0
@@ -11491,7 +11505,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4164328746869097600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 1.373, z: 0.7}
+  m_LocalPosition: {x: 0.02, y: 1, z: 0.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11517,7 +11531,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.3
+  m_Radius: 0.59
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1899801892026006314
 MonoBehaviour:
@@ -16647,6 +16661,73 @@ Transform:
   m_Father: {fileID: 1260817673413388322}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5493126707500403568
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8185109526602795403}
+  - component: {fileID: 7356690020337772287}
+  - component: {fileID: 6453560557383173877}
+  m_Layer: 0
+  m_Name: ParryBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8185109526602795403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493126707500403568}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.02, y: 1, z: 0.43}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4561761237256226125}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &7356690020337772287
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493126707500403568}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.59
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6453560557383173877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493126707500403568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837ee5d2aebee1a49935adbebfb92350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyTag: Player
 --- !u!1 &5563454981211923024
 GameObject:
   m_ObjectHideFlags: 0

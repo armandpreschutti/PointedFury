@@ -72,10 +72,15 @@ public class BlockState : BaseState
         {
             SwitchState(Factory.Parry());
         }
+        else if (Ctx.IsParried)
+        {
+            SwitchState(Factory.Stunned());
+        }
         else if(Ctx.IsHeavyHitLanded)
         {
             SwitchState(Factory.Hurt());   
         }
+
     }
 
     public override void InitializeSubStates()

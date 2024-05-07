@@ -8,9 +8,10 @@ public class AIAttackState : AIBaseState
 
 
     //float stateTime;
+    int blockBreakChance;
     public override void EnterState()
     {
-        
+        blockBreakChance = Random.Range(1, 11);
         // Debug.LogWarning("Enemmy has entered ATTACK state");
       /*  if(Ctx._currentTarget.GetComponent<StateMachine>().IsBlocking)
         {
@@ -20,7 +21,15 @@ public class AIAttackState : AIBaseState
         {
             Ctx.StateMachine.IsLightAttackPressed = true;    
         }*/
-        Ctx.StateMachine.IsLightAttackPressed = true;
+        if(Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsBlocking && blockBreakChance > Ctx.BlockBreakSkill)
+        {
+            Ctx.StateMachine.IsHeavyAttackPressed = true;
+        }
+        else
+        {
+            Ctx.StateMachine.IsLightAttackPressed = true;
+        }
+
         Ctx.comboCount++;
     }
 

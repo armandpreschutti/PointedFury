@@ -38,7 +38,11 @@ public class PostAttackState : BaseState
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.IsLightAttackPressed)
+         if (!Ctx.IsPostAttack)
+        {
+            SwitchState(Factory.Idle());
+        }
+        else if (Ctx.IsLightAttackPressed)
         {
             SwitchState(Factory.LightAttack());
         }
@@ -66,9 +70,9 @@ public class PostAttackState : BaseState
         {
             SwitchState(Factory.Dash());
         }
-        else if (!Ctx.IsPostAttack)
+        else if (Ctx.IsParried)
         {
-            SwitchState(Factory.Idle());
+            SwitchState(Factory.Stunned());
         }
         else if (Ctx.MoveInput != Vector2.zero)
         {

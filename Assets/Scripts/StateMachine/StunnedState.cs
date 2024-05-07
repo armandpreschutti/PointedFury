@@ -16,9 +16,11 @@ public class StunnedState : BaseState
         Ctx.Animator.Play($"Stunned", 0, 0);
         Ctx.IsParryable = false;
         Ctx.IsParried = false;
-        Ctx.IsBlockPressed = false;
+       // Ctx.IsBlockPressed = false;
         Ctx.IsLightHitLanded = false;
         Ctx.IsHeavyHitLanded = false;
+        Ctx.IsLightAttackPressed= false;
+        Ctx.IsHeavyAttackPressed = false;
         Ctx.IsKnockedBack = true;
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);

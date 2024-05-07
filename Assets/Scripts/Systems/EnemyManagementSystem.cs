@@ -50,6 +50,7 @@ public class EnemyManagementSystem : MonoBehaviour
                 foreach (GameObject enemy in managedEnemies)
                 {
                     OnEnemyDetected?.Invoke(true, enemy.transform.Find("PlayerCameraTarget"));
+                    enemy.GetComponent<AIBrain>().enabled = true;
                     enemy.GetComponent<AIBrain>().isActivated = true;
                     enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
                     enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
@@ -68,6 +69,7 @@ public class EnemyManagementSystem : MonoBehaviour
             foreach (GameObject enemy in managedEnemies)
             {
                 OnEnemyDetected?.Invoke(false, enemy.transform.Find("PlayerCameraTarget"));
+                enemy.GetComponent<AIBrain>().enabled = false;
                 enemy.GetComponent<AIBrain>().isActivated = false;
                 enemy.GetComponent<StateMachine>().CurrentTarget = null;
                 enemy.GetComponent<StateMachine>().EnemiesNearby.Remove(other.gameObject);

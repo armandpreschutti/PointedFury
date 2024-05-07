@@ -25,8 +25,9 @@ public class AIBlockState : AIBaseState
         CheckSwitchStates();
 
         stateTime += Time.deltaTime;
-        Debug.LogError($"Current block time is {stateTime}");
+        //Debug.LogError($"Current block time is {stateTime}");
         Ctx.moveInput = Vector2.zero;
+   
     }
 
     public override void ExitState()
@@ -38,19 +39,24 @@ public class AIBlockState : AIBaseState
 
     public override void CheckSwitchStates()
     {
-        if(Ctx.StateMachine.IsBlockSuccess)
+        if (Ctx.StateMachine.IsBlockSuccess)
         {
             SwitchState(Factory.Block());
         }
-        else if(stateTime > 5f && !Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking)
+        else if (stateTime > 1f && !Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking)
         {
             Ctx.StateMachine.IsBlockPressed = false;
             SwitchState(Factory.Idle());
         }
-    /*    else if (Ctx.isHurt)
+       /* else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy")
         {
-            SwitchState(Factory.Hurt());
-        }*/
+            Ctx.StateMachine.OnAttemptParry?.Invoke();
+        }
+*/
+        /* else if (Ctx.isHurt)
+         {
+             SwitchState(Factory.Hurt());
+         }*/
     }
 
     public override void InitializeSubStates()
