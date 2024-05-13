@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
-    [SerializeField] StateMachine _stateMachine;
-    [SerializeField] float MaxHealth = 100;
-    [SerializeField] float MinHealth = 0;
-    [SerializeField] float _currentHealh;
+    public StateMachine _stateMachine;
+    public float MaxHealth = 100;
+    public float MinHealth = 0;
+    public float _currentHealh;
     
     public Action OnDeath;
     public Action OnDamage;

@@ -18,7 +18,6 @@ public class ParryState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
         //Ctx.Animator.Play($"Parry", 0, 0);
         Ctx.IsFighting = true;
-       // Ctx.IsBlockPressed = false;
         Ctx.OnFight?.Invoke(true);
         Ctx.IsParrySucces = false;
     }
@@ -34,12 +33,13 @@ public class ParryState : BaseState
             Ctx.SetIncomingAttackDirection();
             Ctx.ParryMovement();
         }
+
     }
 
     public override void ExitState()
     {
         //Debug.LogWarning("Player has exited PARRY state");
-
+        Time.timeScale = 1f;
         Ctx.Animator.SetBool(Ctx.AnimIDParry, false);
         Ctx.IsParrying = false;
     }

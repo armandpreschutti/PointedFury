@@ -6,6 +6,7 @@ public class AIApproachingState: AIBaseState
     public AIApproachingState(AIBrain currentContext, AIStateFactory stateFactory)
     : base(currentContext, stateFactory) { }
 
+    float stateTime;
     public override void EnterState()
     {
         //Debug.LogWarning("Enemy has entered APPROACHING state");
@@ -13,18 +14,18 @@ public class AIApproachingState: AIBaseState
 
     public override void UpdateState()
     {
-        Ctx.moveInput.y = 1f;
         // Debug.Log("APPROACHING state is currently active");
         Ctx.DebugSubState = "Approaching State";
         CheckSwitchStates();
+       // Ctx.hitCount = 0;
 
-
+        stateTime += Time.deltaTime;
+        Ctx.moveInput.y = 1f;
     }
 
     public override void ExitState()
     {
         //Debug.LogWarning("Enemy has exited APPROACHING state");
-
 
     }
 
@@ -34,6 +35,10 @@ public class AIApproachingState: AIBaseState
         {
             SwitchState(Factory.Idle());
         }
+       /* else if (Ctx.isAttacker && stateTime > 1f)
+        {
+            SwitchState(Factory.Attack());
+        }*/
         else if (Ctx.isHurt)
         {
             SwitchState(Factory.Hurt());

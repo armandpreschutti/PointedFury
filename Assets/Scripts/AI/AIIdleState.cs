@@ -14,6 +14,7 @@ public class AIIDleState : AIBaseState
         //Debug.LogWarning("Player has entered IDLE state");
 
         Ctx.comboCount = 0;
+       // Ctx.hitCount = 0;
     }
 
     public override void UpdateState()

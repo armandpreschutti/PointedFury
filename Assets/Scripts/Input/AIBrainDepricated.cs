@@ -177,7 +177,7 @@ public class AIBrainDepricated : MonoBehaviour
 
     private void StrafingState()
     {
-        _moveInput.x = _strafeDirection;
+      /*  _moveInput.x = _strafeDirection;
         if (!_isHurt)
         {
             if (isAttacker)
@@ -201,12 +201,12 @@ public class AIBrainDepricated : MonoBehaviour
         {
             ChangeState(AIState.Hurt);
         }
-
+*/
     }
 
     private void HurtState()
     {
-        if (_hitCount >= HitTolerance)
+      /*  if (_hitCount >= HitTolerance)
         {
             _hitCount = 0;
             ChangeState(AIState.Block);
@@ -216,11 +216,11 @@ public class AIBrainDepricated : MonoBehaviour
         {
             _hitCount = 0;
             ChangeState(AIState.Idle);
-        }
+        }*/
     }
     private void AttackingState()
     {
-        if (_isHurt || _isStunned)
+      /*  if (_isHurt || _isStunned)
         {
             _comboCount = 0;
             _stateMachine.IsLightAttackPressed = false;
@@ -237,12 +237,12 @@ public class AIBrainDepricated : MonoBehaviour
         {
             _comboCount = 0;
             ChangeState(AIState.Idle);
-        }
+        }*/
     }
 
     private void BlockingState()
     {
-        _stateMachine.IsBlockPressed = true;
+        /*_stateMachine.IsBlockPressed = true;
         if (!_currentTarget.GetComponent<StateMachine>().IsAttacking)
         {
             _blockReleaseTime += Time.deltaTime;
@@ -252,7 +252,7 @@ public class AIBrainDepricated : MonoBehaviour
                 ChangeState(AIState.Idle);
                 _blockReleaseTime = 0f;
             }
-        }
+        }*/
     }
 
     private void ParryState()

@@ -52,6 +52,8 @@ public class StateMachine : MonoBehaviour
     public float ParryChargeSpeed;
     [Tooltip("A list of enemies detected via sphere casr")]
     public List<GameObject> EnemiesNearby = new List<GameObject>();
+    [Tooltip("The time scale when parrying")]
+    public float SlowMotionSpeed;
 
     [Tooltip("Is the state machine controlled by Ai")]
     public bool IsAI;
@@ -238,7 +240,6 @@ public class StateMachine : MonoBehaviour
         _currentState.UpdateStates();
 
         GroundedCheck();
-        SetPlayerSpeed();
         CheckIsFighting();
         SetMovementAnimationSpeed();
         SimulateGravity();
@@ -246,27 +247,12 @@ public class StateMachine : MonoBehaviour
 
     private void GroundedCheck()
     {
-        // Perform a sphere check to determine if the player is grounded
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
-        _isGrounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+        _isGrounded = Physics.CheckSphere(transform.position + Vector3.down * GroundedOffset, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
     }
 
     private void SimulateGravity()
     {
-        // Apply gravity
-        if (!IsGrounded)
-        {
-            _verticalSpeed = Gravity;
-        }
-        else
-        {
-            _verticalSpeed= 0;
-        }
-    }
-
-    public void SetPlayerSpeed()
-    {
-
+        _verticalSpeed = IsGrounded ? 0f : Gravity;
     }
   
     public void CombatMovement()
@@ -543,11 +529,13 @@ public class StateMachine : MonoBehaviour
     {
         _isCharging = false;
         OnParrySuccessful?.Invoke();
+        Time.timeScale = SlowMotionSpeed;
     }
 
     public void OnParryAnimationComplete()
     {
-        _isParrying = false;    
+        _isParrying = false;
+        Time.timeScale = 1f;
     }
 
     public void OnStunAnimationComplete()
@@ -655,7 +643,6 @@ public class StateMachine : MonoBehaviour
         AnimIDHeavyAttackID = Animator.StringToHash("HeavyAttackID");
         AnimIDPostAttack = Animator.StringToHash("PostAttack");
         AnimIDHurt = Animator.StringToHash("Hurt");
-
         AnimIDHurtID = Animator.StringToHash("HurtID");
         AnimIDDash = Animator.StringToHash("Dash");
         AnimIDBlock = Animator.StringToHash("Block");

@@ -22,7 +22,6 @@ public class HeavyAttackState : BaseState
         Ctx.OnFight?.Invoke(true);
         Ctx.OnHeavyAttack?.Invoke(true, "Heavy");
         Ctx.OnAttack?.Invoke(true);
-       // Ctx.IsBlockPressed = false;
     }
 
     public override void UpdateState()
@@ -58,14 +57,6 @@ public class HeavyAttackState : BaseState
             {
                 SwitchState(Factory.HeavyAttack());
             }
-         /*   else if (Ctx.IsLightHitLanded)
-            {
-                SwitchState(Factory.Hurt());
-            }
-            else if (Ctx.IsHeavyHitLanded)
-            {
-                SwitchState(Factory.Hurt());
-            }*/
             else
             {
                 SwitchState(Factory.PostAttack());
@@ -87,10 +78,6 @@ public class HeavyAttackState : BaseState
         {
             SwitchState(Factory.Dash());
         }
-        /*        else if (Ctx.IsParrySucces)
-                {
-                    SwitchState(Factory.Parry());
-                }*/
     }
 
     public override void InitializeSubStates()

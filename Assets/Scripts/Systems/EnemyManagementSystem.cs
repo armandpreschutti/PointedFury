@@ -85,7 +85,7 @@ public class EnemyManagementSystem : MonoBehaviour
         {
             _newAttackerCheckTime -= Time.deltaTime;
             
-            if (_newAttackerCheckTime < 0 || currentAttacker == null)
+            if (_newAttackerCheckTime < 0 /*|| currentAttacker == null*/)
             {
                 if (managedEnemies.Count > 0)
                 {

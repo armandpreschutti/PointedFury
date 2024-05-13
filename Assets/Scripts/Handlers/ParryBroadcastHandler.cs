@@ -63,8 +63,6 @@ public class ParryBroadcastHandler : MonoBehaviour
             {
                 if (hit.GetComponent<StateMachine>().IsParryable && !_stateMachine.IsParrying) 
                 {
-                    //hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position);
-
                     _stateMachine.GiveParry(hit.transform.position);
                 }
             }

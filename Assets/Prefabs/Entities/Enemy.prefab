@@ -5817,6 +5817,7 @@ MonoBehaviour:
   KnockBackPower: 5
   ParryChargeSpeed: 4
   EnemiesNearby: []
+  SlowMotionSpeed: 1
   IsAI: 1
   moveDirection: {x: 0, y: 0, z: 0}
   DebugCurrentSuperState: 
@@ -17382,6 +17383,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55ca9f7e72fd0f479aff0174ca12a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _healthSystem: {fileID: 0}
+  _healthBarSlider: {fileID: 0}
+  IsAI: 0
 --- !u!1 &7421896676709999905
 GameObject:
   m_ObjectHideFlags: 0

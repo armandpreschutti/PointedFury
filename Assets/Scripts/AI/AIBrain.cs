@@ -73,13 +73,8 @@ public class AIBrain : MonoBehaviour
     {
         _currentState.UpdateStates();
         GetStateMachineVariables();
-
-        /*  GroundedCheck();
-          SetPlayerSpeed();
-          CheckIsFighting();
-          SetMovementAnimationSpeed();
-          SimulateGravity();*/
     }
+
     // Initialize player state machine
     private void InitilaizeStateMachine()
     {
@@ -93,9 +88,8 @@ public class AIBrain : MonoBehaviour
     {
         StateMachine = GetComponent<StateMachine>();
         _currentTarget = FindAnyObjectByType<UserInput>().gameObject;
-        StateMachine.EnemiesNearby.Add(_currentTarget);
-        StateMachine.CurrentTarget = _currentTarget;
-
+/*        StateMachine.EnemiesNearby.Add(_currentTarget);
+        StateMachine.CurrentTarget = _currentTarget;*/
     }
 
     private void GetStateMachineVariables()

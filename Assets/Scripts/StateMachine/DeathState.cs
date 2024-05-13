@@ -35,12 +35,15 @@ public class DeathState : BaseState
 
         if (Ctx.IsKnockedBack)
         {
+            Ctx.KnockBackPower = 10f;
             Ctx.SetHitKnockBack();
+            Time.timeScale = .25f;
         }
         else
         {
             Ctx.Controller.enabled = false;
             Ctx.enabled = false;
+            Time.timeScale = 1f;
         }
     }
 

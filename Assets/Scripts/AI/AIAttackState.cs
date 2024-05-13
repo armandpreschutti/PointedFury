@@ -7,21 +7,14 @@ public class AIAttackState : AIBaseState
     : base(currentContext, stateFactory) { }
 
 
-    //float stateTime;
     int blockBreakChance;
+
     public override void EnterState()
     {
-        blockBreakChance = Random.Range(1, 11);
         // Debug.LogWarning("Enemmy has entered ATTACK state");
-      /*  if(Ctx._currentTarget.GetComponent<StateMachine>().IsBlocking)
-        {
-            Ctx.StateMachine.IsHeavyAttackPressed= true;
-        }
-        else
-        {
-            Ctx.StateMachine.IsLightAttackPressed = true;    
-        }*/
-        if(Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsBlocking && blockBreakChance > Ctx.BlockBreakSkill)
+
+        blockBreakChance = Random.Range(1, 11);
+        if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsBlocking && blockBreakChance > Ctx.BlockBreakSkill)
         {
             Ctx.StateMachine.IsHeavyAttackPressed = true;
         }
@@ -37,7 +30,6 @@ public class AIAttackState : AIBaseState
     {
         // Debug.Log("ATTACK state is currently active");
 
-        //stateTime += Time.deltaTime;
         Ctx.DebugSubState = "Attack State";
         CheckSwitchStates();
     }
@@ -46,12 +38,11 @@ public class AIAttackState : AIBaseState
     {
         //Debug.LogWarning("Enemy has exited ATTACK state");
 
-        //Ctx.StateMachine.IsLightAttackPressed = false;
     }
 
     public override void CheckSwitchStates()
     {
-        if(Ctx.comboCount < Ctx.ComboSkill && !Ctx.StateMachine.IsAttacking)
+        if(Ctx.comboCount < Ctx.ComboSkill/* && !Ctx.StateMachine.IsAttacking*/)
         {
             SwitchState(Factory.Attack());
         }

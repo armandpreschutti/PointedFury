@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthSystem: {fileID: 0}
-  _healthBarSlider: {fileID: 0}
+  _healthBarSlider: {fileID: 4598024578861887029}
   IsAI: 0
 --- !u!1 &4334309357753028084
 GameObject:
