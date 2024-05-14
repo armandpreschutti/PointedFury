@@ -50,6 +50,8 @@ public class StateMachine : MonoBehaviour
     public float KnockBackPower;
     [Tooltip("How fast the character charges towards a direction while parrying")]
     public float ParryChargeSpeed;
+    [Tooltip("The amount of damage a player will inflict with parries")]
+    public float ParryDamage;
     [Tooltip("A list of enemies detected via sphere casr")]
     public List<GameObject> EnemiesNearby = new List<GameObject>();
     [Tooltip("The time scale when parrying")]
@@ -101,6 +103,7 @@ public class StateMachine : MonoBehaviour
     private string _hitType;
     private Vector3 _attackDirection;
     private Vector3 _incomingAttackDirection;
+    private int _parryID;
 
     // Player input variables
     private Vector2 _moveInput;
@@ -150,6 +153,7 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDBlock;
     [HideInInspector] public int AnimIDCombo;
     [HideInInspector] public int AnimIDParry;
+    [HideInInspector] public int AnimIDParryID;
     [HideInInspector] public int AnimIDStunned;
     [HideInInspector] public int AnimIDDeath;
     [HideInInspector] public int AnimationIDAttackType;
@@ -160,7 +164,8 @@ public class StateMachine : MonoBehaviour
     public Action OnAttackContact;
     public Action<float, string> OnLightAttackRecieved;
     public Action<float, string> OnHeavyAttackRecieved;
-    public Action <bool, string> OnAttackWindUp;
+    public Action<float, string>OnParryRecieved;
+    public Action<bool, string> OnAttackWindUp;
     public Action OnLightAttackGiven;
     public Action OnHeavyAttackGiven;
     public Action OnAttemptParry;
@@ -216,6 +221,7 @@ public class StateMachine : MonoBehaviour
     public Transform ThirdClosestTarget;
     public int LightAttackID { get { return _lightAttackID; } set { _lightAttackID = value; } }
     public int HeavyAttackID { get { return _heavyAttackID; } set { _heavyAttackID = value; } }
+    
     public int HitID { get { return _hitID; } set { _hitID = value; } }
     public string AttackType { get { return _attackType; } set { _attackType = value; } }
     public string HitType { get { return _hitType; } set { _hitType = value; } }
@@ -223,6 +229,7 @@ public class StateMachine : MonoBehaviour
     public bool IsComboAttacking { get { return _isComboAttacking;} set { _isComboAttacking = value; } }
     public Vector3 AttackDirection { get { return _attackDirection; } set { _attackDirection= value; } }
     public Vector3 IncomingAttackDirection { get { return _incomingAttackDirection; } set { _incomingAttackDirection = value; } }
+    public int ParryID { get { return _parryID; } set { _parryID = value; } }
 
     private void Awake()
     {
@@ -587,7 +594,7 @@ public class StateMachine : MonoBehaviour
             _hitType = hitType;
             if (!IsDead)
             {
-                if (_isBlocking && HitType != "Heavy")
+                if (_isBlocking /*&& HitType != "Heavy"*/)
                 {
                     _isBlockSuccess = true;
                     OnBlockSuccessful?.Invoke();
@@ -618,17 +625,18 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    public void TakeParry(Vector3 attackerPosition)
+    public void TakeParry(Vector3 attackerPosition, float damage)
     {
+        OnParryRecieved?.Invoke(damage, "Parry");
         _incomingAttackDirection = attackerPosition;
         _isParried = true;
     }
     
     public void GiveParry(Vector3 attackerPosition)
     {
+       
         _incomingAttackDirection = attackerPosition;
         IsParrySucces = true;
-       // OnParrySuccessful?.Invoke();
     }
     private void AssignAnimationIDs()
     {
@@ -647,6 +655,7 @@ public class StateMachine : MonoBehaviour
         AnimIDDash = Animator.StringToHash("Dash");
         AnimIDBlock = Animator.StringToHash("Block");
         AnimIDParry = Animator.StringToHash("Parry");
+        AnimIDParryID = Animator.StringToHash("ParryID");
         AnimIDStunned = Animator.StringToHash("Stunned");
         AnimIDDeath = Animator.StringToHash("Death");
     }

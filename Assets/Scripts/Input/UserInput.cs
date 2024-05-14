@@ -54,7 +54,7 @@ public class UserInput : MonoBehaviour
     public void SetLightAttackInput(bool value)
     {
         
-        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsHeavyAttackPressed && !_stateMachine.IsParrying)
+        if(!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned && !_stateMachine.IsHeavyAttackPressed/* && !_stateMachine.IsParrying*/)
         {
             _stateMachine.IsLightAttackPressed = true;
         }
@@ -68,7 +68,7 @@ public class UserInput : MonoBehaviour
     public void SetHeavyAttackInput(bool value)
     {
 
-        if (!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned  && !_stateMachine.IsLightAttackPressed && !_stateMachine.IsParrying)
+        if (!_stateMachine.IsHurt && !_stateMachine.IsDashing && !_stateMachine.IsStunned  && !_stateMachine.IsLightAttackPressed/* && !_stateMachine.IsParrying*/)
         {
             _stateMachine.IsHeavyAttackPressed = true;
         }
@@ -78,18 +78,19 @@ public class UserInput : MonoBehaviour
             return;
         }
     }
+
     public void SetDashInput(bool value)
     {
         if (!_stateMachine.IsDashing && _stateMachine.MoveInput != Vector2.zero && !_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsParrying)
         {
             _stateMachine.IsDashPressed = value;
         }
-
         else
         {
             return;
         }
     }
+
     public void SetBlockInput(bool value)
     {
         _stateMachine.IsBlockPressed = value;

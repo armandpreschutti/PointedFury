@@ -532,6 +532,7 @@ MonoBehaviour:
   AnimIDBlock: 0
   AnimIDCombo: 0
   AnimIDParry: 0
+  AnimIDParryID: 0
   AnimIDStunned: 0
   AnimIDDeath: 0
   AnimationIDAttackType: 0
@@ -1264,7 +1265,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 88bdb2b39fc4e7e4fbfee3967786c4ab, type: 2}
+  - {fileID: 2100000, guid: ee1b00e65abd506459fca1e5a99c683b, type: 2}
   - {fileID: 2100000, guid: 88bdb2b39fc4e7e4fbfee3967786c4ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -6348,7 +6349,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 22d20b4e48914c34b87238d0fac2b849, type: 2}
+  - {fileID: 2100000, guid: dd2be8c1e96f8134eb405ae4ae656d10, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21945,7 +21946,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -840037777384891287, guid: 0ac1b930c727c8f428a3af46dde9ac10, type: 3}
+  - {fileID: 2100000, guid: 22d20b4e48914c34b87238d0fac2b849, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

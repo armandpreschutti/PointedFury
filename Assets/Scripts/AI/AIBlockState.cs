@@ -8,14 +8,13 @@ public class AIBlockState : AIBaseState
 
 
     float stateTime;
-    float attackTime = Random.Range(1f, 4f);
+    float postBlockTime;
 
     public override void EnterState()
     {
         //Debug.LogWarning("Enemy has entered BLOCK state");
         Ctx.StateMachine.IsBlockPressed= true;
         Ctx.comboCount = 0;
-/*        Ctx.hitCount = 0;*/
     }
 
     public override void UpdateState()
@@ -32,30 +31,32 @@ public class AIBlockState : AIBaseState
     {
         //Debug.LogWarning("Enemy has exited BLOCK state");
 
-        //Ctx.StateMachine.IsBlockPressed = false;
+        Ctx.StateMachine.IsBlockPressed = false;
+
     }
 
     public override void CheckSwitchStates()
     {
-        if (Ctx.StateMachine.IsBlockSuccess)
+        if (!Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking)
         {
-            SwitchState(Factory.Block());
-        }
-        else if (stateTime > 1f && !Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking)
-        {
-            Ctx.StateMachine.IsBlockPressed = false;
-            Ctx.hitCount = 0;
-            SwitchState(Factory.Idle());
-        }
-        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy")
-        {
-            Ctx.StateMachine.OnAttemptParry?.Invoke();
-        }
+            postBlockTime += Time.deltaTime;
+            if(postBlockTime > 1f)
+            {
+                Ctx.StateMachine.IsBlockPressed = false;
+                Ctx.hitCount = 0;
+                SwitchState(Factory.Idle());
+            }
 
-        /* else if (Ctx.isHurt)
-         {
-             SwitchState(Factory.Hurt());
-         }*/
+        }
+       /*else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy")
+        {
+            //Ctx.StateMachine.OnAttemptParry?.Invoke();
+            Ctx.StateMachine.IsDashPressed = true;
+        }*/
+      /*  else if (Ctx.isHurt)
+        {
+            SwitchState(Factory.Hurt());
+        }*/
     }
 
     public override void InitializeSubStates()

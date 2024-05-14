@@ -9,7 +9,7 @@ public class HealthBarHandler : MonoBehaviour
     public Slider _healthBarSlider;
     public bool IsAI;
 
-    private void Awake()
+/*    private void Awake()
     {
         if (!IsAI)
         {
@@ -21,23 +21,17 @@ public class HealthBarHandler : MonoBehaviour
         }
 
 
-    }
+    }*/
     private void OnEnable()
     {
-        if (_healthSystem != null)
-        {
-            _healthSystem.OnDamage += SetHealthBarValue;
-            _healthSystem.OnDeath += DisableEnemyHealthBar;
-        }
+        _healthSystem.OnDamage += SetHealthBarValue;
+        _healthSystem.OnDeath += DisableEnemyHealthBar;
 
     }
     private void OnDisable()
     {
-        if (_healthSystem != null)
-        {
-            _healthSystem.OnDamage -= SetHealthBarValue;
-            _healthSystem.OnDeath -= DisableEnemyHealthBar;
-        }
+        _healthSystem.OnDamage -= SetHealthBarValue;
+        _healthSystem.OnDeath -= DisableEnemyHealthBar;
     }
 
     public void SetHealthBarValue()

@@ -17,7 +17,6 @@ public class AIApproachingState: AIBaseState
         // Debug.Log("APPROACHING state is currently active");
         Ctx.DebugSubState = "Approaching State";
         CheckSwitchStates();
-       // Ctx.hitCount = 0;
 
         stateTime += Time.deltaTime;
         Ctx.moveInput.y = 1f;
@@ -35,14 +34,10 @@ public class AIApproachingState: AIBaseState
         {
             SwitchState(Factory.Idle());
         }
-       /* else if (Ctx.isAttacker && stateTime > 1f)
-        {
-            SwitchState(Factory.Attack());
-        }*/
-        else if (Ctx.isHurt)
+      /*  else if (Ctx.isHurt)
         {
             SwitchState(Factory.Hurt());
-        }
+        }*/
     }
 
     public override void InitializeSubStates()

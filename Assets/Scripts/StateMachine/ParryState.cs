@@ -13,10 +13,14 @@ public class ParryState : BaseState
     {
         //Debug.LogWarning("Player has entered PARRY state");
 
+        SetParryType();
+
+        Ctx.LightAttackID = 0;
+        Ctx.HeavyAttackID = 0;
         Ctx.IsParrying = true;
         Ctx.IsAttacking = false;
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
-        //Ctx.Animator.Play($"Parry", 0, 0);
+        Ctx.Animator.SetInteger(Ctx.AnimIDParryID, Ctx.ParryID);
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.IsParrySucces = false;
@@ -52,6 +56,16 @@ public class ParryState : BaseState
             {
                 SwitchState(Factory.Block());
             }
+            else if (Ctx.IsLightAttackPressed)
+            {
+                Ctx.IsHeavyAttackPressed = false;
+                SwitchState(Factory.LightAttack()); 
+            }
+            else if (Ctx.IsHeavyAttackPressed)
+            {
+                Ctx.IsLightAttackPressed = false;
+                SwitchState(Factory.HeavyAttack());
+            }
             else
             {
                 if (Ctx.MoveInput != Vector2.zero)
@@ -64,8 +78,7 @@ public class ParryState : BaseState
                 }
 
             }
-        }
-        
+        }       
 
     }
 
@@ -74,5 +87,29 @@ public class ParryState : BaseState
 
     }
 
-   
+    public void SetParryType()
+    {
+        switch (Ctx.ParryID)
+        {
+            case 0:
+                Ctx.ParryID = 1;
+                break;
+            case 1:
+                Ctx.ParryID = 2;
+                break;
+            case 2:
+                Ctx.ParryID = 1;
+                break;
+/*            case 4:
+                Ctx.HeavyAttackID = 5;
+                break;
+            case 5:
+                Ctx.HeavyAttackID = 1;
+                break;*/
+            default:
+                break;
+        }
+    }
+
+
 }

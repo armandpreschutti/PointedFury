@@ -37,7 +37,7 @@ public class AIAttackState : AIBaseState
     public override void ExitState()
     {
         //Debug.LogWarning("Enemy has exited ATTACK state");
-
+        
     }
 
     public override void CheckSwitchStates()

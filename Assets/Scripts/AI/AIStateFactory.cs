@@ -32,6 +32,11 @@ public class AIStateFactory
         return new AIApproachingState(_context, this);
     }
 
+    public AIBaseState Disengaging()
+    {
+        return new AIDisengagingState(_context, this);
+    }
+
     public AIBaseState Strafing()
     {
         return new AIStrafingState(_context, this);

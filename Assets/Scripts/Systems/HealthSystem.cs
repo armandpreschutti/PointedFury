@@ -25,12 +25,14 @@ public class HealthSystem : MonoBehaviour
     {
         _stateMachine.OnLightAttackRecieved += TakeDamage;
         _stateMachine.OnHeavyAttackRecieved += TakeDamage;
+        _stateMachine.OnParryRecieved += TakeDamage;
     }
 
     private void OnDisable()
     {
         _stateMachine.OnLightAttackRecieved -= TakeDamage;
         _stateMachine.OnHeavyAttackRecieved -= TakeDamage;
+        _stateMachine.OnParryRecieved -= TakeDamage;
     }
 
     void Start()
@@ -52,7 +54,7 @@ public class HealthSystem : MonoBehaviour
             }
         }        
     }
-
+   
     public void ResetHealth(bool value)
     {
         _currentHealh = MaxHealth;

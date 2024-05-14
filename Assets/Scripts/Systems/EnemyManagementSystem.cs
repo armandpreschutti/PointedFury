@@ -85,7 +85,7 @@ public class EnemyManagementSystem : MonoBehaviour
         {
             _newAttackerCheckTime -= Time.deltaTime;
             
-            if (_newAttackerCheckTime < 0 /*|| currentAttacker == null*/)
+            if (_newAttackerCheckTime < 0 /*|| currentAttacker == null*/ || GameObject.Find("Player").GetComponent<StateMachine>().ClosestTarget != null)
             {
                 if (managedEnemies.Count > 0)
                 {
@@ -147,8 +147,9 @@ public class EnemyManagementSystem : MonoBehaviour
 
     public void SetNewAttacker()
     {
-        newAttacker = managedEnemies[UnityEngine.Random.Range(0, managedEnemies.Count)];
-        if(newAttacker != currentAttacker)
+        //newAttacker = managedEnemies[UnityEngine.Random.Range(0, managedEnemies.Count)];
+        newAttacker = GameObject.Find("Player").GetComponent<StateMachine>().ClosestTarget.gameObject;
+        if (newAttacker != currentAttacker)
         {
             if(currentAttacker == null)
             {

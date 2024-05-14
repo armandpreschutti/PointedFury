@@ -38,7 +38,6 @@ public class AIBrain : MonoBehaviour
     public float DistanceBuffer = 1f;
 
     public int ComboSkill;
-    public int BlockSkill;
     public int BlockBreakSkill;
     public int HitTolerance;
 
@@ -47,9 +46,6 @@ public class AIBrain : MonoBehaviour
     public bool isAttacker;
     public bool isWatcher;
 
-    // other variables
-    bool isMeleeRange;
-    bool _isPaused;
 
     private void Awake()
     {
@@ -63,10 +59,6 @@ public class AIBrain : MonoBehaviour
     private void OnDisable()
     {
         StateMachine.OnHurt -= AddToHitCount;
-    }
-    private void Start()
-    {
-        // AssignAnimationIDs();
     }
 
     private void Update()
@@ -88,15 +80,14 @@ public class AIBrain : MonoBehaviour
     {
         StateMachine = GetComponent<StateMachine>();
         _currentTarget = FindAnyObjectByType<UserInput>().gameObject;
-/*        StateMachine.EnemiesNearby.Add(_currentTarget);
-        StateMachine.CurrentTarget = _currentTarget;*/
+        StateMachine.EnemiesNearby.Add(_currentTarget);
+        StateMachine.CurrentTarget = _currentTarget;
     }
 
     private void GetStateMachineVariables()
     {
         isHurt = StateMachine.IsHurt;
         StateMachine.MoveInput = moveInput;
-        isMeleeRange = IsMeleeRange();
     }
 
     public float DistanceToPlayer(Transform target)
@@ -104,18 +95,6 @@ public class AIBrain : MonoBehaviour
         Vector3 directionToTarget = transform.position - target.position;
         float distanceToTarget = directionToTarget.magnitude;
         return distanceToTarget;
-    }
-
-    public bool IsMeleeRange()
-    {
-        if (DistanceToPlayer(_currentTarget.transform) <= AttackDistance + DistanceBuffer)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     public void AddToHitCount()

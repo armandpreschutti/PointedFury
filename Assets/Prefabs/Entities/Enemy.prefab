@@ -5840,6 +5840,7 @@ MonoBehaviour:
   AnimIDBlock: 0
   AnimIDCombo: 0
   AnimIDParry: 0
+  AnimIDParryID: 0
   AnimIDStunned: 0
   AnimIDDeath: 0
   AnimationIDAttackType: 0
@@ -5956,7 +5957,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074535391245562779}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0989b445d18f8f34b922ebf90de05fe6, type: 3}
   m_Name: 
@@ -5985,7 +5986,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074535391245562779}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 572bac59c3b94774eac24daccab994c9, type: 3}
   m_Name: 

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEditor.Search;
 using UnityEngine;
 
@@ -8,13 +9,15 @@ public class AIIDleState : AIBaseState
 
 
     float stateTime;
-    float attackTime = Random.Range(0f, 2f);
+    float attackTime/*e = Random.Range(0f, 1f);*/;
+    float disengageTime;
+    float approachTime;
+    
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered IDLE state");
-
+        
         Ctx.comboCount = 0;
-       // Ctx.hitCount = 0;
     }
 
     public override void UpdateState()
@@ -39,20 +42,41 @@ public class AIIDleState : AIBaseState
 
         if (Ctx.DistanceToPlayer(Ctx._currentTarget.transform) > (Ctx.targetDistance + Ctx.DistanceBuffer))
         {
-            SwitchState(Factory.Approaching());
+            approachTime += Time.deltaTime;
+            if (approachTime >= 1f)
+            {
+                SwitchState(Factory.Approaching());
+            }
         }
-        else if (Ctx.isAttacker && stateTime > attackTime)
+        else if (Ctx.DistanceToPlayer(Ctx._currentTarget.transform) < (Ctx.targetDistance - Ctx.DistanceBuffer))
         {
-            SwitchState(Factory.Attack());
+            disengageTime += Time.deltaTime;
+            if (disengageTime >= 1f)
+            {
+                SwitchState(Factory.Disengaging());
+            }
         }
-        else if (Ctx.isWatcher && stateTime > 3f)
+        else if (Ctx.isAttacker && /*stateTime > attackTime*/!Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && !Ctx.isHurt)
+        {
+            attackTime += Time.deltaTime;
+            if (attackTime >= /*1f*/ Random.Range(.35f, .75f))
+            {
+                SwitchState(Factory.Attack());
+            }
+         //   SwitchState(Factory.Attack());
+        }
+        else if (Ctx.isWatcher && stateTime > 3f && !Ctx.isHurt)
         {
             SwitchState(Factory.Strafing());
         }
-        else if (Ctx.isHurt)
+        else if (Ctx.hitCount >= Ctx.HitTolerance)
         {
-            SwitchState(Factory.Hurt());
+            SwitchState(Factory.Block());
         }
+        /*  else if (Ctx.isHurt)
+          {
+              SwitchState(Factory.Hurt());
+          }*/
     }
 
     public override void InitializeSubStates()
