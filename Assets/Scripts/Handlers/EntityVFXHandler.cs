@@ -21,8 +21,8 @@ public class EntityVFXHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        _stateMachine.OnAttackWindUp += SetIndicator;
-        _stateMachine.OnLightAttack += SetIndicator;
+        //_stateMachine.OnAttackWindUp += SetIndicator;
+        //_stateMachine.OnLightAttack += SetIndicator;
         _stateMachine.OnHeavyAttack += SetIndicator;
         _stateMachine.OnLightAttackRecieved += PlayAttackImpactVFX;
         _stateMachine.OnHeavyAttackRecieved += PlayAttackImpactVFX;
@@ -31,8 +31,8 @@ public class EntityVFXHandler : MonoBehaviour
     }
     private void OnDisable()
     {
-        _stateMachine.OnAttackWindUp -= SetIndicator;
-        _stateMachine.OnLightAttack -= SetIndicator;
+        //_stateMachine.OnAttackWindUp -= SetIndicator;
+       // _stateMachine.OnLightAttack -= SetIndicator;
         _stateMachine.OnHeavyAttack -= SetIndicator;
         _stateMachine.OnLightAttackRecieved -= PlayAttackImpactVFX;
         _stateMachine.OnHeavyAttackRecieved -= PlayAttackImpactVFX;

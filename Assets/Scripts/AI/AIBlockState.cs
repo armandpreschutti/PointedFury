@@ -9,12 +9,13 @@ public class AIBlockState : AIBaseState
 
     float stateTime;
     float postBlockTime;
-
+    int parryChance;
     public override void EnterState()
     {
         //Debug.LogWarning("Enemy has entered BLOCK state");
         Ctx.StateMachine.IsBlockPressed= true;
         Ctx.comboCount = 0;
+        parryChance = Random.Range(1, 11);
     }
 
     public override void UpdateState()
@@ -46,13 +47,12 @@ public class AIBlockState : AIBaseState
                 Ctx.hitCount = 0;
                 SwitchState(Factory.Idle());
             }
-
         }
-       /*else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy")
+        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy" && Ctx.ParrySkill >= parryChance)
         {
-            //Ctx.StateMachine.OnAttemptParry?.Invoke();
-            Ctx.StateMachine.IsDashPressed = true;
-        }*/
+            Ctx.StateMachine.OnAttemptParry?.Invoke();
+            //Ctx.StateMachine.IsDashPressed = true;
+        }
       /*  else if (Ctx.isHurt)
         {
             SwitchState(Factory.Hurt());

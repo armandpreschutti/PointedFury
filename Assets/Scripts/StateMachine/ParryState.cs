@@ -98,14 +98,14 @@ public class ParryState : BaseState
                 Ctx.ParryID = 2;
                 break;
             case 2:
+                Ctx.ParryID = 3;
+                break;
+            case 3:
+                Ctx.ParryID = 4;
+                break;
+            case 4:
                 Ctx.ParryID = 1;
                 break;
-/*            case 4:
-                Ctx.HeavyAttackID = 5;
-                break;
-            case 5:
-                Ctx.HeavyAttackID = 1;
-                break;*/
             default:
                 break;
         }

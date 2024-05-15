@@ -8,7 +8,7 @@ public class AIStrafingState : AIBaseState
 
     
     float stateTime;
-    float strafeDirection;
+    int strafeDirection;
     public override void EnterState()
     {
         Debug.LogWarning("Enemmy has entered STRAFING state");

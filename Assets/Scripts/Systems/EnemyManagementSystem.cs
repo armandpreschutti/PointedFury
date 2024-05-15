@@ -54,7 +54,7 @@ public class EnemyManagementSystem : MonoBehaviour
                     enemy.GetComponent<AIBrain>().isActivated = true;
                     enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
                     enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
-                    enemy.GetComponent<StateMachine>().IsFighting = true;
+                   // enemy.GetComponent<StateMachine>().IsFighting = true;
                 }
             }          
         }
@@ -73,7 +73,7 @@ public class EnemyManagementSystem : MonoBehaviour
                 enemy.GetComponent<AIBrain>().isActivated = false;
                 enemy.GetComponent<StateMachine>().CurrentTarget = null;
                 enemy.GetComponent<StateMachine>().EnemiesNearby.Remove(other.gameObject);
-                enemy.GetComponent<StateMachine>().IsFighting = false;
+              //  enemy.GetComponent<StateMachine>().IsFighting = false;
             }
         }
 

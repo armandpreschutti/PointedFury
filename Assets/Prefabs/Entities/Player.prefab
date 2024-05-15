@@ -506,8 +506,9 @@ MonoBehaviour:
   CombatDistance: 1
   LightAttackChargeSpeed: 0.5
   HeavyAttackChargeSpeed: 0.5
-  KnockBackPower: 5
+  KnockBackPower: 7.5
   ParryChargeSpeed: 4
+  ParryDamage: 0
   EnemiesNearby: []
   SlowMotionSpeed: 0.25
   IsAI: 0

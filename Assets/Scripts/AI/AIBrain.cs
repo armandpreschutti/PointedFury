@@ -40,6 +40,8 @@ public class AIBrain : MonoBehaviour
     public int ComboSkill;
     public int BlockBreakSkill;
     public int HitTolerance;
+    public int ParrySkill;
+    public int HeavyAttackSkill;
 
     // enemy management variables
     public bool isActivated;

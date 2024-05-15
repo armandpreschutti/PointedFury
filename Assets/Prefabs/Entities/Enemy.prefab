@@ -5814,8 +5814,9 @@ MonoBehaviour:
   CombatDistance: 1
   LightAttackChargeSpeed: 0.5
   HeavyAttackChargeSpeed: 0.5
-  KnockBackPower: 5
+  KnockBackPower: 7.5
   ParryChargeSpeed: 4
+  ParryDamage: 0
   EnemiesNearby: []
   SlowMotionSpeed: 1
   IsAI: 1
@@ -5928,9 +5929,10 @@ MonoBehaviour:
   WatchDistance: 3
   DistanceBuffer: 1
   ComboSkill: 4
-  BlockSkill: 2
   BlockBreakSkill: 0
   HitTolerance: 0
+  ParrySkill: 0
+  HeavyAttackSkill: 0
   isActivated: 0
   isAttacker: 0
   isWatcher: 0

@@ -590,16 +590,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 490303811}
     m_Modifications:
-    - target: {fileID: 1672118318887397797, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 84ecd297ca5eb834388f4c9c1491587d, type: 2}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_Name
       value: Enemy (5)
       objectReference: {fileID: 0}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237462766552877748, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4561761237256226125, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
@@ -664,7 +664,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: ComboSkill
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: ParrySkill
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: isAttacker
@@ -680,7 +684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: HitTolerance
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: WatchDistance
@@ -692,7 +696,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: BlockBreakSkill
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: HeavyAttackSkill
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8864906451434806769, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: IsAI
@@ -932,16 +940,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 490303811}
     m_Modifications:
-    - target: {fileID: 1672118318887397797, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 84ecd297ca5eb834388f4c9c1491587d, type: 2}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_Name
       value: Enemy (3)
       objectReference: {fileID: 0}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237462766552877748, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4561761237256226125, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
@@ -1006,7 +1014,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: ComboSkill
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: ParrySkill
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: isAttacker
@@ -1022,7 +1034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: HitTolerance
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: DistanceBuffer
@@ -1030,7 +1042,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: BlockBreakSkill
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: HeavyAttackSkill
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8864906451434806769, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: IsAI
@@ -1057,16 +1073,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 490303811}
     m_Modifications:
-    - target: {fileID: 1672118318887397797, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 84ecd297ca5eb834388f4c9c1491587d, type: 2}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_Name
       value: Enemy (4)
       objectReference: {fileID: 0}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237462766552877748, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4561761237256226125, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
@@ -1135,7 +1151,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: ComboSkill
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: ParrySkill
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: isAttacker
@@ -1151,7 +1171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: HitTolerance
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: WatchDistance
@@ -1163,7 +1183,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: BlockBreakSkill
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: HeavyAttackSkill
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8864906451434806769, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: IsAI
@@ -1520,7 +1544,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 2045307862}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3c17c5fd4688e948b7ff915f6d8b7ba, type: 3}
   m_Name: 
@@ -1533,16 +1557,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 490303811}
     m_Modifications:
-    - target: {fileID: 1672118318887397797, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 84ecd297ca5eb834388f4c9c1491587d, type: 2}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_Name
       value: Enemy (2)
       objectReference: {fileID: 0}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237462766552877748, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4561761237256226125, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
@@ -1607,7 +1631,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: ComboSkill
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: ParrySkill
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: isAttacker
@@ -1623,7 +1651,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: HitTolerance
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: WatchDistance
@@ -1635,7 +1663,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: BlockBreakSkill
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: HeavyAttackSkill
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8864906451434806769, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: IsAI
@@ -1673,16 +1705,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 490303811}
     m_Modifications:
-    - target: {fileID: 1672118318887397797, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 84ecd297ca5eb834388f4c9c1491587d, type: 2}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237462766552877748, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4561761237256226125, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
@@ -1751,7 +1783,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: ComboSkill
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: ParrySkill
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: isAttacker
@@ -1767,7 +1803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: HitTolerance
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: WatchDistance
@@ -1779,7 +1815,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: BlockBreakSkill
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: HeavyAttackSkill
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8864906451434806769, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: IsAI
@@ -1822,16 +1862,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 490303811}
     m_Modifications:
-    - target: {fileID: 1672118318887397797, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 84ecd297ca5eb834388f4c9c1491587d, type: 2}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_Name
       value: Enemy (6)
       objectReference: {fileID: 0}
     - target: {fileID: 2074535391245562779, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3237462766552877748, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4561761237256226125, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
@@ -1896,7 +1936,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: ComboSkill
-      value: 3
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: ParrySkill
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: isAttacker
@@ -1912,7 +1956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: HitTolerance
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: DistanceBuffer
@@ -1920,7 +1964,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: BlockBreakSkill
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722052640443522576, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
+      propertyPath: HeavyAttackSkill
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8864906451434806769, guid: f612bf210fe195b4795ea354b57edbbf, type: 3}
       propertyPath: IsAI
@@ -2243,7 +2291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3302283437328520037, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3302283437328520037, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
       propertyPath: _stateMachine

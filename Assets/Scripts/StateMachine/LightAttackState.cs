@@ -13,6 +13,7 @@ public class LightAttackState : BaseState
         //Debug.LogWarning("Player has entered LIGHT ATTACK state");
 
         SetAttackType();
+
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
         Ctx.Animator.SetInteger(Ctx.AnimIDLightAttackID, Ctx.LightAttackID);
         Ctx.IsAttacking = true;
@@ -34,7 +35,6 @@ public class LightAttackState : BaseState
             Ctx.SetAttackDirection();
             Ctx.AttackMovement();
         }
-
     }
 
     public override void ExitState()
@@ -63,7 +63,14 @@ public class LightAttackState : BaseState
             }
             else
             {
-                SwitchState(Factory.PostAttack());
+                if (Ctx.IsBlockPressed)
+                {
+                    SwitchState(Factory.Block());
+                }
+                else
+                {
+                    SwitchState(Factory.PostAttack());
+                }
             }
         }
         else if (Ctx.IsLightHitLanded)

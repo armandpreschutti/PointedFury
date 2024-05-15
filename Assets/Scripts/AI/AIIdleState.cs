@@ -59,7 +59,7 @@ public class AIIDleState : AIBaseState
         else if (Ctx.isAttacker && /*stateTime > attackTime*/!Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && !Ctx.isHurt)
         {
             attackTime += Time.deltaTime;
-            if (attackTime >= /*1f*/ Random.Range(.35f, .75f))
+            if (attackTime >= .75f /* Random.Range(.35f, .75f)*/)
             {
                 SwitchState(Factory.Attack());
             }
