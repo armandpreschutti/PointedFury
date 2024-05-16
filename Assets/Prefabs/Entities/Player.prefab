@@ -494,7 +494,7 @@ MonoBehaviour:
   SprintSpeed: 7.5
   FightSpeed: 1.5
   SpeedChangeRate: 1
-  DashSpeed: 5
+  DashSpeed: 4
   Gravity: -9.81
   GroundedOffset: -0.2
   GroundedRadius: 0.2

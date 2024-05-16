@@ -594,7 +594,7 @@ public class StateMachine : MonoBehaviour
             _hitType = hitType;
             if (!IsDead)
             {
-                if (_isBlocking && HitType != "Heavy")
+                if (_isBlocking /*&& HitType != "Heavy"*/)
                 {
                     _isBlockSuccess = true;
                     OnBlockSuccessful?.Invoke();
