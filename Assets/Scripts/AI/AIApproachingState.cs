@@ -1,4 +1,3 @@
-using UnityEditor.Search;
 using UnityEngine;
 
 public class AIApproachingState: AIBaseState
@@ -7,9 +6,12 @@ public class AIApproachingState: AIBaseState
     : base(currentContext, stateFactory) { }
 
     float stateTime;
+    float _targetMoveInput = 1f;
+    float _moveInputSmoothTime = 30f;
     public override void EnterState()
     {
         //Debug.LogWarning("Enemy has entered APPROACHING state");
+        _targetMoveInput = 0;
     }
 
     public override void UpdateState()
@@ -19,6 +21,11 @@ public class AIApproachingState: AIBaseState
         CheckSwitchStates();
 
         stateTime += Time.deltaTime;
+        // Ctx.moveInput.y = Mathf.Lerp(Ctx.moveInput.y, _targetMoveInput, Time.deltaTime * _moveInputSmoothTime);
+        /*if (Ctx.StateMachine.MoveInput.magnitude < 0.01f)
+        {
+            Ctx.StateMachine.MoveInput = Vector2.zero;
+        }*/
         Ctx.moveInput.y = 1f;
     }
 

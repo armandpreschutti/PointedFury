@@ -59,7 +59,7 @@ public class EnemyManagementSystem : MonoBehaviour
             }          
         }
     }
-    private void OnTriggerExit(Collider other)
+  /*  private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -77,7 +77,7 @@ public class EnemyManagementSystem : MonoBehaviour
             }
         }
 
-    }
+    }*/
 
     public void SetAttacker()
     {
@@ -148,7 +148,15 @@ public class EnemyManagementSystem : MonoBehaviour
     public void SetNewAttacker()
     {
         //newAttacker = managedEnemies[UnityEngine.Random.Range(0, managedEnemies.Count)];
-        newAttacker = GameObject.Find("Player").GetComponent<StateMachine>().ClosestTarget.gameObject;
+        if(GameObject.Find("Player").GetComponent<StateMachine>().ClosestTarget.gameObject != null)
+        {
+            newAttacker = GameObject.Find("Player").GetComponent<StateMachine>().ClosestTarget.gameObject;
+        }
+        else
+        {
+            newAttacker = managedEnemies[UnityEngine.Random.Range(0, managedEnemies.Count)];
+        }
+
         if (newAttacker != currentAttacker)
         {
             if(currentAttacker == null)

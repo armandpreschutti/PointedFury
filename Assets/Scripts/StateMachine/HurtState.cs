@@ -20,9 +20,14 @@ public class HurtState : BaseState
         Ctx.IsFighting = true;
         Ctx.OnHurt?.Invoke();
         Ctx.OnFight?.Invoke(true);
-        Ctx.Animator.Play($"{Ctx.HitType}Hurt{Ctx.HitID}", 0, 0);
-        Ctx.Animator.SetInteger(Ctx.AnimIDHurtID, Ctx.HitID);
+        if (Ctx.HitType != "Parry")
+        {
+            Ctx.Animator.Play($"{Ctx.HitType}Hurt{Ctx.HitID}", 0, 0);
+        }
+
+/*        Ctx.Animator.SetInteger(Ctx.AnimIDHurtID, Ctx.HitID);*/
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
+
         ExitAllAnimations();
     }
 
@@ -77,7 +82,11 @@ public class HurtState : BaseState
         {
             SwitchState(Factory.Hurt());
         }
-        else if(Ctx.IsParrySucces)
+        else if (Ctx.IsParried)
+        {
+            SwitchState(Factory.Stunned()); 
+        }
+        else if (Ctx.IsParrySucces)
         {
             SwitchState(Factory.Parry());
         }

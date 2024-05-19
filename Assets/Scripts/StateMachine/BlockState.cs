@@ -80,7 +80,6 @@ public class BlockState : BaseState
         {
             SwitchState(Factory.Hurt());   
         }
-
     }
 
     public override void InitializeSubStates()

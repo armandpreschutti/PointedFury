@@ -22,6 +22,7 @@ public class LightAttackState : BaseState
         Ctx.OnFight?.Invoke(true);
         Ctx.OnLightAttack?.Invoke(true, "Light");
         Ctx.OnAttack?.Invoke(true);
+        //Ctx.IsBlockPressed = false;
     }
 
     public override void UpdateState()
@@ -47,6 +48,7 @@ public class LightAttackState : BaseState
         Ctx.OnAttack?.Invoke(false);
         Ctx.IsCharging = false;
         Ctx.IsParryable = false;
+        Ctx.IsDashPressed = false;
     }
 
     public override void CheckSwitchStates()
@@ -85,7 +87,11 @@ public class LightAttackState : BaseState
         {
             SwitchState(Factory.Stunned());
         }
-        else if (Ctx.IsDashPressed)
+        else if (Ctx.IsParrySucces)
+        {
+            SwitchState(Factory.Parry());
+        }
+        else if (Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable && Ctx.IsDashPressed)
         {
             SwitchState(Factory.Dash());
         }

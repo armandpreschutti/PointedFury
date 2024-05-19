@@ -52,6 +52,8 @@ public class StateMachine : MonoBehaviour
     public float ParryChargeSpeed;
     [Tooltip("The amount of damage a player will inflict with parries")]
     public float ParryDamage;
+    [Tooltip("The percentage of damage taken from blocking attack")]
+    public float BlockDamageReduction;
     [Tooltip("A list of enemies detected via sphere casr")]
     public List<GameObject> EnemiesNearby = new List<GameObject>();
     [Tooltip("The time scale when parrying")]
@@ -85,6 +87,8 @@ public class StateMachine : MonoBehaviour
     private bool _isParryable = false;
     private bool _isStunned = false;
     private bool _isDead = false;
+    private bool _isEvadable = false;
+    private bool _isEvading = false;
 
 
     public string DebugCurrentSuperState;
@@ -158,6 +162,7 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDDeath;
     [HideInInspector] public int AnimationIDAttackType;
     [HideInInspector] public float _transitionTime;
+    [HideInInspector] public int AnimIDEvade;
     
 
     // Player action events
@@ -170,8 +175,8 @@ public class StateMachine : MonoBehaviour
     public Action OnHeavyAttackGiven;
     public Action OnAttemptParry;
     public Action OnTestAction;
-    public Action OnBlockSuccessful;
-    public Action OnParrySuccessful;
+    public Action<float, string> OnBlockSuccessful;
+    public Action OnParryContact;
     public Action OnDashSuccessful;
     public Action OnHurt;
     public Action OnDeath;
@@ -213,6 +218,9 @@ public class StateMachine : MonoBehaviour
     public bool IsParryable { get { return _isParryable; }set { _isParryable = value; } }
     public bool IsStunned { get { return _isStunned; } set { _isStunned = value; } }    
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
+    public bool IsEvadable { get { return _isEvadable; } set { _isEvadable = value; } }
+    public bool IsEvading { get { return _isEvading; } set { _isEvading = value; } }
+
 
     // Fighting
     public GameObject CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; } }
@@ -308,6 +316,7 @@ public class StateMachine : MonoBehaviour
                 transform.LookAt(transform.position + forwardDirection);
                 moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
                 _controller.Move(moveDirection * Time.deltaTime);
+
             }
             else
             {
@@ -468,7 +477,7 @@ public class StateMachine : MonoBehaviour
 
     public Vector3 TargetRelativeInput()
     {
-        if(_currentTarget!= null && _moveInput != Vector2.zero)
+        if (_currentTarget != null && _moveInput != Vector2.zero)
         {
             // Calculate the direction from player to target
             Vector3 directionToTarget = (_currentTarget.transform.position - transform.position).normalized;
@@ -483,7 +492,7 @@ public class StateMachine : MonoBehaviour
         }
         else
         {
-            return Vector2.zero;
+            return Vector3.zero;
         }
     }
 
@@ -496,7 +505,11 @@ public class StateMachine : MonoBehaviour
 
     public void OnAttackAnimationBegin()
     {
-        _isParryable = true;
+        if(_attackType == "Heavy")
+        {
+            _isParryable = true;
+        }
+
     }
 
     public void OnAttackAnimationCharge()
@@ -504,6 +517,7 @@ public class StateMachine : MonoBehaviour
         OnAttackWindUp?.Invoke(true, _attackType);
         _isCharging = true;
     }
+
 
     public void OnAttackAnimationContact()
     {
@@ -530,13 +544,21 @@ public class StateMachine : MonoBehaviour
     public void OnParryAnimationCharge()
     {
         _isCharging = true;
+        IsEvadable = true;
+        //SetIncomingAttackDirection();
+    }
+    public void OnParryAnimationChargeComplete()
+    {
+        _isCharging = false;
+        IsEvadable = false;
     }
 
     public void OnParryAnimationContact()
     {
-        _isCharging = false;
-        OnParrySuccessful?.Invoke();
+        
+        OnParryContact?.Invoke();
         Time.timeScale = SlowMotionSpeed;
+       // SetIncomingAttackDirection();
     }
 
     public void OnParryAnimationComplete()
@@ -580,11 +602,20 @@ public class StateMachine : MonoBehaviour
         _isDashing = false;
     }
 
+    public void OnEvadeStart()
+    {
+        Time.timeScale = SlowMotionSpeed;
+    }
+    public void OnEvadeContact()
+    {
+        Time.timeScale = 1f;
+    }
+
     public void TakeHit(string hitType, int attackID, Vector3 attackerPosition, float attackDamage)
     {
         _incomingAttackDirection = attackerPosition;
 
-        if(_isDashing || _isParrying)
+        if(/*_isDashing || */_isEvading ||_isParrying)
         {
             return;
         }
@@ -597,7 +628,7 @@ public class StateMachine : MonoBehaviour
                 if (_isBlocking /*&& HitType != "Heavy"*/)
                 {
                     _isBlockSuccess = true;
-                    OnBlockSuccessful?.Invoke();
+                    OnBlockSuccessful?.Invoke(attackDamage * BlockDamageReduction, "Block");
                 }
                 else if (hitType == "Light" && !_isParrying)
                 { 
@@ -627,9 +658,18 @@ public class StateMachine : MonoBehaviour
 
     public void TakeParry(Vector3 attackerPosition, float damage)
     {
-        OnParryRecieved?.Invoke(damage, "Parry");
-        _incomingAttackDirection = attackerPosition;
-        _isParried = true;
+        if (_isBlocking)
+        {
+            _isBlockSuccess = true;
+            OnBlockSuccessful?.Invoke(damage, "Block");
+            _incomingAttackDirection = attackerPosition;
+        }
+        else
+        {
+            OnParryRecieved?.Invoke(damage, "Parry");
+            _incomingAttackDirection = attackerPosition;
+            _isParried = true;
+        }
     }
     
     public void GiveParry(Vector3 attackerPosition)
@@ -658,18 +698,19 @@ public class StateMachine : MonoBehaviour
         AnimIDParryID = Animator.StringToHash("ParryID");
         AnimIDStunned = Animator.StringToHash("Stunned");
         AnimIDDeath = Animator.StringToHash("Death");
+        AnimIDEvade = Animator.StringToHash("Evade");
     }
 
     public void SetCombatMovementAnimationValues()
     {
-        _animator.SetFloat(AnimIDInputX, TargetRelativeInput().x * TargetSpeed);
-        _animator.SetFloat(AnimIDInputY, TargetRelativeInput().z * TargetSpeed);
+        _animator.SetFloat(AnimIDInputX, TargetRelativeInput().x /** TargetSpeed*/);
+        _animator.SetFloat(AnimIDInputY, TargetRelativeInput().z /** TargetSpeed*/);
     }
 
     public void SetFreeRoamMovementAnimationValues()
     {
-        _animator.SetFloat(AnimIDInputX, _moveInput.x * TargetSpeed);
-        _animator.SetFloat(AnimIDInputY, _moveInput.y * TargetSpeed);
+        _animator.SetFloat(AnimIDInputX, _moveInput.x /** TargetSpeed*/);
+        _animator.SetFloat(AnimIDInputY, _moveInput.y /** TargetSpeed*/);
     }
 
     private void SetMovementAnimationSpeed()

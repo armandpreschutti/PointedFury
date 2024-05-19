@@ -38,7 +38,7 @@ public class PostAttackState : BaseState
 
     public override void CheckSwitchStates()
     {
-         if (!Ctx.IsPostAttack)
+        if (!Ctx.IsPostAttack)
         {
             SwitchState(Factory.Idle());
         }

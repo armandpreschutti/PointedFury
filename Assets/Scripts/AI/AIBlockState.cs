@@ -1,4 +1,4 @@
-using UnityEditor.Search;
+
 using UnityEngine;
 
 public class AIBlockState : AIBaseState
@@ -48,15 +48,11 @@ public class AIBlockState : AIBaseState
                 SwitchState(Factory.Idle());
             }
         }
-        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy" && Ctx.ParrySkill >= parryChance)
+        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy" && Ctx.ParrySkill >= parryChance &&!Ctx.StateMachine.IsStunned)
         {
             Ctx.StateMachine.OnAttemptParry?.Invoke();
-            //Ctx.StateMachine.IsDashPressed = true;
+
         }
-      /*  else if (Ctx.isHurt)
-        {
-            SwitchState(Factory.Hurt());
-        }*/
     }
 
     public override void InitializeSubStates()

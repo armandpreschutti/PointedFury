@@ -24,6 +24,8 @@ public class ParryState : BaseState
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.IsParrySucces = false;
+        //Ctx.IsEvadable = true;
+
     }
 
     public override void UpdateState()
@@ -34,7 +36,8 @@ public class ParryState : BaseState
 
         if(Ctx.IsCharging)
         {
-            Ctx.SetIncomingAttackDirection();
+           /* Ctx.SetIncomingAttackDirection();*/
+            Ctx.SetAttackDirection();
             Ctx.ParryMovement();
         }
 
@@ -78,7 +81,11 @@ public class ParryState : BaseState
                 }
 
             }
-        }       
+        }   
+        else if (Ctx.IsParried)
+        {
+            SwitchState(Factory.Stunned());
+        }
 
     }
 

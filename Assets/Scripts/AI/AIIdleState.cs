@@ -1,5 +1,4 @@
-using Unity.VisualScripting;
-using UnityEditor.Search;
+
 using UnityEngine;
 
 public class AIIDleState : AIBaseState
@@ -12,12 +11,13 @@ public class AIIDleState : AIBaseState
     float attackTime/*e = Random.Range(0f, 1f);*/;
     float disengageTime;
     float approachTime;
-    
+    int blockChance;
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered IDLE state");
         
         Ctx.comboCount = 0;
+        blockChance = Random.Range(1, 11);
     }
 
     public override void UpdateState()
@@ -59,7 +59,7 @@ public class AIIDleState : AIBaseState
         else if (Ctx.isAttacker && /*stateTime > attackTime*/!Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && !Ctx.isHurt)
         {
             attackTime += Time.deltaTime;
-            if (attackTime >= .75f /* Random.Range(.35f, .75f)*/)
+            if (attackTime >= Ctx.AttackInterval)
             {
                 SwitchState(Factory.Attack());
             }
@@ -69,10 +69,15 @@ public class AIIDleState : AIBaseState
         {
             SwitchState(Factory.Strafing());
         }
+/*        else if(Ctx.isWatcher && Ctx.BlockSkill >= blockChance && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking)
+        {
+            SwitchState(Factory.Block());
+        }*/
         else if (Ctx.hitCount >= Ctx.HitTolerance)
         {
             SwitchState(Factory.Block());
         }
+        
         /*  else if (Ctx.isHurt)
           {
               SwitchState(Factory.Hurt());

@@ -14,6 +14,10 @@ public class UserInput : MonoBehaviour
     public static Action OnResetGamePressed;
     public static Action OnDisableEnemiesPresssed;
 
+    public Vector2 _targetMoveInput;
+    public float _moveInputSmoothTime = 0.1f; // Adjust this value to change the smoothing speed
+    public Vector2 _currentMoveInputVelocity;
+
     private void Awake()
     {
         _playerControls = new PlayerControls();
@@ -34,15 +38,24 @@ public class UserInput : MonoBehaviour
         UnsubscribeFromActions();
     }
 
-    private void Start()
+    private void Update()
     {
+        //_stateMachine.MoveInput = Vector2.SmoothDamp(_stateMachine.MoveInput, _targetMoveInput, ref _currentMoveInputVelocity, _moveInputSmoothTime);
+        //_stateMachine.MoveInput = Vector2.Lerp(_stateMachine.MoveInput, _targetMoveInput, /*ref _currentMoveInputVelocity,*/ _moveInputSmoothTime * Time.deltaTime);
 
+        _stateMachine.MoveInput = Vector2.Lerp(_stateMachine.MoveInput, _targetMoveInput, Time.deltaTime * _moveInputSmoothTime);
+        if (_stateMachine.MoveInput.magnitude < 0.01f) 
+        {
+            _stateMachine.MoveInput = Vector2.zero;
+        }
+       // _animator.SetFloat(AnimIDSpeed, AnimationBlend);
     }
+
 
     // Set move input value
     public void SetMoveInput(Vector2 value)
     {
-        _stateMachine.MoveInput = value;
+        _targetMoveInput = value;
     }
 
     // Set look input value
@@ -81,7 +94,7 @@ public class UserInput : MonoBehaviour
 
     public void SetDashInput(bool value)
     {
-        if (!_stateMachine.IsDashing && _stateMachine.MoveInput != Vector2.zero && !_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsParrying)
+        if (!_stateMachine.IsDashing && !_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsParrying/* && !_stateMachine.IsBlocking*/)
         {
             _stateMachine.IsDashPressed = value;
         }
@@ -98,7 +111,7 @@ public class UserInput : MonoBehaviour
 
     public void SetParryInput()
     {
-        if (!_stateMachine.IsAttacking && !_stateMachine.IsDashing/* && !_stateMachine.IsHurt*/)
+        if (!_stateMachine.IsAttacking && !_stateMachine.IsDashing)
         { 
             _stateMachine.OnAttemptParry?.Invoke();
         }

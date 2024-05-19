@@ -71,4 +71,9 @@ public class StateFactory
     {
         return new DeathState(_context, this);
     }
+
+    public BaseState Evade()
+    {
+        return new EvadeState(_context, this);
+    }
 }

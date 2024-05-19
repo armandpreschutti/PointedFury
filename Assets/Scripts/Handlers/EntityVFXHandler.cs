@@ -21,23 +21,23 @@ public class EntityVFXHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        //_stateMachine.OnAttackWindUp += SetIndicator;
-        //_stateMachine.OnLightAttack += SetIndicator;
-        _stateMachine.OnHeavyAttack += SetIndicator;
+       /* _stateMachine.OnAttackWindUp += SetIndicator;
+        _stateMachine.OnLightAttack += SetIndicator;
+        _stateMachine.OnHeavyAttack += SetIndicator;*/
         _stateMachine.OnLightAttackRecieved += PlayAttackImpactVFX;
         _stateMachine.OnHeavyAttackRecieved += PlayAttackImpactVFX;
         _stateMachine.OnBlockSuccessful += PlayBlockImpactVFX;
-        _stateMachine.OnParrySuccessful += PlayParryVFX;
+        _stateMachine.OnParryRecieved += PlayParryVFX;
     }
     private void OnDisable()
     {
-        //_stateMachine.OnAttackWindUp -= SetIndicator;
-       // _stateMachine.OnLightAttack -= SetIndicator;
-        _stateMachine.OnHeavyAttack -= SetIndicator;
+       /* _stateMachine.OnAttackWindUp -= SetIndicator;
+        _stateMachine.OnLightAttack -= SetIndicator;
+        _stateMachine.OnHeavyAttack -= SetIndicator;*/
         _stateMachine.OnLightAttackRecieved -= PlayAttackImpactVFX;
         _stateMachine.OnHeavyAttackRecieved -= PlayAttackImpactVFX;
         _stateMachine.OnBlockSuccessful -= PlayBlockImpactVFX;
-        _stateMachine.OnParrySuccessful -= PlayParryVFX;
+        _stateMachine.OnParryRecieved -= PlayParryVFX;
     }
     public void SetIndicator(bool value, string attackType)
     {
@@ -102,21 +102,21 @@ public class EntityVFXHandler : MonoBehaviour
                 switch (_stateMachine.HeavyAttackID)
                 {
                     case 1:
-                        _rightHandVFX.Play();
-
+                        _rightFootVFX.Play();
                         break;
                     case 2:
-                        _rightFootVFX.Play();
+                        _rightHandVFX.Play();
                         break;
                     case 3:
-                        _leftHandVFX.Play();
-                        break;
-                    case 4:
                         _leftFootVFX.Play();
                         break;
-                    case 5:
+                    case 4:
                         _rightFootVFX.Play();
                         break;
+                    case 5:
+                        _rightHandVFX.Play();
+                        break;
+                    
                     default:
                         break;
                 }
@@ -130,20 +130,20 @@ public class EntityVFXHandler : MonoBehaviour
                 switch (_stateMachine.HeavyAttackID)
                 {
                     case 1:
-                        _rightHandVFX.Stop();
+                        _rightFootVFX.Stop();
                         break;
                     case 2:
-                        _rightFootVFX.Stop();
+                        _rightHandVFX.Stop();
                         break;
                     case 3:
-                        _leftHandVFX.Stop();
-                        break;
-                    case 4:
                         _leftFootVFX.Stop();
                         break;
-                    case 5:
+                    case 4:
                         _rightFootVFX.Stop();
                         break;
+                    case 5:
+                        _rightHandVFX.Stop();
+                        break;                    
                     default:
                         break;
                 }
@@ -174,12 +174,12 @@ public class EntityVFXHandler : MonoBehaviour
         }
     }
 
-    public void PlayBlockImpactVFX()
+    public void PlayBlockImpactVFX(float damage, string actionType)
     {
         CreateVFXOneShot(_blockImpactVFX, _vfxOrigin);
     }
 
-    public void PlayParryVFX()
+    public void PlayParryVFX(float damage, string actionType)
     {
         CreateVFXOneShot(_parryVFX, _vfxOrigin);
     }

@@ -25,6 +25,7 @@ public class HealthSystem : MonoBehaviour
     {
         _stateMachine.OnLightAttackRecieved += TakeDamage;
         _stateMachine.OnHeavyAttackRecieved += TakeDamage;
+        _stateMachine.OnBlockSuccessful += TakeDamage;
         _stateMachine.OnParryRecieved += TakeDamage;
     }
 
@@ -32,6 +33,7 @@ public class HealthSystem : MonoBehaviour
     {
         _stateMachine.OnLightAttackRecieved -= TakeDamage;
         _stateMachine.OnHeavyAttackRecieved -= TakeDamage;
+        _stateMachine.OnBlockSuccessful -= TakeDamage;
         _stateMachine.OnParryRecieved -= TakeDamage;
     }
 

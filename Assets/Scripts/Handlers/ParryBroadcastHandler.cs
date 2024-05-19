@@ -16,13 +16,13 @@ public class ParryBroadcastHandler : MonoBehaviour
     private void OnEnable()
     {
         _stateMachine.OnAttemptParry += AttemptParry;
-        _stateMachine.OnParrySuccessful += GiveParry;
+        _stateMachine.OnParryContact += GiveParry;
     }
 
     private void OnDisable()
     {
         _stateMachine.OnAttemptParry -= AttemptParry;
-        _stateMachine.OnParrySuccessful -= GiveParry;
+        _stateMachine.OnParryContact -= GiveParry;
     }
 
     private void Update()
@@ -61,7 +61,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         {
             if (hit.GetComponent<StateMachine>() != null)
             {
-                if (hit.GetComponent<StateMachine>().IsParryable && !_stateMachine.IsParrying) 
+                if (hit.GetComponent<StateMachine>().IsParryable && !_stateMachine.IsParrying /*&& !_stateMachine.IsBlocking*/) 
                 {
                     _stateMachine.GiveParry(hit.transform.position);
                 }
@@ -72,7 +72,7 @@ public class ParryBroadcastHandler : MonoBehaviour
     {
         foreach(GameObject hit in _hitTargets)
         {
-            if(hit.GetComponent<StateMachine>() != null)
+            if(hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
             {
                 hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position, _stateMachine.ParryDamage);
             }

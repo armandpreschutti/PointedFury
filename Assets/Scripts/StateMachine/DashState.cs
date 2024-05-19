@@ -11,9 +11,19 @@ public class DashState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered DASH state");
-        Ctx.SetDashDirection();
-        Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
-       // Ctx.Animator.Play($"Dash", 0, 0);
+
+        if (Ctx.CurrentTarget != null &&( Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable ||
+                                          Ctx.CurrentTarget.GetComponent<StateMachine>().IsAttacking))
+        {
+            Ctx.Animator.SetBool(Ctx.AnimIDEvade, true);
+            
+            Ctx.IsEvading = true;
+        }
+        else
+        {
+            Ctx.SetDashDirection();
+            Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
+        }
         Ctx.IsDashing = true;
         Ctx.IsFighting = true;
         Ctx.IsDashPressed= false;
@@ -28,9 +38,12 @@ public class DashState : BaseState
 
         if (Ctx.IsDashMoving)
         {
-
             Ctx.DashMovement();
-        }       
+        }
+        if (Ctx.IsEvading)
+        {
+            Ctx.SetAttackDirection();
+        }
     }
 
     public override void ExitState()
@@ -38,7 +51,9 @@ public class DashState : BaseState
         //Debug.LogWarning("Player has exited state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDDash, false);
+        Ctx.Animator.SetBool(Ctx.AnimIDEvade, false);
         Ctx.IsDashing = false;
+        Ctx.IsEvading= false;
     }
 
     public override void CheckSwitchStates()
@@ -64,6 +79,18 @@ public class DashState : BaseState
                     SwitchState(Factory.Idle());
                 }
             }
+        }
+        else if (Ctx.IsLightHitLanded)
+        {
+            SwitchState(Factory.Hurt());
+        }
+        else if (Ctx.IsHeavyHitLanded)
+        {
+            SwitchState(Factory.Hurt());
+        }
+        else if (Ctx.IsParried)
+        {
+            SwitchState(Factory.Stunned());
         }
     }
 
