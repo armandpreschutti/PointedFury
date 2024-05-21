@@ -64,9 +64,9 @@ public class IdleState : BaseState
             {
                 SwitchState(Factory.Hurt());
             }
-            else if (Ctx.IsDashPressed)
+            else if (Ctx.IsEvadeSucces)
             {
-                SwitchState(Factory.Dash());
+                SwitchState(Factory.Evade());
             }
             else if (Ctx.IsBlockPressed)
             {
@@ -79,6 +79,10 @@ public class IdleState : BaseState
             else if (Ctx.IsParried)
             {
                 SwitchState(Factory.Stunned());
+            }
+            else if(Ctx.IsDashPressed)
+            {
+                SwitchState(Factory.Dash());
             }
         }       
     }

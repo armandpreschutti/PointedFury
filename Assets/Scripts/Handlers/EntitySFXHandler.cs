@@ -19,7 +19,7 @@ public class EntitSFXHandler : MonoBehaviour
         _stateMachine.OnHeavyAttackRecieved += PlayAttackImpactSFX;
         _stateMachine.OnBlockSuccessful += PlayBlockImpactSFX;
         _stateMachine.OnParryRecieved += PlayParrySFX;
-        _stateMachine.OnDashSuccessful += PlayDashSFX;
+        _stateMachine.OnDash += PlayDashSFX;
         _stateMachine.OnDeath += PlayDeathSFX;
     }
 
@@ -30,7 +30,7 @@ public class EntitSFXHandler : MonoBehaviour
         _stateMachine.OnHeavyAttackRecieved -= PlayAttackImpactSFX;
         _stateMachine.OnBlockSuccessful -= PlayBlockImpactSFX;
         _stateMachine.OnParryRecieved -= PlayParrySFX;
-        _stateMachine.OnDashSuccessful -= PlayDashSFX;
+        _stateMachine.OnDash -= PlayDashSFX;
         _stateMachine.OnDeath -= PlayDeathSFX;
     }
 
@@ -79,7 +79,7 @@ public class EntitSFXHandler : MonoBehaviour
         CreateSFXOneShot(sfxSO._parrySFX);
     }
 
-    public void PlayDashSFX()
+    public void PlayDashSFX(bool value)
     {
         CreateSFXOneShot(sfxSO._dashSFX);
     }

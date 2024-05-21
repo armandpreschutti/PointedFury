@@ -21,7 +21,8 @@ public class DeathState : BaseState
         Ctx.IsPostAttack = false;
         Ctx.IsAttacking = false;
         Ctx.IsKnockedBack = true;
-        Ctx.IsDead = true;        
+        Ctx.IsStunned = false;
+        Ctx.IsDead = true;
         Ctx.Animator.SetBool(Ctx.AnimIDDeath, true);
         Ctx.Animator.Play($"Death", 0, 0);
         ExitAllAnimations();
@@ -35,7 +36,7 @@ public class DeathState : BaseState
 
         if (Ctx.IsKnockedBack)
         {
-            Ctx.KnockBackPower = 10f;
+           // Ctx.KnockBackPower = 10f;
             Ctx.SetHitKnockBack();
             Time.timeScale = .25f;
         }

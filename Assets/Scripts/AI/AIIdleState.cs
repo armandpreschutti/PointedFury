@@ -12,12 +12,15 @@ public class AIIDleState : AIBaseState
     float disengageTime;
     float approachTime;
     int blockChance;
+    int evadeChance;
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered IDLE state");
         
         Ctx.comboCount = 0;
+        attackTime = 0;
         blockChance = Random.Range(1, 11);
+        evadeChance = Random.Range(1, 11);
     }
 
     public override void UpdateState()
@@ -56,32 +59,26 @@ public class AIIDleState : AIBaseState
                 SwitchState(Factory.Disengaging());
             }
         }
-        else if (Ctx.isAttacker && /*stateTime > attackTime*/!Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && !Ctx.isHurt)
+        else if (Ctx.isAttacker && !Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && !Ctx.isHurt && Ctx.ComboSkill > 0)
         {
             attackTime += Time.deltaTime;
             if (attackTime >= Ctx.AttackInterval)
             {
                 SwitchState(Factory.Attack());
             }
-         //   SwitchState(Factory.Attack());
         }
-        else if (Ctx.isWatcher && stateTime > 3f && !Ctx.isHurt)
+        else if (Ctx.isWatcher && stateTime > 5f && !Ctx.isHurt)
         {
             SwitchState(Factory.Strafing());
         }
-/*        else if(Ctx.isWatcher && Ctx.BlockSkill >= blockChance && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking)
-        {
-            SwitchState(Factory.Block());
-        }*/
-        else if (Ctx.hitCount >= Ctx.HitTolerance)
+        else if (Ctx.hitCount >= Ctx.HitTolerance && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == Ctx.gameObject)
         {
             SwitchState(Factory.Block());
         }
-        
-        /*  else if (Ctx.isHurt)
-          {
-              SwitchState(Factory.Hurt());
-          }*/
+/*        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsEvadable && !Ctx.StateMachine.IsEvading && Ctx.EvadeSkill >= evadeChance && !Ctx.StateMachine.IsStunned)
+        {
+            Ctx.StateMachine.OnAttemptEvade?.Invoke();
+        }*/
     }
 
     public override void InitializeSubStates()

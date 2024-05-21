@@ -10,12 +10,12 @@ public class AttackIndicationHandler : MonoBehaviour
 
     private void Update()
     {
-        if(_stateMachine.AttackType != "Light" && _stateMachine.IsParryable)
+        if(_stateMachine.AttackType == "Heavy" && _stateMachine.IsParryable)
         {
             _attackIndicator.SetActive(true);
             _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.red;
         }
-        else if (_stateMachine.IsEvadable)
+        else if (_stateMachine.IsEvadable && _stateMachine.IsParrying)
         {
             _attackIndicator.SetActive(true);
             _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.green;

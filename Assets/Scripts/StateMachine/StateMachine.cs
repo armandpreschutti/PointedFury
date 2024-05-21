@@ -19,8 +19,8 @@ public class StateMachine : MonoBehaviour
     [Tooltip("Acceleration and deceleration")]
     public float SpeedChangeRate = 10.0f;
 
-    [Tooltip("How fast the character leaps towards while dodging")]
-    public float DashSpeed;
+/*    [Tooltip("How fast the character leaps towards while dodging")]
+    public float DashSpeed;*/
     [Tooltip("How much gravity is applied to the player")]
     public float Gravity;
 
@@ -77,12 +77,13 @@ public class StateMachine : MonoBehaviour
     private bool _isLightHitLanded = false;
     private bool _isHeavyHitLanded = false;
     private bool _isKnockedBack = false;
-    private bool _isDashing = false; 
+    private bool _isDashing = false;
     private bool _isDashMoving = false;
     private bool _isBlocking = false;
     private bool _isBlockSuccess = false;
     private bool _isParried = false;
     private bool _isParrySuccess = false;
+    private bool _isEvadeSuccess = false;
     private bool _isParrying = false;
     private bool _isParryable = false;
     private bool _isStunned = false;
@@ -114,9 +115,10 @@ public class StateMachine : MonoBehaviour
     private Vector2 _lookInput;
     private bool _isLightAttackPressed = false;
     private bool _isHeavyAttackPressed = false;
-    private bool _isDashPressed = false;
+    private bool _isEvadePressed = false;
     private bool _isBlockPressed = false;
-    private bool _isParryPressed = false; 
+    private bool _isParryPressed = false;
+    private bool _isDashPressed = false;
 
     // Player components
     private Animator _animator;
@@ -174,10 +176,10 @@ public class StateMachine : MonoBehaviour
     public Action OnLightAttackGiven;
     public Action OnHeavyAttackGiven;
     public Action OnAttemptParry;
-    public Action OnTestAction;
+    public Action OnAttemptEvade;
     public Action<float, string> OnBlockSuccessful;
     public Action OnParryContact;
-    public Action OnDashSuccessful;
+    public Action<bool> OnDash;
     public Action OnHurt;
     public Action OnDeath;
 
@@ -187,9 +189,10 @@ public class StateMachine : MonoBehaviour
     public Vector2 LookInput { get { return _lookInput; } set { _lookInput = value; } }
     public bool IsLightAttackPressed { get { return _isLightAttackPressed; } set { _isLightAttackPressed = value; } }
     public bool IsHeavyAttackPressed { get { return _isHeavyAttackPressed; } set { _isHeavyAttackPressed = value; } }
-    public bool IsDashPressed { get { return _isDashPressed; } set { _isDashPressed = value; } }
+    public bool IsEvadePressed { get { return _isEvadePressed; } set { _isEvadePressed = value; } }
     public bool IsBlockPressed { get { return _isBlockPressed; } set { _isBlockPressed = value; } }   
     public bool IsParryPressed {  get { return _isParryPressed; } set { _isParryPressed= value; } }
+    public bool IsDashPressed { get { return _isDashPressed; } set { _isDashPressed= value; } }
 
     // Speed
     public float Speed { get { return _speed; } }
@@ -214,6 +217,7 @@ public class StateMachine : MonoBehaviour
     public bool IsBlockSuccess { get { return _isBlockSuccess; } set { _isBlockSuccess = value; } }
     public bool IsParrying { get { return _isParrying; } set { _isParrying = value; } }
     public bool IsParrySucces { get { return _isParrySuccess; } set { _isParrySuccess= value; } }
+    public bool IsEvadeSucces { get { return _isEvadeSuccess; } set { _isEvadeSuccess= value; } }
     public bool IsParried { get { return _isParried; } set { _isParried = value; } }
     public bool IsParryable { get { return _isParryable; }set { _isParryable = value; } }
     public bool IsStunned { get { return _isStunned; } set { _isStunned = value; } }    
@@ -272,7 +276,7 @@ public class StateMachine : MonoBehaviour
   
     public void CombatMovement()
     {
-        if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isParrying)
+        if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isParrying)
         {
             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
             if (moveDirection != Vector3.zero)
@@ -308,7 +312,7 @@ public class StateMachine : MonoBehaviour
 
     public void FreeRoamMovement()
     {
-        if (!_isHurt && !_isBlocking && !_isStunned && !_isDashing && !_isPostAttack && !_isAttacking && !_isParrying) 
+        if (!_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isAttacking && !_isParrying) 
         {
             if (!IsAI)
             {
@@ -404,14 +408,22 @@ public class StateMachine : MonoBehaviour
         }
     }
     
-    public void DashMovement()
+  /*  public void DashMovement()
     {
         _controller.Move(transform.forward * Time.deltaTime * DashSpeed);
-    }
+    }*/
 
     public void SetIncomingAttackDirection()
     {
-        transform.LookAt(_incomingAttackDirection);
+        if(ClosestTarget != null)
+        {
+            transform.LookAt(ClosestTarget.position);
+        }
+        else
+        {
+            transform.LookAt(_incomingAttackDirection);
+        }
+
     }
     
     public void SetAttackDirection()
@@ -419,6 +431,25 @@ public class StateMachine : MonoBehaviour
         if (_currentTarget != null)
         {
             transform.LookAt(_currentTarget.transform.position);
+        }
+        else
+        {
+            if (_moveInput != Vector2.zero)
+            {
+                transform.LookAt(transform.position + InputDirection());
+            }
+            else
+            {
+                transform.LookAt(transform.position + transform.forward);
+                // return;
+            }
+        }
+    }
+    public void SetBlockDirection()
+    {
+        if (ClosestTarget != null)
+        {
+            transform.LookAt(ClosestTarget.transform.position);
         }
         else
         {
@@ -447,7 +478,15 @@ public class StateMachine : MonoBehaviour
 
     public void SetDashDirection()
     {
-        transform.LookAt(transform.position + InputDirection());
+         if (/*_currentTarget != null*/_moveInput != Vector2.zero)
+         {
+             transform.LookAt(/*_currentTarget.transform.position*/transform.position + InputDirection());
+         }
+         else
+         {
+             transform.LookAt(transform.position + transform.forward);
+         }
+    
     }
 
     public void SetHitKnockBack()
@@ -505,10 +544,8 @@ public class StateMachine : MonoBehaviour
 
     public void OnAttackAnimationBegin()
     {
-        if(_attackType == "Heavy")
-        {
-            _isParryable = true;
-        }
+        
+
 
     }
 
@@ -516,6 +553,11 @@ public class StateMachine : MonoBehaviour
     {
         OnAttackWindUp?.Invoke(true, _attackType);
         _isCharging = true;
+        _isEvadable = true;
+        if (_attackType == "Heavy")
+        {
+            _isParryable = true;
+        }
     }
 
 
@@ -524,6 +566,7 @@ public class StateMachine : MonoBehaviour
         OnAttackContact?.Invoke();
         _isParryable = false;
         _isCharging = false;
+        _isEvadable = false;
     }
 
     public void OnAttackAnimationComplete()
@@ -545,7 +588,6 @@ public class StateMachine : MonoBehaviour
     {
         _isCharging = true;
         IsEvadable = true;
-        //SetIncomingAttackDirection();
     }
     public void OnParryAnimationChargeComplete()
     {
@@ -555,10 +597,8 @@ public class StateMachine : MonoBehaviour
 
     public void OnParryAnimationContact()
     {
-        
         OnParryContact?.Invoke();
         Time.timeScale = SlowMotionSpeed;
-       // SetIncomingAttackDirection();
     }
 
     public void OnParryAnimationComplete()
@@ -587,7 +627,7 @@ public class StateMachine : MonoBehaviour
         _isBlocking = false;
     }
 
-    public void OnDashMoveStart()
+   /* public void OnDashMoveStart()
     {
         _isDashMoving = true;
     }
@@ -595,7 +635,7 @@ public class StateMachine : MonoBehaviour
     public void OnDashMoveComplete()
     {
         _isDashMoving = false;
-    }
+    }*/
 
     public void OnDashAnimationComplete()
     {
@@ -609,13 +649,18 @@ public class StateMachine : MonoBehaviour
     public void OnEvadeContact()
     {
         Time.timeScale = 1f;
+
+    }
+    public void OnEvadeComplete()
+    {
+        _isEvading = false;
     }
 
     public void TakeHit(string hitType, int attackID, Vector3 attackerPosition, float attackDamage)
     {
         _incomingAttackDirection = attackerPosition;
 
-        if(/*_isDashing || */_isEvading ||_isParrying)
+        if(_isEvading ||_isParrying)
         {
             return;
         }
@@ -630,15 +675,14 @@ public class StateMachine : MonoBehaviour
                     _isBlockSuccess = true;
                     OnBlockSuccessful?.Invoke(attackDamage * BlockDamageReduction, "Block");
                 }
-                else if (hitType == "Light" && !_isParrying)
+                else if (hitType == "Light"/* && !_isParrying*/)
                 { 
                     OnLightAttackRecieved?.Invoke(attackDamage, "Light");
                     _isLightHitLanded = true;
                 }
-                else if (hitType == "Heavy" && !_isParrying)
+                else if (hitType == "Heavy" /*&& !_isParrying*/)
                 {
                     OnHeavyAttackRecieved?.Invoke(attackDamage, "Heavy");
-                    OnTestAction?.Invoke();
                     _isHeavyHitLanded = true;
                 }
             }          
@@ -646,11 +690,11 @@ public class StateMachine : MonoBehaviour
     }
     public void GiveHit(string attackType)
     {
-        if(attackType == "Light" && !_currentTarget.GetComponent<StateMachine>().IsParrying)
+        if(attackType == "Light" && !_currentTarget.GetComponent<StateMachine>().IsParrying && !_currentTarget.GetComponent<StateMachine>().IsEvading)
         {
             OnLightAttackGiven?.Invoke();
         }
-        else if(attackType == "Heavy" && !_currentTarget.GetComponent<StateMachine>().IsParrying)
+        else if(attackType == "Heavy" && !_currentTarget.GetComponent<StateMachine>().IsParrying && !_currentTarget.GetComponent<StateMachine>().IsEvading)
         {
             OnHeavyAttackGiven?.Invoke();
         }
@@ -672,11 +716,16 @@ public class StateMachine : MonoBehaviour
         }
     }
     
-    public void GiveParry(Vector3 attackerPosition)
+    public void BeginParry(Vector3 attackerPosition)
     {
        
         _incomingAttackDirection = attackerPosition;
         IsParrySucces = true;
+    }
+
+    public void BeginEvade()
+    {
+        IsEvadeSucces = true;
     }
     private void AssignAnimationIDs()
     {

@@ -9,13 +9,17 @@ public class AIBlockState : AIBaseState
 
     float stateTime;
     float postBlockTime;
-    int parryChance;
+    //int parryChance;
+   // int evadeChance;
     public override void EnterState()
     {
         //Debug.LogWarning("Enemy has entered BLOCK state");
         Ctx.StateMachine.IsBlockPressed= true;
         Ctx.comboCount = 0;
-        parryChance = Random.Range(1, 11);
+       // parryChance = Random.Range(1, 11);
+
+        postBlockTime = 0;
+        stateTime= 0;
     }
 
     public override void UpdateState()
@@ -48,15 +52,33 @@ public class AIBlockState : AIBaseState
                 SwitchState(Factory.Idle());
             }
         }
-        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy" && Ctx.ParrySkill >= parryChance &&!Ctx.StateMachine.IsStunned)
+        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy" && Ctx.ParrySkill >= parryChance() &&!Ctx.StateMachine.IsStunned)
         {
             Ctx.StateMachine.OnAttemptParry?.Invoke();
 
         }
+        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsEvadable && Ctx.EvadeSkill >= evadeChance() && !Ctx.StateMachine.IsEvading && !Ctx.StateMachine.IsStunned && !Ctx.StateMachine.IsHurt && !Ctx.StateMachine.IsParrying)
+        {
+ 
+            Ctx.StateMachine.OnAttemptEvade?.Invoke();
+
+
+        }
+
     }
 
     public override void InitializeSubStates()
     {
 
+    }
+
+    public int evadeChance()
+    {
+        return Random.Range(1, 11); ;
+    }
+
+    public int parryChance()
+    {
+        return Random.Range(1, 11); ;
     }
 }

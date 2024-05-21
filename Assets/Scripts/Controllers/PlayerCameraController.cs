@@ -58,12 +58,14 @@ public class PlayerCameraController : MonoBehaviour
     {
        
         EnemyManagementSystem.OnZoneEntered += SetCameraState;
-        _stateMachine.OnFight += SetCameraState;
+        EnemyManagementSystem.OnZoneEnemiesCleared += SetCameraState;
+        _stateMachine.OnFight += SetLoneCameraState;
     }
     private void OnDisable()
     {
         EnemyManagementSystem.OnZoneEntered -= SetCameraState;
-        _stateMachine.OnFight -= SetCameraState;
+        EnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
+        _stateMachine.OnFight += SetLoneCameraState;
     }
 
     // Start is called before the first frame update    
@@ -83,13 +85,13 @@ public class PlayerCameraController : MonoBehaviour
 
     }
  
-    public void SetCameraState(bool value)
+    public void SetCameraState(bool value, int enemies)
     {
         //_shortFightCamera.gameObject.SetActive(value);
         if (value)
         {
 
-            if (_stateMachine.EnemiesNearby.Count < 2)
+            if (enemies < 2)
             {
                 _shortFightCamera.gameObject.SetActive(true);
                 _longFightCamera.gameObject.SetActive(false);
@@ -104,6 +106,16 @@ public class PlayerCameraController : MonoBehaviour
             _longFightCamera.gameObject.SetActive(false);
             _shortFightCamera.gameObject.SetActive(false);
         }
+        //_longFightCamera.gameObject.SetActive(true);
+    }
+
+    public void SetLoneCameraState(bool value)
+    {
+        if(_stateMachine.EnemiesNearby.Count < 2)
+        {
+            _shortFightCamera.gameObject.SetActive(value);
+        }
+
     }
   
 

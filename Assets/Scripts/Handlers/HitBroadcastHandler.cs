@@ -59,12 +59,7 @@ public class HitBroadcastHandler : MonoBehaviour
         {
             hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackID : _stateMachine.HeavyAttackID, _stateMachine.transform.position, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackDamage : _stateMachine.HeavyAttackDamage);
             _stateMachine.GiveHit(_stateMachine.AttackType);
-
-/*            if (hit.GetComponent<StateMachine>() != null) 
-            {
-                hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackID : _stateMachine.HeavyAttackID, _stateMachine.transform.position, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackDamage : _stateMachine.HeavyAttackDamage);
-                _stateMachine.GiveHit(_stateMachine.AttackType);
-            }*/
         }
     }
+
 }

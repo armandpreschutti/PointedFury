@@ -11,7 +11,7 @@ public class StunnedState : BaseState
     {
         //Debug.LogWarning("Player has entered STUNNED state");
 
-        Ctx.SetIncomingAttackDirection();
+        
         Ctx.Animator.SetBool(Ctx.AnimIDStunned, true);
         Ctx.Animator.Play($"Stunned", 0, 0);
         Ctx.IsParryable = false;
@@ -33,7 +33,7 @@ public class StunnedState : BaseState
         //Debug.Log("STUNNEDstate is currently active");
         Ctx.DebugCurrentSubState = "Stunned State";
         CheckSwitchStates();
-
+        Ctx.SetIncomingAttackDirection();
         if (Ctx.IsKnockedBack)
         {
             Ctx.SetHitKnockBack();
@@ -51,29 +51,43 @@ public class StunnedState : BaseState
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsStunned)
+        if (!Ctx.IsDead)
         {
-            if (Ctx.MoveInput != Vector2.zero)
+            if (!Ctx.IsStunned)
             {
-                SwitchState(Factory.Move());
+                if (Ctx.IsBlockPressed)
+                {
+                    SwitchState(Factory.Block());
+                }
+                else if (Ctx.MoveInput != Vector2.zero)
+                {
+                    SwitchState(Factory.Move());
+                }
+
+                else
+                {
+                    SwitchState(Factory.Idle());
+                }
             }
-            else
+            else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Idle());
+                SwitchState(Factory.Hurt());
             }
+            else if (Ctx.IsHeavyHitLanded)
+            {
+                SwitchState(Factory.Hurt());
+            }
+            else if (Ctx.IsParrySucces)
+            {
+                SwitchState(Factory.Parry());
+            }
+            else if (Ctx.IsDashPressed)
+            {
+                SwitchState(Factory.Dash());
+            }
+          
         }
-        else if (Ctx.IsLightHitLanded)
-        {
-            SwitchState(Factory.Hurt());
-        }
-        else if (Ctx.IsHeavyHitLanded)
-        {
-            SwitchState(Factory.Hurt());
-        }
-        else if (Ctx.IsParrySucces)
-        {
-            SwitchState(Factory.Parry());
-        }
+        
     }
 
     public override void InitializeSubStates()

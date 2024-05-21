@@ -46,7 +46,7 @@ public class StateFactory
     {
         return new HurtState(_context, this);
     }
-    
+
     public BaseState Dash()
     {
         return new DashState(_context, this);

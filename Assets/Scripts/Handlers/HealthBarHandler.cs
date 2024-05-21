@@ -22,10 +22,13 @@ public class HealthBarHandler : MonoBehaviour
 
 
     }*/
+    
     private void OnEnable()
     {
         _healthSystem.OnDamage += SetHealthBarValue;
         _healthSystem.OnDeath += DisableEnemyHealthBar;
+
+
 
     }
     private void OnDisable()

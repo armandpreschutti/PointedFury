@@ -8,10 +8,10 @@ using UnityEngine;
 public class EntityVFXHandler : MonoBehaviour
 {
     [SerializeField] StateMachine _stateMachine;
-    [SerializeField] ParticleSystem _leftHandVFX;
-    [SerializeField] ParticleSystem _rightHandVFX;
-    [SerializeField] ParticleSystem _leftFootVFX;
-    [SerializeField] ParticleSystem _rightFootVFX;
+    [SerializeField] GameObject _leftHandVFX;
+    [SerializeField] GameObject _rightHandVFX;
+    [SerializeField] GameObject _leftFootVFX;
+    [SerializeField] GameObject _rightFootVFX;
 
     [SerializeField] Transform _vfxOrigin;
     [SerializeField] GameObject _lightAttackImpactVFX;
@@ -21,140 +21,93 @@ public class EntityVFXHandler : MonoBehaviour
 
     private void OnEnable()
     {
-       /* _stateMachine.OnAttackWindUp += SetIndicator;
+       // _stateMachine.OnAttackWindUp += SetIndicator;
         _stateMachine.OnLightAttack += SetIndicator;
-        _stateMachine.OnHeavyAttack += SetIndicator;*/
+        _stateMachine.OnHeavyAttack += SetIndicator;
         _stateMachine.OnLightAttackRecieved += PlayAttackImpactVFX;
         _stateMachine.OnHeavyAttackRecieved += PlayAttackImpactVFX;
-        _stateMachine.OnBlockSuccessful += PlayBlockImpactVFX;
+        //_stateMachine.OnBlockSuccessful += PlayBlockImpactVFX;
         _stateMachine.OnParryRecieved += PlayParryVFX;
+        _stateMachine.OnDash += PlayDashVFX;
     }
     private void OnDisable()
     {
-       /* _stateMachine.OnAttackWindUp -= SetIndicator;
+//        _stateMachine.OnAttackWindUp -= SetIndicator;
         _stateMachine.OnLightAttack -= SetIndicator;
-        _stateMachine.OnHeavyAttack -= SetIndicator;*/
+        _stateMachine.OnHeavyAttack -= SetIndicator;
         _stateMachine.OnLightAttackRecieved -= PlayAttackImpactVFX;
         _stateMachine.OnHeavyAttackRecieved -= PlayAttackImpactVFX;
-        _stateMachine.OnBlockSuccessful -= PlayBlockImpactVFX;
+        //_stateMachine.OnBlockSuccessful -= PlayBlockImpactVFX;
         _stateMachine.OnParryRecieved -= PlayParryVFX;
     }
     public void SetIndicator(bool value, string attackType)
     {
         if(attackType == "Light")
         {
-            if (value)
+            _leftFootVFX.GetComponent<TrailRenderer>().startColor= Color.white;
+            _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+            _rightFootVFX.GetComponent<TrailRenderer>().startColor = Color.white;
+            _rightFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+            _leftHandVFX.GetComponent<TrailRenderer>().startColor = Color.white;
+            _leftHandVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+            _rightHandVFX.GetComponent<TrailRenderer>().startColor = Color.white;
+            _rightHandVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+            _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+            _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+            switch (_stateMachine.LightAttackID)
             {
-                switch (_stateMachine.LightAttackID)
-                {
-                    case 1:
-                        _leftHandVFX.Play();
-                        break;
-                    case 2:
-                        _rightFootVFX.Play();
-                        break;
-                    case 3:
-                        _leftHandVFX.Play();
-                        break;
-                    case 4:
-                        _leftFootVFX.Play();
-                        break;
-                    case 5:
-                        _rightHandVFX.Play();
-                        break;
-                    default:
-                        break;
-                }
+                case 1:
+                    _leftHandVFX.SetActive(value);
+                    break;
+                case 2:
+                    _rightFootVFX.SetActive(value);
+                    break;
+                case 3:
+                    _leftHandVFX.SetActive(value);
+                    break;
+                case 4:
+                    _leftFootVFX.SetActive(value);
+                    break;
+                case 5:
+                    _rightHandVFX.SetActive(value);
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                switch (_stateMachine.LightAttackID)
-                {
-                   case 1:
-                        _leftHandVFX.Stop();
-                        break;
-                    case 2:
-                        _rightFootVFX.Stop();
-                        break;
-                    case 3:
-                        _leftHandVFX.Stop();
-                        break;
-                    case 4:
-                        _leftFootVFX.Stop();
-                        break;
-                    case 5:
-                        _rightHandVFX.Stop();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
         }
-        else if (attackType == "Heavy")
+        else if(attackType == "Heavy")
         {
-            if (value)
+            _leftFootVFX.GetComponent<TrailRenderer>().startColor = Color.yellow;
+            _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.red;
+            _rightFootVFX.GetComponent<TrailRenderer>().startColor = Color.yellow;
+            _rightFootVFX.GetComponent<TrailRenderer>().endColor = Color.red;
+            _leftHandVFX.GetComponent<TrailRenderer>().startColor = Color.yellow;
+            _leftHandVFX.GetComponent<TrailRenderer>().endColor = Color.red;
+            _rightHandVFX.GetComponent<TrailRenderer>().startColor = Color.yellow;
+            _rightHandVFX.GetComponent<TrailRenderer>().endColor = Color.red;
+            switch (_stateMachine.HeavyAttackID)
             {
-                _rightHandVFX.startColor = Color.red;
-                _leftFootVFX.startColor = Color.red;
-                _leftHandVFX.startColor = Color.red;
-                _rightFootVFX.startColor = Color.red;
-                switch (_stateMachine.HeavyAttackID)
-                {
-                    case 1:
-                        _rightFootVFX.Play();
-                        break;
-                    case 2:
-                        _rightHandVFX.Play();
-                        break;
-                    case 3:
-                        _leftFootVFX.Play();
-                        break;
-                    case 4:
-                        _rightFootVFX.Play();
-                        break;
-                    case 5:
-                        _rightHandVFX.Play();
-                        break;
-                    
-                    default:
-                        break;
-                }
+                case 1:
+                    _rightFootVFX.SetActive(value);
+                    break;
+                case 2:
+                    _rightHandVFX.SetActive(value);
+                    break;
+                case 3:
+                    _leftFootVFX.SetActive(value);
+                    break;
+                case 4:
+                    _rightFootVFX.SetActive(value);
+                    break;
+                case 5:
+                    _rightHandVFX.SetActive(value);
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                _rightHandVFX.startColor = Color.white;
-                _leftFootVFX.startColor = Color.white;
-                _leftHandVFX.startColor = Color.white;
-                _rightFootVFX.startColor = Color.white;
-                switch (_stateMachine.HeavyAttackID)
-                {
-                    case 1:
-                        _rightFootVFX.Stop();
-                        break;
-                    case 2:
-                        _rightHandVFX.Stop();
-                        break;
-                    case 3:
-                        _leftFootVFX.Stop();
-                        break;
-                    case 4:
-                        _rightFootVFX.Stop();
-                        break;
-                    case 5:
-                        _rightHandVFX.Stop();
-                        break;                    
-                    default:
-                        break;
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("EnityVFXHandler could not determine AttackType");
-        }
-       
+        }       
     }
+
     public void PlayAttackImpactVFX(float value, string attackType)
     {
         if (attackType == "Light")
@@ -186,5 +139,22 @@ public class EntityVFXHandler : MonoBehaviour
     public void CreateVFXOneShot(GameObject vfxPrefab, Transform origin)
     {
         Instantiate(vfxPrefab, origin);
+    }
+    public void PlayDashVFX(bool value)
+    {
+        _leftFootVFX.GetComponent<TrailRenderer>().startColor = Color.white;
+        _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+        _rightFootVFX.GetComponent<TrailRenderer>().startColor = Color.white;
+        _rightFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+        _leftHandVFX.GetComponent<TrailRenderer>().startColor = Color.white;
+        _leftHandVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+        _rightHandVFX.GetComponent<TrailRenderer>().startColor = Color.white;
+        _rightHandVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+        _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+        _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
+        _leftFootVFX.SetActive(value);
+        _leftHandVFX.SetActive(value);
+        _rightFootVFX.SetActive(value);
+        _rightHandVFX.SetActive(value);
     }
 }

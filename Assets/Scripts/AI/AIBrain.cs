@@ -38,11 +38,14 @@ public class AIBrain : MonoBehaviour
     public float DistanceBuffer = 1f;
 
     public int ComboSkill;
+    public bool CanComboChain;
     public int BlockBreakSkill;
     public int HitTolerance;
     public int ParrySkill;
-    public int HeavyAttackSkill;    
+    public int HeavyAttackSkill;
+    public int EvadeSkill;
     public float AttackInterval;
+
 
     // enemy management variables
     public bool isActivated;
@@ -83,8 +86,6 @@ public class AIBrain : MonoBehaviour
     {
         StateMachine = GetComponent<StateMachine>();
         _currentTarget = FindAnyObjectByType<UserInput>().gameObject;
-/*        StateMachine.EnemiesNearby.Add(_currentTarget);
-        StateMachine.CurrentTarget = _currentTarget;*/
     }
 
     private void GetStateMachineVariables()

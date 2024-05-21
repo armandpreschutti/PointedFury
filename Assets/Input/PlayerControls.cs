@@ -96,7 +96,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""42bebc7d-e8fd-46d2-aac7-a1dc0c665533"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -157,6 +157,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""DisableEnemies"",
                     ""type"": ""Value"",
                     ""id"": ""e0ac0eb2-ce20-42d8-b17c-9c96ecb49c9e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Evade"",
+                    ""type"": ""Value"",
+                    ""id"": ""f53de833-b418-4115-8808-aa776a1dfbc2"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -233,7 +242,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""94aad3d6-dda9-4629-9a9a-ced7c32a199e"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -328,6 +337,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""DisableEnemies"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d48b65a4-5c08-4304-92a5-4bcadb8b95c1"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Evade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -399,6 +419,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_ToggleHealthSystems = m_Player.FindAction("ToggleHealthSystems", throwIfNotFound: true);
         m_Player_ReturnToTitle = m_Player.FindAction("ReturnToTitle", throwIfNotFound: true);
         m_Player_DisableEnemies = m_Player.FindAction("DisableEnemies", throwIfNotFound: true);
+        m_Player_Evade = m_Player.FindAction("Evade", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -475,6 +496,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ToggleHealthSystems;
     private readonly InputAction m_Player_ReturnToTitle;
     private readonly InputAction m_Player_DisableEnemies;
+    private readonly InputAction m_Player_Evade;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -494,6 +516,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ToggleHealthSystems => m_Wrapper.m_Player_ToggleHealthSystems;
         public InputAction @ReturnToTitle => m_Wrapper.m_Player_ReturnToTitle;
         public InputAction @DisableEnemies => m_Wrapper.m_Player_DisableEnemies;
+        public InputAction @Evade => m_Wrapper.m_Player_Evade;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -548,6 +571,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DisableEnemies.started += instance.OnDisableEnemies;
             @DisableEnemies.performed += instance.OnDisableEnemies;
             @DisableEnemies.canceled += instance.OnDisableEnemies;
+            @Evade.started += instance.OnEvade;
+            @Evade.performed += instance.OnEvade;
+            @Evade.canceled += instance.OnEvade;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -597,6 +623,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DisableEnemies.started -= instance.OnDisableEnemies;
             @DisableEnemies.performed -= instance.OnDisableEnemies;
             @DisableEnemies.canceled -= instance.OnDisableEnemies;
+            @Evade.started -= instance.OnEvade;
+            @Evade.performed -= instance.OnEvade;
+            @Evade.canceled -= instance.OnEvade;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -667,5 +696,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnToggleHealthSystems(InputAction.CallbackContext context);
         void OnReturnToTitle(InputAction.CallbackContext context);
         void OnDisableEnemies(InputAction.CallbackContext context);
+        void OnEvade(InputAction.CallbackContext context);
     }
 }

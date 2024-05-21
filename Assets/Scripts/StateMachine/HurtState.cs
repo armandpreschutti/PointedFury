@@ -12,6 +12,8 @@ public class HurtState : BaseState
         Ctx.SetIncomingAttackDirection();
         Ctx.IsLightHitLanded = false;
         Ctx.IsHeavyHitLanded = false;
+        Ctx.IsLightAttackPressed= false;
+        Ctx.IsHeavyAttackPressed= false;
         Ctx.IsPostAttack = false;
         Ctx.IsAttacking = false;
         Ctx.IsKnockedBack = true;
@@ -58,38 +60,46 @@ public class HurtState : BaseState
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsHurt)
+        if (!Ctx.IsDead)
         {
+            if (!Ctx.IsHurt)
+            {
 
-            if (Ctx.MoveInput != Vector2.zero)
-            {
-                SwitchState(Factory.Move());
+                if (Ctx.MoveInput != Vector2.zero)
+                {
+                    SwitchState(Factory.Move());
+                }
+                else if (Ctx.IsBlockPressed)
+                {
+                    SwitchState(Factory.Block());
+                }
+                else
+                {
+                    SwitchState(Factory.Idle());
+                }
             }
-            else if (Ctx.IsBlockPressed)
+            else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Block());
+                SwitchState(Factory.Hurt());
             }
-            else
+            else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Idle());
+                SwitchState(Factory.Hurt());
             }
-        }        
-        else if(Ctx.IsLightHitLanded)
-        {
-            SwitchState(Factory.Hurt());
+            else if (Ctx.IsParried)
+            {
+                SwitchState(Factory.Stunned());
+            }
+            else if (Ctx.IsParrySucces)
+            {
+                SwitchState(Factory.Parry());
+            }
+            else if (Ctx.IsEvadeSucces)
+            {
+                SwitchState(Factory.Evade());
+            }
         }
-        else if(Ctx.IsHeavyHitLanded)
-        {
-            SwitchState(Factory.Hurt());
-        }
-        else if (Ctx.IsParried)
-        {
-            SwitchState(Factory.Stunned()); 
-        }
-        else if (Ctx.IsParrySucces)
-        {
-            SwitchState(Factory.Parry());
-        }
+       
     }
 
     public override void InitializeSubStates()

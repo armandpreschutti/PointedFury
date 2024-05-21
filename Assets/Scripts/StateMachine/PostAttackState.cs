@@ -38,46 +38,54 @@ public class PostAttackState : BaseState
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsPostAttack)
+        if (!Ctx.IsDead)
         {
-            SwitchState(Factory.Idle());
+            if (!Ctx.IsPostAttack)
+            {
+                SwitchState(Factory.Idle());
+            }
+            else if (Ctx.IsLightAttackPressed)
+            {
+                SwitchState(Factory.LightAttack());
+            }
+            else if (Ctx.IsHeavyAttackPressed)
+            {
+                SwitchState(Factory.HeavyAttack());
+            }
+            else if (Ctx.IsBlockPressed)
+            {
+                SwitchState(Factory.Block());
+            }
+            else if (Ctx.IsLightHitLanded)
+            {
+                SwitchState(Factory.Hurt());
+            }
+            else if (Ctx.IsHeavyHitLanded)
+            {
+                SwitchState(Factory.Hurt());
+            }
+            else if (Ctx.IsParrySucces)
+            {
+                SwitchState(Factory.Parry());
+            }
+            else if (Ctx.IsEvadeSucces)
+            {
+                SwitchState(Factory.Evade());
+            }
+            else if (Ctx.IsParried)
+            {
+                SwitchState(Factory.Stunned());
+            }
+            else if (Ctx.IsDashPressed)
+            {
+                SwitchState(Factory.Dash());
+            }
+            else if (Ctx.MoveInput != Vector2.zero)
+            {
+                SwitchState(Factory.Move());
+            }
         }
-        else if (Ctx.IsLightAttackPressed)
-        {
-            SwitchState(Factory.LightAttack());
-        }
-        else if (Ctx.IsHeavyAttackPressed)
-        {
-            SwitchState(Factory.HeavyAttack());
-        }
-        else if (Ctx.IsBlockPressed)
-        {
-            SwitchState(Factory.Block());
-        }        
-        else if (Ctx.IsLightHitLanded)
-        {
-            SwitchState(Factory.Hurt());
-        }
-        else if (Ctx.IsHeavyHitLanded)
-        {
-            SwitchState(Factory.Hurt());
-        }
-        else if (Ctx.IsParrySucces)
-        {
-            SwitchState(Factory.Parry());
-        }
-        else if (Ctx.IsDashPressed)
-        {
-            SwitchState(Factory.Dash());
-        }
-        else if (Ctx.IsParried)
-        {
-            SwitchState(Factory.Stunned());
-        }
-        else if (Ctx.MoveInput != Vector2.zero)
-        {
-            SwitchState(Factory.Move());
-        }
+      
     }
 
     public override void InitializeSubStates()

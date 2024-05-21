@@ -12,22 +12,14 @@ public class DashState : BaseState
     {
         //Debug.LogWarning("Player has entered DASH state");
 
-        if (Ctx.CurrentTarget != null &&( Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable ||
-                                          Ctx.CurrentTarget.GetComponent<StateMachine>().IsAttacking))
-        {
-            Ctx.Animator.SetBool(Ctx.AnimIDEvade, true);
-            
-            Ctx.IsEvading = true;
-        }
-        else
-        {
-            Ctx.SetDashDirection();
-            Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
-        }
+
+        Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
         Ctx.IsDashing = true;
-        Ctx.IsFighting = true;
-        Ctx.IsDashPressed= false;
-        Ctx.OnDashSuccessful?.Invoke();        
+      //  Ctx.IsFighting= true;
+        //Ctx.OnFight?.Invoke(true);
+        Ctx.OnDash?.Invoke(true);
+        Ctx.IsDashPressed = false;
+        Ctx.SetDashDirection();
     }
 
     public override void UpdateState()
@@ -35,15 +27,6 @@ public class DashState : BaseState
         //Debug.Log("DASH state is currently active");
         Ctx.DebugCurrentSubState = "Dash State";
         CheckSwitchStates();
-
-        if (Ctx.IsDashMoving)
-        {
-            Ctx.DashMovement();
-        }
-        if (Ctx.IsEvading)
-        {
-            Ctx.SetAttackDirection();
-        }
     }
 
     public override void ExitState()
@@ -51,47 +34,57 @@ public class DashState : BaseState
         //Debug.LogWarning("Player has exited state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDDash, false);
-        Ctx.Animator.SetBool(Ctx.AnimIDEvade, false);
+        Ctx.OnDash?.Invoke(false);
         Ctx.IsDashing = false;
-        Ctx.IsEvading= false;
     }
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsDashing)
+        if (!Ctx.IsDead)
         {
-            if (Ctx.IsBlockPressed)
+            if (!Ctx.IsDashing)
             {
-                SwitchState(Factory.Block());
-            }
-            else if (Ctx.IsLightAttackPressed)
-            {
-                SwitchState(Factory.LightAttack());
-            }
-            else
-            {
-                if (Ctx.MoveInput != Vector2.zero)
+                if (Ctx.IsBlockPressed)
                 {
-                    SwitchState(Factory.Move());
+                    SwitchState(Factory.Block());
+                }
+                else if (Ctx.IsLightAttackPressed)
+                {
+                    Ctx.IsHeavyAttackPressed = false;
+                    SwitchState(Factory.LightAttack());
+                }
+                else if (Ctx.IsHeavyAttackPressed)
+                {
+                    Ctx.IsLightAttackPressed = false;
+                    SwitchState(Factory.HeavyAttack());
                 }
                 else
                 {
-                    SwitchState(Factory.Idle());
+                    if (Ctx.MoveInput != Vector2.zero)
+                    {
+                        SwitchState(Factory.Move());
+                    }
+                    else
+                    {
+                        SwitchState(Factory.Idle());
+                    }
                 }
             }
+            else if (Ctx.IsLightHitLanded)
+            {
+                SwitchState(Factory.Hurt());
+            }
+            else if (Ctx.IsHeavyHitLanded)
+            {
+                SwitchState(Factory.Hurt());
+            }
+            else if (Ctx.IsParried)
+            {
+                SwitchState(Factory.Stunned());
+            }
+
         }
-        else if (Ctx.IsLightHitLanded)
-        {
-            SwitchState(Factory.Hurt());
-        }
-        else if (Ctx.IsHeavyHitLanded)
-        {
-            SwitchState(Factory.Hurt());
-        }
-        else if (Ctx.IsParried)
-        {
-            SwitchState(Factory.Stunned());
-        }
+        
     }
 
     public override void InitializeSubStates()

@@ -14,8 +14,8 @@ public class EnemyManagementSystem : MonoBehaviour
     public static Action<Transform> OnAttackerDeath;
 
     public static Action<Transform> OnTargetGroupFound;
-    public static Action<bool> OnZoneEntered;
-    public static Action<bool> OnZoneEnemiesCleared;
+    public static Action<bool,int> OnZoneEntered;
+    public static Action<bool, int> OnZoneEnemiesCleared;
     public static Action<GameObject, GameObject> OnNewAttacker;
     public static Action<GameObject> OnRemoveUnusedAttacker;
     public static Action<bool, Transform> OnLastEnemyStanding;
@@ -46,7 +46,7 @@ public class EnemyManagementSystem : MonoBehaviour
             if(managedEnemies.Count != 0)
             {
                 zoneActive = true;
-                OnZoneEntered?.Invoke(true);
+                OnZoneEntered?.Invoke(true, managedEnemies.Count);
                 foreach (GameObject enemy in managedEnemies)
                 {
                     OnEnemyDetected?.Invoke(true, enemy.transform.Find("PlayerCameraTarget"));
@@ -130,7 +130,7 @@ public class EnemyManagementSystem : MonoBehaviour
                 }
                 if (managedEnemies.Count == 0)
                 {
-                    OnZoneEnemiesCleared?.Invoke(false);
+                    OnZoneEnemiesCleared?.Invoke(false, 0);
                     zoneActive = false;
                 }
             }

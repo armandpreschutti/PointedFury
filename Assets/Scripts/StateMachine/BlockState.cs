@@ -12,7 +12,8 @@ public class BlockState : BaseState
     {
         //Debug.LogWarning("Player has entered BLOCK state");
 
-        Ctx.SetAttackDirection();
+        //Ctx.SetAttackDirection();
+        Ctx.SetBlockDirection();
         Ctx.IsHeavyHitLanded = false;
         Ctx.IsLightHitLanded = false;
         Ctx.IsBlockSuccess = false;
@@ -26,7 +27,7 @@ public class BlockState : BaseState
         Ctx.DebugCurrentSubState = "Block State";
         CheckSwitchStates();
 
-        if (Ctx.IsBlockSuccess && !Ctx.IsParrySucces)
+        if (Ctx.IsBlockSuccess && !Ctx.IsParrySucces && !Ctx.IsDead)
         {
            // Debug.Log("Trying to block");
             Ctx.SetIncomingAttackDirection();
@@ -45,41 +46,49 @@ public class BlockState : BaseState
 
     public override void CheckSwitchStates()
     {
-        if (!Ctx.IsBlockPressed)
+        if (!Ctx.IsDead)
         {
-            if (Ctx.MoveInput != Vector2.zero)
+            if (!Ctx.IsBlockPressed)
             {
-                SwitchState(Factory.Move());
+                if (Ctx.MoveInput != Vector2.zero)
+                {
+                    SwitchState(Factory.Move());
+                }
+                else
+                {
+                    SwitchState(Factory.Idle());
+                }
             }
-            else
+            else if (Ctx.IsLightAttackPressed)
             {
-                SwitchState(Factory.Idle());
+                SwitchState(Factory.LightAttack());
+            }
+            else if (Ctx.IsHeavyAttackPressed)
+            {
+                SwitchState(Factory.HeavyAttack());
+            }
+            else if (Ctx.IsEvadeSucces)
+            {
+                SwitchState(Factory.Evade());
+            }
+            else if (Ctx.IsParrySucces)
+            {
+                SwitchState(Factory.Parry());
+            }
+            else if (Ctx.IsParried)
+            {
+                SwitchState(Factory.Stunned());
+            }
+            else if (Ctx.IsHeavyHitLanded)
+            {
+                SwitchState(Factory.Hurt());
+            }
+            else if (Ctx.IsDashPressed)
+            {
+                SwitchState(Factory.Dash());
             }
         }
-        else if (Ctx.IsLightAttackPressed)
-        {
-            SwitchState(Factory.LightAttack());
-        }
-        else if (Ctx.IsHeavyAttackPressed)
-        {
-            SwitchState(Factory.HeavyAttack());
-        }
-        else if (Ctx.IsDashPressed)
-        {
-            SwitchState(Factory.Dash());
-        }
-        else if (Ctx.IsParrySucces)
-        {
-            SwitchState(Factory.Parry());
-        }
-        else if (Ctx.IsParried)
-        {
-            SwitchState(Factory.Stunned());
-        }
-        else if(Ctx.IsHeavyHitLanded)
-        {
-            SwitchState(Factory.Hurt());   
-        }
+       
     }
 
     public override void InitializeSubStates()
