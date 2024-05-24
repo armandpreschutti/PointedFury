@@ -1,6 +1,7 @@
 using UnityEngine;
 using Cinemachine;
 using JetBrains.Annotations;
+using UnityEngine.Jobs;
 
 public class PlayerCameraController : MonoBehaviour
 {
@@ -71,9 +72,10 @@ public class PlayerCameraController : MonoBehaviour
     // Start is called before the first frame update    
     void Start()
     {
-        //_cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
+        _cinemachineTargetYaw = _cinemachineCameraTarget.transform.rotation.eulerAngles.y;
         _shortFightCamera.gameObject.SetActive(false);
         _longFightCamera.gameObject.SetActive(false);
+        
     }
 
     // Update is called once per frame

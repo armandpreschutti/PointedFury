@@ -9,20 +9,22 @@ public class HealthBarHandler : MonoBehaviour
     public Slider _healthBarSlider;
     public bool IsAI;
 
-/*    private void Awake()
+    private void Awake()
     {
         if (!IsAI)
         {
             _healthSystem = GameObject.Find("Player").GetComponent<HealthSystem>();
+
         }
         else
         {
             _healthBarSlider.gameObject.SetActive(false);
+            _healthBarSlider.maxValue = _healthSystem.MaxHealth;
         }
 
 
-    }*/
-    
+    }
+
     private void OnEnable()
     {
         _healthSystem.OnDamage += SetHealthBarValue;

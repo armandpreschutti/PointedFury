@@ -3692,7 +3692,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.35
+  m_Radius: 0.45
   m_SlopeLimit: 45
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
@@ -3744,7 +3744,7 @@ MonoBehaviour:
   _isStunned: 0
   _isAttacking: 0
   _strafeDirection: 0
-  comboCount: 1
+  comboCount: 0
   hitCount: 0
   _blockReleaseTime: 0
   targetDistance: 0
@@ -3769,7 +3769,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074535391245562779}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3c17c5fd4688e948b7ff915f6d8b7ba, type: 3}
   m_Name: 
@@ -8000,7 +8000,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb7f261677c88814bbef2f8369b78700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hitTargets: []
   _enemyTag: Player
+  _breakableTag: Breakable
 --- !u!1 &4335267539376428015
 GameObject:
   m_ObjectHideFlags: 0

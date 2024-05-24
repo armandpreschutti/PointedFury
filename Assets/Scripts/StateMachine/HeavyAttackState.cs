@@ -101,6 +101,10 @@ public class HeavyAttackState : BaseState
             {
                 SwitchState(Factory.Evade());
             }
+            else if (Ctx.IsDashPressed)
+            {
+                SwitchState(Factory.Dash());
+            }
         }
         
     }

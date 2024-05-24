@@ -20,10 +20,14 @@ public class AttackIndicationHandler : MonoBehaviour
             _attackIndicator.SetActive(true);
             _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.green;
         }
+        else if(_stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget != null && _stateMachine.CurrentTarget.GetComponent<StateMachine>().CurrentTarget == gameObject)
+        {
+            _attackIndicator.SetActive(true);
+            _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.white;
+        }
         else
         {
             _attackIndicator.SetActive(false);
-            _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.white;
         }
         
 

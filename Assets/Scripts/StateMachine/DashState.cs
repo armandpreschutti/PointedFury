@@ -27,6 +27,7 @@ public class DashState : BaseState
         //Debug.Log("DASH state is currently active");
         Ctx.DebugCurrentSubState = "Dash State";
         CheckSwitchStates();
+        Ctx.MoveInput = Vector2.zero;
     }
 
     public override void ExitState()
@@ -48,16 +49,7 @@ public class DashState : BaseState
                 {
                     SwitchState(Factory.Block());
                 }
-                else if (Ctx.IsLightAttackPressed)
-                {
-                    Ctx.IsHeavyAttackPressed = false;
-                    SwitchState(Factory.LightAttack());
-                }
-                else if (Ctx.IsHeavyAttackPressed)
-                {
-                    Ctx.IsLightAttackPressed = false;
-                    SwitchState(Factory.HeavyAttack());
-                }
+             
                 else
                 {
                     if (Ctx.MoveInput != Vector2.zero)
@@ -81,6 +73,16 @@ public class DashState : BaseState
             else if (Ctx.IsParried)
             {
                 SwitchState(Factory.Stunned());
+            }
+            else if (Ctx.IsLightAttackPressed)
+            {
+                Ctx.IsHeavyAttackPressed = false;
+                SwitchState(Factory.LightAttack());
+            }
+            else if (Ctx.IsHeavyAttackPressed)
+            {
+                Ctx.IsLightAttackPressed = false;
+                SwitchState(Factory.HeavyAttack());
             }
 
         }

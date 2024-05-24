@@ -19,6 +19,7 @@ public class EnemyManagementSystem : MonoBehaviour
     public static Action<GameObject, GameObject> OnNewAttacker;
     public static Action<GameObject> OnRemoveUnusedAttacker;
     public static Action<bool, Transform> OnLastEnemyStanding;
+    public Action<bool> OnInitiateTutorialUI;
 
     // statevariables
     float _newAttackerCheckTime;
@@ -47,6 +48,7 @@ public class EnemyManagementSystem : MonoBehaviour
             {
                 zoneActive = true;
                 OnZoneEntered?.Invoke(true, managedEnemies.Count);
+                OnInitiateTutorialUI?.Invoke(true);
                 foreach (GameObject enemy in managedEnemies)
                 {
                     OnEnemyDetected?.Invoke(true, enemy.transform.Find("PlayerCameraTarget"));
@@ -131,7 +133,9 @@ public class EnemyManagementSystem : MonoBehaviour
                 if (managedEnemies.Count == 0)
                 {
                     OnZoneEnemiesCleared?.Invoke(false, 0);
+                    OnInitiateTutorialUI?.Invoke(false);
                     zoneActive = false;
+                    this.enabled = false;
                 }
             }
         }

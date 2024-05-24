@@ -30,6 +30,7 @@ public class BlockState : BaseState
         if (Ctx.IsBlockSuccess && !Ctx.IsParrySucces && !Ctx.IsDead)
         {
            // Debug.Log("Trying to block");
+            
             Ctx.SetIncomingAttackDirection();
             Ctx.Animator.Play($"BlockImpact", 0, 0);
             Ctx.IsBlockSuccess = false;

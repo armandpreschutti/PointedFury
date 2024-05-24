@@ -42,6 +42,10 @@ public class DeathState : BaseState
         }
         else
         {
+            if (Ctx.IsAI)
+            {
+                Ctx.GetComponent<AIBrain>().enabled = false;
+            }
             Ctx.Controller.enabled = false;
             Ctx.enabled = false;
             Time.timeScale = 1f;

@@ -39,6 +39,7 @@ public class CombatState : BaseState
         {
             SwitchState(Factory.Death());
         }
+
     }
 
     public override void InitializeSubStates()

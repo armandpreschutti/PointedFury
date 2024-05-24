@@ -7,6 +7,7 @@ TagManager:
   - CinemachineTarget
   - Climbable
   - Enemy
+  - Breakable
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Environment
   - Ground
   - CameraTransparent
-  - 
+  - Breakable
   - 
   - 
   - 

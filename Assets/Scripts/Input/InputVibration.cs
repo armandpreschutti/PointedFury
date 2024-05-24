@@ -38,12 +38,8 @@ public class InputVibration : MonoBehaviour
 
     void Start()
     {
-         gamepad = Gamepad.current;
-        if (gamepad != null)
-        {
-            Debug.Log("Gamepad found!");
-        }
-        else
+        gamepad = Gamepad.current;
+        if (gamepad == null)
         {
             this.enabled = false;
         }

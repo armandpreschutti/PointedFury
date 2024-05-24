@@ -13058,14 +13058,14 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 512
-  LightAttackDamage: 15
-  HeavyAttackDamage: 30
+  LightAttackDamage: 10
+  HeavyAttackDamage: 20
   CombatDistance: 1.5
   LightAttackChargeSpeed: 0
   HeavyAttackChargeSpeed: 0
   KnockBackPower: 0
   ParryChargeSpeed: 0
-  ParryDamage: 50
+  ParryDamage: 30
   BlockDamageReduction: 0.25
   EnemiesNearby: []
   SlowMotionSpeed: 0.25
@@ -13135,7 +13135,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.35
+  m_Radius: 0.45
   m_SlopeLimit: 45
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
@@ -13169,7 +13169,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2208048724951217285}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3c17c5fd4688e948b7ff915f6d8b7ba, type: 3}
   m_Name: 
@@ -13388,7 +13388,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb7f261677c88814bbef2f8369b78700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyTargets: []
+  _breakableObjects: []
   _enemyTag: Enemy
+  _breakableTag: Breakable
 --- !u!1 &2808971052033467236
 GameObject:
   m_ObjectHideFlags: 0

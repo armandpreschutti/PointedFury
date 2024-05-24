@@ -11,7 +11,7 @@ public class AIStrafingState : AIBaseState
     int strafeDirection;
     public override void EnterState()
     {
-        Debug.LogWarning("Enemmy has entered STRAFING state");
+       // Debug.LogWarning("Enemmy has entered STRAFING state");
 
         SetRandomStrafeDirection();
     }

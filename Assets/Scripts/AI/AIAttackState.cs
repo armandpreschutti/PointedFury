@@ -13,7 +13,7 @@ public class AIAttackState : AIBaseState
     float stateTime;
     public override void EnterState()
     {
-         Debug.LogWarning("Enemmy has entered ATTACK state");
+        // Debug.LogWarning("Enemmy has entered ATTACK state");
         stateTime = 0f;
         blockBreakChance = Random.Range(1, 11);
         heavyAttackChance = Random.Range(1, 11);

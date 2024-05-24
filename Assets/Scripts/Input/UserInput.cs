@@ -100,7 +100,7 @@ public class UserInput : MonoBehaviour
     }
     public void SetDashInput(bool value)
     {
-        if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing && !_stateMachine.IsAttacking)
+        if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing)
         {
             _stateMachine.IsDashPressed = value;
         }

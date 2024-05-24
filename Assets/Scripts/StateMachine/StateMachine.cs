@@ -478,15 +478,16 @@ public class StateMachine : MonoBehaviour
 
     public void SetDashDirection()
     {
-         if (/*_currentTarget != null*/_moveInput != Vector2.zero)
+       /*  if (*//*_currentTarget != null*//*_moveInput != Vector2.zero)
          {
-             transform.LookAt(/*_currentTarget.transform.position*/transform.position + InputDirection());
+             transform.LookAt(*//*_currentTarget.transform.position*//*transform.position + InputDirection());
          }
          else
          {
              transform.LookAt(transform.position + transform.forward);
-         }
-    
+         }*/
+        transform.LookAt(transform.position + transform.forward);
+
     }
 
     public void SetHitKnockBack()
