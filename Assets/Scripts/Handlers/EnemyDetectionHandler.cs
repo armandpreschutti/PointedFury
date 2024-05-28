@@ -131,7 +131,7 @@ public class EnemyDetectionHandler : MonoBehaviour
             if (_stateMachine.MoveInput != Vector2.zero && _stateMachine.EnemiesNearby.Count >1)
             {
                 RaycastHit info;
-                if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius, EnemyLayers))
+                if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius * 2, EnemyLayers))
                 {
                     if (_stateMachine.EnemiesNearby.Contains(info.transform.gameObject))
                     {

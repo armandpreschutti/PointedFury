@@ -407,12 +407,12 @@ public class StateMachine : MonoBehaviour
             }
         }
     }
-    
-  /*  public void DashMovement()
-    {
-        _controller.Move(transform.forward * Time.deltaTime * DashSpeed);
-    }*/
 
+/*    public void DashMovement()
+    {
+        _controller.Move(transform.forward * Time.deltaTime * 5f);
+    }
+*/
     public void SetIncomingAttackDirection()
     {
         if(ClosestTarget != null)
@@ -478,15 +478,15 @@ public class StateMachine : MonoBehaviour
 
     public void SetDashDirection()
     {
-       /*  if (*//*_currentTarget != null*//*_moveInput != Vector2.zero)
-         {
-             transform.LookAt(*//*_currentTarget.transform.position*//*transform.position + InputDirection());
-         }
-         else
-         {
-             transform.LookAt(transform.position + transform.forward);
-         }*/
-        transform.LookAt(transform.position + transform.forward);
+        if (_moveInput != Vector2.zero)
+        {
+            transform.LookAt(transform.position + (InputDirection() *22));
+        }
+        else
+        {
+            transform.LookAt(transform.position + transform.forward);
+        }
+        //   transform.LookAt(transform.position + transform.forward);
 
     }
 

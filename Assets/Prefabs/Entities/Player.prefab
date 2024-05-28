@@ -13048,7 +13048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7368748c9ba1a44943502722299c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 3
+  MoveSpeed: 4
   SprintSpeed: 7.5
   FightSpeed: 1.5
   SpeedChangeRate: 1
@@ -13251,8 +13251,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LayerMask:
     serializedVersion: 2
-    m_Bits: 1792
-  Target: {fileID: 460832530000120801}
+    m_Bits: 1024
+  Target: {fileID: 7296948876398782289}
   Camera: {fileID: 0}
   FadedAlpha: 0
   RetainShadows: 1

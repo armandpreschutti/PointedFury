@@ -28,6 +28,7 @@ public class DashState : BaseState
         Ctx.DebugCurrentSubState = "Dash State";
         CheckSwitchStates();
         Ctx.MoveInput = Vector2.zero;
+       // Ctx.DashMovement();
     }
 
     public override void ExitState()

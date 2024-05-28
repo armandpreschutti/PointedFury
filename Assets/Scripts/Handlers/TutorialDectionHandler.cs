@@ -7,6 +7,7 @@ public class TutorialDetectionHandler : MonoBehaviour
 {
     public Action<bool> OnInitiateTutorialUI;
     public GameObject breakableObject;
+    
  
     private void OnTriggerEnter(Collider other)
     {
@@ -16,14 +17,14 @@ public class TutorialDetectionHandler : MonoBehaviour
         }
     }
 
-    private void Update()
+   /* private void Update()
     {
         if(breakableObject == null)
         {
             OnInitiateTutorialUI?.Invoke(false);
             Destroy(this);
         }
-    }
+    }*/
     private void OnTriggerExit(Collider other)
     {
         if (other.name == "Player")

@@ -5,17 +5,19 @@ using UnityEngine.UI;
 
 public class AttackIndicationHandler : MonoBehaviour
 {
-    [SerializeField] StateMachine _stateMachine;
-    [SerializeField] GameObject _attackIndicator;
+    public StateMachine _stateMachine;
+    public GameObject _attackIndicator;
+    public bool showParryIndicator;
+    public bool showEvadeIndicator;
 
     private void Update()
     {
-        if(_stateMachine.AttackType == "Heavy" && _stateMachine.IsParryable)
+        if(_stateMachine.AttackType == "Heavy" && _stateMachine.IsParryable && showParryIndicator)
         {
             _attackIndicator.SetActive(true);
             _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.red;
         }
-        else if (_stateMachine.IsEvadable && _stateMachine.IsParrying)
+        else if (_stateMachine.IsEvadable /*&& _stateMachine.IsParrying*/ && showEvadeIndicator)
         {
             _attackIndicator.SetActive(true);
             _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.green;

@@ -153,8 +153,8 @@ public class EntityVFXHandler : MonoBehaviour
         _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
         _leftFootVFX.GetComponent<TrailRenderer>().endColor = Color.white;
         _leftFootVFX.SetActive(value);
-        _leftHandVFX.SetActive(value);
+       // _leftHandVFX.SetActive(value);
         _rightFootVFX.SetActive(value);
-        _rightHandVFX.SetActive(value);
+       // _rightHandVFX.SetActive(value);
     }
 }
