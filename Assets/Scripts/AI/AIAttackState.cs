@@ -10,10 +10,12 @@ public class AIAttackState : AIBaseState
     int blockBreakChance;
     int heavyAttackChance;
     bool isChaining;
+    float comboTime;
     float stateTime;
     public override void EnterState()
     {
         // Debug.LogWarning("Enemmy has entered ATTACK state");
+        Ctx._initialAttack = false;
         stateTime = 0f;
         blockBreakChance = Random.Range(1, 11);
         heavyAttackChance = Random.Range(1, 11);
@@ -22,10 +24,12 @@ public class AIAttackState : AIBaseState
             if (Ctx.HeavyAttackSkill >= heavyAttackChance)
             {
                 Ctx.StateMachine.IsHeavyAttackPressed = true;
+                comboTime = .5f;
             }
             else
             {
                 Ctx.StateMachine.IsLightAttackPressed = true;
+                comboTime = .25f;
             }
         }    
 
@@ -41,7 +45,7 @@ public class AIAttackState : AIBaseState
         CheckSwitchStates();
 
         stateTime += Time.deltaTime;
-        if (Ctx.comboCount < Ctx.ComboSkill && stateTime > .25f && Ctx.CanComboChain)
+        if (Ctx.comboCount < Ctx.ComboSkill && stateTime > comboTime && Ctx.CanComboChain)
         {
             isChaining = true;
         }
@@ -50,7 +54,7 @@ public class AIAttackState : AIBaseState
     public override void ExitState()
     {
         //Debug.LogWarning("Enemy has exited ATTACK state");
-        
+        Ctx.timeSinceAttack = 0f;
     }
 
     public override void CheckSwitchStates()

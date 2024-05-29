@@ -49,7 +49,6 @@ public class EnemyDetectionHandler : MonoBehaviour
         if (other.CompareTag(_enemyTag))
         {
             _stateMachine.EnemiesNearby.Add(other.gameObject);
-
         }
     }
 

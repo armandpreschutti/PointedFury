@@ -37,7 +37,7 @@ public class AIBlockState : AIBaseState
         //Debug.LogWarning("Enemy has exited BLOCK state");
 
         Ctx.StateMachine.IsBlockPressed = false;
-
+        //Ctx.hitCount = 0; 
     }
 
     public override void CheckSwitchStates()
@@ -45,14 +45,14 @@ public class AIBlockState : AIBaseState
         if (!Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking)
         {
             postBlockTime += Time.deltaTime;
-            if(postBlockTime > 1f)
+            if(postBlockTime > Ctx.BlockReleaseTime)
             {
                 Ctx.StateMachine.IsBlockPressed = false;
                 Ctx.hitCount = 0;
                 SwitchState(Factory.Idle());
             }
         }
-        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy" && Ctx.ParrySkill >= parryChance() &&!Ctx.StateMachine.IsStunned)
+        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsParryable && Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().AttackType == "Heavy" && Ctx.ParrySkill >= parryChance() &&!Ctx.StateMachine.IsStunned && !Ctx.StateMachine.IsEvading)
         {
             Ctx.StateMachine.OnAttemptParry?.Invoke();
 

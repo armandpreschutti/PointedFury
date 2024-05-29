@@ -276,7 +276,7 @@ public class StateMachine : MonoBehaviour
   
     public void CombatMovement()
     {
-        if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isParrying)
+        if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isParrying && !_isDashing)
         {
             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
             if (moveDirection != Vector3.zero)
@@ -545,14 +545,15 @@ public class StateMachine : MonoBehaviour
 
     public void OnAttackAnimationBegin()
     {
-        
 
+        SetAttackDirection();
 
     }
 
     public void OnAttackAnimationCharge()
     {
         OnAttackWindUp?.Invoke(true, _attackType);
+
         _isCharging = true;
         _isEvadable = true;
         if (_attackType == "Heavy")

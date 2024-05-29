@@ -3597,8 +3597,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3104886322018024602}
   - {fileID: 2530427358781287842}
+  - {fileID: 3104886322018024602}
   - {fileID: 4605523953892232333}
   - {fileID: 1934122582805120966}
   - {fileID: 5358826204584712042}
@@ -3692,7 +3692,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.45
+  m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
@@ -3742,23 +3742,25 @@ MonoBehaviour:
   _isWatchRange: 0
   isHurt: 0
   _isStunned: 0
+  _initialAttack: 1
   _isAttacking: 0
   _strafeDirection: 0
   comboCount: 0
   hitCount: 0
-  _blockReleaseTime: 0
   targetDistance: 0
   AttackDistance: 1.5
   WatchDistance: 3
   DistanceBuffer: 1
   ComboSkill: 1
   CanComboChain: 0
-  BlockBreakSkill: 0
   HitTolerance: 10
+  BlockReleaseTime: 1
   ParrySkill: 3
   HeavyAttackSkill: 0
   EvadeSkill: 0
+  InitialAttackDelay: 0
   AttackInterval: 3
+  timeSinceAttack: 0
   isActivated: 0
   isAttacker: 1
   isWatcher: 0

@@ -27,11 +27,12 @@ public class AIBrain : MonoBehaviour
     public bool _isWatchRange;
     public bool isHurt;
     public bool _isStunned;
+    public bool _initialAttack;
     public bool _isAttacking;
     public float _strafeDirection;
     public int comboCount;
     public int hitCount;
-    public float _blockReleaseTime;
+
     public float targetDistance;
     public float AttackDistance = 1.5f;
     public float WatchDistance = 3f;
@@ -39,12 +40,14 @@ public class AIBrain : MonoBehaviour
 
     public int ComboSkill;
     public bool CanComboChain;
-    public int BlockBreakSkill;
     public int HitTolerance;
+    public float BlockReleaseTime = 1;
     public int ParrySkill;
     public int HeavyAttackSkill;
     public int EvadeSkill;
+    public float InitialAttackDelay;
     public float AttackInterval;
+    public float timeSinceAttack;
 
 
     // enemy management variables

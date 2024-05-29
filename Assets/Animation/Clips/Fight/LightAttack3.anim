@@ -124,31 +124,31 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.21666667
-        value: 0.7522762
-        inSlope: 1.0976794
-        outSlope: 1.0976794
+        time: 0.2
+        value: 0.8
+        inSlope: 6.857438
+        outSlope: 6.857438
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0.26403815
         outWeight: 0.45772037
       - serializedVersion: 3
-        time: 0.41666666
-        value: 0.80283475
-        inSlope: -0.33560896
-        outSlope: -0.33560896
+        time: 0.25
+        value: 0.8000001
+        inSlope: -2.1846957
+        outSlope: -2.1846957
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.5116308
-        outWeight: 1
+        outWeight: 0.12898092
       - serializedVersion: 3
-        time: 0.55
-        value: 0.5842607
-        inSlope: -0.8134902
-        outSlope: -0.8134902
+        time: 0.6333333
+        value: 0.7039069
+        inSlope: -0.45838246
+        outSlope: -0.45838246
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0.3714188
         outWeight: 0.63427085
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -28936,31 +28936,31 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.21666667
-        value: 0.7522762
-        inSlope: 1.0976794
-        outSlope: 1.0976794
+        time: 0.2
+        value: 0.8
+        inSlope: 6.857438
+        outSlope: 6.857438
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0.26403815
         outWeight: 0.45772037
       - serializedVersion: 3
-        time: 0.41666666
-        value: 0.80283475
-        inSlope: -0.33560896
-        outSlope: -0.33560896
+        time: 0.25
+        value: 0.8000001
+        inSlope: -2.1846957
+        outSlope: -2.1846957
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.5116308
-        outWeight: 1
+        outWeight: 0.12898092
       - serializedVersion: 3
-        time: 0.55
-        value: 0.5842607
-        inSlope: -0.8134902
-        outSlope: -0.8134902
+        time: 0.6333333
+        value: 0.7039069
+        inSlope: -0.45838246
+        outSlope: -0.45838246
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0.3714188
         outWeight: 0.63427085
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -56461,7 +56461,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.016666668
+  - time: 0
     functionName: OnAttackAnimationCharge
     data: 
     objectReferenceParameter: {fileID: 0}

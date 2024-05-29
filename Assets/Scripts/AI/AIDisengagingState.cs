@@ -20,6 +20,7 @@ public class AIDisengagingState: AIBaseState
         Ctx.DebugSubState = "Disengage State";
         CheckSwitchStates();
         Ctx.moveInput.y = -1f;
+        Ctx.timeSinceAttack += Time.deltaTime;
 
     }
 

@@ -48,8 +48,9 @@ public class HealthSystem : MonoBehaviour
         {
             _currentHealh -= damage;
             OnDamage?.Invoke();
-            if (_currentHealh <= MinHealth)
+            if (_currentHealh <= MinHealth && !_stateMachine.IsDead)
             {
+                _currentHealh = MinHealth;
                 OnDeath?.Invoke();
                 _stateMachine.IsDead = true;
                 _stateMachine.OnDeath?.Invoke();

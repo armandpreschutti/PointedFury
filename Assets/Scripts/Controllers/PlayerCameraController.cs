@@ -59,12 +59,14 @@ public class PlayerCameraController : MonoBehaviour
     {
        
         EnemyManagementSystem.OnZoneEntered += SetCameraState;
+        EnemyManagementSystem.OnLastEnemy += SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared += SetCameraState;
         _stateMachine.OnFight += SetLoneCameraState;
     }
     private void OnDisable()
     {
         EnemyManagementSystem.OnZoneEntered -= SetCameraState;
+        EnemyManagementSystem.OnLastEnemy -= SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
         _stateMachine.OnFight += SetLoneCameraState;
     }

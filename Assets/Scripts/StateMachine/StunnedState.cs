@@ -16,6 +16,7 @@ public class StunnedState : BaseState
         Ctx.Animator.Play($"Stunned", 0, 0);
         Ctx.IsParryable = false;
         Ctx.IsParried = false;
+        Ctx.IsEvadable = false;
        // Ctx.IsBlockPressed = false;
         Ctx.IsLightHitLanded = false;
         Ctx.IsHeavyHitLanded = false;
@@ -26,6 +27,7 @@ public class StunnedState : BaseState
         Ctx.OnFight?.Invoke(true);
         Ctx.IsStunned = true;
         ExitAllAnimations();
+        Ctx.SetIncomingAttackDirection();
     }
 
     public override void UpdateState()
@@ -33,7 +35,7 @@ public class StunnedState : BaseState
         //Debug.Log("STUNNEDstate is currently active");
         Ctx.DebugCurrentSubState = "Stunned State";
         CheckSwitchStates();
-        Ctx.SetIncomingAttackDirection();
+        
         if (Ctx.IsKnockedBack)
         {
             Ctx.SetHitKnockBack();

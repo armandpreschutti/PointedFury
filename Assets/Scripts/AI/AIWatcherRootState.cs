@@ -41,6 +41,14 @@ public class AIWatcherRooteState : AIBaseState
 
     public override void InitializeSubStates()
     {
-        SetSubState(Factory.Idle());
+        if(Ctx.hitCount > Ctx.HitTolerance)
+        {
+            SetSubState(Factory.Block());
+        }
+        else
+        {
+            SetSubState(Factory.Idle());
+        }
+
     }
 }

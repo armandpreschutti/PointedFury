@@ -8,15 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TitleMenu.unity
     guid: 97be981be9cdeb942acbcd94886eb181
-  - enabled: 0
-    path: Assets/Scenes/MainMenu.unity
-    guid: f4f1db8919f28904da0b7bfe63b76139
-  - enabled: 0
-    path: Assets/Scenes/SettingsMenu.unity
-    guid: 10df01818f195b8469ccc2f499370b61
-  - enabled: 0
-    path: Assets/Scenes/Depricated/Debug.unity
-    guid: 9137e13080b04f64cafbb4a65bb1165f
   - enabled: 1
     path: Assets/Scenes/CombatGym.unity
     guid: ae9617a50fc79ea4493b3983d696c659

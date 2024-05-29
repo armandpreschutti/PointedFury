@@ -16,6 +16,7 @@ public class EvadeState : BaseState
         Ctx.IsFighting = true;
         Ctx.IsEvadePressed = false;
         Ctx.IsEvadeSucces = false;
+        Ctx.SetIncomingAttackDirection();
     }
 
     public override void UpdateState()
@@ -23,7 +24,7 @@ public class EvadeState : BaseState
         //Debug.Log("DASH state is currently active");
         Ctx.DebugCurrentSubState = "Evade State";
         CheckSwitchStates();
-        Ctx.SetIncomingAttackDirection();
+        //Ctx.SetIncomingAttackDirection();
 /*        if (Ctx.IsEvading)
         {
             Ctx.SetIncomingAttackDirection();

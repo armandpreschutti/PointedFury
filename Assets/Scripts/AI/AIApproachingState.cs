@@ -19,8 +19,8 @@ public class AIApproachingState: AIBaseState
         // Debug.Log("APPROACHING state is currently active");
         Ctx.DebugSubState = "Approaching State";
         CheckSwitchStates();
-
-      // stateTime += Time.deltaTime;
+        Ctx.timeSinceAttack += Time.deltaTime;
+        // stateTime += Time.deltaTime;
         // Ctx.moveInput.y = Mathf.Lerp(Ctx.moveInput.y, _targetMoveInput, Time.deltaTime * _moveInputSmoothTime);
         /*if (Ctx.StateMachine.MoveInput.magnitude < 0.01f)
         {

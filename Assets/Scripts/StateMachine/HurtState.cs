@@ -22,6 +22,7 @@ public class HurtState : BaseState
         Ctx.IsFighting = true;
         Ctx.OnHurt?.Invoke();
         Ctx.OnFight?.Invoke(true);
+        Ctx.IsEvadable = false;
         if (Ctx.HitType != "Parry")
         {
             Ctx.Animator.Play($"{Ctx.HitType}Hurt{Ctx.HitID}", 0, 0);

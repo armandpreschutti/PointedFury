@@ -36,8 +36,7 @@ public class DeathState : BaseState
 
         if (Ctx.IsKnockedBack)
         {
-           // Ctx.KnockBackPower = 10f;
-            Ctx.SetHitKnockBack();
+         
             Time.timeScale = .25f;
         }
         else
