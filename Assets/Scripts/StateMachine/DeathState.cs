@@ -38,6 +38,7 @@ public class DeathState : BaseState
         {
          
             Time.timeScale = .25f;
+            Ctx.Controller.detectCollisions = false;
         }
         else
         {

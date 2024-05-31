@@ -13,6 +13,7 @@ public class HealthSystem : MonoBehaviour
     
     public Action OnDeath;
     public Action OnDamage;
+    public Action OnReplish;
 
     public float CurrentHealth { get { return _currentHealh; } }
 
@@ -61,5 +62,11 @@ public class HealthSystem : MonoBehaviour
     public void ResetHealth(bool value)
     {
         _currentHealh = MaxHealth;
+    }
+
+    public void RefillHealth()
+    {
+        _currentHealh = MaxHealth;
+        OnReplish?.Invoke();
     }
 }

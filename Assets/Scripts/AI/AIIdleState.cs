@@ -12,17 +12,16 @@ public class AIIDleState : AIBaseState
     float initialAttackTime;
     float disengageTime;
     float approachTime;
-    int blockChance;
-    int evadeChance;
+/*    int blockChance;
+    int evadeChance;*/
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered IDLE state");
         
         Ctx.comboCount = 0;
-        //attackTime = 0;
         
-        blockChance = Random.Range(1, 11);
-        evadeChance = Random.Range(1, 11);
+/*        blockChance = Random.Range(1, 11);
+        evadeChance = Random.Range(1, 11);*/
         Ctx.hitCount = 0;
     }
 
@@ -64,7 +63,6 @@ public class AIIDleState : AIBaseState
         }
         else if (Ctx.isAttacker && !Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsAttacking && !Ctx.isHurt && Ctx.ComboSkill > 0)
         {
-            /*attackTime*/
             Ctx.timeSinceAttack += Time.deltaTime;
             if (Ctx.timeSinceAttack >= Ctx.AttackInterval && !Ctx._initialAttack)
             {
@@ -88,11 +86,6 @@ public class AIIDleState : AIBaseState
         {
             SwitchState(Factory.Block());
         }
-
-/*        else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsEvadable && !Ctx.StateMachine.IsEvading && Ctx.EvadeSkill >= evadeChance && !Ctx.StateMachine.IsStunned)
-        {
-            Ctx.StateMachine.OnAttemptEvade?.Invoke();
-        }*/
     }
 
     public override void InitializeSubStates()

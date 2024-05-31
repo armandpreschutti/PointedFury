@@ -415,7 +415,7 @@ public class StateMachine : MonoBehaviour
 */
     public void SetIncomingAttackDirection()
     {
-        if(ClosestTarget != null)
+        if (ClosestTarget != null)
         {
             transform.LookAt(ClosestTarget.position);
         }
@@ -423,7 +423,7 @@ public class StateMachine : MonoBehaviour
         {
             transform.LookAt(_incomingAttackDirection);
         }
-
+        //  transform.LookAt(_incomingAttackDirection);
     }
     
     public void SetAttackDirection()

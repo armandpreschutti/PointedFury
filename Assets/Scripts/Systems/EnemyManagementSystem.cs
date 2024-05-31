@@ -7,7 +7,7 @@ public class EnemyManagementSystem : MonoBehaviour
 {
     public GameObject[] managedEnemies/* = new GameObject[10]*/; // assuming a max of 10 enemies
     public int enemyCount = 0;
-
+    public GameObject player;
     public GameObject newAttacker;
     public GameObject currentAttacker;
     public bool zoneActive;
@@ -33,11 +33,12 @@ public class EnemyManagementSystem : MonoBehaviour
     {
         //enemyCount = managedEnemies.Length;
         managedEnemies = new GameObject[10];
-        Debug.LogError(managedEnemies.Length);
+        player = GameObject.Find("Player");
+      //  Debug.LogError(managedEnemies.Length);
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger entered by: " + other.tag); // Debug log
+      //  Debug.Log("Trigger entered by: " + other.tag); // Debug log
 
         if (other.CompareTag("Enemy"))
         {
@@ -45,7 +46,7 @@ public class EnemyManagementSystem : MonoBehaviour
             {
                 
                 AddEnemy(other.gameObject);
-                Debug.Log("Enemy added: " + other.gameObject.name); // Debug log
+               // Debug.Log("Enemy added: " + other.gameObject.name); // Debug log
             }
         }
 
@@ -87,7 +88,7 @@ public class EnemyManagementSystem : MonoBehaviour
     {
         while (zoneActive)
         {
-            Debug.Log("Set Attacker coroutine started");
+           // Debug.Log("Set Attacker coroutine started");
             yield return new WaitForSeconds(NewAttackerCheckInterval);
             SetAttacker();
         }
@@ -97,7 +98,7 @@ public class EnemyManagementSystem : MonoBehaviour
     {
         while (zoneActive)
         {
-            Debug.Log("Enemy cleaner coroutine started");
+            //Debug.Log("Enemy cleaner coroutine started");
             yield return new WaitForSeconds(EnemyDeathCheckInterval);
             CleanEnemyList();
         }
@@ -171,11 +172,11 @@ public class EnemyManagementSystem : MonoBehaviour
    
             managedEnemies[enemyCount] = enemy;
             enemyCount++;
-            Debug.Log("Added enemy: " + enemy.name + ". Total enemies: " + enemyCount);
+            //Debug.Log("Added enemy: " + enemy.name + ". Total enemies: " + enemyCount);
         }
         else
         {
-            Debug.LogWarning("Managed enemies array is full. Cannot add more enemies.");
+           // Debug.LogWarning("Managed enemies array is full. Cannot add more enemies.");
         }
     }
     private void RemoveEnemy(GameObject enemy)
@@ -205,24 +206,25 @@ public class EnemyManagementSystem : MonoBehaviour
 
     public void SetNewAttacker()
     {
-        if (ClosestEnemy() != currentAttacker || enemyCount == 1)
+        if ((ClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)
+            || enemyCount == 1))
         {
-            newAttacker = ClosestEnemy();
-            currentAttacker = newAttacker;
-            Debug.Log(currentAttacker.name);
+            Debug.Log("Closest Enemy picked");
+            currentAttacker = ClosestEnemy();
         }
-        else
+        else if (enemyCount > 1 && (SecondClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)))
         {
-            newAttacker = managedEnemies[UnityEngine.Random.Range(0, enemyCount)];
-            if (newAttacker == ClosestEnemy())
-            {
-                SetNewAttacker();
-            }
-            else
-            {
-                currentAttacker = newAttacker;
-                Debug.Log(currentAttacker.name);
-            }
+            Debug.Log("Random Enemy picked");
+            currentAttacker = SecondClosestEnemy();
+        }
+        else if (enemyCount > 2 && (ThirdClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)))
+        {
+            Debug.Log("Random Enemy picked");
+            currentAttacker = ThirdClosestEnemy();
+        }
+        else /*if (currentAttacker.GetComponent<HealthSystem>() != null && currentAttacker.GetComponent<HealthSystem>().CurrentHealth < 50 && enemyCount > 2 && SecondClosestEnemy().GetComponent<HealthSystem>().CurrentHealth < 50)*/
+        {
+            currentAttacker = ClosestEnemy();
         }
     }
 
@@ -235,7 +237,7 @@ public class EnemyManagementSystem : MonoBehaviour
         {
             if (enemy != null)
             {
-                float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
 
                 for (int i = 0; i < distances.Length; i++)
                 {
@@ -257,209 +259,73 @@ public class EnemyManagementSystem : MonoBehaviour
 
         return closestTargets[0]?.gameObject;
     }
-    /*  public List<GameObject> managedEnemies = new List<GameObject>();
-      public GameObject newAttacker;
-      public GameObject currentAttacker;
-      public bool zoneActive;
-      public static Action<bool, Transform> OnEnemyDetected;
-      public static Action<Transform> OnAttackerDeath;
 
-      public static Action<Transform> OnTargetGroupFound;
-      public static Action<bool, int> OnZoneEntered;
-      public static Action<bool, int> OnZoneEnemiesCleared;
-      public static Action<GameObject> OnRemoveUnusedAttacker;
-      public Action<bool> OnInitiateTutorialUI;
-      public static Action<bool, int> OnLastEnemy;
-      public bool attackPicked;
-      public bool attackerSelected;
+    public GameObject SecondClosestEnemy()
+    {
+        float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
+        Transform[] closestTargets = new Transform[3] { null, null, null };
 
-      public float NewAttackerCheckInterval = 0.1f;
-      public float EnemyDeathCheckInterval = 4f;
+        foreach (GameObject enemy in managedEnemies)
+        {
+            if (enemy != null)
+            {
+                float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
 
-      private Coroutine attackerCoroutine;
-      private Coroutine cleanerCoroutine;
+                for (int i = 0; i < distances.Length; i++)
+                {
+                    if (distance < distances[i])
+                    {
+                        for (int j = distances.Length - 1; j > i; j--)
+                        {
+                            distances[j] = distances[j - 1];
+                            closestTargets[j] = closestTargets[j - 1];
+                        }
 
-      private void OnTriggerEnter(Collider other)
-      {
-          if (other.CompareTag("Enemy"))
-          {
-              if (!managedEnemies.Contains(other.gameObject))
-              {
-                  managedEnemies.Add(other.gameObject);
-              }
-          }
-          if (other.CompareTag("Player"))
-          {
-              if (managedEnemies.Count != 0)
-              {
-                  zoneActive = true;
-                  OnZoneEntered?.Invoke(true, managedEnemies.Count);
-                  OnInitiateTutorialUI?.Invoke(true);
-                  foreach (GameObject enemy in managedEnemies)
-                  {
-                      OnEnemyDetected?.Invoke(true, enemy.transform.Find("PlayerCameraTarget"));
-                      enemy.GetComponent<AIBrain>().enabled = true;
-                      enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
-                      enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
-                  }
-                  SetAttacker();
-                  StartCoroutines();
-              }
-          }
-      }
+                        distances[i] = distance;
+                        closestTargets[i] = enemy.transform;
+                        break;
+                    }
+                }
+            }
+        }
 
-      private void StartCoroutines()
-      {
-          if (attackerCoroutine != null) StopCoroutine(attackerCoroutine);
-          if (cleanerCoroutine != null) StopCoroutine(cleanerCoroutine);
+        return closestTargets[1]?.gameObject;
+    }
 
-          attackerCoroutine = StartCoroutine(SetAttackerCoroutine());
-          cleanerCoroutine = StartCoroutine(CleanEnemyListCoroutine());
-      }
+    public GameObject ThirdClosestEnemy()
+    {
+        float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
+        Transform[] closestTargets = new Transform[3] { null, null, null };
 
-      private IEnumerator SetAttackerCoroutine()
-      {
-          while (zoneActive)
-          {
-              Debug.Log("Set Attacker coroutine started");
-              yield return new WaitForSeconds(NewAttackerCheckInterval);
-              SetAttacker();
-          }
-      }
+        foreach (GameObject enemy in managedEnemies)
+        {
+            if (enemy != null)
+            {
+                float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
 
-      private IEnumerator CleanEnemyListCoroutine()
-      {
-          while (zoneActive)
-          {
-              Debug.Log("Enemy cleaner co routine started");
-              yield return new WaitForSeconds(EnemyDeathCheckInterval);
-              CleanEnemyList();
-          }
-      }
+                for (int i = 0; i < distances.Length; i++)
+                {
+                    if (distance < distances[i])
+                    {
+                        for (int j = distances.Length - 1; j > i; j--)
+                        {
+                            distances[j] = distances[j - 1];
+                            closestTargets[j] = closestTargets[j - 1];
+                        }
 
-      public void SetAttacker()
-      {
-          if (zoneActive)
-          {
-              if (managedEnemies.Count > 0)
-              {
-                  ResetEnemyStates(managedEnemies);
-                  SetNewAttacker();
-                  currentAttacker.GetComponent<AIBrain>().isAttacker = true;
-                  currentAttacker.GetComponent<AIBrain>().isWatcher = false;
-              }
-              else
-              {
-                  newAttacker = null;
-                  currentAttacker = null;
-                  return;
-              }
-          }
-      }
+                        distances[i] = distance;
+                        closestTargets[i] = enemy.transform;
+                        break;
+                    }
+                }
+            }
+        }
 
-      public void CleanEnemyList()
-      {
-          if (zoneActive)
-          {
-              foreach (GameObject enemy in managedEnemies)
-              {
-                  if (enemy.GetComponent<StateMachine>().IsDead || enemy.GetComponent<StateMachine>() == null)
-                  {
-                      if (enemy == currentAttacker)
-                      {
-                          SetAttacker();
-                      }
-                      OnAttackerDeath?.Invoke(enemy.transform.Find("PlayerCameraTarget").transform);
-                      managedEnemies.Remove(enemy);
-                  }
-              }
+        return closestTargets[2]?.gameObject;
+    }
+    /*public GameObject RandomEnemy()
+    {
 
-              if (managedEnemies.Count == 1)
-              {
-                  OnLastEnemy?.Invoke(true, 1);
-              }
-
-              if (managedEnemies.Count == 0)
-              {
-                  OnZoneEnemiesCleared?.Invoke(false, 0);
-                  OnInitiateTutorialUI?.Invoke(false);
-                  zoneActive = false;
-                  StopCoroutines();
-                  this.enabled = false;
-              }
-          }
-      }
-
-      private void StopCoroutines()
-      {
-          if (attackerCoroutine != null) StopCoroutine(attackerCoroutine);
-          if (cleanerCoroutine != null) StopCoroutine(cleanerCoroutine);
-      }
-
-      public void ResetEnemyStates(List<GameObject> enemies)
-      {
-          foreach (GameObject enemy in enemies)
-          {
-              enemy.GetComponent<AIBrain>().isAttacker = false;
-              enemy.GetComponent<AIBrain>().isWatcher = true;
-          }
-      }
-
-      public void SetNewAttacker()
-      {
-          if (ClosestEnemy() != currentAttacker || managedEnemies.Count == 1)
-          {
-              newAttacker = ClosestEnemy();
-              currentAttacker = newAttacker;
-              Debug.Log(currentAttacker.name);
-          }
-          else
-          {
-              newAttacker = managedEnemies[UnityEngine.Random.Range(0, managedEnemies.Count)];
-              if(newAttacker == ClosestEnemy())
-              {
-                  SetNewAttacker();
-              }
-              else
-              {
-                  currentAttacker = newAttacker;
-                  Debug.Log(currentAttacker.name);
-              }
-          }
-      }
-
-      public GameObject ClosestEnemy()
-      {
-          float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
-          Transform[] closestTargets = new Transform[3] { null, null, null };
-
-          // Iterate through all hits to find the closest colliders
-          foreach (GameObject enemy in managedEnemies)
-          {
-              float distance = Vector3.Distance(transform.position, enemy.transform.position);
-
-              // Update closest targets array if a closer target is found
-              for (int i = 0; i < distances.Length; i++)
-              {
-                  if (distance < distances[i])
-                  {
-                      // Shift elements to make space for the new closest target
-                      for (int j = distances.Length - 1; j > i; j--)
-                      {
-                          distances[j] = distances[j - 1];
-                          closestTargets[j] = closestTargets[j - 1];
-                      }
-
-                      // Assign the new closest target
-                      distances[i] = distance;
-                      closestTargets[i] = enemy.transform;
-                      break; // Exit the loop after updating the closest target
-                  }
-              }
-          }
-
-          // Assign closest, second closest, and third closest targets
-          return closestTargets[0].gameObject;
-      }*/
+    }*/
 }
  

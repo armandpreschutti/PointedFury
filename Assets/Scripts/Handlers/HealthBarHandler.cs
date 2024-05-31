@@ -29,6 +29,7 @@ public class HealthBarHandler : MonoBehaviour
     {
         _healthSystem.OnDamage += SetHealthBarValue;
         _healthSystem.OnDeath += DisableEnemyHealthBar;
+        _healthSystem.OnReplish += SetHealthBarValue;
 
 
 
@@ -37,6 +38,7 @@ public class HealthBarHandler : MonoBehaviour
     {
         _healthSystem.OnDamage -= SetHealthBarValue;
         _healthSystem.OnDeath -= DisableEnemyHealthBar;
+        _healthSystem.OnReplish -= SetHealthBarValue;
     }
 
     public void SetHealthBarValue()

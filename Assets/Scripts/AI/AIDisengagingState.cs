@@ -16,9 +16,10 @@ public class AIDisengagingState: AIBaseState
     public override void UpdateState()
     {
         // Debug.Log("DISENGAGE state is currently active");
-        Ctx.moveInput = Vector2.zero;
+   //     Ctx.moveInput = Vector2.zero;
         Ctx.DebugSubState = "Disengage State";
         CheckSwitchStates();
+
         Ctx.moveInput.y = -1f;
         Ctx.timeSinceAttack += Time.deltaTime;
 
@@ -37,14 +38,7 @@ public class AIDisengagingState: AIBaseState
         {
             SwitchState(Factory.Idle());
         }
-        /*  if (!Ctx.isHurt)
-          {
-              SwitchState(Factory.Idle());
-          }
-          else if (Ctx.hitCount >= Ctx.HitTolerance)
-          {
-              SwitchState(Factory.Block());
-          }*/
+
     }
 
     public override void InitializeSubStates()

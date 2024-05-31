@@ -109,10 +109,11 @@ public class UserInput : MonoBehaviour
 
     public void SetBlockInput(bool value)
     {
-        if(/*!_stateMachine.IsStunned &&*/ !_stateMachine.IsDashing)
+        _stateMachine.IsBlockPressed = value;
+/*        if (*//*!_stateMachine.IsStunned &&*//* !_stateMachine.IsDashing)
         {
             _stateMachine.IsBlockPressed = value;
-        }
+        }*/
     }
 
     public void SetParryInput()

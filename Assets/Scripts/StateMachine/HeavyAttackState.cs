@@ -14,6 +14,7 @@ public class HeavyAttackState : BaseState
 
         SetAttackType();
         Ctx.SetAttackDirection();
+        Ctx.MoveInput = Vector2.zero;
         Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, true);
         Ctx.Animator.SetInteger(Ctx.AnimIDHeavyAttackID, Ctx.HeavyAttackID);
         Ctx.IsAttacking = true;

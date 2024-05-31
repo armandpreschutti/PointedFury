@@ -14,6 +14,7 @@ public class LightAttackState : BaseState
 
         SetAttackType();
         Ctx.SetAttackDirection();
+        Ctx.MoveInput = Vector2.zero;
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
         Ctx.Animator.SetInteger(Ctx.AnimIDLightAttackID, Ctx.LightAttackID);
         Ctx.IsAttacking = true;
