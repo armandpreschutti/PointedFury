@@ -27,6 +27,7 @@ public class UserInput : MonoBehaviour
     // This function is called when the object becomes enabled and active
     private void OnEnable()
     {
+        TutoiralManager.OnEnableControl += EnablePlayerControl;
         _playerControls.Enable();
         SubscribeToActions();
     }
@@ -34,6 +35,7 @@ public class UserInput : MonoBehaviour
     // This function is called when the behaviour becomes disabled
     private void OnDisable()
     {
+        TutoiralManager.OnEnableControl += EnablePlayerControl;
         _playerControls.Disable();
         UnsubscribeFromActions();
     }
@@ -46,7 +48,10 @@ public class UserInput : MonoBehaviour
             _stateMachine.MoveInput = Vector2.zero;
         }
     }
-
+    public void EnablePlayerControl()
+    {
+        this.enabled = true;
+    }
 
     // Set move input value
     public void SetMoveInput(Vector2 value)

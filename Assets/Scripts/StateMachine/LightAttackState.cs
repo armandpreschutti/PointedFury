@@ -34,7 +34,7 @@ public class LightAttackState : BaseState
 
         if (Ctx.IsCharging)
         {
-           //Ctx.SetAttackDirection();
+            Ctx.SetAttackDirection();
             Ctx.AttackMovement();
         }
     }
@@ -105,6 +105,14 @@ public class LightAttackState : BaseState
             else if (Ctx.IsDashPressed)
             {
                 SwitchState(Factory.Dash());
+            }
+            else if (Ctx.IsFinishing)
+            {
+                SwitchState(Factory.Finishing());
+            }
+            else if (Ctx.IsFinished)
+            {
+                SwitchState(Factory.Finished());
             }
         }
        

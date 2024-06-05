@@ -87,6 +87,14 @@ public class StunnedState : BaseState
             {
                 SwitchState(Factory.Dash());
             }
+            else if (Ctx.IsFinishing)
+            {
+                SwitchState(Factory.Finishing());
+            }
+            else if (Ctx.IsFinished)
+            {
+                SwitchState(Factory.Finished());
+            }
           
         }
         

@@ -63,6 +63,14 @@ public class EvadeState : BaseState
                 {
                     SwitchState(Factory.Dash());
                 }
+                else if (Ctx.IsFinishing)
+                {
+                    SwitchState(Factory.Finishing());
+                }
+                else if (Ctx.IsFinished)
+                {
+                    SwitchState(Factory.Finished());
+                }
                 else
                 {
                     if (Ctx.MoveInput != Vector2.zero)

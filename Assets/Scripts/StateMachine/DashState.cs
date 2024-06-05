@@ -85,6 +85,14 @@ public class DashState : BaseState
                 Ctx.IsLightAttackPressed = false;
                 SwitchState(Factory.HeavyAttack());
             }
+            else if (Ctx.IsFinishing)
+            {
+                SwitchState(Factory.Finishing());
+            }
+            else if (Ctx.IsFinished)
+            {
+                SwitchState(Factory.Finished());
+            }
 
         }
         

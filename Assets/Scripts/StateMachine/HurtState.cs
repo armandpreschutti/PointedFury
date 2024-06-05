@@ -99,6 +99,14 @@ public class HurtState : BaseState
             {
                 SwitchState(Factory.Evade());
             }
+            else if (Ctx.IsFinishing)
+            {
+                SwitchState(Factory.Finishing());
+            }
+            else if (Ctx.IsFinished)
+            {
+                SwitchState(Factory.Finished());
+            }
         }
        
     }

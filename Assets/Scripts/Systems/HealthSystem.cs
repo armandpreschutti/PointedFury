@@ -10,6 +10,7 @@ public class HealthSystem : MonoBehaviour
     public float MaxHealth = 100;
     public float MinHealth = 0;
     public float _currentHealh;
+    public float _nearDeathAmount;
     
     public Action OnDeath;
     public Action OnDamage;
@@ -26,6 +27,7 @@ public class HealthSystem : MonoBehaviour
     {
         _stateMachine.OnLightAttackRecieved += TakeDamage;
         _stateMachine.OnHeavyAttackRecieved += TakeDamage;
+        _stateMachine.OnFinisherRecieved += TakeDamage;
         _stateMachine.OnBlockSuccessful += TakeDamage;
         _stateMachine.OnParryRecieved += TakeDamage;
     }
@@ -34,6 +36,7 @@ public class HealthSystem : MonoBehaviour
     {
         _stateMachine.OnLightAttackRecieved -= TakeDamage;
         _stateMachine.OnHeavyAttackRecieved -= TakeDamage;
+        _stateMachine.OnFinisherRecieved -= TakeDamage;
         _stateMachine.OnBlockSuccessful -= TakeDamage;
         _stateMachine.OnParryRecieved -= TakeDamage;
     }
@@ -55,6 +58,10 @@ public class HealthSystem : MonoBehaviour
                 OnDeath?.Invoke();
                 _stateMachine.IsDead = true;
                 _stateMachine.OnDeath?.Invoke();
+            }
+            else if(_currentHealh <= _nearDeathAmount)
+            {
+                _stateMachine.IsNearDeath = true;
             }
         }        
     }

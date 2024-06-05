@@ -15,7 +15,7 @@ public class DeathState : BaseState
     {
         //Debug.LogWarning("Player has entered DEATH state");
 
-        Ctx.SetIncomingAttackDirection();
+
         Ctx.IsLightHitLanded = false;
         Ctx.IsHeavyHitLanded = false;
         Ctx.IsPostAttack = false;
@@ -23,9 +23,13 @@ public class DeathState : BaseState
         Ctx.IsKnockedBack = true;
         Ctx.IsStunned = false;
         Ctx.IsDead = true;
-        Ctx.Animator.SetBool(Ctx.AnimIDDeath, true);
-        Ctx.Animator.Play($"Death", 0, 0);
-        ExitAllAnimations();
+        if(!Ctx.IsFinished)
+        {
+            Ctx.SetIncomingAttackDirection();
+            Ctx.Animator.SetBool(Ctx.AnimIDDeath, true);
+            Ctx.Animator.Play($"Death", 0, 0);
+        }
+
     }
 
     public override void UpdateState()
@@ -69,11 +73,6 @@ public class DeathState : BaseState
     public override void InitializeSubStates()
     {
         SetSubState(Factory.Idle());
-    }
-
-    public void ExitAllAnimations()
-    {
-
     }
 
 }

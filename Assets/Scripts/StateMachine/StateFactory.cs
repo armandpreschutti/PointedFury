@@ -76,4 +76,14 @@ public class StateFactory
     {
         return new EvadeState(_context, this);
     }
+
+    public BaseState Finishing()
+    {
+        return new FinishingState(_context, this);  
+    }
+    
+    public BaseState Finished()
+    {
+        return new FinishedState(_context, this);
+    }
 }

@@ -68,7 +68,7 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEntered -= SetCameraState;
         EnemyManagementSystem.OnLastEnemy -= SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
-      //  _stateMachine.OnFight += SetLoneCameraState;
+        //  _stateMachine.OnFight += SetLoneCameraState;
     }
 
     // Start is called before the first frame update    
@@ -88,6 +88,7 @@ public class PlayerCameraController : MonoBehaviour
         CameraPitchPositioningLoop();
 
     }
+
  
     public void SetCameraState(bool value, int enemies)
     {

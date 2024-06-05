@@ -3607,7 +3607,7 @@ Transform:
   - {fileID: 2208739425994233725}
   - {fileID: 8185109526602795403}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -179.998, z: 0}
 --- !u!114 &6110702207848701011
 MonoBehaviour:
@@ -3646,6 +3646,7 @@ MonoBehaviour:
   moveDirection: {x: 0, y: 0, z: 0}
   DebugCurrentSuperState: 
   DebugCurrentSubState: 
+  FinishingPosition: {fileID: 0}
   AnimationBlend: 0
   AnimIDSpeed: 0
   AnimIDGrounded: 0
@@ -3670,6 +3671,8 @@ MonoBehaviour:
   AnimationIDAttackType: 0
   _transitionTime: 0
   AnimIDEvade: 0
+  AnimIDFinishing: 0
+  AnimIDFinished: 0
   ClosestTarget: {fileID: 0}
   SecondClosestTarget: {fileID: 0}
   ThirdClosestTarget: {fileID: 0}
@@ -3693,7 +3696,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.4
+  m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
@@ -3781,6 +3784,7 @@ MonoBehaviour:
   MaxHealth: 30
   MinHealth: 0
   _currentHealh: 0
+  _nearDeathAmount: 0
 --- !u!114 &1486175469788227504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3795,6 +3799,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stateMachine: {fileID: 6110702207848701011}
   _attackIndicator: {fileID: 6025780315799748027}
+  _healthSystem: {fileID: 5675704485256732118}
   showParryIndicator: 1
   showEvadeIndicator: 0
 --- !u!114 &7652916859835605305

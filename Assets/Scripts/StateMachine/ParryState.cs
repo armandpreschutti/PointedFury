@@ -88,6 +88,14 @@ public class ParryState : BaseState
             {
                 SwitchState(Factory.Stunned());
             }
+            else if (Ctx.IsFinishing)
+            {
+                SwitchState(Factory.Finishing());
+            }
+            else if (Ctx.IsFinished)
+            {
+                SwitchState(Factory.Finished());
+            }
         }
     }
 

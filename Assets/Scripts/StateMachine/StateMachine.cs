@@ -90,6 +90,10 @@ public class StateMachine : MonoBehaviour
     private bool _isDead = false;
     private bool _isEvadable = false;
     private bool _isEvading = false;
+    private bool _isNearDeath = false;
+    private bool _isFinishing = false;
+    private bool _isFinished = false;
+
 
 
     public string DebugCurrentSuperState;
@@ -108,6 +112,7 @@ public class StateMachine : MonoBehaviour
     private string _hitType;
     private Vector3 _attackDirection;
     private Vector3 _incomingAttackDirection;
+    public Transform FinishingPosition;
     private int _parryID;
 
     // Player input variables
@@ -165,12 +170,15 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimationIDAttackType;
     [HideInInspector] public float _transitionTime;
     [HideInInspector] public int AnimIDEvade;
+    [HideInInspector] public int AnimIDFinishing;
+    [HideInInspector] public int AnimIDFinished;
     
 
     // Player action events
     public Action OnAttackContact;
     public Action<float, string> OnLightAttackRecieved;
     public Action<float, string> OnHeavyAttackRecieved;
+    public Action<float, string> OnFinisherRecieved;
     public Action<float, string>OnParryRecieved;
     public Action<bool, string> OnAttackWindUp;
     public Action OnLightAttackGiven;
@@ -224,6 +232,9 @@ public class StateMachine : MonoBehaviour
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     public bool IsEvadable { get { return _isEvadable; } set { _isEvadable = value; } }
     public bool IsEvading { get { return _isEvading; } set { _isEvading = value; } }
+    public bool IsNearDeath { get { return _isNearDeath; } set { _isNearDeath = value; } }
+    public bool IsFinishing { get { return _isFinishing; } set { _isFinishing = value; } }
+    public bool IsFinished { get { return _isFinished; } set { _isFinished = value; } }
 
 
     // Fighting
@@ -248,6 +259,14 @@ public class StateMachine : MonoBehaviour
         SetComponentValues();
         InitilaizeStateMachine();
     }
+    private void OnEnable()
+    {
+        WinConditionHandler.OnLevelPassed += DisableStateMachine;
+    }
+    private void OnDisable()
+    {
+        WinConditionHandler.OnLevelPassed -= DisableStateMachine;
+    }
 
     private void Start()
     {
@@ -264,6 +283,11 @@ public class StateMachine : MonoBehaviour
         SimulateGravity();
     }
 
+    public void DisableStateMachine()
+    {
+        this.enabled = false;
+        _controller.enabled = false;
+    }
     private void GroundedCheck()
     {
         _isGrounded = Physics.CheckSphere(transform.position + Vector3.down * GroundedOffset, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
@@ -658,6 +682,22 @@ public class StateMachine : MonoBehaviour
         _isEvading = false;
     }
 
+   
+    public void OnFinishingComplete()
+    {
+        _isFinishing = false;
+    }
+
+    public void OnFinishedContact()
+    {
+        OnFinisherRecieved?.Invoke(1000, "Finisher");
+    }
+    public void OnFinishedComplete()
+    {
+        _isFinished = false;
+        _isDead = true;
+    }
+
     public void TakeHit(string hitType, int attackID, Vector3 attackerPosition, float attackDamage)
     {
         _incomingAttackDirection = attackerPosition;
@@ -700,6 +740,17 @@ public class StateMachine : MonoBehaviour
         {
             OnHeavyAttackGiven?.Invoke();
         }
+    }
+    public void TakeFinisher(Vector3 attackerPosition, Transform finisherPosition)
+    {
+        //_incomingAttackDirection = attackerPosition;
+        transform.LookAt(_currentTarget.transform.position);
+        _controller.transform.position = finisherPosition.position;
+        _isFinished = true;
+    }
+    public void GiveFinisher()
+    {
+        _isFinishing = true;
     }
 
     public void TakeParry(Vector3 attackerPosition, float damage)
@@ -750,6 +801,8 @@ public class StateMachine : MonoBehaviour
         AnimIDStunned = Animator.StringToHash("Stunned");
         AnimIDDeath = Animator.StringToHash("Death");
         AnimIDEvade = Animator.StringToHash("Evade");
+        AnimIDFinishing = Animator.StringToHash("Finishing");
+        AnimIDFinished = Animator.StringToHash("Finished");
     }
 
     public void SetCombatMovementAnimationValues()
@@ -787,7 +840,7 @@ public class StateMachine : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.black;
+  /*      Gizmos.color = Color.black;
        // Gizmos.DrawSphere(transform.position + InputDirection(), .2f);
         Gizmos.DrawSphere(new Vector3(transform.position.x, GroundedOffset, transform.position.z), GroundedRadius);
         Gizmos.DrawRay(transform.position + Vector3.up, InputDirection() * 1f);
@@ -795,6 +848,6 @@ public class StateMachine : MonoBehaviour
         {
             Gizmos.DrawSphere(_currentTarget.transform.position, 1f);
         }
-        Gizmos.DrawWireSphere(transform.position, 5f);
+        Gizmos.DrawWireSphere(transform.position, 5f);*/
     }
 }

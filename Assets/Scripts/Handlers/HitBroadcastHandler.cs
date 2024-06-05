@@ -20,12 +20,14 @@ public class HitBroadcastHandler : MonoBehaviour
     {
         _stateMachine.OnAttackContact += LandAttackOnEnemy;
         _stateMachine.OnAttackContact += BreakObject;
+     //   _stateMachine.OnAttemptParry += LandFinisher;
     }
 
     private void OnDisable()
     {
         _stateMachine.OnAttackContact -= LandAttackOnEnemy;
         _stateMachine.OnAttackContact -= BreakObject;
+       // _stateMachine.OnAttemptParry -= LandFinisher;
     }
 
     private void Update()
@@ -88,6 +90,21 @@ public class HitBroadcastHandler : MonoBehaviour
             _stateMachine.GiveHit(_stateMachine.AttackType);
         }
     }
+
+    private void LandFinisher()
+    {
+        foreach (GameObject hit in _enemyTargets)
+        {
+            if (hit.GetComponent<StateMachine>() != null)
+            {
+                if (hit.GetComponent<StateMachine>().IsNearDeath)
+                {
+                    hit.GetComponent<StateMachine>().TakeFinisher(_stateMachine.transform.position, _stateMachine.FinishingPosition);
+                    _stateMachine.GiveFinisher();
+                }
+            }
+        }
+    }
     private void BreakObject()
     {
         foreach (GameObject obj in _breakableObjects)
@@ -99,5 +116,38 @@ public class HitBroadcastHandler : MonoBehaviour
 
         }
     }
+
+    public GameObject ClosestNearDeathEnemy()
+    {
+        float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
+        Transform[] closestTargets = new Transform[3] { null, null, null };
+
+        foreach (GameObject enemy in _enemyTargets)
+        {
+            if (enemy != null)
+            {
+                float distance = Vector3.Distance(transform.parent.position, enemy.transform.position);
+
+                for (int i = 0; i < distances.Length; i++)
+                {
+                    if (distance < distances[i])
+                    {
+                        for (int j = distances.Length - 1; j > i; j--)
+                        {
+                            distances[j] = distances[j - 1];
+                            closestTargets[j] = closestTargets[j - 1];
+                        }
+
+                        distances[i] = distance;
+                        closestTargets[i] = enemy.transform;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return closestTargets[0]?.gameObject;
+    }
+
 
 }

@@ -84,6 +84,14 @@ public class PostAttackState : BaseState
             {
                 SwitchState(Factory.Move());
             }
+            else if (Ctx.IsFinishing)
+            {
+                SwitchState(Factory.Finishing());
+            }
+            else if (Ctx.IsFinished)
+            {
+                SwitchState(Factory.Finished());
+            }
         }
       
     }
