@@ -117,7 +117,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry4
-  m_Speed: 1.25
+  m_Speed: 1.35
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2500534706167831477}
@@ -1290,7 +1290,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Evade
-  m_Speed: 2.5
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -7035020597412784536}
@@ -1629,7 +1629,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightAttack5
-  m_Speed: 0.9
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 4768987921190940795}
@@ -2232,7 +2232,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack5
-  m_Speed: 0.9
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2090957416457852410}
@@ -2429,7 +2429,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightAttack1
-  m_Speed: 0.9
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 113882940566934422}
@@ -3379,7 +3379,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightAttack2
-  m_Speed: 0.9
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7089515726659957474}
@@ -3854,7 +3854,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack2
-  m_Speed: 0.9
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -267974571570872509}
@@ -4032,7 +4032,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack1
-  m_Speed: 0.9
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -7383300086083997788}
@@ -6033,7 +6033,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry1
-  m_Speed: 1.25
+  m_Speed: 1.35
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2945152185164753522}
@@ -6265,7 +6265,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightAttack3
-  m_Speed: 0.9
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7182331932138171797}
@@ -6926,7 +6926,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack3
-  m_Speed: 0.9
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -47025783662356012}
@@ -7191,7 +7191,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LightAttack4
-  m_Speed: 0.9
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 9217968260355826167}
@@ -8519,7 +8519,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry2
-  m_Speed: 1.25
+  m_Speed: 1.35
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2654520664774389261}
@@ -8779,7 +8779,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack4
-  m_Speed: 0.9
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2861228588804589988}
@@ -9200,7 +9200,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry3
-  m_Speed: 1.25
+  m_Speed: 1.35
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7017954700931596312}

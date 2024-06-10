@@ -61,6 +61,7 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEntered += SetCameraState;
         EnemyManagementSystem.OnLastEnemy += SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared += SetCameraState;
+        CutSceneTriggerHandler.onStartCutscene += ResetCameraPosition;
        // _stateMachine.OnFight += SetLoneCameraState;
     }
     private void OnDisable()
@@ -68,13 +69,14 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEntered -= SetCameraState;
         EnemyManagementSystem.OnLastEnemy -= SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
+        CutSceneTriggerHandler.onStartCutscene -= ResetCameraPosition;
         //  _stateMachine.OnFight += SetLoneCameraState;
     }
 
     // Start is called before the first frame update    
     void Start()
     {
-        _cinemachineTargetYaw = _cinemachineCameraTarget.transform.rotation.eulerAngles.y;
+        ResetCameraPosition();
         _shortFightCamera.gameObject.SetActive(false);
         _longFightCamera.gameObject.SetActive(false);
         
@@ -89,7 +91,12 @@ public class PlayerCameraController : MonoBehaviour
 
     }
 
- 
+    public void ResetCameraPosition()
+    {
+        _cinemachineTargetYaw = _cinemachineCameraTarget.transform.rotation.eulerAngles.y;
+    }
+
+
     public void SetCameraState(bool value, int enemies)
     {
         //_shortFightCamera.gameObject.SetActive(value);

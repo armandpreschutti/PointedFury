@@ -9,6 +9,7 @@ using UnityEngine.Timeline;
 public class TutoiralManager : MonoBehaviour
 {
     public GameObject player;
+    public GameObject boss;
     public CinemachineBrain cinemachineBrain;
     public PlayableDirector playableDirector;
     public TimelineAsset introCutScene;
@@ -19,12 +20,14 @@ public class TutoiralManager : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += LevelStarted;
+        //SceneManager.sceneLoaded += LevelStarted;
+        CutSceneTriggerHandler.onStartCutscene += BossFightStarted;
         WinConditionHandler.OnLevelPassed += LevelCompleted;
     }
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= LevelStarted;
+        //SceneManager.sceneLoaded -= LevelStarted;
+        CutSceneTriggerHandler.onStartCutscene -= BossFightStarted;
         WinConditionHandler.OnLevelPassed -= LevelCompleted;
     }
 
@@ -33,9 +36,14 @@ public class TutoiralManager : MonoBehaviour
         PlayIntroCutScene();
     }
 
+    public void BossFightStarted()
+    {
+        PlayPreBossCutScene();
+    }
+
     public void LevelCompleted()
     {
-        PlayFadeOut();
+        PlayPostBossCutScene();
     }
 
     public void PlayIntroCutScene()
@@ -46,12 +54,26 @@ public class TutoiralManager : MonoBehaviour
         playableDirector.Play();
     }
 
-    public void PlayFadeOut()
+   
+    public void PlayPreBossCutScene()
+    {
+        Time.timeScale = 1f;
+        playableDirector.extrapolationMode = DirectorWrapMode.None;
+        cinemachineBrain.m_DefaultBlend.m_Time = 0f;
+        //cinemachineBrain.m_DefaultBlend.m_Time = 1f;
+        player.GetComponent<UserInput>().enabled = false;
+        player.GetComponent<CharacterController>().enabled = false;
+        playableDirector.playableAsset = preBossCutScene;
+        playableDirector.Play();
+    }
+
+    public void PlayPostBossCutScene()
     {
         Time.timeScale = 1f;
         playableDirector.extrapolationMode = DirectorWrapMode.Hold;
-        cinemachineBrain.m_DefaultBlend.m_Time= 0f;
+        cinemachineBrain.m_DefaultBlend.m_Time = 0f;
         player.GetComponent<UserInput>().enabled = false;
+        boss.GetComponent<CharacterController>().enabled = false;
         playableDirector.playableAsset = postBossCutScene;
         playableDirector.Play();
     }
@@ -59,6 +81,9 @@ public class TutoiralManager : MonoBehaviour
     public void EnableControl()
     {
         OnEnableControl?.Invoke();
+        player.GetComponent<CharacterController>().enabled = true;
+        
+        cinemachineBrain.m_DefaultBlend.m_Time = 1f;
     }
     public void BeginLevel()
     {
