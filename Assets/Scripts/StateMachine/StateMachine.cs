@@ -135,14 +135,10 @@ public class StateMachine : MonoBehaviour
     public BaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
 
     // Player state events
-    public Action<bool> OnFall;
-    public Action<bool> OnGrounded;
-    public Action<bool> OnFight;
-    public Action<bool,string> OnLightAttack;
-    public Action<bool,string> OnHeavyAttack;
-    public Action<bool> OnAttack;
-    public Action<bool> OnMove;
-    public Action<bool> OnIdle;
+
+   // public Action<bool> OnAttack;
+   // public Action<bool> OnMove;
+   // public Action<bool> OnIdle;
     //public Action<bool> OnHurt;
 
     // Animation Variables
@@ -172,9 +168,12 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDEvade;
     [HideInInspector] public int AnimIDFinishing;
     [HideInInspector] public int AnimIDFinished;
-    
+
 
     // Player action events
+    public Action<bool> OnFight;
+    public Action<bool, string> OnLightAttack;
+    public Action<bool, string> OnHeavyAttack;
     public Action OnAttackContact;
     public Action<float, string> OnLightAttackRecieved;
     public Action<float, string> OnHeavyAttackRecieved;
@@ -190,6 +189,7 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnDash;
     public Action OnHurt;
     public Action OnDeath;
+    public Action<Vector3, float> OnEnableRagdoll;
 
     // Getters and setters
     // Input
@@ -624,7 +624,7 @@ public class StateMachine : MonoBehaviour
     public void OnParryAnimationContact()
     {
         OnParryContact?.Invoke();
-        Time.timeScale = SlowMotionSpeed;
+        //Time.timeScale = SlowMotionSpeed;
     }
 
     public void OnParryAnimationComplete()
@@ -653,6 +653,12 @@ public class StateMachine : MonoBehaviour
         _isBlocking = false;
     }
 
+    public void OnDeathAnimationComplete()
+    {
+        _isKnockedBack = false;
+        //OnEnableRagdoll?.Invoke(_incomingAttackDirection, 500f);
+        OnEnableRagdoll?.Invoke(_currentTarget.transform.position, 250f);
+    }
    /* public void OnDashMoveStart()
     {
         _isDashMoving = true;

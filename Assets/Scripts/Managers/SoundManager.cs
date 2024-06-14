@@ -6,7 +6,8 @@ using UnityEngine.Audio;
 public class SoundManager : MonoBehaviour
 {
     public AudioSource musicSource;
-    public AudioClip musicClip;
+    public AudioClip generalMusicClip;
+    public AudioClip bossMusicClip;
     public float musicVolume;
     public AudioSource ambientSource;
     public AudioClip ambientClip;
@@ -14,17 +15,30 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        TutoiralManager.OnBeginLevel += PlayMusic;
-        TutoiralManager.OnEnableControl += PlayAmbience;
+        TutoiralManager.OnBeginLevel += PlayGeneralMusic;
+        TutoiralManager.OnBeginLevel += PlayAmbience;
+        TutoiralManager.OnBeginBossFight += PlayBossMusic;
+        CutSceneTriggerHandler.onStartCutscene += StopMusic;
+        WinConditionHandler.OnLevelPassed += StopMusic;
     }
     private void OnDisable()
     {
-        TutoiralManager.OnBeginLevel -= PlayMusic;
-        TutoiralManager.OnEnableControl -= PlayAmbience;
+        TutoiralManager.OnBeginLevel -= PlayGeneralMusic;
+        TutoiralManager.OnBeginLevel -= PlayAmbience;
+        TutoiralManager.OnBeginBossFight -= PlayBossMusic;
+        CutSceneTriggerHandler.onStartCutscene -= StopMusic;
+        WinConditionHandler.OnLevelPassed -= StopMusic;
     }
-    public void PlayMusic()
+    public void PlayGeneralMusic()
     {
-        musicSource.clip = musicClip;
+        musicSource.clip = generalMusicClip;
+        musicSource.volume = musicVolume;
+        musicSource.Play();
+    }
+
+    public void PlayBossMusic()
+    {
+        musicSource.clip = bossMusicClip;
         musicSource.volume = musicVolume;
         musicSource.Play();
     }
@@ -33,5 +47,11 @@ public class SoundManager : MonoBehaviour
         ambientSource.clip = ambientClip;
         ambientSource.volume = ambientVolume;
         ambientSource.Play();
+    }
+
+    public void StopMusic()
+    {
+        musicSource.Stop();
+        ambientSource.Stop();
     }
 }

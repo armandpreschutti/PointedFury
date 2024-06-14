@@ -11,7 +11,7 @@ public class IdleState : BaseState
 
 
         Ctx.IsAttacking = false;
-        Ctx.OnIdle?.Invoke(true);
+        //Ctx.OnIdle?.Invoke(true);
         if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
         {
             Ctx.IsFighting = false;

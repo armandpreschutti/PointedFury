@@ -11,7 +11,7 @@ public class MoveState : BaseState
 
 
         Ctx.IsAttacking = false;
-        Ctx.OnMove?.Invoke(true);
+        //Ctx.OnMove?.Invoke(true);
         if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
         {
             Ctx.IsFighting = false;
@@ -48,7 +48,7 @@ public class MoveState : BaseState
     {
         //Debug.LogWarning("Player has exited MOVE state");
 
-        Ctx.OnMove?.Invoke(false);
+        //Ctx.OnMove?.Invoke(false);
     }
 
     public override void CheckSwitchStates()

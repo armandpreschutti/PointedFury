@@ -17,17 +17,18 @@ public class TutoiralManager : MonoBehaviour
     public TimelineAsset postBossCutScene;
     public static Action OnEnableControl;
     public static Action OnBeginLevel;
+    public static Action OnBeginBossFight;
 
     private void OnEnable()
     {
-        //SceneManager.sceneLoaded += LevelStarted;
-        CutSceneTriggerHandler.onStartCutscene += BossFightStarted;
+        SceneManager.sceneLoaded += LevelStarted;
+        CutSceneTriggerHandler.onStartCutscene += PreBossFightStarted;
         WinConditionHandler.OnLevelPassed += LevelCompleted;
     }
     private void OnDisable()
     {
-        //SceneManager.sceneLoaded -= LevelStarted;
-        CutSceneTriggerHandler.onStartCutscene -= BossFightStarted;
+        SceneManager.sceneLoaded -= LevelStarted;
+        CutSceneTriggerHandler.onStartCutscene -= PreBossFightStarted;
         WinConditionHandler.OnLevelPassed -= LevelCompleted;
     }
 
@@ -36,7 +37,7 @@ public class TutoiralManager : MonoBehaviour
         PlayIntroCutScene();
     }
 
-    public void BossFightStarted()
+    public void PreBossFightStarted()
     {
         PlayPreBossCutScene();
     }
@@ -81,12 +82,16 @@ public class TutoiralManager : MonoBehaviour
     public void EnableControl()
     {
         OnEnableControl?.Invoke();
-        player.GetComponent<CharacterController>().enabled = true;
-        
+        player.GetComponent<CharacterController>().enabled = true;        
         cinemachineBrain.m_DefaultBlend.m_Time = 1f;
     }
     public void BeginLevel()
     {
         OnBeginLevel?.Invoke();
+    }
+
+    public void BeginBoosFight()
+    {
+        OnBeginBossFight?.Invoke();
     }
 }

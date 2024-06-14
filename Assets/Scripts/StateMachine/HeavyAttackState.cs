@@ -22,7 +22,7 @@ public class HeavyAttackState : BaseState
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.OnHeavyAttack?.Invoke(true, "Heavy");
-        Ctx.OnAttack?.Invoke(true);
+        //Ctx.OnAttack?.Invoke(true);
         //Ctx.IsBlockPressed = false;
     }
 
@@ -46,7 +46,7 @@ public class HeavyAttackState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, false);
         Ctx.IsAttacking = false;
         Ctx.OnHeavyAttack?.Invoke(false, "Heavy");
-        Ctx.OnAttack?.Invoke(false);
+        //Ctx.OnAttack?.Invoke(false);
         Ctx.IsCharging = false;
         Ctx.IsParryable = false;
         Ctx.IsEvadePressed = false;

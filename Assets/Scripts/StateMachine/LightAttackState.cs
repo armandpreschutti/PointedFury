@@ -22,13 +22,13 @@ public class LightAttackState : BaseState
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.OnLightAttack?.Invoke(true, "Light");
-        Ctx.OnAttack?.Invoke(true);
+        //Ctx.OnAttack?.Invoke(true);
         //Ctx.IsBlockPressed = false;
     }
 
     public override void UpdateState()
     {
-        //Debug.Log("LIGHT ATTACK state is currently active");
+        Debug.Log("LIGHT ATTACK state is currently active");
         Ctx.DebugCurrentSubState = $"Light Attack {Ctx.LightAttackID} State";
         CheckSwitchStates();
 
@@ -46,7 +46,7 @@ public class LightAttackState : BaseState
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
         Ctx.IsAttacking = false;
         Ctx.OnLightAttack?.Invoke(false, "Light");
-        Ctx.OnAttack?.Invoke(false);
+       // Ctx.OnAttack?.Invoke(false);
         Ctx.IsCharging = false;
         Ctx.IsParryable = false;
         Ctx.IsEvadePressed = false;
