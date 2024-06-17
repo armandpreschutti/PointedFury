@@ -90,7 +90,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         {
             if(hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
             {
-                hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position, _stateMachine.ParryDamage);
+                hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position, _stateMachine.ParryDamage, _stateMachine.ParryID);
             }
         }
     }

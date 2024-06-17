@@ -32,7 +32,7 @@ public class EnemyManagementSystem : MonoBehaviour
     private void Awake()
     {
         //enemyCount = managedEnemies.Length;
-        managedEnemies = new GameObject[10];
+        managedEnemies = new GameObject[100];
         player = GameObject.Find("Player");
       //  Debug.LogError(managedEnemies.Length);
     }

@@ -111,7 +111,23 @@ public class HitBroadcastHandler : MonoBehaviour
         {
             if(_stateMachine.AttackType == "Heavy")
             {
+               
+                obj.GetComponent<Collider>().enabled = false;
+                obj.GetComponent<Rigidbody>().isKinematic = false;
+
+                obj.GetComponent<Fracture>().CauseFracture();
+                GameObject fragmentParent = GameObject.Find($"{obj.name}Fragments");
+                Rigidbody[] fragments = fragmentParent.GetComponentsInChildren<Rigidbody>();
+                foreach (Rigidbody fragment in fragments)
+                {
+
+                    fragment.GetComponent<Rigidbody>().AddForce((fragment.transform.position + transform.position).normalized * .1f, ForceMode.Impulse);
+                }
                 Destroy(obj);
+
+
+
+
             }
 
         }

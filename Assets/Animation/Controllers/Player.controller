@@ -117,7 +117,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry4
-  m_Speed: 1.35
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2500534706167831477}
@@ -2232,7 +2232,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack5
-  m_Speed: 1
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2090957416457852410}
@@ -3854,7 +3854,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack2
-  m_Speed: 1
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -267974571570872509}
@@ -4032,7 +4032,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack1
-  m_Speed: 1
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -7383300086083997788}
@@ -5336,7 +5336,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -2553015533939255042, guid: 2ff00f95ded542a88fa4e8c5082783ba, type: 3}
     m_Threshold: 0.09090909
-    m_Position: {x: 0, y: -1}
+    m_Position: {x: 0, y: -0.1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -5344,7 +5344,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -5819595591969829817, guid: eb4994d692f64b5c964e6a8e4ffab9a8, type: 3}
     m_Threshold: 0.18181819
-    m_Position: {x: -0.5, y: -0.5}
+    m_Position: {x: -0.05, y: -0.05}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -5352,7 +5352,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -8167596086344999791, guid: 83619d40d0b949ebb48299df67e3c745, type: 3}
     m_Threshold: 0.27272728
-    m_Position: {x: 0.5, y: -0.5}
+    m_Position: {x: 0.05, y: -0.05}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -5360,7 +5360,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 117f28c9f1927454babe4dff1ab06da1, type: 2}
     m_Threshold: 0.36363637
-    m_Position: {x: 0, y: 1}
+    m_Position: {x: 0, y: 0.1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -5368,7 +5368,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -1374968205552115490, guid: a1be23d82a3e480297a56e254f217c40, type: 3}
     m_Threshold: 0.45454547
-    m_Position: {x: -0.5, y: 0.75}
+    m_Position: {x: -0.05, y: 0.05}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -5376,7 +5376,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 2151097407237187056, guid: bdb6ad8eeb4442cf93e3c6ee59369d96, type: 3}
     m_Threshold: 0.54545456
-    m_Position: {x: 0.5, y: 0.5}
+    m_Position: {x: 0.05, y: 0.05}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -5384,7 +5384,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -8043191533712228460, guid: 8b911070858d4fbea33538933a64597f, type: 3}
     m_Threshold: 0.6363636
-    m_Position: {x: -1, y: 0}
+    m_Position: {x: -0.1, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -5392,7 +5392,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 5036155724707642555, guid: 8454ff3cefcb4d7d8090acb7186ec17c, type: 3}
     m_Threshold: 0.72727275
-    m_Position: {x: 1, y: 0}
+    m_Position: {x: 0.1, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -6033,7 +6033,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry1
-  m_Speed: 1.35
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2945152185164753522}
@@ -6926,7 +6926,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack3
-  m_Speed: 1
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -47025783662356012}
@@ -8519,7 +8519,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry2
-  m_Speed: 1.35
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2654520664774389261}
@@ -8779,7 +8779,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HeavyAttack4
-  m_Speed: 1
+  m_Speed: 0.95
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2861228588804589988}
@@ -9200,7 +9200,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry3
-  m_Speed: 1.35
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7017954700931596312}

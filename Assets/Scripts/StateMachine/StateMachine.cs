@@ -189,7 +189,7 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnDash;
     public Action OnHurt;
     public Action OnDeath;
-    public Action<Vector3, float> OnEnableRagdoll;
+    public Action<Vector3, /*float,*/ string, int> OnEnableRagdoll;
 
     // Getters and setters
     // Input
@@ -300,7 +300,7 @@ public class StateMachine : MonoBehaviour
   
     public void CombatMovement()
     {
-        if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isParrying && !_isDashing)
+        if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isParrying && !_isDashing && _controller != null)
         {
             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
             if (moveDirection != Vector3.zero)
@@ -657,7 +657,7 @@ public class StateMachine : MonoBehaviour
     {
         _isKnockedBack = false;
         //OnEnableRagdoll?.Invoke(_incomingAttackDirection, 500f);
-        OnEnableRagdoll?.Invoke(_currentTarget.transform.position, 250f);
+       // OnEnableRagdoll?.Invoke(_currentTarget.transform.position, 250f);
     }
    /* public void OnDashMoveStart()
     {
@@ -759,8 +759,9 @@ public class StateMachine : MonoBehaviour
         _isFinishing = true;
     }
 
-    public void TakeParry(Vector3 attackerPosition, float damage)
+    public void TakeParry(Vector3 attackerPosition, float damage, int parryID)
     {
+
         if (_isBlocking)
         {
             _isBlockSuccess = true;
@@ -769,6 +770,8 @@ public class StateMachine : MonoBehaviour
         }
         else
         {
+            _hitType = "Parry";
+            _hitID = parryID;
             OnParryRecieved?.Invoke(damage, "Parry");
             _incomingAttackDirection = attackerPosition;
             _isParried = true;

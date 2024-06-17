@@ -32,7 +32,7 @@ public class DeathState : BaseState
               Ctx.Animator.SetBool(Ctx.AnimIDDeath, true);
               Ctx.Animator.Play($"Death", 0, 0);
           }*/
-         Ctx.OnEnableRagdoll?.Invoke(Ctx.CurrentTarget.transform.position, 250f);
+         Ctx.OnEnableRagdoll?.Invoke(Ctx.CurrentTarget.transform.position, /*250f,*/ Ctx.HitType, Ctx.HitID);
 
     }
 

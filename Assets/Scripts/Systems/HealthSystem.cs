@@ -58,6 +58,10 @@ public class HealthSystem : MonoBehaviour
                 OnDeath?.Invoke();
                 _stateMachine.IsDead = true;
                 _stateMachine.OnDeath?.Invoke();
+                if(GetComponent<AIBrain>() != null)
+                {
+                    GetComponent<AIBrain>().enabled = false;
+                }
             }
             else if(_currentHealh <= _nearDeathAmount)
             {

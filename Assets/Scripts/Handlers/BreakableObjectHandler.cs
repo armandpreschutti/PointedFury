@@ -4,15 +4,37 @@ using UnityEngine;
 
 public class BreakableObjectHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Rigidbody[] ragdollRbs;
+    
+   // public GameObject debugObject;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        ragdollRbs = GetComponentsInChildren<Rigidbody>();
+    }
+  /*  private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Breakable")
+        {
+            Debug.Log("Collision was detected correctly");
+
+        }
+        else
+        {
+
+            Debug.Log("Collisiong was detected inncorrectly");
+        }
+    }
+*/
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Breaker")
+        {
+            foreach (Rigidbody rb in ragdollRbs)
+            {
+                rb.isKinematic = false;
+                rb.AddForce((rb.transform.position - other.transform.position) * 5f, ForceMode.Force);
+            }
+        }
     }
 }

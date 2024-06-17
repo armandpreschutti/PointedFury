@@ -8,6 +8,7 @@ TagManager:
   - Climbable
   - Enemy
   - Breakable
+  - Breaker
   layers:
   - Default
   - TransparentFX

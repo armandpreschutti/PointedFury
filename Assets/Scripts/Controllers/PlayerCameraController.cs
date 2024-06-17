@@ -129,7 +129,8 @@ public class PlayerCameraController : MonoBehaviour
         }
 
     }
-  
+
+   
 
     public void SetCameraSensitity()
     {
