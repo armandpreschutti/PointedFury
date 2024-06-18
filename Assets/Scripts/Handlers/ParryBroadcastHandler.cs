@@ -5,8 +5,9 @@ using UnityEngine;
 public class ParryBroadcastHandler : MonoBehaviour
 {
     StateMachine _stateMachine;
-    List<GameObject> _hitTargets = new List<GameObject>();
+    GameObject[] _hitTargets = new GameObject[100]; // Assume a maximum size for the array
     [SerializeField] string _enemyTag;
+    private int _hitTargetCount = 0;
 
     private void Awake()
     {
@@ -29,71 +30,78 @@ public class ParryBroadcastHandler : MonoBehaviour
 
     private void Update()
     {
-        foreach (GameObject enemy in _hitTargets)
+        for (int i = 0; i < _hitTargetCount; i++)
         {
-            if (enemy.GetComponent<StateMachine>().IsDead)
+            if (_hitTargets[i].GetComponent<StateMachine>().IsDead)
             {
-                _hitTargets.Remove(enemy);
+                RemoveAt(i);
+                i--; // Adjust index after removal
             }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Add the object to the list of objects in the trigger area
-        if (other.CompareTag(_enemyTag))
+        if (other.CompareTag(_enemyTag) && _hitTargetCount < _hitTargets.Length)
         {
-            _hitTargets.Add(other.gameObject);
+            _hitTargets[_hitTargetCount++] = other.gameObject;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // Check if the object exiting the trigger area is in the list
-        if (_hitTargets.Contains(other.gameObject))
+        for (int i = 0; i < _hitTargetCount; i++)
         {
-            // Remove the object from the list of objects in the trigger area
-            _hitTargets.Remove(other.gameObject);
+            if (_hitTargets[i] == other.gameObject)
+            {
+                RemoveAt(i);
+                break;
+            }
         }
+    }
+
+    private void RemoveAt(int index)
+    {
+        for (int i = index; i < _hitTargetCount - 1; i++)
+        {
+            _hitTargets[i] = _hitTargets[i + 1];
+        }
+        _hitTargets[--_hitTargetCount] = null;
     }
 
     private void AttemptParry()
     {
-        foreach (GameObject hit in _hitTargets)
+        for (int i = 0; i < _hitTargetCount; i++)
         {
-            if (hit.GetComponent<StateMachine>() != null)
+            GameObject hit = _hitTargets[i];
+            if (hit.GetComponent<StateMachine>() != null && hit.GetComponent<StateMachine>().IsParryable && !_stateMachine.IsParrying)
             {
-                if (hit.GetComponent<StateMachine>().IsParryable && !_stateMachine.IsParrying /*&& !_stateMachine.IsBlocking*/) 
-                {
-                    _stateMachine.BeginParry(hit.transform.position);
-                }
+                _stateMachine.BeginParry(hit.transform.position);
             }
         }
     }
 
     private void AttemptEvade()
     {
-        foreach (GameObject hit in _hitTargets)
+        for (int i = 0; i < _hitTargetCount; i++)
         {
-            if (hit.GetComponent<StateMachine>() != null)
+            GameObject hit = _hitTargets[i];
+            if (hit.GetComponent<StateMachine>() != null && hit.GetComponent<StateMachine>().IsEvadable)
             {
-                if (hit.GetComponent<StateMachine>().IsEvadable)
-                {
-                    _stateMachine.BeginEvade();
-                }
+                _stateMachine.BeginEvade();
             }
         }
     }
+
     private void GiveParry()
     {
-        foreach(GameObject hit in _hitTargets)
+        for (int i = 0; i < _hitTargetCount; i++)
         {
-            if(hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
+            GameObject hit = _hitTargets[i];
+            if (hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
             {
                 hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position, _stateMachine.ParryDamage, _stateMachine.ParryID);
             }
         }
     }
-
-   
 }

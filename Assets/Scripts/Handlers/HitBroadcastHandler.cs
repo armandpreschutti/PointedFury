@@ -20,40 +20,41 @@ public class HitBroadcastHandler : MonoBehaviour
     {
         _stateMachine.OnAttackContact += LandAttackOnEnemy;
         _stateMachine.OnAttackContact += BreakObject;
-     //   _stateMachine.OnAttemptParry += LandFinisher;
+        // _stateMachine.OnAttemptParry += LandFinisher;
     }
 
     private void OnDisable()
     {
         _stateMachine.OnAttackContact -= LandAttackOnEnemy;
         _stateMachine.OnAttackContact -= BreakObject;
-       // _stateMachine.OnAttemptParry -= LandFinisher;
+        // _stateMachine.OnAttemptParry -= LandFinisher;
     }
 
     private void Update()
     {
-        foreach (GameObject enemy in _enemyTargets)
+        for (int i = _enemyTargets.Count - 1; i >= 0; i--)
         {
+            GameObject enemy = _enemyTargets[i];
             if (enemy.GetComponent<StateMachine>().IsDead || enemy.GetComponent<StateMachine>() == null)
             {
-                _enemyTargets.Remove(enemy);
-            }
-        }
-        foreach (GameObject obj in _breakableObjects)
-        {
-            if (obj == null)
-            {
-                _enemyTargets.Remove(obj);
+                _enemyTargets.RemoveAt(i);
             }
         }
 
+        for (int i = _breakableObjects.Count - 1; i >= 0; i--)
+        {
+            GameObject obj = _breakableObjects[i];
+            if (obj == null)
+            {
+                _breakableObjects.RemoveAt(i);
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        
         // Add the object to the list of enemies in the trigger area
-        if(other.CompareTag(_enemyTag))   
+        if (other.CompareTag(_enemyTag))
         {
             _enemyTargets.Add(other.gameObject);
         }
@@ -63,7 +64,6 @@ public class HitBroadcastHandler : MonoBehaviour
         {
             _breakableObjects.Add(other.gameObject);
         }
-
     }
 
     private void OnTriggerExit(Collider other)
@@ -84,17 +84,19 @@ public class HitBroadcastHandler : MonoBehaviour
 
     private void LandAttackOnEnemy()
     {
-        foreach(GameObject hit in _enemyTargets)
+        for (int i = 0; i < _enemyTargets.Count; i++)
         {
+            GameObject hit = _enemyTargets[i];
             hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackID : _stateMachine.HeavyAttackID, _stateMachine.transform.position, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackDamage : _stateMachine.HeavyAttackDamage);
             _stateMachine.GiveHit(_stateMachine.AttackType);
         }
     }
 
-    private void LandFinisher()
+    /*private void LandFinisher()
     {
-        foreach (GameObject hit in _enemyTargets)
+        for (int i = 0; i < _enemyTargets.Count; i++)
         {
+            GameObject hit = _enemyTargets[i];
             if (hit.GetComponent<StateMachine>() != null)
             {
                 if (hit.GetComponent<StateMachine>().IsNearDeath)
@@ -104,66 +106,31 @@ public class HitBroadcastHandler : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
+
     private void BreakObject()
     {
-        foreach (GameObject obj in _breakableObjects)
+        for (int i = 0; i < _breakableObjects.Count; i++)
         {
-            if(_stateMachine.AttackType == "Heavy")
+            GameObject obj = _breakableObjects[i];
+            if (_stateMachine.AttackType == "Heavy")
             {
-               
                 obj.GetComponent<Collider>().enabled = false;
                 obj.GetComponent<Rigidbody>().isKinematic = false;
 
                 obj.GetComponent<Fracture>().CauseFracture();
+                
                 GameObject fragmentParent = GameObject.Find($"{obj.name}Fragments");
                 Rigidbody[] fragments = fragmentParent.GetComponentsInChildren<Rigidbody>();
-                foreach (Rigidbody fragment in fragments)
+                for (int j = 0; j < fragments.Length; j++)
                 {
-
+                    Rigidbody fragment = fragments[j];
                     fragment.GetComponent<Rigidbody>().AddForce((fragment.transform.position + transform.position).normalized * .1f, ForceMode.Impulse);
+                    fragment.gameObject.layer = LayerMask.NameToLayer("Debris");
                 }
                 Destroy(obj);
-
-
-
-
-            }
-
-        }
-    }
-
-    public GameObject ClosestNearDeathEnemy()
-    {
-        float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
-        Transform[] closestTargets = new Transform[3] { null, null, null };
-
-        foreach (GameObject enemy in _enemyTargets)
-        {
-            if (enemy != null)
-            {
-                float distance = Vector3.Distance(transform.parent.position, enemy.transform.position);
-
-                for (int i = 0; i < distances.Length; i++)
-                {
-                    if (distance < distances[i])
-                    {
-                        for (int j = distances.Length - 1; j > i; j--)
-                        {
-                            distances[j] = distances[j - 1];
-                            closestTargets[j] = closestTargets[j - 1];
-                        }
-
-                        distances[i] = distance;
-                        closestTargets[i] = enemy.transform;
-                        break;
-                    }
-                }
+                _breakableObjects.RemoveAt(i);
             }
         }
-
-        return closestTargets[0]?.gameObject;
     }
-
-
 }

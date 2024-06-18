@@ -60,12 +60,13 @@ public class RagDollHandler : MonoBehaviour
 
     public void EnableRagDoll(Vector3 direction, /*float force,*/ string attackType, int attackID)
     {
-        Debug.LogWarning($"Player used a {attackType} {attackID} attack");
+        //Debug.LogWarning($"Player used a {attackType} {attackID} attack");
 
         anim.enabled = false;
         controller.enabled = false;
-        foreach (Rigidbody rb in ragdollRbs)
+        for (int i = ragdollRbs.Length - 1; i >= 0; i--)
         {
+            Rigidbody rb = ragdollRbs[i];
             rb.isKinematic = false;
             
         }
@@ -79,7 +80,6 @@ public class RagDollHandler : MonoBehaviour
         // Apply the force to the Rigidbody
         ImpactArea(attackType, attackID).AddForce(forceVector, ForceMode.Impulse);
         stateMachine.enabled = false;
-        /*  baseRb.AddForce(Vector3.forward * 1000f, ForceMode.Impulse); */
     }
 
     public Vector3 ImpactDirection(string attackType, int attackID)

@@ -61,7 +61,7 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEntered += SetCameraState;
         EnemyManagementSystem.OnLastEnemy += SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared += SetCameraState;
-        CutSceneTriggerHandler.onStartCutscene += ResetCameraPosition;
+        //CutSceneTriggerHandler.onStartCutscene += ResetCameraPosition;
         _stateMachine.OnFight += SetLoneCameraState;
     }
     private void OnDisable()
@@ -69,7 +69,7 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEntered -= SetCameraState;
         EnemyManagementSystem.OnLastEnemy -= SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
-        CutSceneTriggerHandler.onStartCutscene -= ResetCameraPosition;
+        //CutSceneTriggerHandler.onStartCutscene -= ResetCameraPosition;
           _stateMachine.OnFight += SetLoneCameraState;
     }
 

@@ -31,10 +31,11 @@ public class EnemyDetectionHandler : MonoBehaviour
         }       
         if(_stateMachine.EnemiesNearby.Count > 0)
         {
-           // _stateMachine.IsFighting = true;
+            // _stateMachine.IsFighting = true;
 
-            foreach (GameObject enemy in _stateMachine.EnemiesNearby)
+            for (int i = 0; i < _stateMachine.EnemiesNearby.Count; i++)
             {
+                GameObject enemy = _stateMachine.EnemiesNearby[i];
                 if (enemy.GetComponent<StateMachine>().IsDead)
                 {
                     _stateMachine.EnemiesNearby.Remove(enemy);
@@ -72,8 +73,9 @@ public class EnemyDetectionHandler : MonoBehaviour
         Transform[] closestTargets = new Transform[3] { null, null, null };
 
         // Iterate through all hits to find the closest colliders
-        foreach (GameObject hit in _stateMachine.EnemiesNearby)
+        for (int i1 = 0; i1 < _stateMachine.EnemiesNearby.Count; i1++)
         {
+            GameObject hit = _stateMachine.EnemiesNearby[i1];
             float distance = Vector3.Distance(transform.position, hit.transform.position);
 
             // Update closest targets array if a closer target is found
