@@ -116,19 +116,21 @@ public class RagDollHandler : MonoBehaviour
             switch (attackID)
             {
                 case 1:
-                    returnDirection = (-stateMachine.transform.right + -stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
+                    returnDirection = (-stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
                     break;
                 case 2:
                     returnDirection = (-stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
                     break;
                 case 3:
-                    returnDirection = (-stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
+                    returnDirection = (-stateMachine.transform.right + -stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
+
                     break;
                 case 4:
-                    returnDirection = (stateMachine.transform.right + -stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
+                    returnDirection = (-stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
                     break;
                 case 5:
-                    returnDirection = (-stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
+                    returnDirection = (stateMachine.transform.right + -stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
+
                     break;
                 default:
                     break;
