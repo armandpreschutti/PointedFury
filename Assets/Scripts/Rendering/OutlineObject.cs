@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class OutlineObject : MonoBehaviour
 {
-    public StateMachine PlayerStateMachine;
+   /* public StateMachine PlayerStateMachine;
     public List<GameObject> Enemies = new List<GameObject>();   
     public GameObject OutlineTarget;
     
@@ -38,5 +38,5 @@ public class OutlineObject : MonoBehaviour
             return;
         }
 
-    }
+    }*/
 }

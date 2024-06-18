@@ -77,7 +77,7 @@ public class AIBrainDepricated : MonoBehaviour
     private void Start()
     {
         _currentTarget = FindAnyObjectByType<UserInput>().gameObject;
-        _stateMachine.EnemiesNearby.Add(_currentTarget);
+       // _stateMachine.EnemiesNearby.Add(_currentTarget);
         _stateMachine.CurrentTarget = _currentTarget;
         ChangeState(AIState.Idle);
     }

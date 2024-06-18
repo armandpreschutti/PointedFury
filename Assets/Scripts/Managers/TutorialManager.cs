@@ -17,6 +17,7 @@ public class TutoiralManager : MonoBehaviour
     public TimelineAsset postBossCutScene;
     public static Action OnEnableControl;
     public static Action OnBeginLevel;
+
     public static Action OnBeginBossFight;
 
     private void OnEnable()
