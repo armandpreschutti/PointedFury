@@ -11,7 +11,7 @@ public class UIButtonHandler : MonoBehaviour
     }
     public void EnterGame()
     {
-        SceneManager.LoadScene("CombatGym");
+        SceneManager.LoadScene("Tutorial");
     }
     public void EnterSettingsMenu()
     {

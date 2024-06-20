@@ -79,6 +79,6 @@ public class GameManager : MonoBehaviour
            {
                entity.enabled = disableEnemies;
            }*/
-        SceneManager.LoadScene("Debug");
+       // SceneManager.LoadScene("Debug");
     }
 }

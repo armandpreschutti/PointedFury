@@ -35,7 +35,7 @@ public class UserInput : MonoBehaviour
     // This function is called when the behaviour becomes disabled
     private void OnDisable()
     {
-        TutoiralManager.OnEnableControl += EnablePlayerControl;
+        TutoiralManager.OnEnableControl -= EnablePlayerControl;
         _playerControls.Disable();
         UnsubscribeFromActions();
     }

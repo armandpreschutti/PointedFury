@@ -22,13 +22,13 @@ public class TutoiralManager : MonoBehaviour
 
     private void OnEnable()
     {
-       // SceneManager.sceneLoaded += LevelStarted;
+        SceneManager.sceneLoaded += LevelStarted;
         CutSceneTriggerHandler.onStartCutscene += PreBossFightStarted;
         WinConditionHandler.OnLevelPassed += LevelCompleted;
     }
     private void OnDisable()
     {
-       // SceneManager.sceneLoaded -= LevelStarted;
+        SceneManager.sceneLoaded -= LevelStarted;
         CutSceneTriggerHandler.onStartCutscene -= PreBossFightStarted;
         WinConditionHandler.OnLevelPassed -= LevelCompleted;
     }
@@ -83,6 +83,7 @@ public class TutoiralManager : MonoBehaviour
     public void EnableControl()
     {
         OnEnableControl?.Invoke();
+        player.GetComponent<UserInput>().enabled = true;
         player.GetComponent<CharacterController>().enabled = true;        
         cinemachineBrain.m_DefaultBlend.m_Time = 1f;
     }
@@ -94,5 +95,10 @@ public class TutoiralManager : MonoBehaviour
     public void BeginBoosFight()
     {
         OnBeginBossFight?.Invoke();
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("TitleMenu");
     }
 }
