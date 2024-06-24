@@ -31,12 +31,13 @@ public class HeavyAttackState : BaseState
         //Debug.Log("LIGHT ATTACK state is currently active");
         Ctx.DebugCurrentSubState = $"Heavy Attack {Ctx.HeavyAttackID} State";
         CheckSwitchStates();
-
-        if (Ctx.IsCharging)
+        Ctx.SetAttackDirection();
+        Ctx.AttackMovement();
+     /*   if (Ctx.IsCharging)
         {
             Ctx.SetAttackDirection();
             Ctx.AttackMovement();
-        }
+        }*/
     }
 
     public override void ExitState()

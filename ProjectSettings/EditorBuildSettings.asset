@@ -8,9 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TitleMenu.unity
     guid: 97be981be9cdeb942acbcd94886eb181
-  - enabled: 0
-    path: Assets/Scenes/CombatGym.unity
-    guid: ae9617a50fc79ea4493b3983d696c659
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: ee2f35625b62fda4d8d6530bae9d588c

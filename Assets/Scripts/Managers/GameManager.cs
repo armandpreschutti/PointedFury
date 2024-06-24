@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     }
     public void ResetLevel()
     {
-        SceneManager.LoadScene("CombatGym");
+        SceneManager.LoadScene("Tutorial");
     }
     public void ResetGame()
     {

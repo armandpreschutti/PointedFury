@@ -13,7 +13,7 @@ public class LightAttackState : BaseState
         //Debug.LogWarning("Player has entered LIGHT ATTACK state");
 
         SetAttackType();
-        Ctx.SetAttackDirection();
+       // Ctx.SetAttackDirection();
         Ctx.MoveInput = Vector2.zero;
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
         Ctx.Animator.SetInteger(Ctx.AnimIDLightAttackID, Ctx.LightAttackID);
@@ -31,12 +31,13 @@ public class LightAttackState : BaseState
         Debug.Log("LIGHT ATTACK state is currently active");
         Ctx.DebugCurrentSubState = $"Light Attack {Ctx.LightAttackID} State";
         CheckSwitchStates();
-
-        if (Ctx.IsCharging)
-        {
-            Ctx.SetAttackDirection();
-            Ctx.AttackMovement();
-        }
+        Ctx.SetAttackDirection();
+        Ctx.AttackMovement();
+        /* if (Ctx.IsCharging)
+         {
+             Ctx.SetAttackDirection();
+             Ctx.AttackMovement();
+         }*/
     }
 
     public override void ExitState()

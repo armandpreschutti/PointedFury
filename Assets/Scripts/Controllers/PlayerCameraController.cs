@@ -17,6 +17,7 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera _shortFightCamera;
     [SerializeField] CinemachineVirtualCamera _zoomCamera;
     [SerializeField] CinemachineVirtualCamera _longFightCamera;
+    [SerializeField] CinemachineVirtualCamera _attackCamera;
 
 
     
@@ -63,6 +64,8 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEnemiesCleared += SetCameraState;
         //CutSceneTriggerHandler.onStartCutscene += ResetCameraPosition;
         _stateMachine.OnFight += SetLoneCameraState;
+       // _stateMachine.OnLightAttack += SetAttackCameraState;
+        //_stateMachine.OnHeavyAttack += SetAttackCameraState;
     }
     private void OnDisable()
     {
@@ -70,7 +73,9 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnLastEnemy -= SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
         //CutSceneTriggerHandler.onStartCutscene -= ResetCameraPosition;
-         _stateMachine.OnFight += SetLoneCameraState;
+         _stateMachine.OnFight -= SetLoneCameraState;
+       // _stateMachine.OnLightAttack -= SetAttackCameraState;
+       // _stateMachine.OnHeavyAttack -= SetAttackCameraState;
     }
 
     // Start is called before the first frame update    
@@ -128,6 +133,11 @@ public class PlayerCameraController : MonoBehaviour
             _shortFightCamera.gameObject.SetActive(value);
         }
 
+    }
+
+    public void SetAttackCameraState(bool value, string attackType)
+    {
+        _attackCamera.gameObject.SetActive(value);
     }
 
    
