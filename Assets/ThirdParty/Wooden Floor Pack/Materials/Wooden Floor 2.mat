@@ -109,7 +109,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _UvOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _UvTiling: {r: 0.25, g: 0.25, b: 0, a: 0}
+    - _UvTiling: {r: 0.25, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4012420665523869024
 MonoBehaviour:

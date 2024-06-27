@@ -5866,6 +5866,7 @@ GameObject:
   - component: {fileID: 2087146334294093730}
   - component: {fileID: 1376107063451919080}
   - component: {fileID: 3744291747709667090}
+  - component: {fileID: 4177276923579577137}
   m_Layer: 6
   m_Name: WeakEnemy3(Test)
   m_TagString: Enemy
@@ -6146,9 +6147,22 @@ MonoBehaviour:
   stateMachine: {fileID: 0}
   HeadArea: {fileID: 2950425381641221243}
   BodyArea: {fileID: 8328975760028980993}
-  LightAttackImpactForce: 250
-  HeavyAttackImpactForce: 400
-  ParryImpactForce: 650
+  LightAttackImpactForce: 125
+  HeavyAttackImpactForce: 200
+  ParryImpactForce: 325
+--- !u!114 &4177276923579577137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7242401036912169583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 606cdd7abf0e6b54887ed40dc7a8e102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceMagnitude: 1
 --- !u!1 &7287636558138332534
 GameObject:
   m_ObjectHideFlags: 0

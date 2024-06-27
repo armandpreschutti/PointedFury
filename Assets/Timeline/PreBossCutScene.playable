@@ -717,7 +717,7 @@ MonoBehaviour:
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
   m_Clip: {fileID: 7400000, guid: aa4cbb5c350abbc4c83c8f0f65a97884, type: 2}
-  m_Position: {x: -6.228253, y: -0.006385803, z: -0.024797423}
+  m_Position: {x: -6.228253, y: 0.2, z: -0.024797423}
   m_EulerAngles: {x: 0, y: 66.388, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
@@ -780,7 +780,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0.12674522, y: -0.15490916, z: -0.32430267}
+        value: {x: 0.12674522, y: 0.04509, z: -0.32430267}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -789,7 +789,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 2.1833334
-        value: {x: -0.2821784, y: -0.5516223, z: 0.51387787}
+        value: {x: -0.2821784, y: -0.35162, z: 0.51387787}
         inSlope: {x: -0.05222733, y: 0, z: 0}
         outSlope: {x: -0.05222733, y: 0, z: 0}
         tangentMode: 0
@@ -798,7 +798,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 4.4333334
-        value: {x: -0.3400637, y: -0.5471935, z: 0.5085144}
+        value: {x: -0.3400637, y: -0.34719, z: 0.5085144}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -1021,7 +1021,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.15490916
+        value: 0.04509
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1030,7 +1030,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 2.1833334
-        value: -0.5516223
+        value: -0.35162
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1039,7 +1039,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 4.4333334
-        value: -0.5471935
+        value: -0.34719
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1239,7 +1239,7 @@ MonoBehaviour:
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
   m_Clip: {fileID: 7400000, guid: c2066738bc1045544a24f76a73ca634b, type: 2}
-  m_Position: {x: -6.2647114, y: -0.00031661987, z: -0.012076119}
+  m_Position: {x: -6.2647114, y: 0.2, z: -0.012076119}
   m_EulerAngles: {x: 0, y: -90, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
@@ -2687,7 +2687,7 @@ MonoBehaviour:
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
   m_Clip: {fileID: 7400000, guid: b6db22a9c658fcc47b8b7725b394aaee, type: 2}
-  m_Position: {x: -6.2782383, y: -0.00031661987, z: -0.022961847}
+  m_Position: {x: -6.2782383, y: 0.2, z: -0.022961847}
   m_EulerAngles: {x: 0, y: -90.823, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
@@ -3222,7 +3222,7 @@ MonoBehaviour:
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
   m_Clip: {fileID: 7400000, guid: 0ed5b6c6de8e17c468ea3ad425adcb51, type: 2}
-  m_Position: {x: -6.2505116, y: 0, z: -0.0154777635}
+  m_Position: {x: -6.2505116, y: 0.2, z: -0.0154777635}
   m_EulerAngles: {x: 0, y: -88.515, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
@@ -3401,7 +3401,7 @@ MonoBehaviour:
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
   m_Clip: {fileID: 7400000, guid: c2066738bc1045544a24f76a73ca634b, type: 2}
-  m_Position: {x: -6.250512, y: 0, z: -0.015390362}
+  m_Position: {x: -6.250512, y: 0.2, z: -0.015390362}
   m_EulerAngles: {x: 0, y: -90, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
@@ -7074,7 +7074,7 @@ MonoBehaviour:
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
   m_Clip: {fileID: 7400000, guid: c2fbbd40198c1d340a9f62f9fb0a8c5e, type: 2}
-  m_Position: {x: -6.255078, y: -0.0023374557, z: -0.027816167}
+  m_Position: {x: -6.255078, y: 0.2, z: -0.027816167}
   m_EulerAngles: {x: 0, y: -113.389, z: 0}
   m_UseTrackMatchFields: 1
   m_MatchTargetFields: 63
@@ -7556,7 +7556,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0.51789856, y: -0.20981216, z: 0.06360245}
+        value: {x: 0.51789856, y: 0.2, z: 0.06360245}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -7565,7 +7565,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 3.8833332
-        value: {x: 0.7647476, y: -0.27582932, z: 0.07122421}
+        value: {x: 0.7647476, y: 0.2, z: 0.07122421}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -7842,7 +7842,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.20981216
+        value: 0.2
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -7851,7 +7851,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 3.8833332
-        value: -0.27582932
+        value: 0.2
         inSlope: 0
         outSlope: 0
         tangentMode: 136
