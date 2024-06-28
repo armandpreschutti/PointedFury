@@ -13063,8 +13063,8 @@ MonoBehaviour:
   LightAttackDamage: 10
   HeavyAttackDamage: 20
   CombatDistance: 1.5
-  LightAttackChargeSpeed: 0
-  HeavyAttackChargeSpeed: 0
+  LightAttackChargeSpeed: 0.5
+  HeavyAttackChargeSpeed: 0.5
   KnockBackPower: 0
   ParryChargeSpeed: 0
   ParryDamage: 30
@@ -13411,6 +13411,7 @@ MonoBehaviour:
   _breakableObjects: []
   _enemyTag: Enemy
   _breakableTag: Breakable
+  ObjectBreakForce: 0
 --- !u!1 &2808971052033467236
 GameObject:
   m_ObjectHideFlags: 0

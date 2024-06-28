@@ -1672,6 +1672,7 @@ MonoBehaviour:
   _breakableObjects: []
   _enemyTag: Player
   _breakableTag: Breakable
+  ObjectBreakForce: 0
 --- !u!1 &2817253748061143634
 GameObject:
   m_ObjectHideFlags: 0
@@ -3842,8 +3843,8 @@ MonoBehaviour:
   LightAttackDamage: 3
   HeavyAttackDamage: 6
   CombatDistance: 1
-  LightAttackChargeSpeed: 0
-  HeavyAttackChargeSpeed: 0
+  LightAttackChargeSpeed: 0.5
+  HeavyAttackChargeSpeed: 0.5
   KnockBackPower: 0
   ParryChargeSpeed: 0
   ParryDamage: 10
@@ -3960,7 +3961,7 @@ MonoBehaviour:
   comboCount: 0
   hitCount: 0
   targetDistance: 0
-  AttackDistance: 1.2
+  AttackDistance: 1
   WatchDistance: 3
   DistanceBuffer: 1
   ComboSkill: 1

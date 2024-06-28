@@ -17,7 +17,7 @@ public class ObjectFracturingHandler : MonoBehaviour
             fragment.gameObject.layer = LayerMask.NameToLayer("Debris");
             fragment.gameObject.tag = "Untagged";
         }
-        //Destroy(this.gameObject);
+        Destroy(this.gameObject);
 
     }
    

@@ -3707,7 +3707,7 @@ Transform:
   - {fileID: 2208739425994233725}
   - {fileID: 8185109526602795403}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6110702207848701011
 MonoBehaviour:
@@ -3734,8 +3734,8 @@ MonoBehaviour:
   LightAttackDamage: 1
   HeavyAttackDamage: 3
   CombatDistance: 1.5
-  LightAttackChargeSpeed: 0
-  HeavyAttackChargeSpeed: 0
+  LightAttackChargeSpeed: 0.5
+  HeavyAttackChargeSpeed: 0.5
   KnockBackPower: 0
   ParryChargeSpeed: 0
   ParryDamage: 5
@@ -3852,7 +3852,7 @@ MonoBehaviour:
   comboCount: 0
   hitCount: 0
   targetDistance: 0
-  AttackDistance: 1.4
+  AttackDistance: 1
   WatchDistance: 3
   DistanceBuffer: 1
   ComboSkill: 5
@@ -5807,7 +5807,6 @@ GameObject:
   - component: {fileID: 7058681020475909846}
   - component: {fileID: 7369795810634161468}
   - component: {fileID: 8861528608620381262}
-  - component: {fileID: 7196984471087552835}
   m_Layer: 0
   m_Name: Rock_05
   m_TagString: Untagged
@@ -5880,28 +5879,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7196984471087552835
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2662569874747588047}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: fa2e670bb3648a84b9df8d16da25b85e, type: 3}
 --- !u!1 &2667997260283762488
 GameObject:
   m_ObjectHideFlags: 0
@@ -8333,6 +8310,7 @@ MonoBehaviour:
   _breakableObjects: []
   _enemyTag: Player
   _breakableTag: Breakable
+  ObjectBreakForce: 0
 --- !u!1 &4335267539376428015
 GameObject:
   m_ObjectHideFlags: 0

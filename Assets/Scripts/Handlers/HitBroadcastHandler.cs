@@ -10,6 +10,7 @@ public class HitBroadcastHandler : MonoBehaviour
     public List<GameObject> _breakableObjects = new List<GameObject>();
     public string _enemyTag;
     public string _breakableTag;
+    public float ObjectBreakForce;
 
     private void Awake()
     {
@@ -125,10 +126,10 @@ public class HitBroadcastHandler : MonoBehaviour
                 for (int j = 0; j < fragments.Length; j++)
                 {
                     Rigidbody fragment = fragments[j];
-                    fragment.GetComponent<Rigidbody>().AddForce((fragment.transform.position + transform.position).normalized * .1f, ForceMode.Impulse);
+                    fragment.GetComponent<Rigidbody>().AddForce((fragment.transform.position + transform.position).normalized * ObjectBreakForce, ForceMode.Impulse);
                     fragment.gameObject.layer = LayerMask.NameToLayer("Debris");
                 }
-                Destroy(obj);
+
                 _breakableObjects.RemoveAt(i);
             }
         }
