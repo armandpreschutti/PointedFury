@@ -22,13 +22,13 @@ public class TutoiralManager : MonoBehaviour
 
     private void OnEnable()
     {
-       // SceneManager.sceneLoaded += LevelStarted;
+        SceneManager.sceneLoaded += LevelStarted;
         CutSceneTriggerHandler.onStartCutscene += PreBossFightStarted;
         WinConditionHandler.OnLevelPassed += LevelCompleted;
     }
     private void OnDisable()
     {
-       // SceneManager.sceneLoaded -= LevelStarted;
+        SceneManager.sceneLoaded -= LevelStarted;
         CutSceneTriggerHandler.onStartCutscene -= PreBossFightStarted;
         WinConditionHandler.OnLevelPassed -= LevelCompleted;
     }
