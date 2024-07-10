@@ -10,7 +10,7 @@ public class ObstaclePushHandler : MonoBehaviour
     {
         Rigidbody rb = hit.collider.attachedRigidbody;
 
-        if (rb != null)
+        if (rb != null && rb.tag != "Breakable")
         {
             Vector3 forceDirection = hit.gameObject.transform.position - transform.position;
             forceDirection.y = 0;

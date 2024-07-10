@@ -5876,8 +5876,8 @@ MonoBehaviour:
   HeadArea: {fileID: 8789619828264901691}
   BodyArea: {fileID: 6168342962698710990}
   LightAttackImpactForce: 125
-  HeavyAttackImpactForce: 200
-  ParryImpactForce: 325
+  HeavyAttackImpactForce: 250
+  ParryImpactForce: 400
 --- !u!114 &-1832054420296608243
 MonoBehaviour:
   m_ObjectHideFlags: 0

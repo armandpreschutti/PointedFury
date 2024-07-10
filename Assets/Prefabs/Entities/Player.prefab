@@ -13142,7 +13142,7 @@ CharacterController:
   m_Height: 1.8
   m_Radius: 0.35
   m_SlopeLimit: 20
-  m_StepOffset: 0.1
+  m_StepOffset: 0.25
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.93, z: 0}
@@ -13411,7 +13411,7 @@ MonoBehaviour:
   _breakableObjects: []
   _enemyTag: Enemy
   _breakableTag: Breakable
-  ObjectBreakForce: 0
+  ObjectBreakForce: 5
 --- !u!1 &2808971052033467236
 GameObject:
   m_ObjectHideFlags: 0

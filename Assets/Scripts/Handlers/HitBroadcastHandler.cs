@@ -21,14 +21,12 @@ public class HitBroadcastHandler : MonoBehaviour
     {
         _stateMachine.OnAttackContact += LandAttackOnEnemy;
         _stateMachine.OnAttackContact += BreakObject;
-        // _stateMachine.OnAttemptParry += LandFinisher;
     }
 
     private void OnDisable()
     {
         _stateMachine.OnAttackContact -= LandAttackOnEnemy;
         _stateMachine.OnAttackContact -= BreakObject;
-        // _stateMachine.OnAttemptParry -= LandFinisher;
     }
 
     private void Update()
@@ -111,27 +109,28 @@ public class HitBroadcastHandler : MonoBehaviour
 
     private void BreakObject()
     {
-        for (int i = 0; i < _breakableObjects.Count; i++)
+        if (_stateMachine.AttackType == "Heavy")
         {
-            GameObject obj = _breakableObjects[i];
-            if (_stateMachine.AttackType == "Heavy")
+            for (int i = 0; i < _breakableObjects.Count; i++)
             {
-                obj.GetComponent<Collider>().enabled = false;
-                obj.GetComponent<Rigidbody>().isKinematic = false;
-
+                GameObject obj = _breakableObjects[i];
                 obj.GetComponent<Fracture>().CauseFracture();
-                
+
                 GameObject fragmentParent = GameObject.Find($"{obj.name}Fragments");
                 Rigidbody[] fragments = fragmentParent.GetComponentsInChildren<Rigidbody>();
                 for (int j = 0; j < fragments.Length; j++)
                 {
                     Rigidbody fragment = fragments[j];
-                    fragment.GetComponent<Rigidbody>().AddForce((fragment.transform.position + transform.position).normalized * ObjectBreakForce, ForceMode.Impulse);
-                    fragment.gameObject.layer = LayerMask.NameToLayer("Debris");
+                    fragment.GetComponent<Rigidbody>().AddForce((fragment.transform.position - transform.parent.position).normalized * ObjectBreakForce, ForceMode.Impulse);
                 }
 
-                _breakableObjects.RemoveAt(i);
+                Destroy(obj.gameObject);
             }
         }
+        else
+        {
+            return;
+        }
+       
     }
 }
