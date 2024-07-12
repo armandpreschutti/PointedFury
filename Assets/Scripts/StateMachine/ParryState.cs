@@ -15,8 +15,6 @@ public class ParryState : BaseState
 
         SetParryType();
 
-       // Ctx.LightAttackID = 0;
-       // Ctx.HeavyAttackID = 0;
         Ctx.IsParrying = true;
         Ctx.IsAttacking = false;
         Ctx.Animator.SetBool(Ctx.AnimIDParry, true);
@@ -24,7 +22,7 @@ public class ParryState : BaseState
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.IsParrySucces = false;
-        //Ctx.IsEvadable = true;
+        Ctx.IsEvadable = true;
 
     }
 
@@ -37,7 +35,6 @@ public class ParryState : BaseState
         if(Ctx.IsCharging)
         {
             Ctx.SetIncomingAttackDirection();
-            //Ctx.SetAttackDirection();
             Ctx.ParryMovement();
         }
 

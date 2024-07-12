@@ -78,9 +78,12 @@ public class StateMachine : MonoBehaviour
     private bool _isHeavyHitLanded = false;
     private bool _isKnockedBack = false;
     private bool _isDashing = false;
+    private bool _isSprinting = false;
     private bool _isDashMoving = false;
     private bool _isBlocking = false;
     private bool _isBlockSuccess = false;
+    private bool _isDeflectSuccess = false;
+    private bool _isDeflecting = false;
     private bool _isParried = false;
     private bool _isParrySuccess = false;
     private bool _isEvadeSuccess = false;
@@ -93,7 +96,7 @@ public class StateMachine : MonoBehaviour
     private bool _isNearDeath = false;
     private bool _isFinishing = false;
     private bool _isFinished = false;
-
+    private bool _isSprintAttack = false;
 
 
     public string DebugCurrentSuperState;
@@ -124,6 +127,7 @@ public class StateMachine : MonoBehaviour
     private bool _isBlockPressed = false;
     private bool _isParryPressed = false;
     private bool _isDashPressed = false;
+    private bool _isSprintPressed = false;
 
     // Player components
     private Animator _animator;
@@ -168,6 +172,10 @@ public class StateMachine : MonoBehaviour
     [HideInInspector] public int AnimIDEvade;
     [HideInInspector] public int AnimIDFinishing;
     [HideInInspector] public int AnimIDFinished;
+    [HideInInspector] public int AnimIDDeflect;
+    [HideInInspector] public int AnimIDSprint;
+    [HideInInspector] public int AnimIDLightSprintAttack;
+    [HideInInspector] public int AnimIDHeavySprintAttack;
 
 
     // Player action events
@@ -183,13 +191,16 @@ public class StateMachine : MonoBehaviour
     public Action OnLightAttackGiven;
     public Action OnHeavyAttackGiven;
     public Action OnAttemptParry;
+    public Action OnAttemptDeflect;
     public Action OnAttemptEvade;
     public Action<float, string> OnBlockSuccessful;
+    public Action OnDeflectSuccessful;
     public Action OnParryContact;
     public Action<bool> OnDash;
     public Action OnHurt;
     public Action OnDeath;
     public Action<Vector3, /*float,*/ string, int> OnEnableRagdoll;
+    public Action<bool> OnSprint;
 
     // Getters and setters
     // Input
@@ -201,6 +212,7 @@ public class StateMachine : MonoBehaviour
     public bool IsBlockPressed { get { return _isBlockPressed; } set { _isBlockPressed = value; } }   
     public bool IsParryPressed {  get { return _isParryPressed; } set { _isParryPressed= value; } }
     public bool IsDashPressed { get { return _isDashPressed; } set { _isDashPressed= value; } }
+    public bool IsSprintPressed { get { return _isSprintPressed; } set { _isSprintPressed= value; } }
 
     // Speed
     public float Speed { get { return _speed; } }
@@ -220,9 +232,12 @@ public class StateMachine : MonoBehaviour
     public bool IsHeavyHitLanded { get { return _isHeavyHitLanded; } set { _isHeavyHitLanded = value; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack= value; } }
     public bool IsDashing { get { return _isDashing; } set { _isDashing = value; } }
+    public bool IsSprinting { get { return _isSprinting; } set { _isSprinting= value; } }
     public bool IsDashMoving { get { return _isDashMoving; } set { _isDashMoving = value; } }
     public bool IsBlocking { get { return _isBlocking; } set { _isBlocking = value; } }
     public bool IsBlockSuccess { get { return _isBlockSuccess; } set { _isBlockSuccess = value; } }
+    public bool IsDeflectSuccess { get { return _isDeflectSuccess; } set { _isDeflectSuccess = value; } }
+    public bool IsDeflecting { get { return _isDeflecting; } set { _isDeflecting = value; } }
     public bool IsParrying { get { return _isParrying; } set { _isParrying = value; } }
     public bool IsParrySucces { get { return _isParrySuccess; } set { _isParrySuccess= value; } }
     public bool IsEvadeSucces { get { return _isEvadeSuccess; } set { _isEvadeSuccess= value; } }
@@ -235,7 +250,7 @@ public class StateMachine : MonoBehaviour
     public bool IsNearDeath { get { return _isNearDeath; } set { _isNearDeath = value; } }
     public bool IsFinishing { get { return _isFinishing; } set { _isFinishing = value; } }
     public bool IsFinished { get { return _isFinished; } set { _isFinished = value; } }
-
+    public bool IsSprintAttack { get { return _isSprintAttack; } set { _isSprintAttack = value; } }
 
     // Fighting
     public GameObject CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; } }
@@ -354,6 +369,16 @@ public class StateMachine : MonoBehaviour
         else
         {
             return;
+        }
+    }
+
+    public void SprintMovement()
+    {
+        Vector3 direction = InputDirection();
+        direction.y = 0f; // Ignore y component
+        if (direction != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
         }
     }
 
@@ -514,6 +539,18 @@ public class StateMachine : MonoBehaviour
 
     }
 
+    public void SetSprintDirection()
+    {
+        if (_moveInput != Vector2.zero)
+        {
+            transform.LookAt((transform.position + InputDirection()).normalized);
+        }
+        else
+        {
+            return;
+        }
+    }
+
     public void SetHitKnockBack()
     {
         _controller.Move((transform.position - _incomingAttackDirection).normalized * KnockBackPower * Time.deltaTime);
@@ -637,7 +674,15 @@ public class StateMachine : MonoBehaviour
     {
         _isStunned = false;
     }
+    public void OnDeflectAnimationBegin()
+    {
 
+    }
+
+    public void OnDeflectAnimationEnd()
+    {
+        _isDeflecting = false;
+    }
     public void OnHurtAnimationKnockbackComplete()
     {
         _isKnockedBack= false;
@@ -718,7 +763,13 @@ public class StateMachine : MonoBehaviour
             _hitType = hitType;
             if (!IsDead)
             {
-                if (_isBlocking /*&& HitType != "Heavy"*/)
+                if (_isDeflecting)
+                {
+                    _isDeflectSuccess = true;
+                    OnDeflectSuccessful?.Invoke();
+                    
+                }
+                else if (_isBlocking /*&& HitType != "Heavy"*/)
                 {
                     _isBlockSuccess = true;
                     OnBlockSuccessful?.Invoke(attackDamage * BlockDamageReduction, "Block");
@@ -777,12 +828,26 @@ public class StateMachine : MonoBehaviour
             _isParried = true;
         }
     }
-    
+    public void TakeDeflect(Vector3 attackerPosition)
+    {
+        _isStunned = true;
+        _hitType = "Deflect";
+        _hitID = 1;
+        _incomingAttackDirection = attackerPosition;
+        _isParried = true;
+    }
+
     public void BeginParry(Vector3 attackerPosition)
     {
        
         _incomingAttackDirection = attackerPosition;
         IsParrySucces = true;
+    }
+
+    public void BeginDeflect(Vector3 attackerPosition)
+    {
+        _incomingAttackDirection = attackerPosition;
+        IsDeflectSuccess = true;
     }
 
     public void BeginEvade()
@@ -812,6 +877,10 @@ public class StateMachine : MonoBehaviour
         AnimIDEvade = Animator.StringToHash("Evade");
         AnimIDFinishing = Animator.StringToHash("Finishing");
         AnimIDFinished = Animator.StringToHash("Finished");
+        AnimIDDeflect = Animator.StringToHash("Deflect");
+        AnimIDSprint = Animator.StringToHash("Sprint");
+        AnimIDLightSprintAttack = Animator.StringToHash("LightSprintAttack");
+        AnimIDHeavySprintAttack = Animator.StringToHash("HeavySprintAttack");
     }
 
     public void SetCombatMovementAnimationValues()

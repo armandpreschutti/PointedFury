@@ -71,7 +71,15 @@ public class IdleState : BaseState
             }
             else if (Ctx.IsBlockPressed)
             {
-                SwitchState(Factory.Block());
+                if(Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>())
+                {
+                    SwitchState(Factory.Deflect());
+                }
+                else
+                {
+                    SwitchState(Factory.Block());
+                }
+
             }
             else if (Ctx.IsParrySucces)
             {

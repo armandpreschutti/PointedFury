@@ -26,6 +26,7 @@ public class DashState : BaseState
     {
         //Debug.Log("DASH state is currently active");
         Ctx.DebugCurrentSubState = "Dash State";
+
         CheckSwitchStates();
         Ctx.MoveInput = Vector2.zero;
        // Ctx.DashMovement();
@@ -50,12 +51,30 @@ public class DashState : BaseState
                 {
                     SwitchState(Factory.Block());
                 }
-             
+                else if (Ctx.IsLightAttackPressed)
+                {
+                    Ctx.IsHeavyAttackPressed = false;
+                    SwitchState(Factory.LightAttack());
+                }
+                else if (Ctx.IsHeavyAttackPressed)
+                {
+                    Ctx.IsLightAttackPressed = false;
+                    SwitchState(Factory.HeavyAttack());
+                }
                 else
                 {
                     if (Ctx.MoveInput != Vector2.zero)
                     {
-                        SwitchState(Factory.Move());
+                        if (Ctx.IsSprintPressed)
+                        {
+                            SwitchState(Factory.Sprint());
+                            Debug.LogWarning("DashTransitionCalled");
+                        }
+                        else
+                        {
+                            SwitchState(Factory.Move());
+                        }
+
                     }
                     else
                     {
@@ -75,16 +94,7 @@ public class DashState : BaseState
             {
                 SwitchState(Factory.Stunned());
             }
-            else if (Ctx.IsLightAttackPressed)
-            {
-                Ctx.IsHeavyAttackPressed = false;
-                SwitchState(Factory.LightAttack());
-            }
-            else if (Ctx.IsHeavyAttackPressed)
-            {
-                Ctx.IsLightAttackPressed = false;
-                SwitchState(Factory.HeavyAttack());
-            }
+            
             else if (Ctx.IsFinishing)
             {
                 SwitchState(Factory.Finishing());

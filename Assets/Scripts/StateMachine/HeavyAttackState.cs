@@ -12,18 +12,23 @@ public class HeavyAttackState : BaseState
     {
         //Debug.LogWarning("Player has entered HEAVY ATTACK state");
 
-        SetAttackType();
-        Ctx.SetAttackDirection();
         Ctx.MoveInput = Vector2.zero;
-        Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, true);
-        Ctx.Animator.SetInteger(Ctx.AnimIDHeavyAttackID, Ctx.HeavyAttackID);
+        if (Ctx.IsSprintAttack)
+        {
+            Ctx.Animator.SetBool(Ctx.AnimIDHeavySprintAttack, true);
+           // Ctx.IsSprintAttack = false;
+        }
+        else
+        {
+            SetAttackType();
+            Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, true);
+            Ctx.Animator.SetInteger(Ctx.AnimIDHeavyAttackID, Ctx.HeavyAttackID);
+        }
         Ctx.IsAttacking = true;
         Ctx.IsHeavyAttackPressed = false;
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.OnHeavyAttack?.Invoke(true, "Heavy");
-        //Ctx.OnAttack?.Invoke(true);
-        //Ctx.IsBlockPressed = false;
     }
 
     public override void UpdateState()
@@ -32,12 +37,11 @@ public class HeavyAttackState : BaseState
         Ctx.DebugCurrentSubState = $"Heavy Attack {Ctx.HeavyAttackID} State";
         CheckSwitchStates();
         Ctx.SetAttackDirection();
-        Ctx.AttackMovement();
-     /*   if (Ctx.IsCharging)
+        if (!Ctx.IsSprintAttack)
         {
-            Ctx.SetAttackDirection();
             Ctx.AttackMovement();
-        }*/
+        }
+      
     }
 
     public override void ExitState()
@@ -45,12 +49,14 @@ public class HeavyAttackState : BaseState
         //Debug.LogWarning("Player has exited HEAVY ATTACK state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, false);
+        Ctx.Animator.SetBool(Ctx.AnimIDHeavySprintAttack, false);
         Ctx.IsAttacking = false;
         Ctx.OnHeavyAttack?.Invoke(false, "Heavy");
         //Ctx.OnAttack?.Invoke(false);
         Ctx.IsCharging = false;
         Ctx.IsParryable = false;
         Ctx.IsEvadePressed = false;
+        Ctx.IsSprintAttack = false;
     }
 
     public override void CheckSwitchStates()

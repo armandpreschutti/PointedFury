@@ -36,10 +36,10 @@ public class StunnedState : BaseState
         Ctx.DebugCurrentSubState = "Stunned State";
         CheckSwitchStates();
         
-        if (Ctx.IsKnockedBack)
+      /*  if (Ctx.IsKnockedBack)
         {
             Ctx.SetHitKnockBack();
-        }
+        }*/
 
     }
 

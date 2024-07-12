@@ -12,32 +12,43 @@ public class LightAttackState : BaseState
     {
         //Debug.LogWarning("Player has entered LIGHT ATTACK state");
 
-        SetAttackType();
-       // Ctx.SetAttackDirection();
+
         Ctx.MoveInput = Vector2.zero;
-        Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
-        Ctx.Animator.SetInteger(Ctx.AnimIDLightAttackID, Ctx.LightAttackID);
+        if (Ctx.IsSprintAttack)
+        {
+            Ctx.Animator.SetBool(Ctx.AnimIDLightSprintAttack, true);
+
+        }
+        else
+        {
+            SetAttackType();
+            Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
+            Ctx.Animator.SetInteger(Ctx.AnimIDLightAttackID, Ctx.LightAttackID);
+        }
+
+
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
         Ctx.IsFighting = true;
         Ctx.OnFight?.Invoke(true);
         Ctx.OnLightAttack?.Invoke(true, "Light");
-        //Ctx.OnAttack?.Invoke(true);
-        //Ctx.IsBlockPressed = false;
     }
 
     public override void UpdateState()
     {
-        Debug.Log("LIGHT ATTACK state is currently active");
+        //Debug.Log("LIGHT ATTACK state is currently active");
         Ctx.DebugCurrentSubState = $"Light Attack {Ctx.LightAttackID} State";
         CheckSwitchStates();
-        Ctx.SetAttackDirection();
-        Ctx.AttackMovement();
-        /* if (Ctx.IsCharging)
-         {
-             Ctx.SetAttackDirection();
-             Ctx.AttackMovement();
-         }*/
+        if(Ctx.IsSprintAttack )
+        {
+
+        }
+        else
+        {
+            Ctx.SetAttackDirection();
+            Ctx.AttackMovement();
+        }
+
     }
 
     public override void ExitState()
@@ -45,12 +56,14 @@ public class LightAttackState : BaseState
         //Debug.LogWarning("Player has exited LIGHT ATTACK state");
 
         Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, false);
+        Ctx.Animator.SetBool(Ctx.AnimIDLightSprintAttack, false);
         Ctx.IsAttacking = false;
         Ctx.OnLightAttack?.Invoke(false, "Light");
        // Ctx.OnAttack?.Invoke(false);
         Ctx.IsCharging = false;
         Ctx.IsParryable = false;
         Ctx.IsEvadePressed = false;
+        Ctx.IsSprintAttack = false;
     }
 
     public override void CheckSwitchStates()

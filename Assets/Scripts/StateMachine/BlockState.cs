@@ -12,7 +12,7 @@ public class BlockState : BaseState
     {
         //Debug.LogWarning("Player has entered BLOCK state");
 
-        //Ctx.SetAttackDirection();
+
         Ctx.SetBlockDirection();
         Ctx.IsHeavyHitLanded = false;
         Ctx.IsLightHitLanded = false;
@@ -29,8 +29,7 @@ public class BlockState : BaseState
 
         if (Ctx.IsBlockSuccess && !Ctx.IsParrySucces && !Ctx.IsDead)
         {
-           // Debug.Log("Trying to block");
-            
+
             Ctx.SetIncomingAttackDirection();
             Ctx.Animator.Play($"BlockImpact", 0, 0);
             Ctx.IsBlockSuccess = false;

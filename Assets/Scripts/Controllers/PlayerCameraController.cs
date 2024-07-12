@@ -15,9 +15,10 @@ public class PlayerCameraController : MonoBehaviour
 
     [SerializeField] CinemachineVirtualCamera _freeRoamCamera;
     [SerializeField] CinemachineVirtualCamera _shortFightCamera;
-    [SerializeField] CinemachineVirtualCamera _zoomCamera;
+    //[SerializeField] CinemachineVirtualCamera _zoomCamera;
     [SerializeField] CinemachineVirtualCamera _longFightCamera;
-    [SerializeField] CinemachineVirtualCamera _attackCamera;
+    [SerializeField] CinemachineVirtualCamera _sprintCamera;
+    //[SerializeField] CinemachineVirtualCamera _attackCamera;
 
 
     
@@ -64,6 +65,7 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEnemiesCleared += SetCameraState;
         //CutSceneTriggerHandler.onStartCutscene += ResetCameraPosition;
         _stateMachine.OnFight += SetLoneCameraState;
+        _stateMachine.OnSprint += SetSprintCameraState;
        // _stateMachine.OnLightAttack += SetAttackCameraState;
         //_stateMachine.OnHeavyAttack += SetAttackCameraState;
     }
@@ -74,8 +76,9 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
         //CutSceneTriggerHandler.onStartCutscene -= ResetCameraPosition;
          _stateMachine.OnFight -= SetLoneCameraState;
-       // _stateMachine.OnLightAttack -= SetAttackCameraState;
-       // _stateMachine.OnHeavyAttack -= SetAttackCameraState;
+        _stateMachine.OnSprint -= SetSprintCameraState;
+        // _stateMachine.OnLightAttack -= SetAttackCameraState;
+        // _stateMachine.OnHeavyAttack -= SetAttackCameraState;
     }
 
     // Start is called before the first frame update    
@@ -135,11 +138,16 @@ public class PlayerCameraController : MonoBehaviour
 
     }
 
-    public void SetAttackCameraState(bool value, string attackType)
+    public void SetSprintCameraState(bool value)
+    {
+        _sprintCamera.gameObject.SetActive(value);
+    }
+
+   /* public void SetAttackCameraState(bool value, string attackType)
     {
         _attackCamera.gameObject.SetActive(value);
     }
-
+*/
    
 
     public void SetCameraSensitity()

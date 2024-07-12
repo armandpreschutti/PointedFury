@@ -55,15 +55,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Sprint"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""980e881e-182c-404c-8cbf-3d09fdb48fef"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Fight"",
                     ""type"": ""PassThrough"",
                     ""id"": ""d1218c3f-1a24-4a88-923d-cffd46d9d965"",
@@ -170,6 +161,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""6703e3d2-6009-4c7e-9a76-34bd18e4ee45"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -203,17 +203,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c8fcd86e-dcfd-4f88-8e93-b638cdbf3320"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -348,6 +337,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Evade"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b71dc9d5-9f2c-431c-9f6b-321e23fc200e"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -407,7 +407,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Fight = m_Player.FindAction("Fight", throwIfNotFound: true);
         m_Player_LightAttack = m_Player.FindAction("LightAttack", throwIfNotFound: true);
         m_Player_HeavyAttack = m_Player.FindAction("HeavyAttack", throwIfNotFound: true);
@@ -420,6 +419,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_ReturnToTitle = m_Player.FindAction("ReturnToTitle", throwIfNotFound: true);
         m_Player_DisableEnemies = m_Player.FindAction("DisableEnemies", throwIfNotFound: true);
         m_Player_Evade = m_Player.FindAction("Evade", throwIfNotFound: true);
+        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -484,7 +484,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Fight;
     private readonly InputAction m_Player_LightAttack;
     private readonly InputAction m_Player_HeavyAttack;
@@ -497,6 +496,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ReturnToTitle;
     private readonly InputAction m_Player_DisableEnemies;
     private readonly InputAction m_Player_Evade;
+    private readonly InputAction m_Player_Sprint;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -504,7 +504,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Fight => m_Wrapper.m_Player_Fight;
         public InputAction @LightAttack => m_Wrapper.m_Player_LightAttack;
         public InputAction @HeavyAttack => m_Wrapper.m_Player_HeavyAttack;
@@ -517,6 +516,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @ReturnToTitle => m_Wrapper.m_Player_ReturnToTitle;
         public InputAction @DisableEnemies => m_Wrapper.m_Player_DisableEnemies;
         public InputAction @Evade => m_Wrapper.m_Player_Evade;
+        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -535,9 +535,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Sprint.started += instance.OnSprint;
-            @Sprint.performed += instance.OnSprint;
-            @Sprint.canceled += instance.OnSprint;
             @Fight.started += instance.OnFight;
             @Fight.performed += instance.OnFight;
             @Fight.canceled += instance.OnFight;
@@ -574,6 +571,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Evade.started += instance.OnEvade;
             @Evade.performed += instance.OnEvade;
             @Evade.canceled += instance.OnEvade;
+            @Sprint.started += instance.OnSprint;
+            @Sprint.performed += instance.OnSprint;
+            @Sprint.canceled += instance.OnSprint;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -587,9 +587,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Sprint.started -= instance.OnSprint;
-            @Sprint.performed -= instance.OnSprint;
-            @Sprint.canceled -= instance.OnSprint;
             @Fight.started -= instance.OnFight;
             @Fight.performed -= instance.OnFight;
             @Fight.canceled -= instance.OnFight;
@@ -626,6 +623,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Evade.started -= instance.OnEvade;
             @Evade.performed -= instance.OnEvade;
             @Evade.canceled -= instance.OnEvade;
+            @Sprint.started -= instance.OnSprint;
+            @Sprint.performed -= instance.OnSprint;
+            @Sprint.canceled -= instance.OnSprint;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -684,7 +684,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnSprint(InputAction.CallbackContext context);
         void OnFight(InputAction.CallbackContext context);
         void OnLightAttack(InputAction.CallbackContext context);
         void OnHeavyAttack(InputAction.CallbackContext context);
@@ -697,5 +696,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnReturnToTitle(InputAction.CallbackContext context);
         void OnDisableEnemies(InputAction.CallbackContext context);
         void OnEvade(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
     }
 }

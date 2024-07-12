@@ -29,6 +29,7 @@ public class EntityVFXHandler : MonoBehaviour
         //_stateMachine.OnBlockSuccessful += PlayBlockImpactVFX;
         _stateMachine.OnParryRecieved += PlayParryVFX;
         _stateMachine.OnDash += PlayDashVFX;
+        _stateMachine.OnDeflectSuccessful += PlayDeflectVFX;
     }
     private void OnDisable()
     {
@@ -39,6 +40,7 @@ public class EntityVFXHandler : MonoBehaviour
         _stateMachine.OnHeavyAttackRecieved -= PlayAttackImpactVFX;
         //_stateMachine.OnBlockSuccessful -= PlayBlockImpactVFX;
         _stateMachine.OnParryRecieved -= PlayParryVFX;
+        _stateMachine.OnDeflectSuccessful -= PlayDeflectVFX;
     }
     public void SetIndicator(bool value, string attackType)
     {
@@ -135,6 +137,11 @@ public class EntityVFXHandler : MonoBehaviour
     public void PlayParryVFX(float damage, string actionType)
     {
         CreateVFXOneShot(_parryVFX, _vfxOrigin);
+    }
+
+    public void PlayDeflectVFX()
+    {
+        CreateVFXOneShot(_lightAttackImpactVFX, _vfxOrigin);
     }
     public void CreateVFXOneShot(GameObject vfxPrefab, Transform origin)
     {

@@ -1,6 +1,8 @@
 using System;
+using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 public class UserInput : MonoBehaviour
 {
@@ -105,25 +107,31 @@ public class UserInput : MonoBehaviour
     }
     public void SetDashInput(bool value)
     {
+        
         if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing/* && !_stateMachine.IsAttacking*/)
         {
             _stateMachine.IsDashPressed = value;
+            Debug.LogWarning("DashInputCalled");
         }
      
+    }
+
+    public void SetSprintInput(bool value)
+    {
+        _stateMachine.IsSprintPressed = value;
+        Debug.LogWarning("SprintInputCalled");
+
+
     }
 
     public void SetBlockInput(bool value)
     {
         _stateMachine.IsBlockPressed = value;
-/*        if (*//*!_stateMachine.IsStunned &&*//* !_stateMachine.IsDashing)
-        {
-            _stateMachine.IsBlockPressed = value;
-        }*/
     }
 
     public void SetParryInput()
     {
-        if (!_stateMachine.IsAttacking && !_stateMachine.IsEvading)
+        if (!_stateMachine.IsAttacking && !_stateMachine.IsEvading && !_stateMachine.IsDeflecting)
         { 
             _stateMachine.OnAttemptParry?.Invoke();
         }
@@ -159,6 +167,20 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Move.performed += ctx => SetMoveInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Dash.performed += ctx => SetDashInput(ctx.ReadValueAsButton());
+        /*_playerControls.Player.Dash.performed += ctx =>
+        {
+            if (ctx.interaction is PressInteraction) 
+            {
+                SetDashInput(ctx.ReadValueAsButton());
+            }
+            else if(ctx.interaction is HoldInteraction)
+            {
+                //PerformSecondDashAction();
+                Debug.Log("HoldWorks");
+                //return;
+            }
+        };*/
+        _playerControls.Player.Sprint.performed += ctx => SetSprintInput(ctx.ReadValueAsButton());
         _playerControls.Player.Evade.performed += ctx => SetEvadeInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed += ctx => SetBlockInput(ctx.ReadValueAsButton());
         _playerControls.Player.Parry.performed += ctx => SetParryInput();

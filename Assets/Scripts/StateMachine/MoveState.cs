@@ -11,7 +11,6 @@ public class MoveState : BaseState
 
 
         Ctx.IsAttacking = false;
-        //Ctx.OnMove?.Invoke(true);
         if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
         {
             Ctx.IsFighting = false;
@@ -48,7 +47,6 @@ public class MoveState : BaseState
     {
         //Debug.LogWarning("Player has exited MOVE state");
 
-        //Ctx.OnMove?.Invoke(false);
     }
 
     public override void CheckSwitchStates()
@@ -81,7 +79,14 @@ public class MoveState : BaseState
             }
             else if (Ctx.IsBlockPressed)
             {
-                SwitchState(Factory.Block());
+                if (Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>())
+                {
+                    SwitchState(Factory.Deflect());
+                }
+                else
+                {
+                    SwitchState(Factory.Block());
+                }
             }
             else if (Ctx.IsParrySucces)
             {

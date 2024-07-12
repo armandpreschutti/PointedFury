@@ -86,4 +86,14 @@ public class StateFactory
     {
         return new FinishedState(_context, this);
     }
+
+    public BaseState Deflect()
+    {
+        return new DeflectState(_context, this);
+    }
+
+    public BaseState Sprint()
+    {
+        return new SprintState(_context, this);
+    }
 }

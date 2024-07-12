@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ParryBroadcastHandler : MonoBehaviour
@@ -19,6 +20,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         _stateMachine.OnAttemptParry += AttemptParry;
         _stateMachine.OnAttemptEvade += AttemptEvade;
         _stateMachine.OnParryContact += GiveParry;
+        _stateMachine.OnDeflectSuccessful += GiveDeflect;
     }
 
     private void OnDisable()
@@ -26,6 +28,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         _stateMachine.OnAttemptParry -= AttemptParry;
         _stateMachine.OnAttemptEvade -= AttemptEvade;
         _stateMachine.OnParryContact -= GiveParry;
+        _stateMachine.OnDeflectSuccessful -= GiveDeflect;
     }
 
     private void Update()
@@ -101,6 +104,18 @@ public class ParryBroadcastHandler : MonoBehaviour
             if (hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
             {
                 hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position, _stateMachine.ParryDamage, _stateMachine.ParryID);
+            }
+        }
+    }
+
+    private void GiveDeflect()
+    {
+        for (int i = 0; i < _hitTargetCount; i++)
+        {
+            GameObject hit = _hitTargets[i];
+            if (hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
+            {
+                hit.GetComponent<StateMachine>().TakeDeflect(_stateMachine.transform.position);
             }
         }
     }

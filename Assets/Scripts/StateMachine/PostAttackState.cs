@@ -54,7 +54,7 @@ public class PostAttackState : BaseState
             }
             else if (Ctx.IsBlockPressed)
             {
-                SwitchState(Factory.Block());
+                SwitchState(Factory.Deflect());
             }
             else if (Ctx.IsLightHitLanded)
             {
