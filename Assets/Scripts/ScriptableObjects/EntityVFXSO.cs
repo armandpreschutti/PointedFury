@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityVFXSO : MonoBehaviour
+[CreateAssetMenu(fileName = "VFX", menuName = "Entities/VFX")]
+public class EntityVFXSO : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float LightAttackStartLifeTime;
+    public float LightAttackStartSize;
+    public bool LightAttackCOL;
+    public float HeavyAttackStartLifeTime;
+    public float HeavyAttackStartSize;
+    public bool HeavyAttackCOL;
 }
+

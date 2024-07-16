@@ -10,7 +10,7 @@ public class SprintState : BaseState
 
     public override void EnterState()
     {
-        Debug.LogWarning("Player has entered SPRINT state");
+      //  Debug.LogWarning("Player has entered SPRINT state");
 
         Ctx.IsSprinting= true;
         Ctx.OnSprint?.Invoke(true);
@@ -30,7 +30,7 @@ public class SprintState : BaseState
 
     public override void ExitState()
     {
-        Debug.LogWarning("Player has exited SPRINT state");
+       // Debug.LogWarning("Player has exited SPRINT state");
         Ctx.IsSprinting = false;
         Ctx.Animator.SetBool(Ctx.AnimIDSprint, false);
         Ctx.OnSprint?.Invoke(false);
@@ -72,40 +72,29 @@ public class SprintState : BaseState
                 }
             }
 
-            /*else if (Ctx.IsLightHitLanded)
+            else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
-            else if (Ctx.IsParried)
-            {
-                SwitchState(Factory.Stunned());
-            }
-            else if (Ctx.IsLightAttackPressed)
-            {
-                Ctx.IsHeavyAttackPressed = false;
-                SwitchState(Factory.LightAttack());
-            }
-            else if (Ctx.IsHeavyAttackPressed)
-            {
-                Ctx.IsLightAttackPressed = false;
-                SwitchState(Factory.HeavyAttack());
-            }
-            else if (Ctx.IsFinishing)
-            {
-                SwitchState(Factory.Finishing());
-            }
-            else if (Ctx.IsFinished)
-            {
-                SwitchState(Factory.Finished());
-            }*/
-
-
         }
-
     }
 
     public override void InitializeSubStates()

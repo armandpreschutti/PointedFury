@@ -53,47 +53,29 @@ public class DeflectState : BaseState
                     SwitchState(Factory.Idle());
                 }
             }
-            
-            /*if (!Ctx.IsStunned)
-            {
-                if (Ctx.IsBlockPressed)
-                {
-                    SwitchState(Factory.Block());
-                }
-                else if (Ctx.MoveInput != Vector2.zero)
-                {
-                    SwitchState(Factory.Move());
-                }
-
-                else
-                {
-                    SwitchState(Factory.Idle());
-                }
-            }
             else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
-            else if (Ctx.IsParrySucces)
-            {
-                SwitchState(Factory.Parry());
-            }
-            else if (Ctx.IsDashPressed)
-            {
-                SwitchState(Factory.Dash());
-            }
-            else if (Ctx.IsFinishing)
-            {
-                SwitchState(Factory.Finishing());
-            }
-            else if (Ctx.IsFinished)
-            {
-                SwitchState(Factory.Finished());
-            }*/
+
 
         }
 

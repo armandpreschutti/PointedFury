@@ -8,7 +8,7 @@ public class HurtState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered HURT state");
-
+        Ctx.MoveInput = Vector2.zero;
         Ctx.SetIncomingAttackDirection();
         Ctx.IsLightHitLanded = false;
         Ctx.IsHeavyHitLanded = false;
@@ -27,8 +27,6 @@ public class HurtState : BaseState
         {
             Ctx.Animator.Play($"{Ctx.HitType}Hurt{Ctx.HitID}", 0, 0);
         }
-
-/*        Ctx.Animator.SetInteger(Ctx.AnimIDHurtID, Ctx.HitID);*/
         Ctx.Animator.SetBool(Ctx.AnimIDHurt, true);
 
         ExitAllAnimations();
@@ -86,6 +84,13 @@ public class HurtState : BaseState
             else if (Ctx.IsHeavyHitLanded)
             {
                 SwitchState(Factory.Hurt());
+            }
+            else if (Ctx.IsBlockPressed)
+            {
+                if (Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable && Ctx.CurrentTarget.GetComponent<StateMachine>().IsAI)
+                {
+                    SwitchState(Factory.Deflect());
+                }
             }
             else if (Ctx.IsParried)
             {

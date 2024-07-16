@@ -59,11 +59,26 @@ public class IdleState : BaseState
             }
             else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if(Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
+
             }
             else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsEvadeSucces)
             {
@@ -71,7 +86,7 @@ public class IdleState : BaseState
             }
             else if (Ctx.IsBlockPressed)
             {
-                if(Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>())
+                if(Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable)
                 {
                     SwitchState(Factory.Deflect());
                 }

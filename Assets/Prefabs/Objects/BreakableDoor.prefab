@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2959444506176781453}
   - component: {fileID: 3708948190141094436}
   - component: {fileID: 4892938585628178462}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Knob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,8 @@ GameObject:
   - component: {fileID: 3117666709298653808}
   - component: {fileID: 4166888039776644547}
   - component: {fileID: 5639485066844599610}
-  m_Layer: 0
+  - component: {fileID: -966755126053256484}
+  m_Layer: 10
   m_Name: BreakableDoor
   m_TagString: Breakable
   m_Icon: {fileID: 0}
@@ -283,3 +284,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baba14aafb18d8844a0834548c96d9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-966755126053256484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6727289300801610422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf624f47cc7508419d08c1a8a589925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Renderers: []
+  Position: {x: 0, y: 0, z: 0}
+  Materials: []
+  InitialAlpha: 0

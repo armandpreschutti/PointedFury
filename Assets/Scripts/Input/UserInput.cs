@@ -111,7 +111,7 @@ public class UserInput : MonoBehaviour
         if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing/* && !_stateMachine.IsAttacking*/)
         {
             _stateMachine.IsDashPressed = value;
-            Debug.LogWarning("DashInputCalled");
+           // Debug.LogWarning("DashInputCalled");
         }
      
     }
@@ -119,7 +119,7 @@ public class UserInput : MonoBehaviour
     public void SetSprintInput(bool value)
     {
         _stateMachine.IsSprintPressed = value;
-        Debug.LogWarning("SprintInputCalled");
+       // Debug.LogWarning("SprintInputCalled");
 
 
     }

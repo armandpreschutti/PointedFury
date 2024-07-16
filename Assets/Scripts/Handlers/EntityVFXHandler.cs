@@ -90,19 +90,19 @@ public class EntityVFXHandler : MonoBehaviour
             switch (_stateMachine.HeavyAttackID)
             {
                 case 1:
-                    _rightFootVFX.SetActive(value);
+                    _leftFootVFX.SetActive(value);
                     break;
                 case 2:
                     _rightHandVFX.SetActive(value);
                     break;
                 case 3:
-                    _leftFootVFX.SetActive(value);
-                    break;
-                case 4:
                     _rightFootVFX.SetActive(value);
                     break;
-                case 5:
+                case 4:
                     _rightHandVFX.SetActive(value);
+                    break;
+                case 5:
+                    _rightFootVFX.SetActive(value);
                     break;
                 default:
                     break;

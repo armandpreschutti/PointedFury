@@ -58,11 +58,25 @@ public class PostAttackState : BaseState
             }
             else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsParrySucces)
             {

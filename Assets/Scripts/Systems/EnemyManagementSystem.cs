@@ -209,17 +209,17 @@ public class EnemyManagementSystem : MonoBehaviour
         if ((ClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)
             || enemyCount == 1))
         {
-            Debug.Log("Closest Enemy picked");
+           // Debug.Log("Closest Enemy picked");
             currentAttacker = ClosestEnemy();
         }
         else if (enemyCount > 1 && (SecondClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)))
         {
-            Debug.Log("Random Enemy picked");
+           // Debug.Log("Random Enemy picked");
             currentAttacker = SecondClosestEnemy();
         }
         else if (enemyCount > 2 && (ThirdClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)))
         {
-            Debug.Log("Random Enemy picked");
+           // Debug.Log("Random Enemy picked");
             currentAttacker = ThirdClosestEnemy();
         }
         else /*if (currentAttacker.GetComponent<HealthSystem>() != null && currentAttacker.GetComponent<HealthSystem>().CurrentHealth < 50 && enemyCount > 2 && SecondClosestEnemy().GetComponent<HealthSystem>().CurrentHealth < 50)*/

@@ -86,10 +86,12 @@ public class HitBroadcastHandler : MonoBehaviour
         for (int i = 0; i < _enemyTargets.Count; i++)
         {
             GameObject hit = _enemyTargets[i];
+
             hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackID : _stateMachine.HeavyAttackID, _stateMachine.transform.position, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackDamage : _stateMachine.HeavyAttackDamage);
             _stateMachine.GiveHit(_stateMachine.AttackType);
         }
     }
+
 
     /*private void LandFinisher()
     {

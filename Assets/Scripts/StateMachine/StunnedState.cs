@@ -10,8 +10,8 @@ public class StunnedState : BaseState
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered STUNNED state");
+        Ctx.MoveInput = Vector2.zero;
 
-        
         Ctx.Animator.SetBool(Ctx.AnimIDStunned, true);
         Ctx.Animator.Play($"Stunned", 0, 0);
         Ctx.IsParryable = false;
@@ -73,11 +73,25 @@ public class StunnedState : BaseState
             }
             else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsParrySucces)
             {

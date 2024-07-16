@@ -7,17 +7,16 @@ public class LightAttackState : BaseState
     public LightAttackState(StateMachine currentContext, StateFactory stateFactory)
     : base(currentContext, stateFactory) { }
 
-
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered LIGHT ATTACK state");
-
 
         Ctx.MoveInput = Vector2.zero;
         if (Ctx.IsSprintAttack)
         {
             Ctx.Animator.SetBool(Ctx.AnimIDLightSprintAttack, true);
-
+            Ctx.AttackType = "Light";
+            Ctx.LightAttackID = 0;
         }
         else
         {
@@ -25,7 +24,6 @@ public class LightAttackState : BaseState
             Ctx.Animator.SetBool(Ctx.AnimIDLightAttack, true);
             Ctx.Animator.SetInteger(Ctx.AnimIDLightAttackID, Ctx.LightAttackID);
         }
-
 
         Ctx.IsAttacking = true;
         Ctx.IsLightAttackPressed = false;
@@ -39,13 +37,9 @@ public class LightAttackState : BaseState
         //Debug.Log("LIGHT ATTACK state is currently active");
         Ctx.DebugCurrentSubState = $"Light Attack {Ctx.LightAttackID} State";
         CheckSwitchStates();
-        if(Ctx.IsSprintAttack )
+        Ctx.SetAttackDirection();
+        if (!Ctx.IsSprintAttack )
         {
-
-        }
-        else
-        {
-            Ctx.SetAttackDirection();
             Ctx.AttackMovement();
         }
 
@@ -98,11 +92,25 @@ public class LightAttackState : BaseState
             }
             else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsParried)
             {

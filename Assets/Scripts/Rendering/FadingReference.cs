@@ -28,8 +28,9 @@ public class FadingReference : MonoBehaviour
     {
         while(true)
         {
-            int hits = Physics.RaycastNonAlloc(
+            int hits = Physics.SphereCastNonAlloc(
                 Camera.transform.position,
+                .25f,
                 (Target.transform.position + TargetPositionOffset - Camera.transform.position).normalized,
                 Hits,
                 Vector3.Distance(Camera.transform.position, Target.transform.position + TargetPositionOffset),

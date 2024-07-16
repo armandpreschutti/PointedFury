@@ -54,11 +54,13 @@ public class DashState : BaseState
                 else if (Ctx.IsLightAttackPressed)
                 {
                     Ctx.IsHeavyAttackPressed = false;
+                   // Ctx.IsSprintAttack = true;
                     SwitchState(Factory.LightAttack());
                 }
                 else if (Ctx.IsHeavyAttackPressed)
                 {
                     Ctx.IsLightAttackPressed = false;
+                   // Ctx.IsSprintAttack = true;
                     SwitchState(Factory.HeavyAttack());
                 }
                 else
@@ -68,7 +70,7 @@ public class DashState : BaseState
                         if (Ctx.IsSprintPressed)
                         {
                             SwitchState(Factory.Sprint());
-                            Debug.LogWarning("DashTransitionCalled");
+                          //  Debug.LogWarning("DashTransitionCalled");
                         }
                         else
                         {
@@ -84,11 +86,25 @@ public class DashState : BaseState
             }
             else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsParried)
             {

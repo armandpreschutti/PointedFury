@@ -7,7 +7,6 @@ public class HeavyAttackState : BaseState
     public HeavyAttackState(StateMachine currentContext, StateFactory stateFactory)
     : base(currentContext, stateFactory) { }
 
-
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered HEAVY ATTACK state");
@@ -16,7 +15,8 @@ public class HeavyAttackState : BaseState
         if (Ctx.IsSprintAttack)
         {
             Ctx.Animator.SetBool(Ctx.AnimIDHeavySprintAttack, true);
-           // Ctx.IsSprintAttack = false;
+            Ctx.AttackType = "Heavy";
+            Ctx.HeavyAttackID = 0;
         }
         else
         {
@@ -24,6 +24,7 @@ public class HeavyAttackState : BaseState
             Ctx.Animator.SetBool(Ctx.AnimIDHeavyAttack, true);
             Ctx.Animator.SetInteger(Ctx.AnimIDHeavyAttackID, Ctx.HeavyAttackID);
         }
+
         Ctx.IsAttacking = true;
         Ctx.IsHeavyAttackPressed = false;
         Ctx.IsFighting = true;
@@ -41,7 +42,6 @@ public class HeavyAttackState : BaseState
         {
             Ctx.AttackMovement();
         }
-      
     }
 
     public override void ExitState()
@@ -91,11 +91,25 @@ public class HeavyAttackState : BaseState
             }
             else if (Ctx.IsLightHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsHeavyHitLanded)
             {
-                SwitchState(Factory.Hurt());
+                if (Ctx.HitID == 0)
+                {
+                    SwitchState(Factory.Stunned());
+                }
+                else
+                {
+                    SwitchState(Factory.Hurt());
+                }
             }
             else if (Ctx.IsParried)
             {

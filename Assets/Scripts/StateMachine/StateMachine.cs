@@ -291,7 +291,10 @@ public class StateMachine : MonoBehaviour
     private void Update()
     {
         _currentState.UpdateStates();
-
+        if(_isDead)
+        {
+            this.enabled = false;
+        }
         GroundedCheck();
         CheckIsFighting();
         SetMovementAnimationSpeed();
@@ -751,6 +754,7 @@ public class StateMachine : MonoBehaviour
 
     public void TakeHit(string hitType, int attackID, Vector3 attackerPosition, float attackDamage)
     {
+      
         _incomingAttackDirection = attackerPosition;
 
         if(_isEvading ||_isParrying)
@@ -769,20 +773,38 @@ public class StateMachine : MonoBehaviour
                     OnDeflectSuccessful?.Invoke();
                     
                 }
-                else if (_isBlocking /*&& HitType != "Heavy"*/)
+                else if (_isBlocking)
                 {
                     _isBlockSuccess = true;
                     OnBlockSuccessful?.Invoke(attackDamage * BlockDamageReduction, "Block");
                 }
-                else if (hitType == "Light"/* && !_isParrying*/)
-                { 
-                    OnLightAttackRecieved?.Invoke(attackDamage, "Light");
-                    _isLightHitLanded = true;
-                }
-                else if (hitType == "Heavy" /*&& !_isParrying*/)
+                else if (hitType == "Light")
                 {
-                    OnHeavyAttackRecieved?.Invoke(attackDamage, "Heavy");
-                    _isHeavyHitLanded = true;
+                    if (attackID == 0)
+                    {
+                        OnLightAttackRecieved?.Invoke(50, "Heavy");
+                        _isLightHitLanded = true;
+                    }
+                    else
+                    {
+                        OnHeavyAttackRecieved?.Invoke(attackDamage, "Heavy");
+                        _isLightHitLanded = true;
+                    }
+                }
+                else if (hitType == "Heavy")
+                {
+                    if(attackID == 0)
+                    {
+                        OnHeavyAttackRecieved?.Invoke(100, "Heavy");
+                        _isHeavyHitLanded = true;
+                    }
+                    else
+                    {
+                        OnHeavyAttackRecieved?.Invoke(attackDamage, "Heavy");
+                        _isHeavyHitLanded = true;
+                    }
+
+
                 }
             }          
         }

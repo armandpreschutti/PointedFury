@@ -23,17 +23,8 @@ public class DeathState : BaseState
         Ctx.IsKnockedBack = true;
         Ctx.IsStunned = false;
         Ctx.IsDead = true;
-       /* Ctx.SetIncomingAttackDirection();
-        Ctx.Animator.SetBool(Ctx.AnimIDDeath, true);
-        Ctx.Animator.Play($"Death", 0, 0);*/
-        /*  if(!Ctx.IsFinished)
-          {
-              Ctx.SetIncomingAttackDirection();
-              Ctx.Animator.SetBool(Ctx.AnimIDDeath, true);
-              Ctx.Animator.Play($"Death", 0, 0);
-          }*/
-         Ctx.OnEnableRagdoll?.Invoke(Ctx.CurrentTarget.transform.position, /*250f,*/ Ctx.HitType, Ctx.HitID);
 
+        Ctx.OnEnableRagdoll?.Invoke(Ctx.CurrentTarget.transform.position, Ctx.HitType, Ctx.HitID);
     }
 
     public override void UpdateState()
@@ -42,23 +33,6 @@ public class DeathState : BaseState
         Ctx.DebugCurrentSuperState = "Death State";
         CheckSwitchStates();
 
-/*        if (Ctx.IsKnockedBack)
-        {
-
-            //   Time.timeScale = .25f;
-            //Ctx.SetHitKnockBack();
-            Ctx.Controller.detectCollisions = false;
-        }
-        else
-        {
-            if (Ctx.IsAI)
-            {
-                Ctx.GetComponent<AIBrain>().enabled = false;
-            }
-            Ctx.Controller.enabled = false;
-            Ctx.enabled = false;
-            Time.timeScale = 1f;
-        }*/
     }
 
     public override void ExitState()

@@ -58,9 +58,9 @@ public class RagDollHandler : MonoBehaviour
         stateMachine.enabled = true;
     }
 
-    public void EnableRagDoll(Vector3 direction, /*float force,*/ string attackType, int attackID)
+    public void EnableRagDoll(Vector3 direction, string attackType, int attackID)
     {
-        //Debug.LogWarning($"Player used a {attackType} {attackID} attack");
+      
 
         anim.enabled = false;
         controller.enabled = false;
@@ -75,7 +75,7 @@ public class RagDollHandler : MonoBehaviour
         Vector3 normalizedDirection = ImpactDirection(attackType, attackID);
 
         // Calculate the force vector
-        Vector3 forceVector = normalizedDirection * ImpactForce(attackType);
+        Vector3 forceVector = normalizedDirection * ImpactForce(attackType, attackID);
 
         // Apply the force to the Rigidbody
         ImpactArea(attackType, attackID).AddForce(forceVector, ForceMode.Impulse);
@@ -90,6 +90,9 @@ public class RagDollHandler : MonoBehaviour
             //return Vector3.zero;
             switch(attackID)
             {
+                case 0:
+                    returnDirection = -stateMachine.transform.forward.normalized;
+                    break;
                 case 1:
                     returnDirection = -stateMachine.transform.forward.normalized;
                     break;
@@ -115,6 +118,9 @@ public class RagDollHandler : MonoBehaviour
             Vector3 returnDirection = Vector3.zero;
             switch (attackID)
             {
+                case 0:
+                    returnDirection = (-stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
+                    break;
                 case 1:
                     returnDirection = (-stateMachine.transform.forward + (stateMachine.transform.up / 4)).normalized;
                     break;
@@ -173,6 +179,9 @@ public class RagDollHandler : MonoBehaviour
             //return Vector3.zero;
             switch (attackID)
             {
+                case 0:
+                    impactedArea = BodyArea;
+                    break;
                 case 1:
                     impactedArea = HeadArea;
                     break;
@@ -198,6 +207,9 @@ public class RagDollHandler : MonoBehaviour
             Rigidbody impactedArea = null;
             switch (attackID)
             {
+                case 0: 
+                    impactedArea = BodyArea; 
+                    break;
                 case 1:
                     impactedArea = HeadArea;
                     break;
@@ -245,15 +257,31 @@ public class RagDollHandler : MonoBehaviour
             return null;
         }
     }
-    public float ImpactForce(string attackType)
+    public float ImpactForce(string attackType, int attackID)
     {
         if (attackType == "Light")
         {
-            return LightAttackImpactForce;
+            if(attackID == 0)
+            {
+                return LightAttackImpactForce *2;
+            }
+            else
+            {
+                return LightAttackImpactForce;
+            }
+
         }
         else if (attackType == "Heavy")
         {
-            return HeavyAttackImpactForce;
+            if (attackID == 0)
+            {
+                return HeavyAttackImpactForce * 2;
+            }
+            else
+            {
+                return HeavyAttackImpactForce;
+            }
+
         }
         else if (attackType == "Parry")
         {

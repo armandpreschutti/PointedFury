@@ -47,7 +47,7 @@ public class EvadeState : BaseState
             {
                 if (Ctx.IsBlockPressed)
                 {
-                    SwitchState(Factory.Deflect());
+                    SwitchState(Factory.Block());
                 }
                 else if (Ctx.IsLightAttackPressed)
                 {

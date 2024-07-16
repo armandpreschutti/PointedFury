@@ -69,89 +69,79 @@ public class EnemyDetectionHandler : MonoBehaviour
 
     public void ProximityDetection()
     {
-        float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
-        Transform[] closestTargets = new Transform[3] { null, null, null };
-
-        // Iterate through all hits to find the closest colliders
-        for (int i1 = 0; i1 < _stateMachine.EnemiesNearby.Count; i1++)
+        if (!_stateMachine.IsAttacking)
         {
-            GameObject hit = _stateMachine.EnemiesNearby[i1];
-            float distance = Vector3.Distance(transform.position, hit.transform.position);
+            float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
+            Transform[] closestTargets = new Transform[3] { null, null, null };
 
-            // Update closest targets array if a closer target is found
-            for (int i = 0; i < distances.Length; i++)
+            // Iterate through all hits to find the closest colliders
+            for (int i1 = 0; i1 < _stateMachine.EnemiesNearby.Count; i1++)
             {
-                if (distance < distances[i])
-                {
-                    // Shift elements to make space for the new closest target
-                    for (int j = distances.Length - 1; j > i; j--)
-                    {
-                        distances[j] = distances[j - 1];
-                        closestTargets[j] = closestTargets[j - 1];
-                    }
+                GameObject hit = _stateMachine.EnemiesNearby[i1];
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
 
-                    // Assign the new closest target
-                    distances[i] = distance;
-                    closestTargets[i] = hit.transform;
-                    break; // Exit the loop after updating the closest target
+                // Update closest targets array if a closer target is found
+                for (int i = 0; i < distances.Length; i++)
+                {
+                    if (distance < distances[i])
+                    {
+                        // Shift elements to make space for the new closest target
+                        for (int j = distances.Length - 1; j > i; j--)
+                        {
+                            distances[j] = distances[j - 1];
+                            closestTargets[j] = closestTargets[j - 1];
+                        }
+
+                        // Assign the new closest target
+                        distances[i] = distance;
+                        closestTargets[i] = hit.transform;
+                        break; // Exit the loop after updating the closest target
+                    }
                 }
             }
+
+            // Assign closest, second closest, and third closest targets
+            closestTarget = closestTargets[0];
+            _stateMachine.ClosestTarget = closestTargets[0];
+            secondClosestTarget = closestTargets[1];
+            _stateMachine.SecondClosestTarget = closestTargets[1];
+            thirdClosestTarget = closestTargets[2];
+            _stateMachine.ThirdClosestTarget = closestTargets[2];
         }
-
-        // Assign closest, second closest, and third closest targets
-        closestTarget = closestTargets[0];
-        _stateMachine.ClosestTarget = closestTargets[0];
-        secondClosestTarget = closestTargets[1];
-        _stateMachine.SecondClosestTarget = closestTargets[1];
-        thirdClosestTarget = closestTargets[2];
-        _stateMachine.ThirdClosestTarget = closestTargets[2];
+        
     }
-
-    /*public void ProximityDetection()
-    {
-        float closestDistance = Mathf.Infinity;
-        closestTarget = null;
-
-        // Iterate through all hits to find the closest collider
-        foreach (GameObject hit in _stateMachine.EnemiesNearby)
-        {
-            float distance = Vector3.Distance(transform.position, hit.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestTarget = hit.transform;
-                _stateMachine.ClosestTarget = closestTarget;
-            }
-        }        
-    }*/
 
     public void StickDetection()
     {
-        if(closestTarget != null)
+        if(!_stateMachine.IsAttacking)
         {
-            if (_stateMachine.MoveInput != Vector2.zero && _stateMachine.EnemiesNearby.Count >1)
+            if (closestTarget != null)
             {
-                RaycastHit info;
-                if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius * 2, EnemyLayers))
+                if (_stateMachine.MoveInput != Vector2.zero && _stateMachine.EnemiesNearby.Count > 1)
                 {
-                    if (_stateMachine.EnemiesNearby.Contains(info.transform.gameObject))
+                    RaycastHit info;
+                    if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius * 2, EnemyLayers))
                     {
-                        _stateMachine.CurrentTarget = info.transform.gameObject;
+                        if (_stateMachine.EnemiesNearby.Contains(info.transform.gameObject))
+                        {
+                            _stateMachine.CurrentTarget = info.transform.gameObject;
+                        }
                     }
+                }
+                else
+                {
+                    if (!_stateMachine.IsParrying)
+                    {
+                        _stateMachine.CurrentTarget = closestTarget.gameObject;
+                    }
+
                 }
             }
             else
             {
-                if (!_stateMachine.IsParrying)
-                {
-                    _stateMachine.CurrentTarget = closestTarget.gameObject;
-                }
-
+                _stateMachine.CurrentTarget = null;
             }
         }
-        else
-        {
-            _stateMachine.CurrentTarget = null;
-        }
+        
     }
 }

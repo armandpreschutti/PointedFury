@@ -79,10 +79,6 @@ public class BlockState : BaseState
             {
                 SwitchState(Factory.Stunned());
             }
-            else if (Ctx.IsHeavyHitLanded)
-            {
-                SwitchState(Factory.Hurt());
-            }
             else if (Ctx.IsDashPressed)
             {
                 SwitchState(Factory.Dash());
