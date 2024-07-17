@@ -1,9 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MainMenuMananger : MonoBehaviour
 {
+
+    public EventSystem eventSystem;
+    
+
+    private void OnEnable()
+    {
+        Time.timeScale = 1.0f;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,4 +31,6 @@ public class MainMenuMananger : MonoBehaviour
     {
         Application.Quit();
     }
+
+    
 }

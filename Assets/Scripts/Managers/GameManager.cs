@@ -31,25 +31,19 @@ public class GameManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        UserInput.OnResetLevelPressed += ResetLevel;
-        UserInput.OnToggleHealthSystemsPressed += ToggleHealthSystems;
-        UserInput.OnDisableEnemiesPresssed += ToggleEnemyAI;
-        UserInput.OnResetGamePressed += ResetGame;
         PauseMenuController.OnGamePaused += PauseGame;
+        PauseMenuController.OnReturnToMenu += ReturnToMenu;
     }
     private void OnDisable()
     {
-        UserInput.OnResetLevelPressed -= ResetLevel;
-        UserInput.OnToggleHealthSystemsPressed-= ToggleHealthSystems;
-        UserInput.OnDisableEnemiesPresssed -= ToggleEnemyAI;
-        UserInput.OnResetGamePressed -= ResetGame;
         PauseMenuController.OnGamePaused -= PauseGame;
+        PauseMenuController.OnReturnToMenu -= ReturnToMenu;
     }
     public void ResetLevel()
     {
         SceneManager.LoadScene("Tutorial");
     }
-    public void ResetGame()
+    public void ReturnToMenu(bool value)
     {
         SceneManager.LoadScene("TitleMenu");
     }
@@ -70,15 +64,5 @@ public class GameManager : MonoBehaviour
         {
             entity.enabled = healthSystemsActivated;
         }
-    }
-    public void ToggleEnemyAI()
-    {
-        /*   disableEnemies = !disableEnemies;
-           AIBrain[] aiBrains = FindObjectsOfType<AIBrain>();
-           foreach (AIBrain entity in aiBrains)
-           {
-               entity.enabled = disableEnemies;
-           }*/
-       // SceneManager.LoadScene("Debug");
     }
 }

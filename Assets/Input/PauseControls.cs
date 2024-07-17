@@ -24,7 +24,7 @@ public partial class @PauseControls: IInputActionCollection2, IDisposable
     ""name"": ""PauseControls"",
     ""maps"": [
         {
-            ""name"": ""Pause"",
+            ""name"": ""Player"",
             ""id"": ""da95379f-6a98-4668-ac1d-99f04556b838"",
             ""actions"": [
                 {
@@ -49,6 +49,15 @@ public partial class @PauseControls: IInputActionCollection2, IDisposable
                     ""name"": ""Select"",
                     ""type"": ""Button"",
                     ""id"": ""c076a896-460f-4cf3-837a-50f5c7374043"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""f524c485-35b0-4622-bb93-c48410dac773"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -88,17 +97,29 @@ public partial class @PauseControls: IInputActionCollection2, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5cf3d204-7e16-40e2-99c7-44e151c21878"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": []
 }");
-        // Pause
-        m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
-        m_Pause_Return = m_Pause.FindAction("Return", throwIfNotFound: true);
-        m_Pause_Navigate = m_Pause.FindAction("Navigate", throwIfNotFound: true);
-        m_Pause_Select = m_Pause.FindAction("Select", throwIfNotFound: true);
+        // Player
+        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
+        m_Player_Return = m_Player.FindAction("Return", throwIfNotFound: true);
+        m_Player_Navigate = m_Player.FindAction("Navigate", throwIfNotFound: true);
+        m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -157,28 +178,30 @@ public partial class @PauseControls: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Pause
-    private readonly InputActionMap m_Pause;
-    private List<IPauseActions> m_PauseActionsCallbackInterfaces = new List<IPauseActions>();
-    private readonly InputAction m_Pause_Return;
-    private readonly InputAction m_Pause_Navigate;
-    private readonly InputAction m_Pause_Select;
-    public struct PauseActions
+    // Player
+    private readonly InputActionMap m_Player;
+    private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
+    private readonly InputAction m_Player_Return;
+    private readonly InputAction m_Player_Navigate;
+    private readonly InputAction m_Player_Select;
+    private readonly InputAction m_Player_Pause;
+    public struct PlayerActions
     {
         private @PauseControls m_Wrapper;
-        public PauseActions(@PauseControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Return => m_Wrapper.m_Pause_Return;
-        public InputAction @Navigate => m_Wrapper.m_Pause_Navigate;
-        public InputAction @Select => m_Wrapper.m_Pause_Select;
-        public InputActionMap Get() { return m_Wrapper.m_Pause; }
+        public PlayerActions(@PauseControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Return => m_Wrapper.m_Player_Return;
+        public InputAction @Navigate => m_Wrapper.m_Player_Navigate;
+        public InputAction @Select => m_Wrapper.m_Player_Select;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PauseActions set) { return set.Get(); }
-        public void AddCallbacks(IPauseActions instance)
+        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerActions instance)
         {
-            if (instance == null || m_Wrapper.m_PauseActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PauseActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
             @Return.started += instance.OnReturn;
             @Return.performed += instance.OnReturn;
             @Return.canceled += instance.OnReturn;
@@ -188,9 +211,12 @@ public partial class @PauseControls: IInputActionCollection2, IDisposable
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
-        private void UnregisterCallbacks(IPauseActions instance)
+        private void UnregisterCallbacks(IPlayerActions instance)
         {
             @Return.started -= instance.OnReturn;
             @Return.performed -= instance.OnReturn;
@@ -201,27 +227,31 @@ public partial class @PauseControls: IInputActionCollection2, IDisposable
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
-        public void RemoveCallbacks(IPauseActions instance)
+        public void RemoveCallbacks(IPlayerActions instance)
         {
-            if (m_Wrapper.m_PauseActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPauseActions instance)
+        public void SetCallbacks(IPlayerActions instance)
         {
-            foreach (var item in m_Wrapper.m_PauseActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PauseActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PauseActions @Pause => new PauseActions(this);
-    public interface IPauseActions
+    public PlayerActions @Player => new PlayerActions(this);
+    public interface IPlayerActions
     {
         void OnReturn(InputAction.CallbackContext context);
         void OnNavigate(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

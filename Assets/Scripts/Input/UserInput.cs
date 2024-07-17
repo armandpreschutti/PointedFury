@@ -9,7 +9,7 @@ public class UserInput : MonoBehaviour
     // Player input variables
     private StateMachine _stateMachine;
     private PlayerControls _playerControls;
-
+    public bool isPaused;
     public static Action OnPausePressed;
     public static Action OnResetLevelPressed;
     public static Action OnToggleHealthSystemsPressed;
@@ -30,6 +30,8 @@ public class UserInput : MonoBehaviour
     private void OnEnable()
     {
         TutoiralManager.OnEnableControl += EnablePlayerControl;
+        PracticeManager.OnEnableControl += EnablePlayerControl;
+        PauseMenuController.OnGamePaused += PausePlayerControl;
         _playerControls.Enable();
         SubscribeToActions();
     }
@@ -38,6 +40,8 @@ public class UserInput : MonoBehaviour
     private void OnDisable()
     {
         TutoiralManager.OnEnableControl -= EnablePlayerControl;
+        PracticeManager.OnEnableControl -= EnablePlayerControl;
+        PauseMenuController.OnGamePaused -= PausePlayerControl;
         _playerControls.Disable();
         UnsubscribeFromActions();
     }
@@ -52,94 +56,126 @@ public class UserInput : MonoBehaviour
     }
     public void EnablePlayerControl()
     {
+        Debug.Log("Function Called on UserInput");
         this.enabled = true;
+    }
+    public void PausePlayerControl(bool value)
+    {
+       isPaused = value;
     }
 
     // Set move input value
     public void SetMoveInput(Vector2 value)
     {
-        _targetMoveInput = value;
+        if (!isPaused)
+        {
+            _targetMoveInput = value;
+        }
+        else
+        {
+            _targetMoveInput = Vector2.zero;
+        }
+
     }
 
     // Set look input value
     public void SetLookInput(Vector2 value)
     {
-        _stateMachine.LookInput = value;
+        if(!isPaused)
+        {
+            _stateMachine.LookInput = value;
+        }
+        else
+        {
+            _stateMachine.LookInput = Vector2.zero;
+        }
+
     }
 
     public void SetLightAttackInput(bool value)
     {
-        
-        if(!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsHeavyAttackPressed)
+        if(!isPaused)
         {
-            _stateMachine.IsLightAttackPressed = true;
-        }       
-        else
-        {
-            return;
+            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsHeavyAttackPressed)
+            {
+                _stateMachine.IsLightAttackPressed = true;
+            }
+            else
+            {
+                return;
+            }
         }
+        
     }
 
     public void SetHeavyAttackInput(bool value)
     {
-
-        if (!_stateMachine.IsHurt && !_stateMachine.IsStunned  && !_stateMachine.IsLightAttackPressed)
+        if (!isPaused)
         {
-            _stateMachine.IsHeavyAttackPressed = true;
-        }
+            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsLightAttackPressed)
+            {
+                _stateMachine.IsHeavyAttackPressed = true;
+            }
 
-        else
-        {
-            return;
+            else
+            {
+                return;
+            }
         }
+       
     }
 
     public void SetEvadeInput(bool value)
     {
-        if (!_stateMachine.IsEvading  && !_stateMachine.IsStunned && !_stateMachine.IsParrying)
+        if (!isPaused)
         {
-            _stateMachine.OnAttemptEvade?.Invoke();
+            if (!_stateMachine.IsEvading && !_stateMachine.IsStunned && !_stateMachine.IsParrying)
+            {
+                _stateMachine.OnAttemptEvade?.Invoke();
+            }
+            else
+            {
+                return;
+            }
         }
-        else
-        {
-            return;
-        }
+     
     }
     public void SetDashInput(bool value)
     {
-        
-        if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing/* && !_stateMachine.IsAttacking*/)
+        if (!isPaused)
         {
-            _stateMachine.IsDashPressed = value;
-           // Debug.LogWarning("DashInputCalled");
+            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing/* && !_stateMachine.IsAttacking*/)
+            {
+                _stateMachine.IsDashPressed = value;
+            }
         }
-     
     }
 
     public void SetSprintInput(bool value)
     {
-        _stateMachine.IsSprintPressed = value;
-       // Debug.LogWarning("SprintInputCalled");
-
-
+        if (!isPaused)
+        {
+            _stateMachine.IsSprintPressed = value;
+        }
     }
 
     public void SetBlockInput(bool value)
     {
-        _stateMachine.IsBlockPressed = value;
+        if (!isPaused)
+        {
+            _stateMachine.IsBlockPressed = value;
+        }
     }
 
     public void SetParryInput()
     {
-        if (!_stateMachine.IsAttacking && !_stateMachine.IsEvading && !_stateMachine.IsDeflecting)
-        { 
-            _stateMachine.OnAttemptParry?.Invoke();
+        if(!isPaused)
+        {
+            if (!_stateMachine.IsAttacking && !_stateMachine.IsEvading && !_stateMachine.IsDeflecting)
+            {
+                _stateMachine.OnAttemptParry?.Invoke();
+            }
         }
-    }
-
-    public void SetPauseInput()
-    {
-        OnPausePressed?.Invoke();
     }
 
     public void SetResetLevelInput()
@@ -147,18 +183,6 @@ public class UserInput : MonoBehaviour
         OnResetLevelPressed?.Invoke();
     }
 
-    public void SetToggleHealthSystemsInput()
-    {
-        OnToggleHealthSystemsPressed.Invoke();
-    }
-    public void SetResetGameInput()
-    {
-        OnResetGamePressed?.Invoke();
-    }
-    public void SetDisableEnemiesInput()
-    {
-        OnDisableEnemiesPresssed?.Invoke();
-    }
 
     // Set input values
     private void SubscribeToActions()
@@ -167,30 +191,12 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Move.performed += ctx => SetMoveInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Look.performed += ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Dash.performed += ctx => SetDashInput(ctx.ReadValueAsButton());
-        /*_playerControls.Player.Dash.performed += ctx =>
-        {
-            if (ctx.interaction is PressInteraction) 
-            {
-                SetDashInput(ctx.ReadValueAsButton());
-            }
-            else if(ctx.interaction is HoldInteraction)
-            {
-                //PerformSecondDashAction();
-                Debug.Log("HoldWorks");
-                //return;
-            }
-        };*/
         _playerControls.Player.Sprint.performed += ctx => SetSprintInput(ctx.ReadValueAsButton());
         _playerControls.Player.Evade.performed += ctx => SetEvadeInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed += ctx => SetBlockInput(ctx.ReadValueAsButton());
         _playerControls.Player.Parry.performed += ctx => SetParryInput();
-        _playerControls.Player.Pause.performed += ctx => SetPauseInput();
         _playerControls.Player.LightAttack.performed += ctx => SetLightAttackInput(ctx.ReadValueAsButton());
         _playerControls.Player.HeavyAttack.performed += ctx => SetHeavyAttackInput(ctx.ReadValueAsButton());
-        _playerControls.Player.ResetLevel.performed += ctx => SetResetLevelInput();
-        _playerControls.Player.ToggleHealthSystems.performed += ctx => SetToggleHealthSystemsInput();
-        _playerControls.Player.ReturnToTitle.performed += ctx => SetResetGameInput();
-        _playerControls.Player.DisableEnemies.performed += ctx => SetDisableEnemiesInput();
     }
 
     // Set input values
@@ -203,12 +209,7 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Evade.performed += ctx => SetEvadeInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed -= ctx => SetBlockInput(ctx.ReadValueAsButton());
         _playerControls.Player.Parry.performed -= ctx => SetParryInput();
-        _playerControls.Player.Pause.performed -= ctx => SetPauseInput();
         _playerControls.Player.LightAttack.performed -= ctx => SetLightAttackInput(ctx.ReadValueAsButton());
         _playerControls.Player.HeavyAttack.performed -= ctx => SetHeavyAttackInput(ctx.ReadValueAsButton());
-        _playerControls.Player.ResetLevel.performed -= ctx => SetResetLevelInput();
-        _playerControls.Player.ToggleHealthSystems.performed -= ctx => SetToggleHealthSystemsInput();
-        _playerControls.Player.ReturnToTitle.performed -= ctx => SetResetGameInput();
-        _playerControls.Player.DisableEnemies.performed -= ctx => SetDisableEnemiesInput();
     }
 }

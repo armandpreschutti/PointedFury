@@ -2,7 +2,7 @@
     "name": "PauseControls",
     "maps": [
         {
-            "name": "Pause",
+            "name": "Player",
             "id": "da95379f-6a98-4668-ac1d-99f04556b838",
             "actions": [
                 {
@@ -27,6 +27,15 @@
                     "name": "Select",
                     "type": "Button",
                     "id": "c076a896-460f-4cf3-837a-50f5c7374043",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "f524c485-35b0-4622-bb93-c48410dac773",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -64,6 +73,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5cf3d204-7e16-40e2-99c7-44e151c21878",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

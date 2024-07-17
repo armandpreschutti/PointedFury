@@ -5,13 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class UIButtonHandler : MonoBehaviour
 {
-    public void EnterMainMenu()
-    {
-        SceneManager.LoadScene("CombatGym");
-    }
-    public void EnterGame()
+    public void EnterTutorial()
     {
         SceneManager.LoadScene("Tutorial");
+    }
+    public void EnterPractice()
+    {
+        SceneManager.LoadScene("Practice");
     }
     public void EnterSettingsMenu()
     {
