@@ -55,7 +55,7 @@ public class StateMachine : MonoBehaviour
     [Tooltip("The percentage of damage taken from blocking attack")]
     public float BlockDamageReduction;
     [Tooltip("A list of enemies detected via sphere casr")]
-    public List<GameObject> EnemiesNearby = new List<GameObject
+    public List<GameObject> EnemiesNearby = new List<GameObject>();
     [Tooltip("The time scale when parrying")]
     public float SlowMotionSpeed;
 
