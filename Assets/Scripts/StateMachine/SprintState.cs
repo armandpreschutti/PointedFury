@@ -62,7 +62,7 @@ public class SprintState : BaseState
             }
             else if (Ctx.IsBlockPressed)
             {
-                if (Ctx.EnemiesNearby.Count > 0)
+                if (Ctx.EnemiesNearby.Length> 0)
                 {
                     SwitchState(Factory.Deflect());
                 }

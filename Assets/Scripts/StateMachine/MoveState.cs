@@ -11,7 +11,7 @@ public class MoveState : BaseState
 
 
         Ctx.IsAttacking = false;
-        if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
+        if (!Ctx.IsAI && Ctx.EnemiesNearby.Length == 0)
         {
             Ctx.IsFighting = false;
             Ctx.OnFight?.Invoke(false);
@@ -27,7 +27,7 @@ public class MoveState : BaseState
         Ctx.DebugCurrentSubState = "Move State";
         CheckSwitchStates();
 
-        if (Ctx.IsFighting || Ctx.EnemiesNearby.Count > 0)
+        if (Ctx.IsFighting || Ctx.EnemiesNearby.Length > 0)
         {
             Ctx.TargetSpeed = Ctx.FightSpeed;
         }
@@ -132,7 +132,7 @@ public class MoveState : BaseState
 
     public void SetPlayerMovement()
     {
-        if (Ctx.IsFighting || Ctx.EnemiesNearby.Count > 0)
+        if (Ctx.IsFighting || Ctx.EnemiesNearby.Length > 0)
         {
             Ctx.SetCombatMovementAnimationValues();
             Ctx.CombatMovement();

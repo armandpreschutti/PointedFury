@@ -322,7 +322,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh98846
+  m_Name: pb_Mesh94206
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -854,6 +854,7 @@ MonoBehaviour:
   introCutScene: {fileID: 11400000, guid: b7ea7ecd6dceff54d92d043a6604a3d1, type: 2}
   tempSpawn: {fileID: 1206073215}
   spawnArea: {fileID: 1695848213}
+  spawnVFX: {fileID: 6214259536068311756, guid: 26672f3e1246fb443b38cf6cb0db8d5d, type: 3}
 --- !u!320 &1252125261
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -1653,6 +1654,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.0010844965
       objectReference: {fileID: 0}
+    - target: {fileID: 2351386741000375636, guid: f348d964bc6fb05438421495262fbfe9, type: 3}
+      propertyPath: m_VerticalDamping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2351386741000375636, guid: f348d964bc6fb05438421495262fbfe9, type: 3}
+      propertyPath: m_HorizontalDamping
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2839899645126372995, guid: f348d964bc6fb05438421495262fbfe9, type: 3}
       propertyPath: m_Name
       value: CameraSystem
@@ -1665,6 +1674,10 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 1257322728}
+    - target: {fileID: 5701824213981024251, guid: f348d964bc6fb05438421495262fbfe9, type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 45
+      objectReference: {fileID: 0}
     - target: {fileID: 5958915880850737335, guid: f348d964bc6fb05438421495262fbfe9, type: 3}
       propertyPath: m_Follow
       value: 
@@ -1703,11 +1716,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7902379137023420969, guid: f348d964bc6fb05438421495262fbfe9, type: 3}
       propertyPath: Damping.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7902379137023420969, guid: f348d964bc6fb05438421495262fbfe9, type: 3}
       propertyPath: Damping.y
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8844821372981784703, guid: f348d964bc6fb05438421495262fbfe9, type: 3}
       propertyPath: m_DefaultBlend.m_Time
@@ -1850,7 +1863,7 @@ GameObject:
   - component: {fileID: 8252046819675936965}
   - component: {fileID: 8252046819675936964}
   m_Layer: 0
-  m_Name: PracticeEnemyManager
+  m_Name: EnemyManager(Practice)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1899,6 +1912,7 @@ MonoBehaviour:
   attackerSelected: 0
   NewAttackerCheckInterval: 0.1
   EnemyDeathCheckInterval: 4
+  spawnVFX: {fileID: 6214259536068311756, guid: 26672f3e1246fb443b38cf6cb0db8d5d, type: 3}
 --- !u!1001 &8560317018377828715
 PrefabInstance:
   m_ObjectHideFlags: 0

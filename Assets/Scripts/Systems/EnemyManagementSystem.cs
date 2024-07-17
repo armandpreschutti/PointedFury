@@ -65,7 +65,9 @@ public class EnemyManagementSystem : MonoBehaviour
                         OnEnemyDetected?.Invoke(true, enemy.transform.Find("PlayerCameraTarget"));
                         enemy.GetComponent<AIBrain>().enabled = true;
                         enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
-                        enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
+                        //enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
+                        Array.Resize(ref enemy.GetComponent<StateMachine>().EnemiesNearby, enemy.GetComponent<StateMachine>().EnemiesNearby.Length + 1);
+                        enemy.GetComponent<StateMachine>().EnemiesNearby[enemy.GetComponent<StateMachine>().EnemiesNearby.Length - 1] = enemy;
                     }
                 }
 

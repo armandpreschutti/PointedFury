@@ -12,7 +12,7 @@ public class IdleState : BaseState
 
         Ctx.IsAttacking = false;
         //Ctx.OnIdle?.Invoke(true);
-        if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
+        if (!Ctx.IsAI && Ctx.EnemiesNearby.Length == 0)
         {
             Ctx.IsFighting = false;
             Ctx.OnFight?.Invoke(false);
@@ -34,7 +34,7 @@ public class IdleState : BaseState
     public override void ExitState()
     {
         //Debug.LogWarning("Player has exited IDLE state");
-        if (!Ctx.IsAI && Ctx.EnemiesNearby.Count == 0)
+        if (!Ctx.IsAI && Ctx.EnemiesNearby.Length == 0)
         {
             Ctx.IsFighting = false;
             Ctx.OnFight?.Invoke(false);
@@ -126,7 +126,7 @@ public class IdleState : BaseState
 
     public void SetPlayerMovement()
     {
-        if (Ctx.IsFighting || Ctx.EnemiesNearby.Count > 0)
+        if (Ctx.IsFighting || Ctx.EnemiesNearby.Length > 0)
         {
             Ctx.SetCombatMovementAnimationValues();
             Ctx.CombatMovement();

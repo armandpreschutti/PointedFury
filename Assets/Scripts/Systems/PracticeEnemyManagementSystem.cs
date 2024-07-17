@@ -29,7 +29,7 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
 
     private Coroutine attackerCoroutine;
     private Coroutine cleanerCoroutine;
-
+    public GameObject spawnVFX;
     private void Awake()
     {
         //enemyCount = managedEnemies.Length;
@@ -59,8 +59,6 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
         {
             if (managedEnemies[i] != null)
             {
-                // Optionally, you can destroy the enemy game objects if needed
-                Destroy(managedEnemies[i]);
                 managedEnemies[i] = null;
             }
         }
@@ -74,6 +72,14 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
         // Notify listeners that the zone is cleared
         OnZoneEnemiesCleared?.Invoke(false, 0);
         OnInitiateTutorialUI?.Invoke(false);
+
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Enemy");
+        // Use a for loop to destroy each object
+        for (int i = 0; i < objectsWithTag.Length; i++)
+        {
+            Instantiate(spawnVFX, objectsWithTag[i].transform.position, Quaternion.identity);
+            Destroy(objectsWithTag[i]);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -91,18 +97,8 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
                 OnEnemyDetected?.Invoke(true, other.transform.Find("PlayerCameraTarget"));
                 other.GetComponent<AIBrain>().enabled = true;
                 other.GetComponent<StateMachine>().CurrentTarget = player.gameObject;
-                other.GetComponent<StateMachine>().EnemiesNearby.Add(player.gameObject);
-             /*   foreach (GameObject enemy in managedEnemies)
-                {
-                    if (enemy != null)
-                    {
-                        OnEnemyDetected?.Invoke(true, enemy.transform.Find("PlayerCameraTarget"));
-                        enemy.GetComponent<AIBrain>().enabled = true;
-                        enemy.GetComponent<StateMachine>().CurrentTarget = player.gameObject;
-                        enemy.GetComponent<StateMachine>().EnemiesNearby.Add(player.gameObject);
-                    }
-                }*/
-                
+                Array.Resize(ref other.GetComponent<StateMachine>().EnemiesNearby, other.GetComponent<StateMachine>().EnemiesNearby.Length + 1);
+                other.GetComponent<StateMachine>().EnemiesNearby[other.GetComponent<StateMachine>().EnemiesNearby.Length - 1] = other.gameObject;
                 SetAttacker();
                 StartCoroutines();
             }
@@ -186,10 +182,8 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
             if (enemyCount == 0)
             {
                 OnZoneEnemiesCleared?.Invoke(false, 0);
-                OnInitiateTutorialUI?.Invoke(false);
                 zoneActive = false;
                 StopCoroutines();
-                this.enabled = false;
             }
         }
     }

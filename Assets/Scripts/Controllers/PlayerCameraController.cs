@@ -138,7 +138,7 @@ public class PlayerCameraController : MonoBehaviour
 
     public void SetLoneCameraState(bool value)
     {
-        if(_stateMachine.EnemiesNearby.Count < 2)
+        if(_stateMachine.EnemiesNearby.Length < 2)
         {
             _shortFightCamera.gameObject.SetActive(value);
         }
@@ -203,7 +203,7 @@ public class PlayerCameraController : MonoBehaviour
             {
                 float resetDuration = 0f;
                 resetDuration += Time.deltaTime;
-                if(_stateMachine.EnemiesNearby.Count > 1)
+                if(_stateMachine.EnemiesNearby.Length > 1)
                 {
                     _cinemachineTargetPitch = Mathf.Lerp(_cinemachineTargetPitch, FightPitchAngle, resetDuration * PitchResetSpeed);
                 }

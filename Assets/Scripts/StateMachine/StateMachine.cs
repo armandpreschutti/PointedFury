@@ -55,7 +55,8 @@ public class StateMachine : MonoBehaviour
     [Tooltip("The percentage of damage taken from blocking attack")]
     public float BlockDamageReduction;
     [Tooltip("A list of enemies detected via sphere casr")]
-    public List<GameObject> EnemiesNearby = new List<GameObject>();
+    /*    public List<GameObject> EnemiesNearby = new List<GameObject>();*/
+    public GameObject[] EnemiesNearby;
     [Tooltip("The time scale when parrying")]
     public float SlowMotionSpeed;
 
@@ -277,10 +278,12 @@ public class StateMachine : MonoBehaviour
     private void OnEnable()
     {
         WinConditionHandler.OnLevelPassed += DisableStateMachine;
+      //  PracticeConfigController.OnClearEnemies += ClearNearbyEnemies;
     }
     private void OnDisable()
     {
         WinConditionHandler.OnLevelPassed -= DisableStateMachine;
+        //PracticeConfigController.OnClearEnemies -= ClearNearbyEnemies;
     }
 
     private void Start()
@@ -300,7 +303,10 @@ public class StateMachine : MonoBehaviour
         SetMovementAnimationSpeed();
         SimulateGravity();
     }
-
+   /* public void ClearNearbyEnemies()
+    {
+        EnemiesNearby.Clear();
+    }*/
     public void DisableStateMachine()
     {
         this.enabled = false;
@@ -811,14 +817,18 @@ public class StateMachine : MonoBehaviour
     }
     public void GiveHit(string attackType)
     {
-        if(attackType == "Light" && !_currentTarget.GetComponent<StateMachine>().IsParrying && !_currentTarget.GetComponent<StateMachine>().IsEvading)
+        if(_currentTarget!= null)
         {
-            OnLightAttackGiven?.Invoke();
+            if (attackType == "Light" && !_currentTarget.GetComponent<StateMachine>().IsParrying && !_currentTarget.GetComponent<StateMachine>().IsEvading)
+            {
+                OnLightAttackGiven?.Invoke();
+            }
+            else if (attackType == "Heavy" && !_currentTarget.GetComponent<StateMachine>().IsParrying && !_currentTarget.GetComponent<StateMachine>().IsEvading)
+            {
+                OnHeavyAttackGiven?.Invoke();
+            }
         }
-        else if(attackType == "Heavy" && !_currentTarget.GetComponent<StateMachine>().IsParrying && !_currentTarget.GetComponent<StateMachine>().IsEvading)
-        {
-            OnHeavyAttackGiven?.Invoke();
-        }
+
     }
     public void TakeFinisher(Vector3 attackerPosition, Transform finisherPosition)
     {
@@ -926,7 +936,7 @@ public class StateMachine : MonoBehaviour
 
     public void CheckIsFighting()
     {
-        if (EnemiesNearby.Count > 0)
+        if (EnemiesNearby.Length > 0)
         {
             //_isFighting = true;
             _animator.SetBool(AnimIDFight, true);

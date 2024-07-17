@@ -1,12 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyDetectionHandler : MonoBehaviour
 {
-
     [SerializeField] StateMachine _stateMachine;
-    //[SerializeField] List<GameObject> _enemiesNearby = new List<GameObject>();
+    //[SerializeField] List<GameObject> _enemiesNearby = new List<GameObject>(); // No longer using a list
     [SerializeField] string _enemyTag;
 
     [Tooltip("The radius of the enemy detection zone when not aiming")]
@@ -21,50 +21,80 @@ public class EnemyDetectionHandler : MonoBehaviour
     {
         _stateMachine = GetComponentInParent<StateMachine>();
     }
+    private void OnEnable()
+    {
+        PracticeConfigController.OnClearEnemies += ClearAllEnemies;
+    }
 
+    private void OnDisable()
+    {
+        PracticeConfigController.OnClearEnemies -= ClearAllEnemies;
+    }
     private void Update()
     {
-        if(!_stateMachine.IsParrying)
+        if (!_stateMachine.IsParrying)
         {
             ProximityDetection();
             StickDetection();
-        }       
-        if(_stateMachine.EnemiesNearby.Count > 0)
-        {
-            // _stateMachine.IsFighting = true;
+        }
 
-            for (int i = 0; i < _stateMachine.EnemiesNearby.Count; i++)
+        // Remove dead enemies from the array
+        for (int i = 0; i < _stateMachine.EnemiesNearby.Length; i++)
+        {
+            GameObject enemy = _stateMachine.EnemiesNearby[i];
+            if (enemy != null && enemy.GetComponent<StateMachine>().IsDead)
             {
-                GameObject enemy = _stateMachine.EnemiesNearby[i];
-                if (enemy.GetComponent<StateMachine>().IsDead)
-                {
-                    _stateMachine.EnemiesNearby.Remove(enemy);
-                }
+                RemoveFromArray(i);
+                i--; // Adjust index because array length decreases after removal
             }
-        }        
+        }
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
-        // Add the object to the list of objects in the trigger area
         if (other.CompareTag(_enemyTag))
         {
-            _stateMachine.EnemiesNearby.Add(other.gameObject);
+            AddToArray(other.gameObject);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // Check if the object exiting the trigger area is in the list
-        if (_stateMachine.EnemiesNearby.Contains(other.gameObject))
+        if (ArrayContains(other.gameObject))
         {
-            // Remove the object from the list of objects in the trigger area
-            _stateMachine.EnemiesNearby.Remove(other.gameObject);
-            if(_stateMachine.EnemiesNearby.Count == 0f)
+            RemoveFromArray(ArrayIndexOf(other.gameObject));
+            if (_stateMachine.EnemiesNearby.Length == 0)
             {
                 _stateMachine.IsFighting = false;
             }
         }
+    }
+
+    private void AddToArray(GameObject enemy)
+    {
+        // Resize the array and add the new enemy
+        Array.Resize(ref _stateMachine.EnemiesNearby, _stateMachine.EnemiesNearby.Length + 1);
+        _stateMachine.EnemiesNearby[_stateMachine.EnemiesNearby.Length - 1] = enemy;
+    }
+
+    private void RemoveFromArray(int index)
+    {
+        // Shift elements to remove the enemy at the specified index
+        for (int i = index; i < _stateMachine.EnemiesNearby.Length - 1; i++)
+        {
+            _stateMachine.EnemiesNearby[i] = _stateMachine.EnemiesNearby[i + 1];
+        }
+        Array.Resize(ref _stateMachine.EnemiesNearby, _stateMachine.EnemiesNearby.Length - 1);
+    }
+
+    private bool ArrayContains(GameObject enemy)
+    {
+        return Array.IndexOf(_stateMachine.EnemiesNearby, enemy) != -1;
+    }
+
+    private int ArrayIndexOf(GameObject enemy)
+    {
+        return Array.IndexOf(_stateMachine.EnemiesNearby, enemy);
     }
 
     public void ProximityDetection()
@@ -74,33 +104,29 @@ public class EnemyDetectionHandler : MonoBehaviour
             float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
             Transform[] closestTargets = new Transform[3] { null, null, null };
 
-            // Iterate through all hits to find the closest colliders
-            for (int i1 = 0; i1 < _stateMachine.EnemiesNearby.Count; i1++)
+            for (int i = 0; i < _stateMachine.EnemiesNearby.Length; i++)
             {
-                GameObject hit = _stateMachine.EnemiesNearby[i1];
-                float distance = Vector3.Distance(transform.position, hit.transform.position);
-
-                // Update closest targets array if a closer target is found
-                for (int i = 0; i < distances.Length; i++)
+                GameObject hit = _stateMachine.EnemiesNearby[i];
+                if (hit != null)
                 {
-                    if (distance < distances[i])
+                    float distance = Vector3.Distance(transform.position, hit.transform.position);
+                    for (int j = 0; j < distances.Length; j++)
                     {
-                        // Shift elements to make space for the new closest target
-                        for (int j = distances.Length - 1; j > i; j--)
+                        if (distance < distances[j])
                         {
-                            distances[j] = distances[j - 1];
-                            closestTargets[j] = closestTargets[j - 1];
+                            for (int k = distances.Length - 1; k > j; k--)
+                            {
+                                distances[k] = distances[k - 1];
+                                closestTargets[k] = closestTargets[k - 1];
+                            }
+                            distances[j] = distance;
+                            closestTargets[j] = hit.transform;
+                            break;
                         }
-
-                        // Assign the new closest target
-                        distances[i] = distance;
-                        closestTargets[i] = hit.transform;
-                        break; // Exit the loop after updating the closest target
                     }
                 }
             }
 
-            // Assign closest, second closest, and third closest targets
             closestTarget = closestTargets[0];
             _stateMachine.ClosestTarget = closestTargets[0];
             secondClosestTarget = closestTargets[1];
@@ -108,7 +134,6 @@ public class EnemyDetectionHandler : MonoBehaviour
             thirdClosestTarget = closestTargets[2];
             _stateMachine.ThirdClosestTarget = closestTargets[2];
         }
-        
     }
 
     public void StickDetection()
@@ -117,12 +142,12 @@ public class EnemyDetectionHandler : MonoBehaviour
         {
             if (closestTarget != null)
             {
-                if (_stateMachine.MoveInput != Vector2.zero && _stateMachine.EnemiesNearby.Count > 1)
+                if (_stateMachine.MoveInput != Vector2.zero && _stateMachine.EnemiesNearby.Length > 1)
                 {
                     RaycastHit info;
                     if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius * 2, EnemyLayers))
                     {
-                        if (_stateMachine.EnemiesNearby.Contains(info.transform.gameObject))
+                        if (ArrayContains(info.transform.gameObject))
                         {
                             _stateMachine.CurrentTarget = info.transform.gameObject;
                         }
@@ -134,7 +159,6 @@ public class EnemyDetectionHandler : MonoBehaviour
                     {
                         _stateMachine.CurrentTarget = closestTarget.gameObject;
                     }
-
                 }
             }
             else
@@ -142,6 +166,11 @@ public class EnemyDetectionHandler : MonoBehaviour
                 _stateMachine.CurrentTarget = null;
             }
         }
-        
+    }
+
+    public void ClearAllEnemies()
+    {
+        _stateMachine.EnemiesNearby = new GameObject[0];
+        _stateMachine.IsFighting = false;
     }
 }

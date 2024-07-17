@@ -17,6 +17,7 @@ public class PracticeManager : MonoBehaviour
     public static Action OnBeginLevel;
     public Transform tempSpawn;
     public Collider spawnArea;
+    public GameObject spawnVFX;
 
     private void OnEnable()
     {
@@ -61,7 +62,9 @@ public class PracticeManager : MonoBehaviour
     {
         Debug.Log("Practice Manager wants to spawn enemy");
         int randomEnemy = UnityEngine.Random.Range(0, practiceEnemies.WeakEnemies.Count);
-        Instantiate(practiceEnemies.WeakEnemies[randomEnemy], GetRandomPosition(), Quaternion.identity);
+        Vector3 randomPosition = GetRandomPosition();
+        Instantiate(practiceEnemies.WeakEnemies[randomEnemy], randomPosition, Quaternion.identity);
+        Instantiate(spawnVFX, randomPosition, Quaternion.identity);
     }
 
     
