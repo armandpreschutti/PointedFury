@@ -33,12 +33,11 @@ public class ParryBroadcastHandler : MonoBehaviour
 
     private void Update()
     {
-        for (int i = 0; i < _hitTargetCount; i++)
+        for (int i = _hitTargetCount - 1; i >= 0; i--)
         {
-            if (_hitTargets[i].GetComponent<StateMachine>().IsDead)
+            if (_hitTargets[i] == null || _hitTargets[i].GetComponent<StateMachine>().IsDead)
             {
                 RemoveAt(i);
-                i--; // Adjust index after removal
             }
         }
     }
@@ -77,7 +76,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         for (int i = 0; i < _hitTargetCount; i++)
         {
             GameObject hit = _hitTargets[i];
-            if (hit.GetComponent<StateMachine>() != null && hit.GetComponent<StateMachine>().IsParryable && !_stateMachine.IsParrying)
+            if (hit != null && hit.GetComponent<StateMachine>() != null && hit.GetComponent<StateMachine>().IsParryable && !_stateMachine.IsParrying)
             {
                 _stateMachine.BeginParry(hit.transform.position);
             }
@@ -89,7 +88,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         for (int i = 0; i < _hitTargetCount; i++)
         {
             GameObject hit = _hitTargets[i];
-            if (hit.GetComponent<StateMachine>() != null && hit.GetComponent<StateMachine>().IsEvadable)
+            if (hit != null && hit.GetComponent<StateMachine>() != null && hit.GetComponent<StateMachine>().IsEvadable)
             {
                 _stateMachine.BeginEvade();
             }
@@ -101,7 +100,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         for (int i = 0; i < _hitTargetCount; i++)
         {
             GameObject hit = _hitTargets[i];
-            if (hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
+            if (hit != null && hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
             {
                 hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position, _stateMachine.ParryDamage, _stateMachine.ParryID);
             }
@@ -113,7 +112,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         for (int i = 0; i < _hitTargetCount; i++)
         {
             GameObject hit = _hitTargets[i];
-            if (hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
+            if (hit != null && hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
             {
                 hit.GetComponent<StateMachine>().TakeDeflect(_stateMachine.transform.position);
             }

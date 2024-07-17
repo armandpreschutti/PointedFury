@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SFX", menuName = "Entities/SFX")]
+[CreateAssetMenu(fileName = "SFX", menuName = "PointedFury/Entities/SFX")]
 public class EntitySFXSO : ScriptableObject
 {
     public List<AudioClip> _lightAttackWhooshSFX;

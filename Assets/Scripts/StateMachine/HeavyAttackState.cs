@@ -37,7 +37,11 @@ public class HeavyAttackState : BaseState
         //Debug.Log("LIGHT ATTACK state is currently active");
         Ctx.DebugCurrentSubState = $"Heavy Attack {Ctx.HeavyAttackID} State";
         CheckSwitchStates();
-        Ctx.SetAttackDirection();
+        if(Ctx.IsCharging)
+        {
+            Ctx.SetAttackDirection();
+        }
+
         if (!Ctx.IsSprintAttack)
         {
             Ctx.AttackMovement();

@@ -34,7 +34,7 @@ public class HitBroadcastHandler : MonoBehaviour
         for (int i = _enemyTargets.Count - 1; i >= 0; i--)
         {
             GameObject enemy = _enemyTargets[i];
-            if (enemy.GetComponent<StateMachine>().IsDead || enemy.GetComponent<StateMachine>() == null)
+            if (enemy == null || enemy.GetComponent<StateMachine>() == null || enemy.GetComponent<StateMachine>().IsDead)
             {
                 _enemyTargets.RemoveAt(i);
             }
@@ -52,13 +52,11 @@ public class HitBroadcastHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Add the object to the list of enemies in the trigger area
         if (other.CompareTag(_enemyTag))
         {
             _enemyTargets.Add(other.gameObject);
         }
 
-        // Add the object to the list of objects in the trigger area
         if (other.CompareTag(_breakableTag))
         {
             _breakableObjects.Add(other.gameObject);
@@ -67,16 +65,13 @@ public class HitBroadcastHandler : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // Check if the object exiting the trigger area is in the list
         if (_enemyTargets.Contains(other.gameObject))
         {
-            // Remove the object from the list of objects in the trigger area
             _enemyTargets.Remove(other.gameObject);
         }
-        // Check if the object exiting the trigger area is in the list
+
         if (_breakableObjects.Contains(other.gameObject))
         {
-            // Remove the object from the list of objects in the trigger area
             _breakableObjects.Remove(other.gameObject);
         }
     }
@@ -86,28 +81,18 @@ public class HitBroadcastHandler : MonoBehaviour
         for (int i = 0; i < _enemyTargets.Count; i++)
         {
             GameObject hit = _enemyTargets[i];
-
-            hit.GetComponent<StateMachine>().TakeHit(_stateMachine.AttackType, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackID : _stateMachine.HeavyAttackID, _stateMachine.transform.position, _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackDamage : _stateMachine.HeavyAttackDamage);
-            _stateMachine.GiveHit(_stateMachine.AttackType);
-        }
-    }
-
-
-    /*private void LandFinisher()
-    {
-        for (int i = 0; i < _enemyTargets.Count; i++)
-        {
-            GameObject hit = _enemyTargets[i];
-            if (hit.GetComponent<StateMachine>() != null)
+            if (hit != null && hit.GetComponent<StateMachine>() != null)
             {
-                if (hit.GetComponent<StateMachine>().IsNearDeath)
-                {
-                    hit.GetComponent<StateMachine>().TakeFinisher(_stateMachine.transform.position, _stateMachine.FinishingPosition);
-                    _stateMachine.GiveFinisher();
-                }
+                hit.GetComponent<StateMachine>().TakeHit(
+                    _stateMachine.AttackType,
+                    _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackID : _stateMachine.HeavyAttackID,
+                    _stateMachine.transform.position,
+                    _stateMachine.AttackType == "Light" ? _stateMachine.LightAttackDamage : _stateMachine.HeavyAttackDamage
+                );
+                _stateMachine.GiveHit(_stateMachine.AttackType);
             }
         }
-    }*/
+    }
 
     private void BreakObject()
     {
@@ -116,23 +101,30 @@ public class HitBroadcastHandler : MonoBehaviour
             for (int i = 0; i < _breakableObjects.Count; i++)
             {
                 GameObject obj = _breakableObjects[i];
-                obj.GetComponent<Fracture>().CauseFracture();
-
-                GameObject fragmentParent = GameObject.Find($"{obj.name}Fragments");
-                Rigidbody[] fragments = fragmentParent.GetComponentsInChildren<Rigidbody>();
-                for (int j = 0; j < fragments.Length; j++)
+                if (obj != null && obj.GetComponent<Fracture>() != null)
                 {
-                    Rigidbody fragment = fragments[j];
-                    fragment.GetComponent<Rigidbody>().AddForce((fragment.transform.position - transform.parent.position).normalized * ObjectBreakForce, ForceMode.Impulse);
-                }
+                    obj.GetComponent<Fracture>().CauseFracture();
 
-                Destroy(obj.gameObject);
+                    GameObject fragmentParent = GameObject.Find($"{obj.name}Fragments");
+                    if (fragmentParent != null)
+                    {
+                        Rigidbody[] fragments = fragmentParent.GetComponentsInChildren<Rigidbody>();
+                        for (int j = 0; j < fragments.Length; j++)
+                        {
+                            Rigidbody fragment = fragments[j];
+                            if (fragment != null)
+                            {
+                                fragment.AddForce(
+                                    (fragment.transform.position - transform.parent.position).normalized * ObjectBreakForce,
+                                    ForceMode.Impulse
+                                );
+                            }
+                        }
+                    }
+
+                    Destroy(obj.gameObject);
+                }
             }
         }
-        else
-        {
-            return;
-        }
-       
     }
 }

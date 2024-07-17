@@ -55,7 +55,7 @@ public class StateMachine : MonoBehaviour
     [Tooltip("The percentage of damage taken from blocking attack")]
     public float BlockDamageReduction;
     [Tooltip("A list of enemies detected via sphere casr")]
-    public List<GameObject> EnemiesNearby = new List<GameObject>();
+    public List<GameObject> EnemiesNearby = new List<GameObject
     [Tooltip("The time scale when parrying")]
     public float SlowMotionSpeed;
 
@@ -936,18 +936,5 @@ public class StateMachine : MonoBehaviour
             //_isFighting = false;
             _animator.SetBool(AnimIDFight, false);
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-  /*      Gizmos.color = Color.black;
-       // Gizmos.DrawSphere(transform.position + InputDirection(), .2f);
-        Gizmos.DrawSphere(new Vector3(transform.position.x, GroundedOffset, transform.position.z), GroundedRadius);
-        Gizmos.DrawRay(transform.position + Vector3.up, InputDirection() * 1f);
-        if (_currentTarget != null)
-        {
-            Gizmos.DrawSphere(_currentTarget.transform.position, 1f);
-        }
-        Gizmos.DrawWireSphere(transform.position, 5f);*/
     }
 }

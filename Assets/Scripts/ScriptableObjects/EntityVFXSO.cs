@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "VFX", menuName = "Entities/VFX")]
+[CreateAssetMenu(fileName = "VFX", menuName = "PointedFury/Entities/VFX")]
 public class EntityVFXSO : ScriptableObject
 {
     public float LightAttackStartLifeTime;

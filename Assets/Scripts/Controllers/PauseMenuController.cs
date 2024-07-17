@@ -39,10 +39,7 @@ public class PauseMenuController : MonoBehaviour
         _pauseMenu.SetActive(!_pauseMenu.activeSelf);
         OnGamePaused?.Invoke(_pauseMenu.activeSelf);
         isPaused = _pauseMenu.activeSelf;
-        if (isPaused)
-        {
-            eventSystem.SetSelectedGameObject(firstSelected);
-        }
+        eventSystem.SetSelectedGameObject(firstSelected);
     }
 
     public void SetPauseNavigationInput()

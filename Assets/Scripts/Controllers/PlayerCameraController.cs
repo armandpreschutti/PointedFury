@@ -63,6 +63,9 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEntered += SetCameraState;
         EnemyManagementSystem.OnLastEnemy += SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared += SetCameraState;
+        PracticeEnemyManagementSystem.OnZoneEntered += SetCameraState;
+        PracticeEnemyManagementSystem.OnLastEnemy += SetCameraState;
+        PracticeEnemyManagementSystem.OnZoneEnemiesCleared += SetCameraState;
         //CutSceneTriggerHandler.onStartCutscene += ResetCameraPosition;
         _stateMachine.OnFight += SetLoneCameraState;
         _stateMachine.OnSprint += SetSprintCameraState;
@@ -74,8 +77,11 @@ public class PlayerCameraController : MonoBehaviour
         EnemyManagementSystem.OnZoneEntered -= SetCameraState;
         EnemyManagementSystem.OnLastEnemy -= SetCameraState;
         EnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
+        PracticeEnemyManagementSystem.OnZoneEntered -= SetCameraState;
+        PracticeEnemyManagementSystem.OnLastEnemy -= SetCameraState;
+        PracticeEnemyManagementSystem.OnZoneEnemiesCleared -= SetCameraState;
         //CutSceneTriggerHandler.onStartCutscene -= ResetCameraPosition;
-         _stateMachine.OnFight -= SetLoneCameraState;
+        _stateMachine.OnFight -= SetLoneCameraState;
         _stateMachine.OnSprint -= SetSprintCameraState;
         // _stateMachine.OnLightAttack -= SetAttackCameraState;
         // _stateMachine.OnHeavyAttack -= SetAttackCameraState;
@@ -107,6 +113,7 @@ public class PlayerCameraController : MonoBehaviour
 
     public void SetCameraState(bool value, int enemies)
     {
+
         //_shortFightCamera.gameObject.SetActive(value);
         if (value)
         {

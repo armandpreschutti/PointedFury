@@ -1,0 +1,94 @@
+{
+    "name": "PracticeControls",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "68ae4ed7-0ac1-48ff-9c1f-4585f2e55b09",
+            "actions": [
+                {
+                    "name": "SpawnEnemy",
+                    "type": "Button",
+                    "id": "4b86241e-dee3-4381-90e3-5c56b4b13f6f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EnableHealthSystems",
+                    "type": "Button",
+                    "id": "f4174a9f-b9bf-4041-89e1-33fe4102d958",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CycleEnemyTypes",
+                    "type": "Button",
+                    "id": "19fc13d4-1676-4b5f-9712-b57fe6639809",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ClearEnemies",
+                    "type": "Button",
+                    "id": "bfb62951-35ac-46a8-b4a1-cdf6d596ad68",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "137b4d46-fe3f-4ab6-aef7-189e263975ea",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClearEnemies",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79e7523a-3582-49ba-8b39-56b267e29be0",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnableHealthSystems",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "15101e7c-9fed-450c-8afa-9ccd28bda491",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CycleEnemyTypes",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5affa728-12ec-4111-9f86-11f987fc0568",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnEnemy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

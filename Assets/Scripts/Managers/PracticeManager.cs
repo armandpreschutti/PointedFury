@@ -1,5 +1,6 @@
 using Cinemachine;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -7,20 +8,27 @@ using UnityEngine.Timeline;
 
 public class PracticeManager : MonoBehaviour
 {
+    public PracticeEntitiesSO practiceEnemies;
     public GameObject player;
     public CinemachineBrain cinemachineBrain;
     public PlayableDirector playableDirector;
     public TimelineAsset introCutScene;
     public static Action OnEnableControl;
     public static Action OnBeginLevel;
+    public Transform tempSpawn;
+    public Collider spawnArea;
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += LevelStarted;
+        PracticeConfigController.OnSpawnEnemy += SpawnEnemy;
+
     }
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= LevelStarted;
+        PracticeConfigController.OnSpawnEnemy -= SpawnEnemy;
+
     }
 
     public void LevelStarted(Scene currentScene, LoadSceneMode mode)
@@ -39,7 +47,6 @@ public class PracticeManager : MonoBehaviour
 
     public void EnableControl()
     {
-        Debug.Log("Function called on practice manager");
         OnEnableControl?.Invoke();
         player.GetComponent<UserInput>().enabled = true;
         player.GetComponent<CharacterController>().enabled = true;
@@ -50,8 +57,31 @@ public class PracticeManager : MonoBehaviour
         OnBeginLevel?.Invoke();
     }
 
+    public void SpawnEnemy()
+    {
+        Debug.Log("Practice Manager wants to spawn enemy");
+        int randomEnemy = UnityEngine.Random.Range(0, practiceEnemies.WeakEnemies.Count);
+        Instantiate(practiceEnemies.WeakEnemies[randomEnemy], GetRandomPosition(), Quaternion.identity);
+    }
+
+    
+
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene("TitleMenu");
+    }
+
+    public Vector3 GetRandomPosition()
+    {
+        // Get the bounds of the collider
+        Bounds bounds = spawnArea.bounds;
+
+        // Generate random positions within the bounds
+        float randomX = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
+        float randomY = 0f;
+        float randomZ = UnityEngine.Random.Range(bounds.min.z, bounds.max.z);
+
+        // Return the random position
+        return new Vector3(randomX, randomY, randomZ);
     }
 }
