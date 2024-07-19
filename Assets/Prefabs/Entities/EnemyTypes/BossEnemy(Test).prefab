@@ -3859,14 +3859,14 @@ MonoBehaviour:
   AttackDistance: 1
   WatchDistance: 3
   DistanceBuffer: 1
-  ComboSkill: 5
+  ComboSkill: 6
   CanComboChain: 1
-  HitTolerance: 4
+  HitTolerance: 3
   BlockReleaseTime: 2
-  ParrySkill: 4
-  HeavyAttackSkill: 7
+  ParrySkill: 7
+  HeavyAttackSkill: 6
   EvadeSkill: 7
-  InitialAttackDelay: 0.25
+  InitialAttackDelay: 1
   AttackInterval: 1
   timeSinceAttack: 0
   isActivated: 0
@@ -3885,7 +3885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateMachine: {fileID: 0}
-  MaxHealth: 20
+  MaxHealth: 200
   MinHealth: 0
   _currentHealh: 0
   _nearDeathAmount: 0

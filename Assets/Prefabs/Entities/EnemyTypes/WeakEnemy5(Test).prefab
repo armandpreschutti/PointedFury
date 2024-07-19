@@ -3068,7 +3068,7 @@ MonoBehaviour:
   ParrySkill: 0
   HeavyAttackSkill: 10
   EvadeSkill: 0
-  InitialAttackDelay: 2
+  InitialAttackDelay: 1
   AttackInterval: 3
   timeSinceAttack: 0
   isActivated: 0

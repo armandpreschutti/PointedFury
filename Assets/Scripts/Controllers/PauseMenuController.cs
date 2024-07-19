@@ -11,6 +11,8 @@ public class PauseMenuController : MonoBehaviour
     public bool isPaused;
     [SerializeField] GameObject _pauseMenu;
     public GameObject firstSelected;
+    public GameObject ControllerMap;
+    public GameObject Buttons;
     public EventSystem eventSystem;
 
     public static Action<bool> OnGamePaused;
@@ -40,6 +42,11 @@ public class PauseMenuController : MonoBehaviour
         OnGamePaused?.Invoke(_pauseMenu.activeSelf);
         isPaused = _pauseMenu.activeSelf;
         eventSystem.SetSelectedGameObject(firstSelected);
+        if(_pauseMenu.activeSelf == false)
+        {
+            Buttons.SetActive(true);
+            ControllerMap.SetActive(false);
+        }
     }
 
     public void SetPauseNavigationInput()

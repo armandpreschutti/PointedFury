@@ -99,7 +99,7 @@ public class EnemyDetectionHandler : MonoBehaviour
 
     public void ProximityDetection()
     {
-        if (!_stateMachine.IsAttacking && !_stateMachine.IsDeflecting)
+        if (/*!_stateMachine.IsAttacking &&*/ !_stateMachine.IsDeflecting)
         {
             float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
             Transform[] closestTargets = new Transform[3] { null, null, null };
@@ -138,7 +138,7 @@ public class EnemyDetectionHandler : MonoBehaviour
 
     public void StickDetection()
     {
-        if (!_stateMachine.IsAttacking && !_stateMachine.IsDeflecting)
+        if (/*!_stateMachine.IsAttacking &&*/ !_stateMachine.IsDeflecting)
         {
             if (closestTarget != null)
             {

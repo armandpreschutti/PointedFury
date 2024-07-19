@@ -6795,9 +6795,9 @@ MonoBehaviour:
   AttackDistance: 1
   WatchDistance: 3
   DistanceBuffer: 1
-  ComboSkill: 1
+  ComboSkill: 5
   CanComboChain: 0
-  HitTolerance: 10
+  HitTolerance: 3
   BlockReleaseTime: 1
   ParrySkill: 3
   HeavyAttackSkill: 10
@@ -6821,7 +6821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateMachine: {fileID: 0}
-  MaxHealth: 30
+  MaxHealth: 100
   MinHealth: 0
   _currentHealh: 0
   _nearDeathAmount: 0
@@ -6832,7 +6832,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8175677336993220404}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0989b445d18f8f34b922ebf90de05fe6, type: 3}
   m_Name: 
