@@ -15,7 +15,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EnableHealthSystems",
+                    "name": "ToggleHealthSystems",
                     "type": "Button",
                     "id": "f4174a9f-b9bf-4041-89e1-33fe4102d958",
                     "expectedControlType": "Button",
@@ -40,13 +40,22 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "TogglePracticeControls",
+                    "type": "PassThrough",
+                    "id": "9298f464-4563-4955-bff2-898629ec8691",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "137b4d46-fe3f-4ab6-aef7-189e263975ea",
-                    "path": "<Gamepad>/dpad/left",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -57,18 +66,18 @@
                 {
                     "name": "",
                     "id": "79e7523a-3582-49ba-8b39-56b267e29be0",
-                    "path": "<Gamepad>/dpad/right",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "EnableHealthSystems",
+                    "action": "ToggleHealthSystems",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "15101e7c-9fed-450c-8afa-9ccd28bda491",
-                    "path": "<Gamepad>/dpad/down",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -84,6 +93,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SpawnEnemy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "395f90bf-7419-4e03-94e4-94e142acd1f0",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TogglePracticeControls",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

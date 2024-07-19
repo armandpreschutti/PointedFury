@@ -37,7 +37,7 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""EnableHealthSystems"",
+                    ""name"": ""ToggleHealthSystems"",
                     ""type"": ""Button"",
                     ""id"": ""f4174a9f-b9bf-4041-89e1-33fe4102d958"",
                     ""expectedControlType"": ""Button"",
@@ -62,13 +62,22 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TogglePracticeControls"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""9298f464-4563-4955-bff2-898629ec8691"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""137b4d46-fe3f-4ab6-aef7-189e263975ea"",
-                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -79,18 +88,18 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""79e7523a-3582-49ba-8b39-56b267e29be0"",
-                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""EnableHealthSystems"",
+                    ""action"": ""ToggleHealthSystems"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""15101e7c-9fed-450c-8afa-9ccd28bda491"",
-                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -108,6 +117,17 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
                     ""action"": ""SpawnEnemy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""395f90bf-7419-4e03-94e4-94e142acd1f0"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TogglePracticeControls"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -117,9 +137,10 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_SpawnEnemy = m_Player.FindAction("SpawnEnemy", throwIfNotFound: true);
-        m_Player_EnableHealthSystems = m_Player.FindAction("EnableHealthSystems", throwIfNotFound: true);
+        m_Player_ToggleHealthSystems = m_Player.FindAction("ToggleHealthSystems", throwIfNotFound: true);
         m_Player_CycleEnemyTypes = m_Player.FindAction("CycleEnemyTypes", throwIfNotFound: true);
         m_Player_ClearEnemies = m_Player.FindAction("ClearEnemies", throwIfNotFound: true);
+        m_Player_TogglePracticeControls = m_Player.FindAction("TogglePracticeControls", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -182,17 +203,19 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_SpawnEnemy;
-    private readonly InputAction m_Player_EnableHealthSystems;
+    private readonly InputAction m_Player_ToggleHealthSystems;
     private readonly InputAction m_Player_CycleEnemyTypes;
     private readonly InputAction m_Player_ClearEnemies;
+    private readonly InputAction m_Player_TogglePracticeControls;
     public struct PlayerActions
     {
         private @PracticeControls m_Wrapper;
         public PlayerActions(@PracticeControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @SpawnEnemy => m_Wrapper.m_Player_SpawnEnemy;
-        public InputAction @EnableHealthSystems => m_Wrapper.m_Player_EnableHealthSystems;
+        public InputAction @ToggleHealthSystems => m_Wrapper.m_Player_ToggleHealthSystems;
         public InputAction @CycleEnemyTypes => m_Wrapper.m_Player_CycleEnemyTypes;
         public InputAction @ClearEnemies => m_Wrapper.m_Player_ClearEnemies;
+        public InputAction @TogglePracticeControls => m_Wrapper.m_Player_TogglePracticeControls;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -205,15 +228,18 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
             @SpawnEnemy.started += instance.OnSpawnEnemy;
             @SpawnEnemy.performed += instance.OnSpawnEnemy;
             @SpawnEnemy.canceled += instance.OnSpawnEnemy;
-            @EnableHealthSystems.started += instance.OnEnableHealthSystems;
-            @EnableHealthSystems.performed += instance.OnEnableHealthSystems;
-            @EnableHealthSystems.canceled += instance.OnEnableHealthSystems;
+            @ToggleHealthSystems.started += instance.OnToggleHealthSystems;
+            @ToggleHealthSystems.performed += instance.OnToggleHealthSystems;
+            @ToggleHealthSystems.canceled += instance.OnToggleHealthSystems;
             @CycleEnemyTypes.started += instance.OnCycleEnemyTypes;
             @CycleEnemyTypes.performed += instance.OnCycleEnemyTypes;
             @CycleEnemyTypes.canceled += instance.OnCycleEnemyTypes;
             @ClearEnemies.started += instance.OnClearEnemies;
             @ClearEnemies.performed += instance.OnClearEnemies;
             @ClearEnemies.canceled += instance.OnClearEnemies;
+            @TogglePracticeControls.started += instance.OnTogglePracticeControls;
+            @TogglePracticeControls.performed += instance.OnTogglePracticeControls;
+            @TogglePracticeControls.canceled += instance.OnTogglePracticeControls;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -221,15 +247,18 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
             @SpawnEnemy.started -= instance.OnSpawnEnemy;
             @SpawnEnemy.performed -= instance.OnSpawnEnemy;
             @SpawnEnemy.canceled -= instance.OnSpawnEnemy;
-            @EnableHealthSystems.started -= instance.OnEnableHealthSystems;
-            @EnableHealthSystems.performed -= instance.OnEnableHealthSystems;
-            @EnableHealthSystems.canceled -= instance.OnEnableHealthSystems;
+            @ToggleHealthSystems.started -= instance.OnToggleHealthSystems;
+            @ToggleHealthSystems.performed -= instance.OnToggleHealthSystems;
+            @ToggleHealthSystems.canceled -= instance.OnToggleHealthSystems;
             @CycleEnemyTypes.started -= instance.OnCycleEnemyTypes;
             @CycleEnemyTypes.performed -= instance.OnCycleEnemyTypes;
             @CycleEnemyTypes.canceled -= instance.OnCycleEnemyTypes;
             @ClearEnemies.started -= instance.OnClearEnemies;
             @ClearEnemies.performed -= instance.OnClearEnemies;
             @ClearEnemies.canceled -= instance.OnClearEnemies;
+            @TogglePracticeControls.started -= instance.OnTogglePracticeControls;
+            @TogglePracticeControls.performed -= instance.OnTogglePracticeControls;
+            @TogglePracticeControls.canceled -= instance.OnTogglePracticeControls;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -250,8 +279,9 @@ public partial class @PracticeControls: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnSpawnEnemy(InputAction.CallbackContext context);
-        void OnEnableHealthSystems(InputAction.CallbackContext context);
+        void OnToggleHealthSystems(InputAction.CallbackContext context);
         void OnCycleEnemyTypes(InputAction.CallbackContext context);
         void OnClearEnemies(InputAction.CallbackContext context);
+        void OnTogglePracticeControls(InputAction.CallbackContext context);
     }
 }

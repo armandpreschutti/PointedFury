@@ -96,34 +96,31 @@ public class HitBroadcastHandler : MonoBehaviour
 
     private void BreakObject()
     {
-        if (_stateMachine.AttackType == "Heavy")
+        for (int i = 0; i < _breakableObjects.Count; i++)
         {
-            for (int i = 0; i < _breakableObjects.Count; i++)
+            GameObject obj = _breakableObjects[i];
+            if (obj != null && obj.GetComponent<Fracture>() != null)
             {
-                GameObject obj = _breakableObjects[i];
-                if (obj != null && obj.GetComponent<Fracture>() != null)
-                {
-                    obj.GetComponent<Fracture>().CauseFracture();
+                obj.GetComponent<Fracture>().CauseFracture();
 
-                    GameObject fragmentParent = GameObject.Find($"{obj.name}Fragments");
-                    if (fragmentParent != null)
+                GameObject fragmentParent = GameObject.Find($"{obj.name}Fragments");
+                if (fragmentParent != null)
+                {
+                    Rigidbody[] fragments = fragmentParent.GetComponentsInChildren<Rigidbody>();
+                    for (int j = 0; j < fragments.Length; j++)
                     {
-                        Rigidbody[] fragments = fragmentParent.GetComponentsInChildren<Rigidbody>();
-                        for (int j = 0; j < fragments.Length; j++)
+                        Rigidbody fragment = fragments[j];
+                        if (fragment != null)
                         {
-                            Rigidbody fragment = fragments[j];
-                            if (fragment != null)
-                            {
-                                fragment.AddForce(
-                                    (fragment.transform.position - transform.parent.position).normalized * ObjectBreakForce,
-                                    ForceMode.Impulse
-                                );
-                            }
+                            fragment.AddForce(
+                                (fragment.transform.position - transform.parent.position).normalized * ObjectBreakForce,
+                                ForceMode.Impulse
+                            );
                         }
                     }
-
-                    Destroy(obj.gameObject);
                 }
+
+                Destroy(obj.gameObject);
             }
         }
     }

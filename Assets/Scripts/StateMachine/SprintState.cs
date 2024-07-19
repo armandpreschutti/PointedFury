@@ -62,7 +62,7 @@ public class SprintState : BaseState
             }
             else if (Ctx.IsBlockPressed)
             {
-                if (Ctx.EnemiesNearby.Length> 0)
+                if (Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable && Ctx.CurrentTarget.GetComponent<StateMachine>().IsAI)
                 {
                     SwitchState(Factory.Deflect());
                 }

@@ -3882,6 +3882,10 @@ MonoBehaviour:
   AnimIDEvade: 0
   AnimIDFinishing: 0
   AnimIDFinished: 0
+  AnimIDDeflect: 0
+  AnimIDSprint: 0
+  AnimIDLightSprintAttack: 0
+  AnimIDHeavySprintAttack: 0
   ClosestTarget: {fileID: 0}
   SecondClosestTarget: {fileID: 0}
   ThirdClosestTarget: {fileID: 0}
@@ -3969,10 +3973,10 @@ MonoBehaviour:
   HitTolerance: 10
   BlockReleaseTime: 1
   ParrySkill: 3
-  HeavyAttackSkill: 0
-  EvadeSkill: 0
-  InitialAttackDelay: 0
-  AttackInterval: 3
+  HeavyAttackSkill: 10
+  EvadeSkill: 5
+  InitialAttackDelay: 1
+  AttackInterval: 1
   timeSinceAttack: 0
   isActivated: 0
   isAttacker: 0

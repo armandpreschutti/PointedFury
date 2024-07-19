@@ -54,7 +54,14 @@ public class PostAttackState : BaseState
             }
             else if (Ctx.IsBlockPressed)
             {
-                SwitchState(Factory.Deflect());
+                if (Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable && Ctx.CurrentTarget.GetComponent<StateMachine>().IsAI)
+                {
+                    SwitchState(Factory.Deflect());
+                }
+                else
+                {
+                    SwitchState(Factory.Block());
+                }
             }
             else if (Ctx.IsLightHitLanded)
             {

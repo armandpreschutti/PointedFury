@@ -1,6 +1,6 @@
 using Cinemachine;
 using System;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -8,7 +8,8 @@ using UnityEngine.Timeline;
 
 public class PracticeManager : MonoBehaviour
 {
-    public PracticeEntitiesSO practiceEnemies;
+    public PracticeEntitiesSO practiceEnemiesSO;
+    public GameObject[] enemies;
     public GameObject player;
     public CinemachineBrain cinemachineBrain;
     public PlayableDirector playableDirector;
@@ -18,18 +19,28 @@ public class PracticeManager : MonoBehaviour
     public Transform tempSpawn;
     public Collider spawnArea;
     public GameObject spawnVFX;
+    public bool isHealthActive = false;
+    public int enemyTypeIndex = 0;
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += LevelStarted;
         PracticeConfigController.OnSpawnEnemy += SpawnEnemy;
+        PracticeConfigController.OnToggleHealthSystems += OnToggleHealthSystems;
+        PracticeConfigController.OnCycleEnemyTypes += OnCycleEnemyTypes;
 
     }
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= LevelStarted;
         PracticeConfigController.OnSpawnEnemy -= SpawnEnemy;
+        PracticeConfigController.OnToggleHealthSystems -= OnToggleHealthSystems;
+        PracticeConfigController.OnCycleEnemyTypes -= OnCycleEnemyTypes;
+    }
 
+    private void Start()
+    {
+        enemies = practiceEnemiesSO.WeakEnemies;
     }
 
     public void LevelStarted(Scene currentScene, LoadSceneMode mode)
@@ -60,14 +71,68 @@ public class PracticeManager : MonoBehaviour
 
     public void SpawnEnemy()
     {
-        Debug.Log("Practice Manager wants to spawn enemy");
-        int randomEnemy = UnityEngine.Random.Range(0, practiceEnemies.WeakEnemies.Count);
+        // Get a random enemy index and position
+        int randomEnemyIndex = UnityEngine.Random.Range(0, enemies.Length);
         Vector3 randomPosition = GetRandomPosition();
-        Instantiate(practiceEnemies.WeakEnemies[randomEnemy], randomPosition, Quaternion.identity);
+
+        // Instantiate the enemy at the random position
+        GameObject randomEnemy = Instantiate(enemies[randomEnemyIndex], randomPosition, Quaternion.identity);
+
+        // Instantiate the spawn VFX at the random position
         Instantiate(spawnVFX, randomPosition, Quaternion.identity);
+
+        // Get the HealthSystem component of the spawned enemy
+        HealthSystem healthSystem = randomEnemy.GetComponent<HealthSystem>();
+
+        // If the enemy has a HealthSystem component, set its active state based on isHealthActive
+        if (healthSystem != null)
+        {
+            healthSystem.enabled = isHealthActive;
+        }
     }
 
+    public void OnToggleHealthSystems()
+    {
+        isHealthActive = !isHealthActive;
+
+        // Find all HealthSystem components in the scene
+        HealthSystem[] healthSystems = FindObjectsOfType<HealthSystem>();
+
+        // Populate the array with the GameObjects
+        for (int i = 0; i < healthSystems.Length; i++)
+        {
+            // gameObjectsWithHealthSystem[i] = healthSystems[i].gameObject;
+            Debug.Log("Found GameObject with HealthSystem: " + healthSystems[i].gameObject.name);
+            healthSystems[i].enabled = isHealthActive;
+        }
+    }
     
+    public void OnCycleEnemyTypes()
+    {
+        switch (enemyTypeIndex)
+        {
+            case 0:
+                enemies = practiceEnemiesSO.MediumEnmies;
+                enemyTypeIndex = 1;
+                break;
+            case 1:
+                enemies = practiceEnemiesSO.HeavyEnmies;
+                enemyTypeIndex = 2;
+                break;
+            case 2:
+                enemies = practiceEnemiesSO.BossEnemies;
+                enemyTypeIndex = 3;
+                break;
+            case 3:
+                enemies = practiceEnemiesSO.WeakEnemies;
+                enemyTypeIndex = 0;
+                break;
+            default:
+                enemies = practiceEnemiesSO.WeakEnemies;
+                enemyTypeIndex = 1;
+                break;
+        }
+    }
 
     public void ReturnToMainMenu()
     {

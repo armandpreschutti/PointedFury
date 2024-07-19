@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Enemies", menuName = "PointedFury/Practice/Enemies")]
 public class PracticeEntitiesSO : ScriptableObject
 {
-    public List<GameObject> WeakEnemies;
-    public List<GameObject> MediumEnmies;
-    public List<GameObject> HeavyEnmies;
-    public List<GameObject> BossEnemies;
+    public GameObject[] WeakEnemies;
+    public GameObject[] MediumEnmies;
+    public GameObject[] HeavyEnmies;
+    public GameObject[] BossEnemies;
 }
