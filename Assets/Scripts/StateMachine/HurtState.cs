@@ -85,13 +85,7 @@ public class HurtState : BaseState
             {
                 SwitchState(Factory.Hurt());
             }
-/*            else if (Ctx.IsBlockPressed)
-            {
-                if (Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable && Ctx.CurrentTarget.GetComponent<StateMachine>().IsAI)
-                {
-                    SwitchState(Factory.Deflect());
-                }
-            }*/
+
             else if (Ctx.IsParried)
             {
                 SwitchState(Factory.Stunned());
@@ -111,6 +105,13 @@ public class HurtState : BaseState
             else if (Ctx.IsFinished)
             {
                 SwitchState(Factory.Finished());
+            }
+            else if (Ctx.IsBlockPressed)
+            {
+                if (Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable && Ctx.CurrentTarget.GetComponent<StateMachine>().IsAI)
+                {
+                    SwitchState(Factory.Deflect());
+                }
             }
         }
        

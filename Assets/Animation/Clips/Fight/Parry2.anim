@@ -122,7 +122,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.8666667
-        value: 1.4986914
+        value: 1.4986922
         inSlope: 1.3589371
         outSlope: 1.3589371
         tangentMode: 0
@@ -131,7 +131,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 1.5557077
+        value: 1.890597
         inSlope: -0.39772907
         outSlope: -0.39772907
         tangentMode: 0
@@ -140,7 +140,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.0666667
-        value: 1.5311093
+        value: 1.7215186
         inSlope: -1.349528
         outSlope: -1.349528
         tangentMode: 0
@@ -37634,7 +37634,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.8666667
-        value: 1.4986914
+        value: 1.4986922
         inSlope: 1.3589371
         outSlope: 1.3589371
         tangentMode: 0
@@ -37643,7 +37643,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 1.5557077
+        value: 1.890597
         inSlope: -0.39772907
         outSlope: -0.39772907
         tangentMode: 0
@@ -37652,7 +37652,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.0666667
-        value: 1.5311093
+        value: 1.7215186
         inSlope: -1.349528
         outSlope: -1.349528
         tangentMode: 0
@@ -73771,6 +73771,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.9
     functionName: OnParryAnimationContact
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: OnParryAnimationEndSlowMo
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

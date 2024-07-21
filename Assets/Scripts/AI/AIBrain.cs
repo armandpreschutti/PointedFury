@@ -44,7 +44,7 @@ public class AIBrain : MonoBehaviour
     public float BlockReleaseTime = 1;
     public int ParrySkill;
     public int HeavyAttackSkill;
-    public int EvadeSkill;
+    public float EvadeSkill;
     public float InitialAttackDelay;
     public float AttackInterval;
     public float timeSinceAttack;

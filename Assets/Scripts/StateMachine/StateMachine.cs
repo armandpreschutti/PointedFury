@@ -202,7 +202,8 @@ public class StateMachine : MonoBehaviour
     public Action OnDeath;
     public Action<Vector3, /*float,*/ string, int> OnEnableRagdoll;
     public Action<bool> OnSprint;
-
+    public static Action<String> OnGameOver;
+    public Action OnParrySuccessful;
     // Getters and setters
     // Input
     public Vector2 MoveInput { get { return _moveInput; } set { _moveInput = value; } }
@@ -303,10 +304,14 @@ public class StateMachine : MonoBehaviour
         SetMovementAnimationSpeed();
         SimulateGravity();
     }
-   /* public void ClearNearbyEnemies()
+    /* public void ClearNearbyEnemies()
+     {
+         EnemiesNearby.Clear();
+     }*/
+    public void GameOver()
     {
-        EnemiesNearby.Clear();
-    }*/
+        OnGameOver?.Invoke(gameObject.name);
+    }
     public void DisableStateMachine()
     {
         this.enabled = false;
@@ -670,13 +675,19 @@ public class StateMachine : MonoBehaviour
     public void OnParryAnimationContact()
     {
         OnParryContact?.Invoke();
-        //Time.timeScale = SlowMotionSpeed;
+        Time.timeScale = SlowMotionSpeed;
+    }
+
+
+    public void OnParryAnimationEndSlowMo()
+    {
+        Time.timeScale = 1f;
     }
 
     public void OnParryAnimationComplete()
     {
         _isParrying = false;
-        Time.timeScale = 1f;
+
     }
 
     public void OnStunAnimationComplete()

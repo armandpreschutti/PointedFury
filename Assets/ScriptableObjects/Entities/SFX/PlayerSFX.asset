@@ -28,9 +28,14 @@ MonoBehaviour:
   _blockImpactSFX:
   - {fileID: 8300000, guid: a37109c51cd477548ad1c882be3971d5, type: 3}
   - {fileID: 8300000, guid: 72a9b2a2a3eaa584d9ba3a8e2166f0fd, type: 3}
-  _parrySFX: []
-  _dashSFX: []
+  _parrySFX:
+  - {fileID: 8300000, guid: da396a16a7f24f64cbb0054f5a56b46a, type: 3}
+  _dashSFX:
+  - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
   _deathSFX:
   - {fileID: 8300000, guid: 4246fedcd6bbd394c846c85b4f2f1969, type: 3}
-  _deflectSFX: []
+  _deflectSFX:
+  - {fileID: 8300000, guid: 605611dd6463bbc4090ab6408907d9e8, type: 3}
   _sprintSFX: []
+  _evadeSFX:
+  - {fileID: 8300000, guid: a65d792d6907f744490c9b15bb70edfe, type: 3}

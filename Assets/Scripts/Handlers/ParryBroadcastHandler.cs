@@ -102,6 +102,7 @@ public class ParryBroadcastHandler : MonoBehaviour
             GameObject hit = _hitTargets[i];
             if (hit != null && hit.GetComponent<StateMachine>() != null && !hit.GetComponent<StateMachine>().IsEvading)
             {
+                _stateMachine.OnParrySuccessful?.Invoke();
                 hit.GetComponent<StateMachine>().TakeParry(_stateMachine.transform.position, _stateMachine.ParryDamage, _stateMachine.ParryID);
             }
         }

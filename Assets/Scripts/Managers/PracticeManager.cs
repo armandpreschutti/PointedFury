@@ -14,8 +14,10 @@ public class PracticeManager : MonoBehaviour
     public CinemachineBrain cinemachineBrain;
     public PlayableDirector playableDirector;
     public TimelineAsset introCutScene;
+    public TimelineAsset GameOverCutScene;
     public static Action OnEnableControl;
     public static Action OnBeginLevel;
+    public static Action OnEndLevel;
     public Transform tempSpawn;
     public Collider spawnArea;
     public GameObject spawnVFX;
@@ -48,6 +50,17 @@ public class PracticeManager : MonoBehaviour
         PlayIntroCutScene();
     }
 
+    
+    public void PlayerDeath(string value)
+    {
+        if(value == "Player")
+        {
+            Debug.Log("Player recognized as dead by practice manager");
+            playableDirector.playableAsset = GameOverCutScene;
+            playableDirector.Play();
+        }
+
+    }
 
     public void PlayIntroCutScene()
     {
@@ -104,6 +117,15 @@ public class PracticeManager : MonoBehaviour
             // gameObjectsWithHealthSystem[i] = healthSystems[i].gameObject;
             Debug.Log("Found GameObject with HealthSystem: " + healthSystems[i].gameObject.name);
             healthSystems[i].enabled = isHealthActive;
+        }
+        if(isHealthActive)
+        {
+            GameObject.Find("Player").GetComponent<HealthSystem>().EnableHealth();
+        }
+        else
+        {
+            GameObject.Find("Player").GetComponent<HealthSystem>().DisableHealth();
+
         }
     }
     

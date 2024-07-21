@@ -41,12 +41,13 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
     private void OnEnable()
     {
         PracticeConfigController.OnClearEnemies += ClearEnemies;
+        //player.GetComponent<StateMachine>().OnDeath += ClearEnemies;
     }
-
     private void OnDisable()
     {
         PracticeConfigController.OnClearEnemies -= ClearEnemies;
-    }
+           //player.GetComponent<StateMachine>().OnDeath -= ClearEnemies;
+        }
 
     public void ClearEnemies()
     {

@@ -22,6 +22,7 @@ public class EntitSFXHandler : MonoBehaviour
         _stateMachine.OnDash += PlayDashSFX;
         _stateMachine.OnDeath += PlayDeathSFX;
         _stateMachine.OnDeflectSuccessful += PlayDeflectSFX;
+        _stateMachine.OnAttemptEvade += PlayEvadeSFX;
     }
 
     private void OnDisable()
@@ -34,6 +35,8 @@ public class EntitSFXHandler : MonoBehaviour
         _stateMachine.OnDash -= PlayDashSFX;
         _stateMachine.OnDeath -= PlayDeathSFX;
         _stateMachine.OnDeflectSuccessful -= PlayDeflectSFX;
+        _stateMachine.OnAttemptEvade -= PlayEvadeSFX;
+
     }
 
     public void PlayAttackWhooshSFX(bool value, string attackType)
@@ -94,6 +97,10 @@ public class EntitSFXHandler : MonoBehaviour
     public void PlayDeflectSFX()
     {
         CreateSFXOneShot(sfxSO._deflectSFX);
+    }
+    public void PlayEvadeSFX()
+    {
+        CreateSFXOneShot(sfxSO._evadeSFX);
     }
 
     public void CreateSFXOneShot(List<AudioClip> possibleClips)

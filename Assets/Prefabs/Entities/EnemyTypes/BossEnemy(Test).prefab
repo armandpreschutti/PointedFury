@@ -3731,9 +3731,9 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 512
-  LightAttackDamage: 1
-  HeavyAttackDamage: 3
-  CombatDistance: 1.5
+  LightAttackDamage: 5
+  HeavyAttackDamage: 20
+  CombatDistance: 1
   LightAttackChargeSpeed: 0.5
   HeavyAttackChargeSpeed: 0.5
   KnockBackPower: 0
@@ -3856,18 +3856,18 @@ MonoBehaviour:
   comboCount: 0
   hitCount: 0
   targetDistance: 0
-  AttackDistance: 1
+  AttackDistance: 1.5
   WatchDistance: 3
   DistanceBuffer: 1
   ComboSkill: 6
   CanComboChain: 1
-  HitTolerance: 3
-  BlockReleaseTime: 2
-  ParrySkill: 7
-  HeavyAttackSkill: 6
-  EvadeSkill: 7
-  InitialAttackDelay: 1
-  AttackInterval: 1
+  HitTolerance: 2
+  BlockReleaseTime: 1
+  ParrySkill: 5
+  HeavyAttackSkill: 5
+  EvadeSkill: 1
+  InitialAttackDelay: 0.25
+  AttackInterval: 0.5
   timeSinceAttack: 0
   isActivated: 0
   isAttacker: 0
@@ -3885,7 +3885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateMachine: {fileID: 0}
-  MaxHealth: 200
+  MaxHealth: 250
   MinHealth: 0
   _currentHealh: 0
   _nearDeathAmount: 0
@@ -5792,7 +5792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.08201044, g: 0.7169812, b: 0.0027055359, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

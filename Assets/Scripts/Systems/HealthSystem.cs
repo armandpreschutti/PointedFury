@@ -15,8 +15,11 @@ public class HealthSystem : MonoBehaviour
     public Action OnDeath;
     public Action OnDamage;
     public Action OnReplish;
+    public Action OnDisableHealth;
+    public Action OnEnableHealth;
 
     public float CurrentHealth { get { return _currentHealh; } }
+    
 
     private void Awake()
     {
@@ -79,5 +82,15 @@ public class HealthSystem : MonoBehaviour
     {
         _currentHealh = MaxHealth;
         OnReplish?.Invoke();
+    }
+
+    public void EnableHealth()
+    {
+        _currentHealh = MaxHealth;
+        OnEnableHealth?.Invoke();
+    }
+    public void DisableHealth()
+    {
+        OnDisableHealth?.Invoke();
     }
 }

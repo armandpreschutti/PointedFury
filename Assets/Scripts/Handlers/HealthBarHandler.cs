@@ -30,7 +30,8 @@ public class HealthBarHandler : MonoBehaviour
         _healthSystem.OnDamage += SetHealthBarValue;
         _healthSystem.OnDeath += DisableEnemyHealthBar;
         _healthSystem.OnReplish += SetHealthBarValue;
-
+        _healthSystem.OnEnableHealth += EnableHealthBar;
+        _healthSystem.OnDisableHealth += DisableHealthBar;
 
 
     }
@@ -39,6 +40,8 @@ public class HealthBarHandler : MonoBehaviour
         _healthSystem.OnDamage -= SetHealthBarValue;
         _healthSystem.OnDeath -= DisableEnemyHealthBar;
         _healthSystem.OnReplish -= SetHealthBarValue;
+        _healthSystem.OnEnableHealth -= EnableHealthBar;
+        _healthSystem.OnDisableHealth -= DisableHealthBar;
     }
 
     public void SetHealthBarValue()
@@ -55,5 +58,16 @@ public class HealthBarHandler : MonoBehaviour
         {
             _healthBarSlider.gameObject.SetActive(false);
         }
+    }
+    
+    public void EnableHealthBar()
+    {
+        _healthBarSlider.value = _healthSystem.CurrentHealth;
+        _healthBarSlider.gameObject.SetActive(true);
+    }
+
+    public void DisableHealthBar()
+    {
+        _healthBarSlider.gameObject.SetActive(false);
     }
 }

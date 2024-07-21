@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.08201044, g: 0.7169812, b: 0.0027055359, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5688,7 +5688,7 @@ Transform:
   - {fileID: 7639626358547363496}
   - {fileID: 6368127824755377531}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5621869067545395127
 MonoBehaviour:
@@ -5712,8 +5712,8 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 512
-  LightAttackDamage: 4
-  HeavyAttackDamage: 8
+  LightAttackDamage: 3
+  HeavyAttackDamage: 10
   CombatDistance: 1
   LightAttackChargeSpeed: 0.5
   HeavyAttackChargeSpeed: 0.5
@@ -5837,18 +5837,18 @@ MonoBehaviour:
   comboCount: 0
   hitCount: 0
   targetDistance: 0
-  AttackDistance: 1
+  AttackDistance: 1.5
   WatchDistance: 3
   DistanceBuffer: 1
-  ComboSkill: 4
+  ComboSkill: 3
   CanComboChain: 1
-  HitTolerance: 4
+  HitTolerance: 3
   BlockReleaseTime: 1
   ParrySkill: 0
-  HeavyAttackSkill: 10
-  EvadeSkill: 3
-  InitialAttackDelay: 1
-  AttackInterval: 2
+  HeavyAttackSkill: 9
+  EvadeSkill: 1
+  InitialAttackDelay: 0.25
+  AttackInterval: 0.75
   timeSinceAttack: 0
   isActivated: 0
   isAttacker: 0
@@ -5866,7 +5866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateMachine: {fileID: 0}
-  MaxHealth: 75
+  MaxHealth: 150
   MinHealth: 0
   _currentHealh: 0
   _nearDeathAmount: 0

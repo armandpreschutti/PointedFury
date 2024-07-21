@@ -15,4 +15,5 @@ public class EntitySFXSO : ScriptableObject
     public List<AudioClip> _deathSFX;
     public List<AudioClip> _deflectSFX;
     public List<AudioClip> _sprintSFX;
+    public List<AudioClip> _evadeSFX;
 }

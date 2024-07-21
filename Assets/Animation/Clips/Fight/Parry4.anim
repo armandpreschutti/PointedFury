@@ -86,7 +86,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.56666666
-        value: 0.9545877
+        value: 1.3319604
         inSlope: 2.3125958
         outSlope: 2.3125958
         tangentMode: 0
@@ -95,12 +95,12 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.76666665
-        value: 1.4597458
-        inSlope: 0.60632646
-        outSlope: 0.60632646
+        value: 1.4873604
+        inSlope: 0.2248423
+        outSlope: 0.2248423
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 1
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.93333334
@@ -196,17 +196,8 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.98451203
       - serializedVersion: 3
-        time: 0.46666667
-        value: 0.7773761
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
         time: 0.73333335
-        value: 0.7773761
+        value: 0.88782716
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -215,7 +206,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.93333334
-        value: 0.7828807
+        value: 0.89333177
         inSlope: 0.055690292
         outSlope: 0.055690292
         tangentMode: 0
@@ -28158,6 +28149,15 @@ AnimationClip:
     genericBindings:
     - serializedVersion: 2
       path: 0
+      attribute: 9
+      script: {fileID: 0}
+      typeID: 95
+      customType: 8
+      isPPtrCurve: 0
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    - serializedVersion: 2
+      path: 0
       attribute: 97
       script: {fileID: 0}
       typeID: 95
@@ -28519,15 +28519,6 @@ AnimationClip:
     - serializedVersion: 2
       path: 0
       attribute: 8
-      script: {fileID: 0}
-      typeID: 95
-      customType: 8
-      isPPtrCurve: 0
-      isIntCurve: 0
-      isSerializeReferenceCurve: 0
-    - serializedVersion: 2
-      path: 0
-      attribute: 9
       script: {fileID: 0}
       typeID: 95
       customType: 8
@@ -29507,7 +29498,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.56666666
-        value: 0.9545877
+        value: 1.3319604
         inSlope: 2.3125958
         outSlope: 2.3125958
         tangentMode: 0
@@ -29516,12 +29507,12 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.76666665
-        value: 1.4597458
-        inSlope: 0.60632646
-        outSlope: 0.60632646
+        value: 1.4873604
+        inSlope: 0.2248423
+        outSlope: 0.2248423
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 1
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.93333334
@@ -29617,17 +29608,8 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.98451203
       - serializedVersion: 3
-        time: 0.46666667
-        value: 0.7773761
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
         time: 0.73333335
-        value: 0.7773761
+        value: 0.88782716
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -29636,7 +29618,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.93333334
-        value: 0.7828807
+        value: 0.89333177
         inSlope: 0.055690292
         outSlope: 0.055690292
         tangentMode: 0
@@ -57589,6 +57571,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.9
     functionName: OnParryAnimationContact
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: OnParryAnimationEndSlowMo
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
