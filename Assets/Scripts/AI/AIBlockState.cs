@@ -59,15 +59,7 @@ public class AIBlockState : AIBaseState
         }
         else if (Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsEvadable &&  Ctx.EvadeSkill >= Random.Range(1, 11) && !Ctx.StateMachine.IsEvading && !Ctx.StateMachine.IsStunned /*&& !Ctx.StateMachine.IsHurt */&& !Ctx.StateMachine.IsParrying)
         {
-
-            Debug.Log(Ctx.EvadeSkill >= Random.Range(1, 11));
-            Debug.LogWarning(Random.Range(1, 11));
-
-            Debug.LogError(Ctx.StateMachine.CurrentTarget.GetComponent<StateMachine>().IsEvadable);
-/*            Debug.LogError(Random.Range(1, 11));*/
             Ctx.StateMachine.OnAttemptEvade?.Invoke();
-
-
         }
 
     }

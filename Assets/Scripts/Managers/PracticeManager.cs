@@ -114,8 +114,6 @@ public class PracticeManager : MonoBehaviour
         // Populate the array with the GameObjects
         for (int i = 0; i < healthSystems.Length; i++)
         {
-            // gameObjectsWithHealthSystem[i] = healthSystems[i].gameObject;
-            Debug.Log("Found GameObject with HealthSystem: " + healthSystems[i].gameObject.name);
             healthSystems[i].enabled = isHealthActive;
         }
         if(isHealthActive)
