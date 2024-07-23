@@ -3731,14 +3731,14 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 512
-  LightAttackDamage: 5
+  LightAttackDamage: 10
   HeavyAttackDamage: 20
   CombatDistance: 1
   LightAttackChargeSpeed: 0.5
   HeavyAttackChargeSpeed: 0.5
   KnockBackPower: 0
   ParryChargeSpeed: 0
-  ParryDamage: 5
+  ParryDamage: 25
   BlockDamageReduction: 0.25
   EnemiesNearby: []
   SlowMotionSpeed: 1
