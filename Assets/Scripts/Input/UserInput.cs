@@ -144,7 +144,7 @@ public class UserInput : MonoBehaviour
     {
         if (!isPaused)
         {
-            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing/* && !_stateMachine.IsAttacking*/)
+            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing)
             {
                 _stateMachine.IsDashPressed = value;
             }
@@ -171,7 +171,7 @@ public class UserInput : MonoBehaviour
     {
         if(!isPaused)
         {
-            if (/*!_stateMachine.IsAttacking && */!_stateMachine.IsEvading && !_stateMachine.IsDeflecting)
+            if (!_stateMachine.IsEvading && !_stateMachine.IsDeflecting)
             {
                 _stateMachine.OnAttemptParry?.Invoke();
             }

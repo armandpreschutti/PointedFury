@@ -31,11 +31,13 @@ MonoBehaviour:
   _parrySFX:
   - {fileID: 8300000, guid: da396a16a7f24f64cbb0054f5a56b46a, type: 3}
   _dashSFX:
-  - {fileID: 8300000, guid: 4d4ef7516a431934681038a3dc391e55, type: 3}
+  - {fileID: 8300000, guid: bc742864e68de084ca074f2fffa86197, type: 3}
   _deathSFX:
-  - {fileID: 8300000, guid: 4246fedcd6bbd394c846c85b4f2f1969, type: 3}
+  - {fileID: 8300000, guid: fe0853c62cfd1384dbeac5d10216d3b6, type: 3}
+  - {fileID: 8300000, guid: 779c757e15fd79244bd8a2e82fdcdac2, type: 3}
+  - {fileID: 8300000, guid: 7ff9b13d5f8183645bcf64ac91697c5b, type: 3}
   _deflectSFX:
-  - {fileID: 8300000, guid: 605611dd6463bbc4090ab6408907d9e8, type: 3}
+  - {fileID: 8300000, guid: cc416f36b0e69384a8ca6d53e23187a1, type: 3}
   _sprintSFX: []
   _evadeSFX:
   - {fileID: 8300000, guid: a65d792d6907f744490c9b15bb70edfe, type: 3}

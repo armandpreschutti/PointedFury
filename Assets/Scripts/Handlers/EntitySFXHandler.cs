@@ -86,7 +86,11 @@ public class EntitSFXHandler : MonoBehaviour
 
     public void PlayDashSFX(bool value)
     {
-        CreateSFXOneShot(sfxSO._dashSFX);
+        if (value)
+        {
+            CreateSFXOneShot(sfxSO._dashSFX);
+        }
+
     }
 
     public void PlayDeathSFX()
@@ -100,7 +104,11 @@ public class EntitSFXHandler : MonoBehaviour
     }
     public void PlayEvadeSFX()
     {
-        CreateSFXOneShot(sfxSO._evadeSFX);
+        if(_stateMachine.IsEvading)
+        {
+            CreateSFXOneShot(sfxSO._evadeSFX);
+        }
+
     }
 
     public void CreateSFXOneShot(List<AudioClip> possibleClips)
