@@ -4828,7 +4828,7 @@ PlayableDirector:
   m_GameObject: {fileID: 510749559}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: edabf81a991092b49821603b60da65e9, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 54f2738e7572e7e4e8c991d332fde615, type: 2}
   m_InitialState: 1
   m_WrapMode: 0
   m_DirectorUpdateMode: 1
@@ -34716,7 +34716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1337275090
 Transform:
   m_ObjectHideFlags: 0
