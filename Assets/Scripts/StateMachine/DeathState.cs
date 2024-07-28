@@ -24,8 +24,7 @@ public class DeathState : BaseState
         Ctx.IsStunned = false;
         Ctx.IsDead = true;
         Ctx.GameOver();
-        Ctx.OnEnableRagdoll?.Invoke(Ctx.CurrentTarget.transform.position, Ctx.HitType, Ctx.HitID);
-        
+        Ctx.OnEnableRagdoll?.Invoke(Ctx.CurrentTarget == null ? Vector3.up : Ctx.CurrentTarget.transform.position, Ctx.HitType, Ctx.HitID);
     }
 
     public override void UpdateState()

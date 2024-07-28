@@ -67,6 +67,7 @@ public class PracticeManager : MonoBehaviour
         cinemachineBrain.m_DefaultBlend.m_Time = 1f;
         player.GetComponent<UserInput>().enabled = false;
         playableDirector.playableAsset = introCutScene;
+        playableDirector.initialTime = 0;
         playableDirector.Play();
     }
 

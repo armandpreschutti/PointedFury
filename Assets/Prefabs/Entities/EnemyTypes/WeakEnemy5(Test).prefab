@@ -3058,7 +3058,7 @@ MonoBehaviour:
   comboCount: 0
   hitCount: 0
   targetDistance: 0
-  AttackDistance: 1.5
+  AttackDistance: 1
   WatchDistance: 3
   DistanceBuffer: 1
   ComboSkill: 3

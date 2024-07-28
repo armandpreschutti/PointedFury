@@ -125,6 +125,7 @@ public class HeavyAttackState : BaseState
             }
             else if (Ctx.IsEvadeSucces)
             {
+                Debug.LogError("Player is Attempting to evade");
                 SwitchState(Factory.Evade());
             }
             else if (Ctx.IsDashPressed)

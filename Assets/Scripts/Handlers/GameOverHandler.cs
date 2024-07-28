@@ -7,7 +7,13 @@ using UnityEngine.SceneManagement;
 public class GameOverHandler : MonoBehaviour
 {
     public PlayableDirector playableDirector;
-    
+    public string SceneName;
+
+    private void Awake()
+    {
+        SceneName = SceneManager.GetActiveScene().name;
+    }
+
     private void OnEnable()
     {
         StateMachine.OnGameOver += PlayerDeath;
@@ -28,6 +34,7 @@ public class GameOverHandler : MonoBehaviour
 
     public void GameOver()
     {
+        //SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
         SceneManager.LoadScene("TitleMenu");
     }
 }

@@ -332,7 +332,7 @@ public class StateMachine : MonoBehaviour
         if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isParrying && !_isDashing && _controller != null)
         {
             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
-            if (moveDirection != Vector3.zero)
+            if (moveDirection != Vector3.zero && _controller != null)
             {
                 _controller.Move(moveDirection * Time.deltaTime);
             }
@@ -365,7 +365,7 @@ public class StateMachine : MonoBehaviour
 
     public void FreeRoamMovement()
     {
-        if (!_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isAttacking && !_isParrying) 
+        if (!_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isAttacking && !_isParrying && _controller != null) 
         {
             if (!IsAI)
             {

@@ -53,6 +53,7 @@ public class TutoiralManager : MonoBehaviour
         cinemachineBrain.m_DefaultBlend.m_Time = 1f;
         player.GetComponent<UserInput>().enabled = false;
         playableDirector.playableAsset = introCutScene;
+        playableDirector.time = 0;
         playableDirector.Play();
     }
 
