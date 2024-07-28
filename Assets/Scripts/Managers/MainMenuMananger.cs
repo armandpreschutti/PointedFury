@@ -7,9 +7,6 @@ using static UnityEngine.Rendering.DebugUI;
 public class MainMenuMananger : MonoBehaviour
 {
 
-    public EventSystem eventSystem;
-    
-
     private void OnEnable()
     {
         Time.timeScale = 1.0f;

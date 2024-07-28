@@ -9,9 +9,14 @@ public class UIButtonHandler : MonoBehaviour
     {
         SceneManager.LoadScene("Tutorial");
     }
-    public void EnterPractice()
+    public void EnterTheGrid()
     {
         SceneManager.LoadScene("Practice");
+    }
+
+    public void EnterTheGarden()
+    {
+        SceneManager.LoadScene("PracticeX");
     }
     public void EnterSettingsMenu()
     {

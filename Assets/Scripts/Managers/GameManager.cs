@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     }
     private void OnEnable()
     {
+        SceneManager.sceneLoaded += SetTimeScele;
         PauseMenuController.OnGamePaused += PauseGame;
         PauseMenuController.OnReturnToMenu += ReturnToMenu;
     }
@@ -38,6 +39,11 @@ public class GameManager : MonoBehaviour
     {
         PauseMenuController.OnGamePaused -= PauseGame;
         PauseMenuController.OnReturnToMenu -= ReturnToMenu;
+    }
+
+    public void SetTimeScele(Scene scene, LoadSceneMode mode)
+    {
+        Time.timeScale = 1.0f;
     }
     public void ResetLevel()
     {

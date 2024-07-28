@@ -35,6 +35,6 @@ public class GameOverHandler : MonoBehaviour
     public void GameOver()
     {
         //SceneManager.LoadScene(SceneName, LoadSceneMode.Single);
-        SceneManager.LoadScene("TitleMenu");
+        SceneManager.LoadScene(SceneName);
     }
 }
