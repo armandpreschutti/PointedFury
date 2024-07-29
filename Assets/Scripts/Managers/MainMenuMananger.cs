@@ -1,27 +1,24 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using static UnityEngine.Rendering.DebugUI;
 
 public class MainMenuMananger : MonoBehaviour
 {
+    public PlayableAsset cutScene;
+    public PlayableDirector director;
 
     private void OnEnable()
     {
-        Time.timeScale = 1.0f;
+        SceneManager.sceneLoaded += LevelStarted;
     }
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnDisable()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        SceneManager.sceneLoaded -= LevelStarted;
     }
 
     public void ExitGame()
@@ -29,5 +26,9 @@ public class MainMenuMananger : MonoBehaviour
         Application.Quit();
     }
 
-    
+    public void LevelStarted(Scene currentScene, LoadSceneMode mode)
+    {
+        director.playableAsset = cutScene;
+        director.Play();
+    }
 }
