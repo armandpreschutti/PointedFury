@@ -171,7 +171,7 @@ public class UserInput : MonoBehaviour
     {
         if(!isPaused)
         {
-            if (!_stateMachine.IsEvading && !_stateMachine.IsDeflecting)
+            if (/*!_stateMachine.IsEvading && */!_stateMachine.IsDeflecting)
             {
                 _stateMachine.OnAttemptParry?.Invoke();
             }

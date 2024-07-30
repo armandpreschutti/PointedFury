@@ -19,6 +19,8 @@ public class BlockState : BaseState
         Ctx.IsBlockSuccess = false;
         Ctx.IsBlocking = true;
         Ctx.Animator.SetBool(Ctx.AnimIDBlock, true);
+        Ctx.IsFighting = true;
+        Ctx.OnFight?.Invoke(true);
     }
 
     public override void UpdateState()

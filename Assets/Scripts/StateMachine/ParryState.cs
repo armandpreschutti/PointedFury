@@ -23,7 +23,7 @@ public class ParryState : BaseState
         Ctx.OnFight?.Invoke(true);
         Ctx.IsParrySucces = false;
         Ctx.IsEvadable = true;
-
+        Ctx.OnParry?.Invoke(true, "Parry");
     }
 
     public override void UpdateState()
@@ -46,6 +46,7 @@ public class ParryState : BaseState
         Time.timeScale = 1f;
         Ctx.Animator.SetBool(Ctx.AnimIDParry, false);
         Ctx.IsParrying = false;
+        Ctx.OnParry?.Invoke(false, "Parry");
     }
 
     public override void CheckSwitchStates()

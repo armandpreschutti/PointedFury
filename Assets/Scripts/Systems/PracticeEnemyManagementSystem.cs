@@ -60,6 +60,7 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
         {
             if (managedEnemies[i] != null)
             {
+                OnAttackerDeath?.Invoke(managedEnemies[i].transform.Find("PlayerCameraTarget").transform);
                 managedEnemies[i] = null;
             }
         }

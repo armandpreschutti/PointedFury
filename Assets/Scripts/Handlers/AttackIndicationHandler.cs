@@ -6,7 +6,10 @@ using UnityEngine.UI;
 public class AttackIndicationHandler : MonoBehaviour
 {
     public StateMachine _stateMachine;
-    public GameObject _attackIndicator;
+    public GameObject[] _indicators;
+
+    public Material _parryMaterial;
+    public Material _evadeMaterial;
     public HealthSystem _healthSystem;
     public bool showParryIndicator;
     public bool showEvadeIndicator;
@@ -17,6 +20,8 @@ public class AttackIndicationHandler : MonoBehaviour
         {
             GetComponent<HealthSystem>().OnDeath += DisableIndicator;
         }
+        _stateMachine.OnHeavyAttack += SetIndicator;
+        _stateMachine.OnParry += SetIndicator;
     }
 
     private void OnDisable()
@@ -25,32 +30,62 @@ public class AttackIndicationHandler : MonoBehaviour
         {
             GetComponent<HealthSystem>().OnDeath -= DisableIndicator;
         }
-    }
-
-    private void Update()
-    {
-        
-        if(_stateMachine.AttackType == "Heavy" && _stateMachine.IsParryable && showParryIndicator)
-        {
-            _attackIndicator.SetActive(true);
-            _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.red;
-        }
-      /*  else if(_stateMachine.IsNearDeath == true)
-        {
-            _attackIndicator.SetActive(true);
-            _attackIndicator.GetComponent<MeshRenderer>().material.color = Color.yellow;
-        }*/
-        else
-        {
-            _attackIndicator.SetActive(false);
-        }
-        
-
+        _stateMachine.OnHeavyAttack -= SetIndicator;
+        _stateMachine.OnParry -= SetIndicator;
     }
 
     public void DisableIndicator(/*float damage, string type*/)
     {
-        Destroy(_attackIndicator);
-        Destroy(this);
+        for (int i = 0; i < _indicators.Length; i++)
+        {
+            SkinnedMeshRenderer renderer = _indicators[i].GetComponent<SkinnedMeshRenderer>();
+            Material[] materials = renderer.materials;
+            if (materials.Length > 1)
+            {
+                materials[1] = materials[0];
+                renderer.materials = materials; // Reassign the modified materials array
+            }
+        }
+    }
+
+    public void SetIndicator(bool value, string attackType)
+    {
+        if (value)
+        {
+            Debug.Log("Trying to set Parry Material");
+            for (int i = 0; i < _indicators.Length; i++)
+            {
+                SkinnedMeshRenderer renderer = _indicators[i].GetComponent<SkinnedMeshRenderer>();
+                Material[] materials = renderer.materials;
+                if (materials.Length > 1)
+                {
+                    if(attackType == "Heavy")
+                    {
+                        materials[1] = _parryMaterial;
+                        renderer.materials = materials; // Reassign the modified materials array
+                    }
+                    if(attackType == "Parry")
+                    {
+                        materials[1] = _evadeMaterial;
+                        renderer.materials = materials; // Reassign the modified materials array
+                    }
+
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Trying to set Original Material");
+            for (int i = 0; i < _indicators.Length; i++)
+            {
+                SkinnedMeshRenderer renderer = _indicators[i].GetComponent<SkinnedMeshRenderer>();
+                Material[] materials = renderer.materials;
+                if (materials.Length > 1)
+                {
+                    materials[1] = materials[0];
+                    renderer.materials = materials; // Reassign the modified materials array
+                }
+            }
+        }
     }
 }

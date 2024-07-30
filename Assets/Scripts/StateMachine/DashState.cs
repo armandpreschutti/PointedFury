@@ -15,8 +15,8 @@ public class DashState : BaseState
 
         Ctx.Animator.SetBool(Ctx.AnimIDDash, true);
         Ctx.IsDashing = true;
-      //  Ctx.IsFighting= true;
-        //Ctx.OnFight?.Invoke(true);
+        Ctx.IsFighting= true;
+        Ctx.OnFight?.Invoke(true);
         Ctx.OnDash?.Invoke(true);
         Ctx.IsDashPressed = false;
         Ctx.SetDashDirection();

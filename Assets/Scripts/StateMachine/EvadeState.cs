@@ -82,8 +82,11 @@ public class EvadeState : BaseState
                         SwitchState(Factory.Idle());
                     }
                 }
+            }         
+            else if(Ctx.IsParrySucces)
+            {
+                SwitchState(Factory.Parry());
             }
-           
         }
        
     }

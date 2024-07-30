@@ -88,7 +88,7 @@ public class ParryBroadcastHandler : MonoBehaviour
         for (int i = 0; i < _hitTargetCount; i++)
         {
             GameObject hit = _hitTargets[i];
-            if (hit != null && hit.GetComponent<StateMachine>() != null && hit.GetComponent<StateMachine>().IsEvadable)
+            if (hit != null && hit.GetComponent<StateMachine>() != null && (hit.GetComponent<StateMachine>().IsEvadable || hit.GetComponent<StateMachine>().IsParrying))
             {
                 _stateMachine.BeginEvade();
             }

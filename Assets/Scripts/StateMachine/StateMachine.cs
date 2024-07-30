@@ -204,6 +204,7 @@ public class StateMachine : MonoBehaviour
     public Action<bool> OnSprint;
     public static Action<String> OnGameOver;
     public Action OnParrySuccessful;
+    public Action<bool, string> OnParry;
     // Getters and setters
     // Input
     public Vector2 MoveInput { get { return _moveInput; } set { _moveInput = value; } }

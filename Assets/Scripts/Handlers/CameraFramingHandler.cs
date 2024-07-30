@@ -30,7 +30,8 @@ public class CameraFramingHandler : MonoBehaviour
     {
         EnemyManagementSystem.OnAttackerDeath += RemoveEntityFromTargetGroup;
         EnemyManagementSystem.OnEnemyDetected += SetZoneTargets;
-        
+        PracticeEnemyManagementSystem.OnEnemyDetected += SetZoneTargets;
+        PracticeEnemyManagementSystem.OnAttackerDeath += RemoveEntityFromTargetGroup;
 
     }
 
@@ -38,6 +39,8 @@ public class CameraFramingHandler : MonoBehaviour
     {
         EnemyManagementSystem.OnAttackerDeath -= RemoveEntityFromTargetGroup;
         EnemyManagementSystem.OnEnemyDetected -= SetZoneTargets;
+        PracticeEnemyManagementSystem.OnEnemyDetected -= SetZoneTargets;
+        PracticeEnemyManagementSystem.OnAttackerDeath -= RemoveEntityFromTargetGroup;
     }
 
     private void Update()

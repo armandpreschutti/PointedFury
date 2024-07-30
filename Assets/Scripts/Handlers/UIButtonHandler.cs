@@ -11,12 +11,12 @@ public class UIButtonHandler : MonoBehaviour
     }
     public void EnterTheGrid()
     {
-        SceneManager.LoadScene("Practice");
+        SceneManager.LoadScene("TheGrid");
     }
 
     public void EnterTheGarden()
     {
-        SceneManager.LoadScene("PracticeX");
+        SceneManager.LoadScene("TheGarden");
     }
     public void EnterSettingsMenu()
     {
