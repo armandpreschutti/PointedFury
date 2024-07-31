@@ -1311,9 +1311,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629322996490841404}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8183318734303341728}
@@ -1322,9 +1322,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.139, y: 1.749}
-  m_SizeDelta: {x: 1.92, y: 1.08}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!223 &8866857463490127929
 Canvas:
   m_ObjectHideFlags: 0
@@ -1334,7 +1334,7 @@ Canvas:
   m_GameObject: {fileID: 1629322996490841404}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1360,17 +1360,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &4229732974522138494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1597,7 +1597,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1843459448409373718
 MonoBehaviour:
@@ -1614,6 +1614,9 @@ MonoBehaviour:
   _healthSystem: {fileID: 4836219765631500281}
   _healthBarSlider: {fileID: 3706230047815171185}
   IsAI: 1
+  target: {fileID: 7990227919323432284}
+  _rectTransform: {fileID: 8183318734303341728}
+  offset: {x: 0, y: 1.8, z: 0}
 --- !u!1 &2066775877362457342
 GameObject:
   m_ObjectHideFlags: 0
@@ -4513,14 +4516,13 @@ GameObject:
   - component: {fileID: 2001890102820259956}
   - component: {fileID: 8039758406585842351}
   - component: {fileID: 3706230047815171185}
-  - component: {fileID: 318899917008340968}
   m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6798767708555223630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4537,10 +4539,10 @@ RectTransform:
   m_Father: {fileID: 8183318734303341728}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.864, y: 0.09}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2001890102820259956
 CanvasRenderer:
@@ -4631,18 +4633,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &318899917008340968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5302953952917942787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da7acfc3417dcfa448489992e3232ec5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5357792583218554617
 GameObject:
   m_ObjectHideFlags: 0
@@ -5444,9 +5434,9 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000023841858, y: -0.000000230968}
-  m_SizeDelta: {x: -0.040000454, y: -0.04000046}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5111619180804240425
 CanvasRenderer:
@@ -6368,11 +6358,13 @@ MonoBehaviour:
   _initialAttack: 1
   _isAttacking: 0
   _strafeDirection: 0
+  _strafeInterval: 2
+  _strafeTime: 4
   comboCount: 0
   hitCount: 0
   targetDistance: 0
-  AttackDistance: 1
-  WatchDistance: 3
+  AttackDistance: 1.25
+  WatchDistance: 4
   DistanceBuffer: 1
   ComboSkill: 5
   CanComboChain: 1
@@ -6435,8 +6427,9 @@ MonoBehaviour:
   - {fileID: 3224748688305457963}
   - {fileID: 353776410921064721}
   - {fileID: 2237104666564922872}
-  _parryMaterial: {fileID: 2100000, guid: a0265ff101a81f74980180c7d4c618e2, type: 2}
-  _evadeMaterial: {fileID: 2100000, guid: 78749fcce4e3c8f4ea8b40b378fafa59, type: 2}
+  player: {fileID: 0}
+  _parryMaterial: {fileID: 2100000, guid: 1af4c51e3c6958640baae1fc6a6824f7, type: 2}
+  _evadeMaterial: {fileID: 2100000, guid: 581fd06a499becd4e934959756a10138, type: 2}
   _healthSystem: {fileID: 4836219765631500281}
   showParryIndicator: 1
   showEvadeIndicator: 0

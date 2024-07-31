@@ -9,7 +9,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class MainMenuMananger : MonoBehaviour
 {
-    public PlayableAsset cutScene;
+    public PlayableAsset StartCutScene;
     public PlayableDirector director;
 
     private void OnEnable()
@@ -28,7 +28,7 @@ public class MainMenuMananger : MonoBehaviour
 
     public void LevelStarted(Scene currentScene, LoadSceneMode mode)
     {
-        director.playableAsset = cutScene;
+        director.playableAsset = StartCutScene;
         director.Play();
     }
 }

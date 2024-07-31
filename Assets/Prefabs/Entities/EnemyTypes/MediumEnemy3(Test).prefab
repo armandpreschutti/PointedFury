@@ -1205,7 +1205,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5986735950343674193
 MonoBehaviour:
@@ -1222,6 +1222,9 @@ MonoBehaviour:
   _healthSystem: {fileID: 9066351544228141521}
   _healthBarSlider: {fileID: 3418041592495183776}
   IsAI: 1
+  target: {fileID: 306508960152816667}
+  _rectTransform: {fileID: 4984215003150794294}
+  offset: {x: 0, y: 1.9, z: 0}
 --- !u!1 &1319745572495714268
 GameObject:
   m_ObjectHideFlags: 0
@@ -1257,8 +1260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000023841858, y: -0.000000230968}
-  m_SizeDelta: {x: -0.040000454, y: -0.04000046}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7025848851358750116
 CanvasRenderer:
@@ -3323,7 +3326,6 @@ GameObject:
   - component: {fileID: 5617227279441134201}
   - component: {fileID: 7034770607257032230}
   - component: {fileID: 3418041592495183776}
-  - component: {fileID: 3868042927973871067}
   m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
@@ -3347,10 +3349,10 @@ RectTransform:
   m_Father: {fileID: 4984215003150794294}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.864, y: 0.09}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5617227279441134201
 CanvasRenderer:
@@ -3441,18 +3443,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3868042927973871067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5383769548365373165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da7acfc3417dcfa448489992e3232ec5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5541849317930681613
 GameObject:
   m_ObjectHideFlags: 0
@@ -4031,9 +4021,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5922888938981229457}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4984215003150794294}
@@ -4042,9 +4032,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.139, y: 1.749}
-  m_SizeDelta: {x: 1.92, y: 1.08}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!223 &1715076493630478228
 Canvas:
   m_ObjectHideFlags: 0
@@ -4054,7 +4044,7 @@ Canvas:
   m_GameObject: {fileID: 5922888938981229457}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -4080,17 +4070,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3627362386276044183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5483,18 +5473,20 @@ MonoBehaviour:
   _initialAttack: 1
   _isAttacking: 0
   _strafeDirection: 0
+  _strafeInterval: 2
+  _strafeTime: 4
   comboCount: 0
   hitCount: 0
   targetDistance: 0
-  AttackDistance: 1
-  WatchDistance: 3
+  AttackDistance: 1.25
+  WatchDistance: 3.5
   DistanceBuffer: 1
   ComboSkill: 3
   CanComboChain: 1
   HitTolerance: 3
   BlockReleaseTime: 1
   ParrySkill: 0
-  HeavyAttackSkill: 9
+  HeavyAttackSkill: 8
   EvadeSkill: 1
   InitialAttackDelay: 0.25
   AttackInterval: 0.75
@@ -5550,8 +5542,9 @@ MonoBehaviour:
   - {fileID: 8649806324706087086}
   - {fileID: 4939735440696036935}
   - {fileID: 5620114140220507045}
-  _parryMaterial: {fileID: 2100000, guid: a0265ff101a81f74980180c7d4c618e2, type: 2}
-  _evadeMaterial: {fileID: 2100000, guid: 78749fcce4e3c8f4ea8b40b378fafa59, type: 2}
+  player: {fileID: 0}
+  _parryMaterial: {fileID: 2100000, guid: 1af4c51e3c6958640baae1fc6a6824f7, type: 2}
+  _evadeMaterial: {fileID: 2100000, guid: 581fd06a499becd4e934959756a10138, type: 2}
   _healthSystem: {fileID: 9066351544228141521}
   showParryIndicator: 1
   showEvadeIndicator: 0

@@ -9,6 +9,11 @@ public class HealthBarHandler : MonoBehaviour
     public Slider _healthBarSlider;
     public bool IsAI;
 
+    public Transform target; // The target game object
+    public RectTransform _rectTransform; // The health bar UI element
+    public Vector3 offset; // Offset for the health bar position
+    private Camera mainCamera;
+
     private void Awake()
     {
         if (!IsAI)
@@ -20,6 +25,7 @@ public class HealthBarHandler : MonoBehaviour
         {
             _healthBarSlider.gameObject.SetActive(false);
             _healthBarSlider.maxValue = _healthSystem.MaxHealth;
+            _rectTransform = GetComponent<RectTransform>();
         }
 
 
@@ -44,6 +50,29 @@ public class HealthBarHandler : MonoBehaviour
         _healthSystem.OnDisableHealth -= DisableHealthBar;
     }
 
+    void Start()
+    {
+        mainCamera = Camera.main;
+    }
+    void Update()
+    {
+        if (IsAI)
+        {
+            if (_healthBarSlider.IsActive())
+            {
+                // Convert the target's world position to screen space
+                Vector3 screenPosition = mainCamera.WorldToScreenPoint(target.position + new Vector3(0f,1.8f,0f));
+
+                // Clamp the screen position to ensure it's within the screen bounds
+                screenPosition.x = Mathf.Clamp(screenPosition.x, 0, Screen.width);
+                screenPosition.y = Mathf.Clamp(screenPosition.y, 0, Screen.height);
+
+                // Set the health bar's position
+                _rectTransform.position = screenPosition;
+            }
+        }
+    }
+
     public void SetHealthBarValue()
     {
         if (IsAI)
@@ -59,7 +88,7 @@ public class HealthBarHandler : MonoBehaviour
             _healthBarSlider.gameObject.SetActive(false);
         }
     }
-    
+
     public void EnableHealthBar()
     {
         _healthBarSlider.value = _healthSystem.CurrentHealth;

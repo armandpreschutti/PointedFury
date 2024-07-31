@@ -111,6 +111,10 @@ public class StunnedState : BaseState
             }
           
         }
+        else if (Ctx.IsEvadeSucces)
+        {
+            SwitchState(Factory.Evade());
+        }
         
     }
 

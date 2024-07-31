@@ -49,6 +49,7 @@ public class InputVibration : MonoBehaviour
         _stateMachine.OnParrySuccessful += ParryRumble;
         _stateMachine.OnParryRecieved += ParriedRumble;
         _stateMachine.OnHurt += HurtRumble;
+        PauseMenuController.OnGamePaused += StopAllRumble;
     }
 
     private void OnDisable()
@@ -60,6 +61,7 @@ public class InputVibration : MonoBehaviour
         _stateMachine.OnParrySuccessful -= ParryRumble;
         _stateMachine.OnParryRecieved -= ParriedRumble;
         _stateMachine.OnHurt -= HurtRumble;
+        PauseMenuController.OnGamePaused -= StopAllRumble;
     }
 
     void Start()
@@ -111,6 +113,11 @@ public class InputVibration : MonoBehaviour
     {
         gamepad.SetMotorSpeeds(HurtLowIntesitiy, HurtHighIntesitiy);
         StartCoroutine(StopRumble(HurtRumbleTime));
+    }
+
+    public void StopAllRumble(bool value)
+    {
+        gamepad.SetMotorSpeeds(0,0);
     }
 
     private IEnumerator StopRumble(float duration)

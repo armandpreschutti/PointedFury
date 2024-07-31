@@ -9,6 +9,9 @@ public class AIStrafingState : AIBaseState
     
     float stateTime;
     int strafeDirection;
+    float initialAttackTime;
+    float disengageTime;
+    float approachTime;
     public override void EnterState()
     {
        // Debug.LogWarning("Enemmy has entered STRAFING state");
@@ -36,9 +39,25 @@ public class AIStrafingState : AIBaseState
 
     public override void CheckSwitchStates()
     {
-        if(stateTime > 3f)
+        if(stateTime > Ctx._strafeInterval)
         {
             SwitchState(Factory.Idle());
+        }
+        if (Ctx.DistanceToPlayer(Ctx._currentTarget.transform) > (Ctx.targetDistance + Ctx.DistanceBuffer))
+        {
+            approachTime += Time.deltaTime;
+            if (approachTime >= .25f)
+            {
+                SwitchState(Factory.Approaching());
+            }
+        }
+        else if (Ctx.DistanceToPlayer(Ctx._currentTarget.transform) < (Ctx.targetDistance - Ctx.DistanceBuffer) && !Ctx._currentTarget.GetComponent<StateMachine>().IsAttacking)
+        {
+            disengageTime += Time.deltaTime;
+            if (disengageTime >= .25f)
+            {
+                SwitchState(Factory.Disengaging());
+            }
         }
         else if(Ctx.isHurt)
         {

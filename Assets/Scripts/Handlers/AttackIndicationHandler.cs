@@ -7,7 +7,7 @@ public class AttackIndicationHandler : MonoBehaviour
 {
     public StateMachine _stateMachine;
     public GameObject[] _indicators;
-
+    public StateMachine player;
     public Material _parryMaterial;
     public Material _evadeMaterial;
     public HealthSystem _healthSystem;
@@ -52,7 +52,6 @@ public class AttackIndicationHandler : MonoBehaviour
     {
         if (value)
         {
-            Debug.Log("Trying to set Parry Material");
             for (int i = 0; i < _indicators.Length; i++)
             {
                 SkinnedMeshRenderer renderer = _indicators[i].GetComponent<SkinnedMeshRenderer>();
@@ -75,7 +74,6 @@ public class AttackIndicationHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("Trying to set Original Material");
             for (int i = 0; i < _indicators.Length; i++)
             {
                 SkinnedMeshRenderer renderer = _indicators[i].GetComponent<SkinnedMeshRenderer>();

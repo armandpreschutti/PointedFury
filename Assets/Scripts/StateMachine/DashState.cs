@@ -121,6 +121,10 @@ public class DashState : BaseState
             }
 
         }
+        else if (Ctx.IsParrySucces)
+        {
+            SwitchState(Factory.Parry());
+        }
         
     }
 

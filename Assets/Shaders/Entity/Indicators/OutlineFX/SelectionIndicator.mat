@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EvadeMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: a345e28fea3fa6a459e6bc6294a93224, type: 3}
+  m_Name: SelectionIndicator
+  m_Shader: {fileID: -6465566751694194690, guid: cec003bd6450a7446b7835e2edfd59bf, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,7 +29,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Texture:
-        m_Texture: {fileID: 2800000, guid: fed620919b6ff314588f54a3262631e9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 901c78bdc971fe34a96ca18649322e8b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -84,6 +84,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_b6dad88b547f42aba4c566e37c0a67c5_Out_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: fdecb5767e47411408963ab5a67bbf7e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -119,6 +123,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _Outline_Thickness: 0.02
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -135,9 +140,10 @@ Material:
     - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Base_Color: {r: 0.056962013, g: 1, b: 0, a: 1}
+    - _Base_Color: {r: 1, g: 0.5579947, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Outline_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Scroll_Velocity: {r: 0, g: 3, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

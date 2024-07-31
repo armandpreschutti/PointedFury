@@ -30,6 +30,8 @@ public class AIBrain : MonoBehaviour
     public bool _initialAttack;
     public bool _isAttacking;
     public float _strafeDirection;
+    public float _strafeInterval;
+    public float _strafeTime;
     public int comboCount;
     public int hitCount;
 

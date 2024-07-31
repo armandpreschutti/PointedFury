@@ -75,6 +75,10 @@ public class DeflectState : BaseState
                     SwitchState(Factory.Hurt());
                 }
             }
+            else if (Ctx.IsParrySucces)
+            {
+                SwitchState(Factory.Parry());
+            }
 
 
         }

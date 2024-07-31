@@ -8,20 +8,15 @@ public class AIIDleState : AIBaseState
 
 
     float stateTime;
-   // float attackTime/*e = Random.Range(0f, 1f);*/;
     float initialAttackTime;
     float disengageTime;
     float approachTime;
-/*    int blockChance;
-    int evadeChance;*/
     public override void EnterState()
     {
         //Debug.LogWarning("Player has entered IDLE state");
         
         Ctx.comboCount = 0;
-        
-/*        blockChance = Random.Range(1, 11);
-        evadeChance = Random.Range(1, 11);*/
+
         Ctx.hitCount = 0;
     }
 
@@ -48,7 +43,7 @@ public class AIIDleState : AIBaseState
         if (Ctx.DistanceToPlayer(Ctx._currentTarget.transform) > (Ctx.targetDistance + Ctx.DistanceBuffer))
         {
             approachTime += Time.deltaTime;
-            if (approachTime >= 1f)
+            if (approachTime >= .5f)
             {
                 SwitchState(Factory.Approaching());
             }
@@ -56,7 +51,7 @@ public class AIIDleState : AIBaseState
         else if (Ctx.DistanceToPlayer(Ctx._currentTarget.transform) < (Ctx.targetDistance - Ctx.DistanceBuffer) && !Ctx._currentTarget.GetComponent<StateMachine>().IsAttacking)
         {
             disengageTime += Time.deltaTime;
-            if (disengageTime >= 1f)
+            if (disengageTime >= .5f)
             {
                 SwitchState(Factory.Disengaging());
             }
@@ -78,7 +73,7 @@ public class AIIDleState : AIBaseState
 
             }
         }
-        else if (Ctx.isWatcher && stateTime > 5f && !Ctx.isHurt)
+        else if (Ctx.isWatcher && stateTime > Ctx._strafeInterval && !Ctx.isHurt)
         {
             SwitchState(Factory.Strafing());
         }

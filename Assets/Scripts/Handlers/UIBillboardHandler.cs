@@ -10,10 +10,10 @@ public class UIBillboardHandler : MonoBehaviour
     {
         _camera = Camera.main;
     }
-    // Update is called once per frame
+   /* // Update is called once per frame
     void Update()
     {
         transform.rotation = _camera.transform.rotation;
-        /* transform.rotation = Quaternion.LookRotation(transform.position - _camera.transform.position);*/
-    }
+        *//* transform.rotation = Quaternion.LookRotation(transform.position - _camera.transform.position);*//*
+    }*/
 }
