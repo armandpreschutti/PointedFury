@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TOGGLE HEALTH
+  m_text: TOGGLE VITALS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 23df5213d13049645827297ac3adb66b, type: 2}
   m_sharedMaterial: {fileID: -2668977801964897891, guid: 23df5213d13049645827297ac3adb66b, type: 2}
@@ -793,6 +793,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5097342563021303938, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
+      propertyPath: ErrorRumbleTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097342563021303938, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
+      propertyPath: ErrorLowIntesitiy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5097342563021303938, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
+      propertyPath: ErrorHighIntesitiy
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7296948876398782289, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -856,6 +868,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7296948876398782289, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
   m_PrefabInstance: {fileID: 607156329}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &607156332 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7285296566947117560, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
+  m_PrefabInstance: {fileID: 607156329}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607156330}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72cb6149d86b954498566949633d224, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &713849139
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,10 +971,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  healthToggleButton: {fileID: 845455155}
+  vitalsToggleButton: {fileID: 845455155}
   enemyTypeButton: {fileID: 519282827}
-  healthDisabledButton: {fileID: 21300000, guid: d3ca996cc16f29b4790afeef462195b5, type: 3}
-  healthEnabledButton: {fileID: 21300000, guid: 1c25e8773b0a7fd42b213078c2e5cb94, type: 3}
+  VitalsDisabledButton: {fileID: 21300000, guid: d3ca996cc16f29b4790afeef462195b5, type: 3}
+  VitalsEnabledButton: {fileID: 21300000, guid: 1c25e8773b0a7fd42b213078c2e5cb94, type: 3}
   WeakEnemyButton: {fileID: 21300000, guid: 320ff1cc37aab254d96ed3fbf009475b, type: 3}
   MediumEnemyButton: {fileID: 21300000, guid: 42e772cf5c4699d4aaad912c3741081a, type: 3}
   HeavyEnemyButton: {fileID: 21300000, guid: 031288a9f02ffde439dfc7a14191da62, type: 3}
@@ -959,14 +982,14 @@ MonoBehaviour:
   PracticeSettingsControls: {fileID: 1218527237}
   PracticeSettingsButton: {fileID: 1965418982}
   enemyTypeIndex: 0
-  isHealthActive: 0
+  isVitalsActive: 0
 --- !u!43 &758249754
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh398742
+  m_Name: pb_Mesh34750
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -1137,7 +1160,7 @@ GameObject:
   - component: {fileID: 845455156}
   - component: {fileID: 845455155}
   m_Layer: 5
-  m_Name: HealthSystemsButton
+  m_Name: VitalSystemsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1202,6 +1225,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845455153}
   m_CullTransparentMesh: 1
+--- !u!1 &852273252 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2822907194972569982, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+  m_PrefabInstance: {fileID: 4842592413467441147}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &852273257
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852273252}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 489fac5f8d5997a43b6c6643c0de41ee, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &883351225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1946,7 +1995,7 @@ MonoBehaviour:
   tempSpawn: {fileID: 1206073215}
   spawnArea: {fileID: 1695848213}
   spawnVFX: {fileID: 6214259536068311756, guid: 26672f3e1246fb443b38cf6cb0db8d5d, type: 3}
-  isHealthActive: 0
+  isVitalsActive: 0
   enemyTypeIndex: 0
 --- !u!320 &1252125261
 PlayableDirector:
@@ -3558,17 +3607,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 256152022}
     m_Modifications:
+    - target: {fileID: 2812030204867742112, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_Value
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 2839731334753200400, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487154932794884907, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326699718754772505, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4598024578861887029, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
       propertyPath: m_Value
-      value: 2
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4598024578861887029, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
       propertyPath: m_MaxValue
       value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5383661168814895249, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 852273257}
+    - target: {fileID: 5383661168814895249, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: _staminaSystem
+      value: 
+      objectReference: {fileID: 607156332}
+    - target: {fileID: 5799888875762035512, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5799888875762035512, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7281730623666234845, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
       propertyPath: m_RootOrder
@@ -3618,10 +3695,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 9028719849599721795, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2822907194972569982, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 852273257}
   m_SourcePrefab: {fileID: 100100000, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
 --- !u!1001 &5708990407095097725
 PrefabInstance:

@@ -53,7 +53,7 @@ public class IdleState : BaseState
             {
                 SwitchState(Factory.LightAttack());
             }
-            else if (Ctx.IsHeavyAttackPressed)
+            else if (Ctx.IsHeavyAttackPressed && !Ctx.IsDepeleted)
             {
                 SwitchState(Factory.HeavyAttack());
             }

@@ -3848,7 +3848,7 @@ MonoBehaviour:
   HeavyAttackSkill: 6
   EvadeSkill: 1
   InitialAttackDelay: 0.25
-  AttackInterval: 0.5
+  AttackInterval: 0.75
   timeSinceAttack: 0
   isActivated: 0
   isAttacker: 0

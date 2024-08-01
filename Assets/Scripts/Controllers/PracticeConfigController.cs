@@ -9,15 +9,15 @@ public class PracticeConfigController : MonoBehaviour
     private PracticeControls _practiceControls;
     public bool isPaused;
     public static Action OnSpawnEnemy;
-    public static Action OnToggleHealthSystems;
+    public static Action OnToggleVitalsSystems;
     public static Action OnCycleEnemyTypes;
     public static Action OnClearEnemies;
 
-    public Image healthToggleButton;
+    public Image vitalsToggleButton;
     public Image enemyTypeButton;
 
-    public Sprite healthDisabledButton;
-    public Sprite healthEnabledButton;
+    public Sprite VitalsDisabledButton;
+    public Sprite VitalsEnabledButton;
     public Sprite WeakEnemyButton;
     public Sprite MediumEnemyButton;
     public Sprite HeavyEnemyButton;
@@ -25,19 +25,19 @@ public class PracticeConfigController : MonoBehaviour
     public GameObject PracticeSettingsControls;
     public GameObject PracticeSettingsButton;
     public int enemyTypeIndex;
-    public bool isHealthActive;
+    public bool isVitalsActive;
 
     private void Awake()
     {
         _practiceControls = new PracticeControls();
         enemyTypeIndex = 1;
-        if (isHealthActive)
+        if (isVitalsActive)
         {
-            healthToggleButton.sprite = healthEnabledButton;
+            vitalsToggleButton.sprite = VitalsEnabledButton;
         }
         else
         {
-            healthToggleButton.sprite = healthDisabledButton;
+            vitalsToggleButton.sprite = VitalsDisabledButton;
         }
     }
 
@@ -69,13 +69,13 @@ public class PracticeConfigController : MonoBehaviour
         }
     }
 
-    private void EnableHealthSystemsInput()
+    private void EnableVitalsSystemsInput()
     {
         if(!isPaused && PracticeSettingsControls.activeSelf)
         {
             //Debug.Log("Player is setting Health System");
-            SetHealthToggleButton();
-            OnToggleHealthSystems?.Invoke();
+            SetVitalsToggleButton();
+            OnToggleVitalsSystems?.Invoke();
         }
     }
 
@@ -116,7 +116,7 @@ public class PracticeConfigController : MonoBehaviour
     private void SubscribeToActions()
     {
         _practiceControls.Player.SpawnEnemy.performed += ctx => SpawnEnemyInput();
-        _practiceControls.Player.ToggleHealthSystems.performed += ctx => EnableHealthSystemsInput();
+        _practiceControls.Player.ToggleHealthSystems.performed += ctx => EnableVitalsSystemsInput();
         _practiceControls.Player.CycleEnemyTypes.performed+= ctx => CycleEnemyTypesInput();
         _practiceControls.Player.ClearEnemies.performed+= ctx => ClearEnemiesInput();
         _practiceControls.Player.TogglePracticeControls.performed += ctx => TogglePracticeControls(ctx.ReadValueAsButton());
@@ -125,7 +125,7 @@ public class PracticeConfigController : MonoBehaviour
     private void UnsubscribeToActions()
     {
         _practiceControls.Player.SpawnEnemy.performed -= ctx => SpawnEnemyInput();
-        _practiceControls.Player.ToggleHealthSystems.performed -= ctx => EnableHealthSystemsInput();
+        _practiceControls.Player.ToggleHealthSystems.performed -= ctx => EnableVitalsSystemsInput();
         _practiceControls.Player.CycleEnemyTypes.performed -= ctx => CycleEnemyTypesInput();
         _practiceControls.Player.ClearEnemies.performed -= ctx => ClearEnemiesInput();
         _practiceControls.Player.TogglePracticeControls.performed -= ctx => TogglePracticeControls(ctx.ReadValueAsButton());
@@ -157,17 +157,17 @@ public class PracticeConfigController : MonoBehaviour
                 break;
         }
     }
-    public void SetHealthToggleButton()
+    public void SetVitalsToggleButton()
     {
-        isHealthActive = !isHealthActive;
+        isVitalsActive = !isVitalsActive;
 
-        if (isHealthActive)
+        if (isVitalsActive)
         {
-            healthToggleButton.sprite = healthEnabledButton;
+            vitalsToggleButton.sprite = VitalsEnabledButton;
         }
         else
         {
-            healthToggleButton.sprite = healthDisabledButton;
+            vitalsToggleButton.sprite = VitalsDisabledButton;
         }
     }
 }

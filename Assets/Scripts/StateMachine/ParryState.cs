@@ -64,7 +64,7 @@ public class ParryState : BaseState
                     Ctx.IsHeavyAttackPressed = false;
                     SwitchState(Factory.LightAttack());
                 }
-                else if (Ctx.IsHeavyAttackPressed)
+                else if (Ctx.IsHeavyAttackPressed && !Ctx.IsDepeleted)
                 {
                     Ctx.IsLightAttackPressed = false;
                     SwitchState(Factory.HeavyAttack());
@@ -93,6 +93,10 @@ public class ParryState : BaseState
             else if (Ctx.IsFinished)
             {
                 SwitchState(Factory.Finished());
+            }
+            else if (Ctx.IsDashPressed)
+            {
+                SwitchState(Factory.Dash());
             }
         }
     }

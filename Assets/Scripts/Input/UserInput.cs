@@ -8,6 +8,7 @@ public class UserInput : MonoBehaviour
 {
     // Player input variables
     private StateMachine _stateMachine;
+    public StaminaSystem staminaSystem;
     private PlayerControls _playerControls;
     public bool isPaused;
     public static Action OnPausePressed;
@@ -15,7 +16,7 @@ public class UserInput : MonoBehaviour
     public static Action OnToggleHealthSystemsPressed;
     public static Action OnResetGamePressed;
     public static Action OnDisableEnemiesPresssed;
-
+    public static Action OnInputError;
     public Vector2 _targetMoveInput;
     public float _moveInputSmoothTime = 0.1f; // Adjust this value to change the smoothing speed
     public Vector2 _currentMoveInputVelocity;
@@ -24,6 +25,10 @@ public class UserInput : MonoBehaviour
     {
         _playerControls = new PlayerControls();
         _stateMachine = GetComponent<StateMachine>();
+        if(GetComponent<StaminaSystem>() != null)
+        {
+            staminaSystem = GetComponent<StaminaSystem>();
+        }
     }
 
     // This function is called when the object becomes enabled and active
@@ -96,9 +101,13 @@ public class UserInput : MonoBehaviour
     {
         if(!isPaused)
         {
-            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsHeavyAttackPressed)
+            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsHeavyAttackPressed && !staminaSystem.isDepleted)
             {
                 _stateMachine.IsLightAttackPressed = true;
+            }
+            else if (staminaSystem.isDepleted)
+            {
+                OnInputError?.Invoke();
             }
             else
             {
@@ -112,11 +121,14 @@ public class UserInput : MonoBehaviour
     {
         if (!isPaused)
         {
-            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsLightAttackPressed)
+            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsLightAttackPressed & !staminaSystem.isDepleted)
             {
                 _stateMachine.IsHeavyAttackPressed = true;
             }
-
+            else if (staminaSystem.isDepleted)
+            {
+                OnInputError?.Invoke();
+            }
             else
             {
                 return;
@@ -174,6 +186,14 @@ public class UserInput : MonoBehaviour
             if (/*!_stateMachine.IsEvading && */!_stateMachine.IsDeflecting)
             {
                 _stateMachine.OnAttemptParry?.Invoke();
+            }
+            else if (staminaSystem.isDepleted)
+            {
+                OnInputError?.Invoke();
+            }
+            else
+            {
+                return;
             }
         }
     }

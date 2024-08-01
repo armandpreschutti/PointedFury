@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class InputVibration : MonoBehaviour
 {
@@ -35,6 +36,10 @@ public class InputVibration : MonoBehaviour
     public float HurtLowIntesitiy;
     public float HurtHighIntesitiy;
 
+    public float ErrorRumbleTime;
+    public float ErrorLowIntesitiy;
+    public float ErrorHighIntesitiy;
+
     private void Awake()
     {
         _stateMachine = GetComponent<StateMachine>();
@@ -49,7 +54,9 @@ public class InputVibration : MonoBehaviour
         _stateMachine.OnParrySuccessful += ParryRumble;
         _stateMachine.OnParryRecieved += ParriedRumble;
         _stateMachine.OnHurt += HurtRumble;
+        UserInput.OnInputError += ErrorRumble;
         PauseMenuController.OnGamePaused += StopAllRumble;
+        
     }
 
     private void OnDisable()
@@ -61,6 +68,7 @@ public class InputVibration : MonoBehaviour
         _stateMachine.OnParrySuccessful -= ParryRumble;
         _stateMachine.OnParryRecieved -= ParriedRumble;
         _stateMachine.OnHurt -= HurtRumble;
+        UserInput.OnInputError -= ErrorRumble;
         PauseMenuController.OnGamePaused -= StopAllRumble;
     }
 
@@ -118,6 +126,12 @@ public class InputVibration : MonoBehaviour
     public void StopAllRumble(bool value)
     {
         gamepad.SetMotorSpeeds(0,0);
+    }
+
+    public void ErrorRumble()
+    {
+        gamepad.SetMotorSpeeds(ErrorLowIntesitiy, ErrorHighIntesitiy);
+        StartCoroutine(StopRumble(ErrorRumbleTime));
     }
 
     private IEnumerator StopRumble(float duration)

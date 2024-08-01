@@ -54,7 +54,7 @@ public class EvadeState : BaseState
                     Ctx.IsHeavyAttackPressed = false;
                     SwitchState(Factory.LightAttack());
                 }
-                else if (Ctx.IsHeavyAttackPressed)
+                else if (Ctx.IsHeavyAttackPressed && !Ctx.IsDepeleted)
                 {
                     Ctx.IsLightAttackPressed = false;
                     SwitchState(Factory.HeavyAttack());

@@ -11034,6 +11034,7 @@ GameObject:
   - component: {fileID: 1176269870918965308}
   - component: {fileID: -5195436895091074836}
   - component: {fileID: 384929324697353725}
+  - component: {fileID: 7285296566947117560}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -11098,6 +11099,7 @@ MonoBehaviour:
   EnemiesNearby: []
   SlowMotionSpeed: 0.35
   IsAI: 0
+  _staminaSystem: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   DebugCurrentSuperState: 
   DebugCurrentSubState: 
@@ -11147,6 +11149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1491bfd62fa469f4baf9754304f4b0a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  staminaSystem: {fileID: 0}
   isPaused: 0
   _targetMoveInput: {x: 0, y: 0}
   _moveInputSmoothTime: 30
@@ -11286,6 +11289,9 @@ MonoBehaviour:
   HurtRumbleTime: 0.2
   HurtLowIntesitiy: 0.25
   HurtHighIntesitiy: 0.5
+  ErrorRumbleTime: 0.1
+  ErrorLowIntesitiy: 1
+  ErrorHighIntesitiy: 1
 --- !u!114 &1176269870918965308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11344,6 +11350,32 @@ MonoBehaviour:
   LightAttackImpactForce: 125
   HeavyAttackImpactForce: 250
   ParryImpactForce: 400
+--- !u!114 &7285296566947117560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2208048724951217285}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72cb6149d86b954498566949633d224, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateMachine: {fileID: 3438386013176793881}
+  MaxStamina: 100
+  MinStamina: 0
+  _currentStamina: 0
+  ReplenishRate: 20
+  ReplenishDelay: 2
+  DepletionThreshold: 5
+  ReplenishThreshold: 20
+  isDepleted: 0
+  HeavyAttackCost: 10
+  LightAttackCost: 5
+  ParryCost: 20
+  SprintCost: 0
+  stateTime: 0
 --- !u!1 &2636352460562707596
 GameObject:
   m_ObjectHideFlags: 0

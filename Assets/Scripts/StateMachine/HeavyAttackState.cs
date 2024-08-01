@@ -73,7 +73,7 @@ public class HeavyAttackState : BaseState
                 {
                     SwitchState(Factory.Stunned());
                 }
-                else if (Ctx.IsHeavyAttackPressed)
+                else if (Ctx.IsHeavyAttackPressed && !Ctx.IsDepeleted)
                 {
                     SwitchState(Factory.HeavyAttack());
                 }

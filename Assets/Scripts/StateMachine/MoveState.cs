@@ -61,7 +61,7 @@ public class MoveState : BaseState
             {
                 SwitchState(Factory.LightAttack());
             }
-            else if (Ctx.IsHeavyAttackPressed && !Ctx.IsAttacking)
+            else if (Ctx.IsHeavyAttackPressed && !Ctx.IsAttacking && !Ctx.IsDepeleted)
             {
                 SwitchState(Factory.HeavyAttack());
             }

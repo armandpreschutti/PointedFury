@@ -948,10 +948,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  healthToggleButton: {fileID: 845455155}
+  vitalsToggleButton: {fileID: 845455155}
   enemyTypeButton: {fileID: 519282827}
-  healthDisabledButton: {fileID: 21300000, guid: d3ca996cc16f29b4790afeef462195b5, type: 3}
-  healthEnabledButton: {fileID: 21300000, guid: 1c25e8773b0a7fd42b213078c2e5cb94, type: 3}
+  VitalsDisabledButton: {fileID: 21300000, guid: d3ca996cc16f29b4790afeef462195b5, type: 3}
+  VitalsEnabledButton: {fileID: 21300000, guid: 1c25e8773b0a7fd42b213078c2e5cb94, type: 3}
   WeakEnemyButton: {fileID: 21300000, guid: 320ff1cc37aab254d96ed3fbf009475b, type: 3}
   MediumEnemyButton: {fileID: 21300000, guid: 42e772cf5c4699d4aaad912c3741081a, type: 3}
   HeavyEnemyButton: {fileID: 21300000, guid: 031288a9f02ffde439dfc7a14191da62, type: 3}
@@ -959,7 +959,7 @@ MonoBehaviour:
   PracticeSettingsControls: {fileID: 1218527237}
   PracticeSettingsButton: {fileID: 1965418982}
   enemyTypeIndex: 0
-  isHealthActive: 0
+  isVitalsActive: 0
 --- !u!43 &758249754
 Mesh:
   m_ObjectHideFlags: 0
@@ -1946,7 +1946,7 @@ MonoBehaviour:
   tempSpawn: {fileID: 1206073215}
   spawnArea: {fileID: 1695848213}
   spawnVFX: {fileID: 6214259536068311756, guid: 26672f3e1246fb443b38cf6cb0db8d5d, type: 3}
-  isHealthActive: 0
+  isVitalsActive: 0
   enemyTypeIndex: 0
 --- !u!320 &1252125261
 PlayableDirector:
@@ -3452,6 +3452,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487154932794884907, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4598024578861887029, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
       propertyPath: m_Value
       value: 2
@@ -3459,6 +3463,14 @@ PrefabInstance:
     - target: {fileID: 4598024578861887029, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
       propertyPath: m_MaxValue
       value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5799888875762035512, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5799888875762035512, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7281730623666234845, guid: 773355ac70c4b7e409ad6b7cfd156edc, type: 3}
       propertyPath: m_RootOrder

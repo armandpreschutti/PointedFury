@@ -21,14 +21,14 @@ public class PracticeManager : MonoBehaviour
     public Transform tempSpawn;
     public Collider spawnArea;
     public GameObject spawnVFX;
-    public bool isHealthActive = false;
+    public bool isVitalsActive = false;
     public int enemyTypeIndex = 0;
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += LevelStarted;
         PracticeConfigController.OnSpawnEnemy += SpawnEnemy;
-        PracticeConfigController.OnToggleHealthSystems += OnToggleHealthSystems;
+        PracticeConfigController.OnToggleVitalsSystems += OnToggleVitalSystems;
         PracticeConfigController.OnCycleEnemyTypes += OnCycleEnemyTypes;
 
     }
@@ -36,7 +36,7 @@ public class PracticeManager : MonoBehaviour
     {
         SceneManager.sceneLoaded -= LevelStarted;
         PracticeConfigController.OnSpawnEnemy -= SpawnEnemy;
-        PracticeConfigController.OnToggleHealthSystems -= OnToggleHealthSystems;
+        PracticeConfigController.OnToggleVitalsSystems -= OnToggleVitalSystems;
         PracticeConfigController.OnCycleEnemyTypes -= OnCycleEnemyTypes;
     }
 
@@ -101,30 +101,35 @@ public class PracticeManager : MonoBehaviour
         // If the enemy has a HealthSystem component, set its active state based on isHealthActive
         if (healthSystem != null)
         {
-            healthSystem.enabled = isHealthActive;
+            healthSystem.enabled = isVitalsActive;
         }
     }
 
-    public void OnToggleHealthSystems()
+    public void OnToggleVitalSystems()
     {
-        isHealthActive = !isHealthActive;
+        isVitalsActive = !isVitalsActive;
 
         // Find all HealthSystem components in the scene
         HealthSystem[] healthSystems = FindObjectsOfType<HealthSystem>();
-
+        StaminaSystem[] staminaSystems = FindObjectsOfType<StaminaSystem>();
         // Populate the array with the GameObjects
         for (int i = 0; i < healthSystems.Length; i++)
         {
-            healthSystems[i].enabled = isHealthActive;
+            healthSystems[i].enabled = isVitalsActive;
         }
-        if(isHealthActive)
+        for (int i = 0; i < staminaSystems.Length; i++)
+        {
+            staminaSystems[i].enabled = isVitalsActive;
+        }
+        if (isVitalsActive)
         {
             GameObject.Find("Player").GetComponent<HealthSystem>().EnableHealth();
+            GameObject.Find("Player").GetComponent<StaminaSystem>().EnableStamina();
         }
         else
         {
             GameObject.Find("Player").GetComponent<HealthSystem>().DisableHealth();
-
+            GameObject.Find("Player").GetComponent<StaminaSystem>().DisableStamina();
         }
     }
     

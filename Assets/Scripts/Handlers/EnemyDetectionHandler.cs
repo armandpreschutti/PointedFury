@@ -6,7 +6,6 @@ using UnityEngine;
 public class EnemyDetectionHandler : MonoBehaviour
 {
     [SerializeField] StateMachine _stateMachine;
-    //[SerializeField] List<GameObject> _enemiesNearby = new List<GameObject>(); // No longer using a list
     [SerializeField] string _enemyTag;
 
     [Tooltip("The radius of the enemy detection zone when not aiming")]
@@ -21,6 +20,7 @@ public class EnemyDetectionHandler : MonoBehaviour
     {
         _stateMachine = GetComponentInParent<StateMachine>();
     }
+
     private void OnEnable()
     {
         PracticeConfigController.OnClearEnemies += ClearAllEnemies;
@@ -30,6 +30,7 @@ public class EnemyDetectionHandler : MonoBehaviour
     {
         PracticeConfigController.OnClearEnemies -= ClearAllEnemies;
     }
+
     private void Update()
     {
         if (!_stateMachine.IsParrying)
@@ -72,6 +73,8 @@ public class EnemyDetectionHandler : MonoBehaviour
 
     private void AddToArray(GameObject enemy)
     {
+        if (enemy == null) return; // Null check
+
         // Resize the array and add the new enemy
         Array.Resize(ref _stateMachine.EnemiesNearby, _stateMachine.EnemiesNearby.Length + 1);
         _stateMachine.EnemiesNearby[_stateMachine.EnemiesNearby.Length - 1] = enemy;
@@ -99,7 +102,7 @@ public class EnemyDetectionHandler : MonoBehaviour
 
     public void ProximityDetection()
     {
-        if (/*!_stateMachine.IsAttacking &&*/ !_stateMachine.IsDeflecting)
+        if (!_stateMachine.IsDeflecting)
         {
             float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
             Transform[] closestTargets = new Transform[3] { null, null, null };
@@ -138,7 +141,7 @@ public class EnemyDetectionHandler : MonoBehaviour
 
     public void StickDetection()
     {
-        if (/*!_stateMachine.IsAttacking &&*/ !_stateMachine.IsDeflecting)
+        if (!_stateMachine.IsDeflecting)
         {
             if (closestTarget != null)
             {

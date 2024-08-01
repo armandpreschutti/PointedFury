@@ -57,7 +57,7 @@ public class DashState : BaseState
                    // Ctx.IsSprintAttack = true;
                     SwitchState(Factory.LightAttack());
                 }
-                else if (Ctx.IsHeavyAttackPressed)
+                else if (Ctx.IsHeavyAttackPressed && !Ctx.IsDepeleted)
                 {
                     Ctx.IsLightAttackPressed = false;
                    // Ctx.IsSprintAttack = true;

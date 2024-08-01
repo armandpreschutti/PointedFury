@@ -62,6 +62,8 @@ public class StateMachine : MonoBehaviour
 
     [Tooltip("Is the state machine controlled by Ai")]
     public bool IsAI;
+
+    public StaminaSystem _staminaSystem;
     // Debug State Variables
 
     public Vector3 moveDirection;
@@ -98,6 +100,7 @@ public class StateMachine : MonoBehaviour
     private bool _isFinishing = false;
     private bool _isFinished = false;
     private bool _isSprintAttack = false;
+    private bool _isDepleted;
 
 
     public string DebugCurrentSuperState;
@@ -254,6 +257,7 @@ public class StateMachine : MonoBehaviour
     public bool IsFinishing { get { return _isFinishing; } set { _isFinishing = value; } }
     public bool IsFinished { get { return _isFinished; } set { _isFinished = value; } }
     public bool IsSprintAttack { get { return _isSprintAttack; } set { _isSprintAttack = value; } }
+    public bool IsDepeleted { get { return _isDepleted; } set { _isDepleted = value; } }
 
     // Fighting
     public GameObject CurrentTarget { get { return _currentTarget; } set { _currentTarget = value; } }
@@ -309,6 +313,18 @@ public class StateMachine : MonoBehaviour
      {
          EnemiesNearby.Clear();
      }*/
+
+    public void CheckStamina(StaminaSystem staminaSystem)
+    {
+        if(staminaSystem != null)
+        {
+            _isDepleted = staminaSystem.isDepleted;
+        }
+        else
+        {
+            _isDepleted = false;
+        }
+    }
     public void GameOver()
     {
         OnGameOver?.Invoke(gameObject.name);
@@ -402,6 +418,7 @@ public class StateMachine : MonoBehaviour
         // Set references to components and initialize player controls
         _animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
+        _staminaSystem = GetComponent<StaminaSystem>();
     }
 
     // Initialize player state machine
@@ -722,18 +739,7 @@ public class StateMachine : MonoBehaviour
     public void OnDeathAnimationComplete()
     {
         _isKnockedBack = false;
-        //OnEnableRagdoll?.Invoke(_incomingAttackDirection, 500f);
-       // OnEnableRagdoll?.Invoke(_currentTarget.transform.position, 250f);
     }
-   /* public void OnDashMoveStart()
-    {
-        _isDashMoving = true;
-    }
-
-    public void OnDashMoveComplete()
-    {
-        _isDashMoving = false;
-    }*/
 
     public void OnDashAnimationComplete()
     {
