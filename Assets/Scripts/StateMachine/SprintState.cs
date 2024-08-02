@@ -94,6 +94,17 @@ public class SprintState : BaseState
                     SwitchState(Factory.Hurt());
                 }
             }
+            else if (Ctx.IsDepeleted)
+            {
+                if (Ctx.MoveInput != Vector2.zero)
+                {
+                    SwitchState(Factory.Move());
+                }
+                else
+                {
+                    SwitchState(Factory.Idle());
+                }
+            }
         }
     }
 

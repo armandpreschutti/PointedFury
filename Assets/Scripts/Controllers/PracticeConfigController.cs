@@ -93,7 +93,6 @@ public class PracticeConfigController : MonoBehaviour
     {
         if(!isPaused && PracticeSettingsControls.activeSelf)
         {
-            Debug.Log("Player has cleared enemies");
             OnClearEnemies?.Invoke();
 
         }

@@ -38,15 +38,11 @@ public class EnemyManagementSystem : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-      //  Debug.Log("Trigger entered by: " + other.tag); // Debug log
-
         if (other.CompareTag("Enemy"))
         {
             if (!Array.Exists(managedEnemies, e => e == other.gameObject))
             {
-                
                 AddEnemy(other.gameObject);
-               // Debug.Log("Enemy added: " + other.gameObject.name); // Debug log
             }
         }
 
@@ -65,9 +61,18 @@ public class EnemyManagementSystem : MonoBehaviour
                         OnEnemyDetected?.Invoke(true, enemy.transform.Find("PlayerCameraTarget"));
                         enemy.GetComponent<AIBrain>().enabled = true;
                         enemy.GetComponent<StateMachine>().CurrentTarget = other.gameObject;
-                        //enemy.GetComponent<StateMachine>().EnemiesNearby.Add(other.gameObject);
-                        Array.Resize(ref enemy.GetComponent<StateMachine>().EnemiesNearby, enemy.GetComponent<StateMachine>().EnemiesNearby.Length + 1);
-                        enemy.GetComponent<StateMachine>().EnemiesNearby[enemy.GetComponent<StateMachine>().EnemiesNearby.Length - 1] = enemy;
+
+                        StateMachine enemyStateMachine = enemy.GetComponent<StateMachine>();
+                        if (enemyStateMachine.EnemiesNearby == null)
+                        {
+                            enemyStateMachine.EnemiesNearby = new GameObject[1];
+                            enemyStateMachine.EnemiesNearby[0] = other.gameObject;
+                        }
+                        else
+                        {
+                            Array.Resize(ref enemyStateMachine.EnemiesNearby, enemyStateMachine.EnemiesNearby.Length + 1);
+                            enemyStateMachine.EnemiesNearby[enemyStateMachine.EnemiesNearby.Length - 1] = other.gameObject;
+                        }
                     }
                 }
 

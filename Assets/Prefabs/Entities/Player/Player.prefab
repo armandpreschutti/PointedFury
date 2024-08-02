@@ -11372,9 +11372,14 @@ MonoBehaviour:
   ReplenishThreshold: 20
   isDepleted: 0
   HeavyAttackCost: 10
+  HeavyChargeAttackCost: 40
   LightAttackCost: 5
+  LightChargeAttackCost: 20
   ParryCost: 20
-  SprintCost: 0
+  SprintCost: 40
+  DashCost: 5
+  EvadeReward: 20
+  DeflectReward: 10
   stateTime: 0
 --- !u!1 &2636352460562707596
 GameObject:
@@ -18952,7 +18957,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.1
+  m_Radius: 1.25
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2465214379850459127
 MonoBehaviour:

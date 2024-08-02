@@ -55,7 +55,6 @@ public class StateMachine : MonoBehaviour
     [Tooltip("The percentage of damage taken from blocking attack")]
     public float BlockDamageReduction;
     [Tooltip("A list of enemies detected via sphere casr")]
-    /*    public List<GameObject> EnemiesNearby = new List<GameObject>();*/
     public GameObject[] EnemiesNearby;
     [Tooltip("The time scale when parrying")]
     public float SlowMotionSpeed;
@@ -208,6 +207,7 @@ public class StateMachine : MonoBehaviour
     public static Action<String> OnGameOver;
     public Action OnParrySuccessful;
     public Action<bool, string> OnParry;
+    public Action<bool> OnEvade;
     // Getters and setters
     // Input
     public Vector2 MoveInput { get { return _moveInput; } set { _moveInput = value; } }
@@ -308,6 +308,7 @@ public class StateMachine : MonoBehaviour
         CheckIsFighting();
         SetMovementAnimationSpeed();
         SimulateGravity();
+        CheckStamina(_staminaSystem);
     }
     /* public void ClearNearbyEnemies()
      {
@@ -349,7 +350,7 @@ public class StateMachine : MonoBehaviour
         if (!_isAttacking && !_isHurt && !_isBlocking && !_isStunned && !_isEvading && !_isPostAttack && !_isParrying && !_isDashing && _controller != null)
         {
             moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
-            if (moveDirection != Vector3.zero && _controller != null)
+            if (moveDirection != Vector3.zero && _controller.enabled)
             {
                 _controller.Move(moveDirection * Time.deltaTime);
             }
@@ -389,7 +390,11 @@ public class StateMachine : MonoBehaviour
                 Vector3 forwardDirection = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up).normalized;
                 transform.LookAt(transform.position + forwardDirection);
                 moveDirection = new Vector3(InputDirection().x * TargetSpeed, _verticalSpeed, InputDirection().z * TargetSpeed);
-                _controller.Move(moveDirection * Time.deltaTime);
+                if (_controller.enabled)
+                {
+                    _controller.Move(moveDirection * Time.deltaTime);
+                }
+
 
             }
             else
@@ -454,9 +459,11 @@ public class StateMachine : MonoBehaviour
         {
             // Calculate the movement direction based on the forward direction of the character
             Vector3 moveDirection = transform.forward * (_attackType == "Light" ? LightAttackChargeSpeed : HeavyAttackChargeSpeed);
-
-            // Move the character using the CharacterController
-            _controller.Move(moveDirection * Time.deltaTime);
+            if(_controller.enabled == true)
+            {
+                // Move the character using the CharacterController
+                _controller.Move(moveDirection * Time.deltaTime);
+            }
         }
         else
         {
@@ -585,12 +592,20 @@ public class StateMachine : MonoBehaviour
 
     public void SetHitKnockBack()
     {
-        _controller.Move((transform.position - _incomingAttackDirection).normalized * KnockBackPower * Time.deltaTime);
+        if (_controller.enabled)
+        {
+            _controller.Move((transform.position - _incomingAttackDirection).normalized * KnockBackPower * Time.deltaTime);
+        }
+
     }
 
     public void SetStunnedKnockback()
     {
-        _controller.Move((transform.position - _incomingAttackDirection).normalized * (KnockBackPower)* Time.deltaTime);
+        if (_controller.enabled)
+        {
+            _controller.Move((transform.position - _incomingAttackDirection).normalized * (KnockBackPower) * Time.deltaTime);
+        }
+
     }
 
     public Vector3 InputDirection()
@@ -640,7 +655,7 @@ public class StateMachine : MonoBehaviour
     {
 
         SetAttackDirection();
-
+        _isEvadable = true;
     }
 
     public void OnAttackAnimationCharge()
@@ -648,7 +663,7 @@ public class StateMachine : MonoBehaviour
         OnAttackWindUp?.Invoke(true, _attackType);
 
         _isCharging = true;
-        _isEvadable = true;
+
         if (_attackType == "Heavy")
         {
             _isParryable = true;
@@ -954,7 +969,7 @@ public class StateMachine : MonoBehaviour
 
     public void CheckIsFighting()
     {
-        if (EnemiesNearby.Length > 0)
+        if (EnemiesNearby != null && EnemiesNearby.Length > 0)
         {
             //_isFighting = true;
             _animator.SetBool(AnimIDFight, true);

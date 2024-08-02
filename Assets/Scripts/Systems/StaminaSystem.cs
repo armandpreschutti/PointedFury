@@ -25,10 +25,14 @@ public class StaminaSystem : MonoBehaviour
     public Action OnExhaustedAttempt;
 
     public float HeavyAttackCost;
+    public float HeavyChargeAttackCost;
     public float LightAttackCost;
+    public float LightChargeAttackCost;
     public float ParryCost;
     public float SprintCost;
-
+    public float DashCost;
+    public float EvadeReward;
+    public float DeflectReward;
     public float stateTime;
 
     private void Awake()
@@ -41,6 +45,8 @@ public class StaminaSystem : MonoBehaviour
         _stateMachine.OnHeavyAttack += SpendStamina;
         _stateMachine.OnLightAttack += SpendStamina;
         _stateMachine.OnParry += SpendStamina;
+        _stateMachine.OnDash += SpendDashStamina;
+        _stateMachine.OnEvade += RewardEvade;
     }
 
     private void OnDisable()
@@ -48,6 +54,8 @@ public class StaminaSystem : MonoBehaviour
         _stateMachine.OnHeavyAttack -= SpendStamina;
         _stateMachine.OnLightAttack -= SpendStamina;
         _stateMachine.OnParry -= SpendStamina;
+        _stateMachine.OnDash -= SpendDashStamina;
+        _stateMachine.OnEvade -= RewardEvade;
     }
 
     private void Start()
@@ -61,6 +69,7 @@ public class StaminaSystem : MonoBehaviour
         {
             ActivateStamina();
             ResetDepletionCheck();
+            SprintDepletionCheck();
         }
 
         if (_currentStamina < MaxStamina)
@@ -71,16 +80,18 @@ public class StaminaSystem : MonoBehaviour
 
     public void ActivateStamina()
     {
-        if (_currentStamina < MaxStamina && stateTime > ReplenishDelay)
+        if(!_stateMachine.IsSprinting)
         {
-            _currentStamina += Time.deltaTime * ReplenishRate;
-        }
+            if (_currentStamina < MaxStamina && stateTime > ReplenishDelay)
+            {
+                _currentStamina += Time.deltaTime * ReplenishRate;
+            }
 
-        if (_currentStamina >= MaxStamina)
-        {
-            _currentStamina = MaxStamina;
+            if (_currentStamina >= MaxStamina)
+            {
+                _currentStamina = MaxStamina;
+            }
         }
-
     }
 
     public void ResetDepletionCheck()
@@ -92,6 +103,19 @@ public class StaminaSystem : MonoBehaviour
         else if (_currentStamina <= DepletionThreshold)
         {
             isDepleted = true;
+        }
+    }
+
+    public void SprintDepletionCheck()
+    {
+        if (_stateMachine.IsSprinting && ! isDepleted)
+        {
+            stateTime = 0f;
+            _currentStamina -= Time.deltaTime * SprintCost;
+            if(_currentStamina <= DepletionThreshold)
+            {
+                OnExhaustedAttempt?.Invoke();
+            }
         }
     }
 
@@ -117,6 +141,36 @@ public class StaminaSystem : MonoBehaviour
             {
 
             }
+        }
+    }
+
+    public void SpendDashStamina(bool value)
+    {
+        if (value)
+        {
+            if (!isDepleted)
+            {
+                if (_currentStamina >= GetActionCost("Dash"))
+                {
+                    stateTime = 0f;
+                    _currentStamina -= GetActionCost("Dash");
+                }
+                else
+                {
+                    //OnExhaustedAttempt?.Invoke();
+                    _currentStamina = 0;
+                    isDepleted = true;
+                }
+            }
+
+        }
+    }
+
+    public void RewardEvade(bool value)
+    {
+        if (value)
+        {
+            _currentStamina += EvadeReward;
         }
     }
 
@@ -152,13 +206,31 @@ public class StaminaSystem : MonoBehaviour
         switch (actionType)
         {
             case "Heavy":
-                cost = HeavyAttackCost;
+                if(_stateMachine.HeavyAttackID == 0)
+                {
+                    cost = HeavyChargeAttackCost;
+                }
+                else
+                {
+                    cost = HeavyAttackCost;
+                }               
                 break;
             case "Light":
-                cost = LightAttackCost;
+                if (_stateMachine.LightAttackID == 0)
+                {
+                    cost = LightChargeAttackCost;
+                }
+                else
+                {
+                    cost = LightAttackCost;
+                }
                 break;
             case "Parry":
                 cost = ParryCost;
+                break;
+
+            case "Dash":
+                cost = DashCost;
                 break;
             default:
                 cost = 0.0f;

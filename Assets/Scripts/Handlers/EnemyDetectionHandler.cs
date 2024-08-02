@@ -64,7 +64,7 @@ public class EnemyDetectionHandler : MonoBehaviour
         if (ArrayContains(other.gameObject))
         {
             RemoveFromArray(ArrayIndexOf(other.gameObject));
-            if (_stateMachine.EnemiesNearby.Length == 0)
+            if (_stateMachine.EnemiesNearby != null && _stateMachine.EnemiesNearby.Length == 0)
             {
                 _stateMachine.IsFighting = false;
             }
@@ -75,19 +75,33 @@ public class EnemyDetectionHandler : MonoBehaviour
     {
         if (enemy == null) return; // Null check
 
-        // Resize the array and add the new enemy
-        Array.Resize(ref _stateMachine.EnemiesNearby, _stateMachine.EnemiesNearby.Length + 1);
-        _stateMachine.EnemiesNearby[_stateMachine.EnemiesNearby.Length - 1] = enemy;
+        if (_stateMachine.EnemiesNearby == null)
+        {
+            _stateMachine.EnemiesNearby = new GameObject[1];
+            _stateMachine.EnemiesNearby[0] = enemy;
+        }
+        else
+        {
+            // Resize the array and add the new enemy
+            Array.Resize(ref _stateMachine.EnemiesNearby, _stateMachine.EnemiesNearby.Length + 1);
+            _stateMachine.EnemiesNearby[_stateMachine.EnemiesNearby.Length - 1] = enemy;
+        }
     }
 
     private void RemoveFromArray(int index)
     {
+        if (_stateMachine.EnemiesNearby == null || index < 0 || index >= _stateMachine.EnemiesNearby.Length) return;
+
         // Shift elements to remove the enemy at the specified index
         for (int i = index; i < _stateMachine.EnemiesNearby.Length - 1; i++)
         {
             _stateMachine.EnemiesNearby[i] = _stateMachine.EnemiesNearby[i + 1];
         }
         Array.Resize(ref _stateMachine.EnemiesNearby, _stateMachine.EnemiesNearby.Length - 1);
+       /* if(_stateMachine.EnemiesNearby.Length > 0)
+        {
+            Debug.LogWarning("Possible Leak");
+        }*/
     }
 
     private bool ArrayContains(GameObject enemy)
@@ -106,36 +120,43 @@ public class EnemyDetectionHandler : MonoBehaviour
         {
             float[] distances = new float[3] { Mathf.Infinity, Mathf.Infinity, Mathf.Infinity };
             Transform[] closestTargets = new Transform[3] { null, null, null };
-
-            for (int i = 0; i < _stateMachine.EnemiesNearby.Length; i++)
+            if(_stateMachine.EnemiesNearby != null)
             {
-                GameObject hit = _stateMachine.EnemiesNearby[i];
-                if (hit != null)
+                for (int i = 0; i < _stateMachine.EnemiesNearby.Length; i++)
                 {
-                    float distance = Vector3.Distance(transform.position, hit.transform.position);
-                    for (int j = 0; j < distances.Length; j++)
+                    GameObject hit = _stateMachine.EnemiesNearby[i];
+                    if (hit != null)
                     {
-                        if (distance < distances[j])
+                        float distance = Vector3.Distance(transform.position, hit.transform.position);
+                        for (int j = 0; j < distances.Length; j++)
                         {
-                            for (int k = distances.Length - 1; k > j; k--)
+                            if (distance < distances[j])
                             {
-                                distances[k] = distances[k - 1];
-                                closestTargets[k] = closestTargets[k - 1];
+                                for (int k = distances.Length - 1; k > j; k--)
+                                {
+                                    distances[k] = distances[k - 1];
+                                    closestTargets[k] = closestTargets[k - 1];
+                                }
+                                distances[j] = distance;
+                                closestTargets[j] = hit.transform;
+                                break;
                             }
-                            distances[j] = distance;
-                            closestTargets[j] = hit.transform;
-                            break;
                         }
                     }
                 }
-            }
 
-            closestTarget = closestTargets[0];
-            _stateMachine.ClosestTarget = closestTargets[0];
-            secondClosestTarget = closestTargets[1];
-            _stateMachine.SecondClosestTarget = closestTargets[1];
-            thirdClosestTarget = closestTargets[2];
-            _stateMachine.ThirdClosestTarget = closestTargets[2];
+                closestTarget = closestTargets[0];
+                _stateMachine.ClosestTarget = closestTargets[0];
+                secondClosestTarget = closestTargets[1];
+                _stateMachine.SecondClosestTarget = closestTargets[1];
+                thirdClosestTarget = closestTargets[2];
+                _stateMachine.ThirdClosestTarget = closestTargets[2];
+            }
+           /* else
+            {
+                _stateMachine.EnemiesNearby = new GameObject[0];
+            }*/
+           
         }
     }
 
@@ -143,31 +164,35 @@ public class EnemyDetectionHandler : MonoBehaviour
     {
         if (!_stateMachine.IsDeflecting)
         {
-            if (closestTarget != null)
+            if(_stateMachine.EnemiesNearby != null)
             {
-                if (_stateMachine.MoveInput != Vector2.zero && _stateMachine.EnemiesNearby.Length > 1)
+                if (closestTarget != null)
                 {
-                    RaycastHit info;
-                    if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius * 2, EnemyLayers))
+                    if (_stateMachine.MoveInput != Vector2.zero && _stateMachine.EnemiesNearby.Length > 1)
                     {
-                        if (ArrayContains(info.transform.gameObject))
+                        RaycastHit info;
+                        if (Physics.SphereCast(transform.position, 1f, _stateMachine.InputDirection(), out info, EnemyDetectionRadius * 2, EnemyLayers))
                         {
-                            _stateMachine.CurrentTarget = info.transform.gameObject;
+                            if (ArrayContains(info.transform.gameObject))
+                            {
+                                _stateMachine.CurrentTarget = info.transform.gameObject;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!_stateMachine.IsParrying)
+                        {
+                            _stateMachine.CurrentTarget = closestTarget.gameObject;
                         }
                     }
                 }
                 else
                 {
-                    if (!_stateMachine.IsParrying)
-                    {
-                        _stateMachine.CurrentTarget = closestTarget.gameObject;
-                    }
+                    _stateMachine.CurrentTarget = null;
                 }
             }
-            else
-            {
-                _stateMachine.CurrentTarget = null;
-            }
+         
         }
     }
 

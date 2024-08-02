@@ -805,6 +805,14 @@ PrefabInstance:
       propertyPath: ErrorHighIntesitiy
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7285296566947117560, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
+      propertyPath: HeavyChargeAttackCost
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7285296566947117560, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
+      propertyPath: LightChargeAttackCost
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 7296948876398782289, guid: d88ceefb626e7e24dbd2bbe9579ede7b, type: 3}
       propertyPath: m_RootOrder
       value: 4

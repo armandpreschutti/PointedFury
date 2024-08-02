@@ -16,17 +16,17 @@ public class ObjectFracturingHandler : MonoBehaviour
 
     public void SetDebrisLayer()
     {
-        Debug.LogError("Callback was called correctly");
         parent = GameObject.Find($"{gameObject.name}Fragments");
         children = parent.GetComponentsInChildren<Rigidbody>();
-        for (int i = 0; i < children.Length; i++)
+        if(children != null)
         {
-            Rigidbody fragment = children[i];
-            fragment.gameObject.layer = LayerMask.NameToLayer("Debris");
-            fragment.gameObject.tag = "Untagged";
+            for (int i = 0; i < children.Length; i++)
+            {
+                Rigidbody fragment = children[i];
+                fragment.gameObject.layer = LayerMask.NameToLayer("Debris");
+                fragment.gameObject.tag = "Untagged";
+            }
         }
-        //Destroy(this.gameObject);
-
     }
 
 }

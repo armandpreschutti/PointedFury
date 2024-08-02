@@ -156,9 +156,13 @@ public class UserInput : MonoBehaviour
     {
         if (!isPaused)
         {
-            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing)
+            if (!_stateMachine.IsHurt && !_stateMachine.IsStunned && !_stateMachine.IsDashing && !staminaSystem.isDepleted)
             {
                 _stateMachine.IsDashPressed = value;
+            }
+            else if (staminaSystem.isDepleted)
+            {
+                OnInputError?.Invoke();
             }
         }
     }

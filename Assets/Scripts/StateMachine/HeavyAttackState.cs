@@ -125,7 +125,6 @@ public class HeavyAttackState : BaseState
             }
             else if (Ctx.IsEvadeSucces)
             {
-                Debug.LogError("Player is Attempting to evade");
                 SwitchState(Factory.Evade());
             }
             else if (Ctx.IsDashPressed)
@@ -140,6 +139,13 @@ public class HeavyAttackState : BaseState
             {
                 SwitchState(Factory.Finished());
             }
+/*            else if (Ctx.IsBlockPressed)
+            {
+                if (Ctx.CurrentTarget != null && Ctx.CurrentTarget.GetComponent<StateMachine>().IsEvadable && Ctx.CurrentTarget.GetComponent<StateMachine>().IsAI)
+                {
+                    SwitchState(Factory.Deflect());
+                }
+            }*/
         }
         
     }

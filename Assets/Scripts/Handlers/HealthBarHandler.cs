@@ -19,7 +19,7 @@ public class HealthBarHandler : MonoBehaviour
         if (!IsAI)
         {
             _healthSystem = GameObject.Find("Player").GetComponent<HealthSystem>();
-
+            _healthBarSlider.maxValue = _healthSystem.MaxHealth;
         }
         else
         {

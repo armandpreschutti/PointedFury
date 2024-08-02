@@ -67,7 +67,7 @@ public class DashState : BaseState
                 {
                     if (Ctx.MoveInput != Vector2.zero)
                     {
-                        if (Ctx.IsSprintPressed)
+                        if (Ctx.IsSprintPressed && !Ctx.IsDepeleted)
                         {
                             SwitchState(Factory.Sprint());
                           //  Debug.LogWarning("DashTransitionCalled");

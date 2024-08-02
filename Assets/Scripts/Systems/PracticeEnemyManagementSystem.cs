@@ -6,7 +6,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class PracticeEnemyManagementSystem : MonoBehaviour
 {
-    public GameObject[] managedEnemies/* = new GameObject[10]*/; // assuming a max of 10 enemies
+    public GameObject[] managedEnemies;
     public int enemyCount = 0;
     public GameObject player;
     public GameObject newAttacker;
@@ -14,7 +14,6 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
     public bool zoneActive;
     public static Action<bool, Transform> OnEnemyDetected;
     public static Action<Transform> OnAttackerDeath;
-
     public static Action<Transform> OnTargetGroupFound;
     public static Action<bool, int> OnZoneEntered;
     public static Action<bool, int> OnZoneEnemiesCleared;
@@ -30,32 +29,27 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
     private Coroutine attackerCoroutine;
     private Coroutine cleanerCoroutine;
     public GameObject spawnVFX;
+
     private void Awake()
     {
-        //enemyCount = managedEnemies.Length;
         managedEnemies = new GameObject[100];
         player = GameObject.Find("Player");
-        //  Debug.LogError(managedEnemies.Length);
     }
 
     private void OnEnable()
     {
         PracticeConfigController.OnClearEnemies += ClearEnemies;
-        //player.GetComponent<StateMachine>().OnDeath += ClearEnemies;
     }
+
     private void OnDisable()
     {
         PracticeConfigController.OnClearEnemies -= ClearEnemies;
-           //player.GetComponent<StateMachine>().OnDeath -= ClearEnemies;
-        }
+    }
 
     public void ClearEnemies()
     {
-        Debug.Log("Attempting to clear enemies on system");
-        // Stop all running coroutines
         StopCoroutines();
 
-        // Clear all managed enemies
         for (int i = 0; i < managedEnemies.Length; i++)
         {
             if (managedEnemies[i] != null)
@@ -65,18 +59,15 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
             }
         }
 
-        // Reset enemy count and related states
         enemyCount = 0;
         currentAttacker = null;
         newAttacker = null;
         zoneActive = false;
 
-        // Notify listeners that the zone is cleared
         OnZoneEnemiesCleared?.Invoke(false, 0);
         OnInitiateTutorialUI?.Invoke(false);
 
         GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Enemy");
-        // Use a for loop to destroy each object
         for (int i = 0; i < objectsWithTag.Length; i++)
         {
             Instantiate(spawnVFX, objectsWithTag[i].transform.position, Quaternion.identity);
@@ -86,26 +77,32 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //  Debug.Log("Trigger entered by: " + other.tag); // Debug log
-
         if (other.CompareTag("Enemy"))
         {
             if (!Array.Exists(managedEnemies, e => e == other.gameObject))
             {
-
                 AddEnemy(other.gameObject);
                 zoneActive = true;
                 OnZoneEntered?.Invoke(true, enemyCount);
                 OnEnemyDetected?.Invoke(true, other.transform.Find("PlayerCameraTarget"));
                 other.GetComponent<AIBrain>().enabled = true;
                 other.GetComponent<StateMachine>().CurrentTarget = player.gameObject;
-                Array.Resize(ref other.GetComponent<StateMachine>().EnemiesNearby, other.GetComponent<StateMachine>().EnemiesNearby.Length + 1);
-                other.GetComponent<StateMachine>().EnemiesNearby[other.GetComponent<StateMachine>().EnemiesNearby.Length - 1] = other.gameObject;
+
+                StateMachine enemyStateMachine = other.GetComponent<StateMachine>();
+                if (enemyStateMachine.EnemiesNearby == null)
+                {
+                    enemyStateMachine.EnemiesNearby = new GameObject[1];
+                    enemyStateMachine.EnemiesNearby[0] = other.gameObject;
+                }
+                else
+                {
+                    Array.Resize(ref enemyStateMachine.EnemiesNearby, enemyStateMachine.EnemiesNearby.Length + 1);
+                    enemyStateMachine.EnemiesNearby[enemyStateMachine.EnemiesNearby.Length - 1] = other.gameObject;
+                }
                 SetAttacker();
                 StartCoroutines();
             }
         }
-
     }
 
     private void StartCoroutines()
@@ -121,7 +118,6 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
     {
         while (zoneActive)
         {
-            // Debug.Log("Set Attacker coroutine started");
             yield return new WaitForSeconds(NewAttackerCheckInterval);
             SetAttacker();
         }
@@ -131,7 +127,6 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
     {
         while (zoneActive)
         {
-            //Debug.Log("Enemy cleaner coroutine started");
             yield return new WaitForSeconds(EnemyDeathCheckInterval);
             CleanEnemyList();
         }
@@ -172,7 +167,7 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
                     }
                     OnAttackerDeath?.Invoke(enemy.transform.Find("PlayerCameraTarget").transform);
                     RemoveEnemy(enemy);
-                    i--; // Adjust index due to removal
+                    i--;
                 }
             }
 
@@ -200,16 +195,15 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
     {
         if (enemyCount < managedEnemies.Length)
         {
-
             managedEnemies[enemyCount] = enemy;
             enemyCount++;
-            //Debug.Log("Added enemy: " + enemy.name + ". Total enemies: " + enemyCount);
         }
         else
         {
             // Debug.LogWarning("Managed enemies array is full. Cannot add more enemies.");
         }
     }
+
     private void RemoveEnemy(GameObject enemy)
     {
         for (int i = 0; i < enemyCount; i++)
@@ -240,20 +234,17 @@ public class PracticeEnemyManagementSystem : MonoBehaviour
         if ((ClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)
             || enemyCount == 1))
         {
-            // Debug.Log("Closest Enemy picked");
             currentAttacker = ClosestEnemy();
         }
         else if (enemyCount > 1 && (SecondClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)))
         {
-            // Debug.Log("Random Enemy picked");
             currentAttacker = SecondClosestEnemy();
         }
         else if (enemyCount > 2 && (ThirdClosestEnemy().GetComponent<HealthSystem>().CurrentHealth > (ClosestEnemy().GetComponent<HealthSystem>().MaxHealth / 2)))
         {
-            // Debug.Log("Random Enemy picked");
             currentAttacker = ThirdClosestEnemy();
         }
-        else /*if (currentAttacker.GetComponent<HealthSystem>() != null && currentAttacker.GetComponent<HealthSystem>().CurrentHealth < 50 && enemyCount > 2 && SecondClosestEnemy().GetComponent<HealthSystem>().CurrentHealth < 50)*/
+        else
         {
             currentAttacker = ClosestEnemy();
         }

@@ -38,7 +38,9 @@ public class StaminabarHandler : MonoBehaviour
         _staminaSystem.OnReplenish += SetStaminaBarValue;
         _staminaSystem.OnEnableStamina += EnableStaminaBar;
         _staminaSystem.OnDisableStamina += DisableStaminaBar;
+        _staminaSystem.OnExhaustedAttempt += StartBarAnimation;
         UserInput.OnInputError += StartBarAnimation;
+        
     }
 
     private void OnDisable()
@@ -47,6 +49,7 @@ public class StaminabarHandler : MonoBehaviour
         _staminaSystem.OnReplenish -= SetStaminaBarValue;
         _staminaSystem.OnEnableStamina -= EnableStaminaBar;
         _staminaSystem.OnDisableStamina -= DisableStaminaBar;
+        _staminaSystem.OnExhaustedAttempt -= StartBarAnimation;
         UserInput.OnInputError -= StartBarAnimation;
     }
 

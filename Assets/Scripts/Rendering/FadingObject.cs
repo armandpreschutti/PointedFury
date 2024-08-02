@@ -24,8 +24,11 @@ public class FadingObject : MonoBehaviour, IEquatable<FadingObject>
         {
             Materials.AddRange(renderer.materials);   
         }
+        if(Materials != null)
+        {
+            InitialAlpha = Materials[0].color.a;
+        }
 
-        InitialAlpha = Materials[0].color.a;
     }
 
     public bool Equals(FadingObject other)

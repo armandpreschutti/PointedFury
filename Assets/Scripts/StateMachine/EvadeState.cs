@@ -16,6 +16,7 @@ public class EvadeState : BaseState
         Ctx.IsFighting = true;
         Ctx.IsEvadePressed = false;
         Ctx.IsEvadeSucces = false;
+        Ctx.OnEvade?.Invoke(true);
         Ctx.SetIncomingAttackDirection();
     }
 
@@ -37,6 +38,7 @@ public class EvadeState : BaseState
 
         Ctx.Animator.SetBool(Ctx.AnimIDEvade, false);
         Ctx.IsEvading = false;
+        Ctx.OnEvade?.Invoke(false);
     }
 
     public override void CheckSwitchStates()
