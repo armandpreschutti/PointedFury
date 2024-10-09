@@ -86,7 +86,7 @@ public class UserInput : MonoBehaviour
     // Set look input value
     public void SetLookInput(Vector2 value)
     {
-        if(!isPaused)
+        if(!isPaused && !_stateMachine.IsAttacking)
         {
             _stateMachine.LookInput = value;
         }
@@ -141,7 +141,7 @@ public class UserInput : MonoBehaviour
     {
         if (!isPaused)
         {
-            if (!_stateMachine.IsEvading && !_stateMachine.IsStunned && !_stateMachine.IsParrying)
+            if (!_stateMachine.IsEvading && !_stateMachine.IsStunned && !_stateMachine.IsParrying && !_stateMachine.IsDeflecting && !_stateMachine.IsDashing)
             {
                 _stateMachine.OnAttemptEvade?.Invoke();
             }
@@ -230,7 +230,7 @@ public class UserInput : MonoBehaviour
         _playerControls.Player.Move.performed -= ctx => SetMoveInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Look.performed -= ctx => SetLookInput(ctx.ReadValue<Vector2>());
         _playerControls.Player.Dash.performed -= ctx => SetDashInput(ctx.ReadValueAsButton());
-        _playerControls.Player.Evade.performed += ctx => SetEvadeInput(ctx.ReadValueAsButton());
+        _playerControls.Player.Evade.performed -= ctx => SetEvadeInput(ctx.ReadValueAsButton());
         _playerControls.Player.Block.performed -= ctx => SetBlockInput(ctx.ReadValueAsButton());
         _playerControls.Player.Parry.performed -= ctx => SetParryInput();
         _playerControls.Player.LightAttack.performed -= ctx => SetLightAttackInput(ctx.ReadValueAsButton());

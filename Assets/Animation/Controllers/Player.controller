@@ -145,7 +145,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry4
-  m_Speed: 1.5
+  m_Speed: 1.6
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2500534706167831477}
@@ -380,7 +380,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Deflect
-  m_Speed: 2
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2314675648391581664}
@@ -6269,7 +6269,7 @@ AnimatorStateMachine:
     m_Position: {x: -2050.8755, y: 1135.8481, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8609854710283313470}
-    m_Position: {x: -650, y: 780, z: 0}
+    m_Position: {x: -610, y: 810, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -376533277185087504}
     m_Position: {x: -2110, y: 1080, z: 0}
@@ -6750,7 +6750,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry1
-  m_Speed: 1.5
+  m_Speed: 1.6
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2945152185164753522}
@@ -9465,7 +9465,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry2
-  m_Speed: 1.5
+  m_Speed: 1.6
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2654520664774389261}
@@ -10146,7 +10146,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Parry3
-  m_Speed: 1.5
+  m_Speed: 1.6
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7017954700931596312}

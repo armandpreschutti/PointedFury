@@ -2,6 +2,7 @@ using UnityEngine;
 using Cinemachine;
 using JetBrains.Annotations;
 using UnityEngine.Jobs;
+using System;
 
 public class PlayerCameraController : MonoBehaviour
 {
@@ -12,13 +13,16 @@ public class PlayerCameraController : MonoBehaviour
     public float _cinemachineTargetYaw;
     public float _cinemachineTargetPitch;
     private float _pitchResetTime;
+    public float AttackCameraAimOffset;
+    public float AttackCameraPositionScreenOffset;
+    public float AttackCameraSideBuffer;
 
     [SerializeField] CinemachineVirtualCamera _freeRoamCamera;
     [SerializeField] CinemachineVirtualCamera _shortFightCamera;
     //[SerializeField] CinemachineVirtualCamera _zoomCamera;
     [SerializeField] CinemachineVirtualCamera _longFightCamera;
     [SerializeField] CinemachineVirtualCamera _sprintCamera;
-    //[SerializeField] CinemachineVirtualCamera _attackCamera;
+    [SerializeField] CinemachineVirtualCamera _attackCamera;
 
 
     
@@ -69,8 +73,9 @@ public class PlayerCameraController : MonoBehaviour
         //CutSceneTriggerHandler.onStartCutscene += ResetCameraPosition;
         _stateMachine.OnFight += SetLoneCameraState;
         _stateMachine.OnSprint += SetSprintCameraState;
-       // _stateMachine.OnLightAttack += SetAttackCameraState;
-        //_stateMachine.OnHeavyAttack += SetAttackCameraState;
+        _stateMachine.OnLightAttack += SetAttackCameraState;
+        _stateMachine.OnHeavyAttack += SetAttackCameraState;
+        _stateMachine.OnParry += SetAttackCameraState;
     }
     private void OnDisable()
     {
@@ -83,8 +88,9 @@ public class PlayerCameraController : MonoBehaviour
         //CutSceneTriggerHandler.onStartCutscene -= ResetCameraPosition;
         _stateMachine.OnFight -= SetLoneCameraState;
         _stateMachine.OnSprint -= SetSprintCameraState;
-        // _stateMachine.OnLightAttack -= SetAttackCameraState;
-        // _stateMachine.OnHeavyAttack -= SetAttackCameraState;
+        _stateMachine.OnLightAttack -= SetAttackCameraState;
+        _stateMachine.OnHeavyAttack -= SetAttackCameraState;
+        _stateMachine.OnParry -= SetAttackCameraState;
     }
 
     // Start is called before the first frame update    
@@ -102,6 +108,10 @@ public class PlayerCameraController : MonoBehaviour
         CameraRotation();
         SetCameraSensitity();
         CameraPitchPositioningLoop();
+        if(_stateMachine.CurrentTarget != null)
+        {
+            Debug.Log(GetScreenSide(_stateMachine.gameObject, _stateMachine.CurrentTarget));
+        }
 
     }
 
@@ -114,7 +124,6 @@ public class PlayerCameraController : MonoBehaviour
     public void SetCameraState(bool value, int enemies)
     {
 
-        //_shortFightCamera.gameObject.SetActive(value);
         if (value)
         {
 
@@ -150,12 +159,74 @@ public class PlayerCameraController : MonoBehaviour
         _sprintCamera.gameObject.SetActive(value);
     }
 
-   /* public void SetAttackCameraState(bool value, string attackType)
+    public void SetAttackCameraState(bool value, string attackType)
     {
-        _attackCamera.gameObject.SetActive(value);
+
+
+        int enemies = _stateMachine.EnemiesNearby.Length;
+        if (enemies == 1 && GetScreenSide(_stateMachine.gameObject, _stateMachine.CurrentTarget) != "N/A")
+        {
+            _attackCamera.m_LookAt = _stateMachine.CurrentTarget.transform.Find("PlayerCameraTarget");
+            //Transform playerCameraTarget = _stateMachine.transform.Find("PlayerCameraTarget");
+            if (GetScreenSide(_stateMachine.gameObject, _stateMachine.CurrentTarget) == "Right")
+            {
+
+
+                _attackCamera.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = .5f - AttackCameraPositionScreenOffset;
+                // _attackCamera.GetCinemachineComponent<CinemachineComposer>().m_TrackedObjectOffset.x = AttackCameraAimOffset;
+                // playerCameraTarget.rotation = Quaternion.Euler(playerCameraTarget.rotation.eulerAngles.x, -45, playerCameraTarget.rotation.eulerAngles.z);
+            }
+            else if (GetScreenSide(_stateMachine.gameObject, _stateMachine.CurrentTarget) == "Left")
+            {
+                _attackCamera.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = .5f + AttackCameraPositionScreenOffset; ;
+                // _attackCamera.GetCinemachineComponent<CinemachineComposer>().m_TrackedObjectOffset.x = -AttackCameraAimOffset;
+                //playerCameraTarget.rotation = Quaternion.Euler(playerCameraTarget.rotation.eulerAngles.x, 45, playerCameraTarget.rotation.eulerAngles.z);
+            }
+            else
+            {
+                _attackCamera.GetCinemachineComponent<CinemachineComposer>().m_ScreenX = .5f;
+                //_attackCamera.GetCinemachineComponent<CinemachineComposer>().m_TrackedObjectOffset.x = 0.0f;
+            }
+            _attackCamera.gameObject.SetActive(value);
+        }
+        else
+        {
+            _attackCamera.gameObject.SetActive(false);
+        }
+
     }
-*/
-   
+    // Function to determine if the GameObject is on the left or right off the current target
+    public string GetScreenSide(GameObject obj, GameObject otherObj)
+    {
+        float buffer = AttackCameraSideBuffer;
+        // Get the world position of the player GameObject
+        Vector3 playerPosition = obj.transform.position;
+        // Get the world position of the enemy GameObject
+        Vector3 enemyPosition = otherObj != null? otherObj.transform.position : Vector3.zero;
+
+        // Convert the players world position to screen position
+        Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(playerPosition);
+        // Convert the enemys world position to screen position
+        Vector3 enemyScreenPosition = Camera.main.WorldToScreenPoint(enemyPosition);
+        // Get the width of the screen
+        //float screenWidth = Screen.width;
+
+        // Determine if the GameObject is on the left or right of the enemy
+        if (playerScreenPosition.x < enemyScreenPosition.x - buffer)
+        {
+            return "Left";
+        }
+        else if(playerScreenPosition.x > enemyScreenPosition.x + buffer)
+        {
+            return "Right";
+        }
+        else
+        {
+            return "N/A";
+        }
+    }
+
+
 
     public void SetCameraSensitity()
     {

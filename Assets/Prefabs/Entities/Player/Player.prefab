@@ -11097,7 +11097,7 @@ MonoBehaviour:
   ParryDamage: 50
   BlockDamageReduction: 0.1
   EnemiesNearby: []
-  SlowMotionSpeed: 0.35
+  SlowMotionSpeed: 0.25
   IsAI: 0
   _staminaSystem: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}

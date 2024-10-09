@@ -19,7 +19,6 @@ public class CameraFramingHandler : MonoBehaviour
     public float CurrentTargetWeight;
     public float MinimumEnemyWeight;
     public float WeightRotationSpeed;
-
     private void Awake()
     {
         _targetGroup = GetComponent<CinemachineTargetGroup>();
@@ -32,7 +31,8 @@ public class CameraFramingHandler : MonoBehaviour
         EnemyManagementSystem.OnEnemyDetected += SetZoneTargets;
         PracticeEnemyManagementSystem.OnEnemyDetected += SetZoneTargets;
         PracticeEnemyManagementSystem.OnAttackerDeath += RemoveEntityFromTargetGroup;
-
+/*        _stateMachine.OnHeavyAttack += SetSingleAttackWeight;
+        _stateMachine.OnLightAttack += SetSingleAttackWeight;*/
     }
 
     private void OnDisable()
@@ -41,6 +41,8 @@ public class CameraFramingHandler : MonoBehaviour
         EnemyManagementSystem.OnEnemyDetected -= SetZoneTargets;
         PracticeEnemyManagementSystem.OnEnemyDetected -= SetZoneTargets;
         PracticeEnemyManagementSystem.OnAttackerDeath -= RemoveEntityFromTargetGroup;
+/*        _stateMachine.OnHeavyAttack -= SetSingleAttackWeight;
+        _stateMachine.OnLightAttack -= SetSingleAttackWeight;*/
     }
 
     private void Update()
@@ -49,6 +51,18 @@ public class CameraFramingHandler : MonoBehaviour
         SetTargetWeights();
     }
 
+   /* public void SetSingleAttackWeight(bool value, string attackType)
+    {
+        
+        if (value)
+        {
+            _targetGroup.m_Targets[0].weight = ;
+        }
+        else
+        {
+            PlayerTargetWeight = 1f;
+        }
+    }*/
     public void SetZoneTargets(bool value, Transform entity)
     {
         if(value)
